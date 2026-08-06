@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  passwordHash String        @map("password_hash")
+  displayName  String        @map("display_name")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  lastLoginAt  DateTime?     @map("last_login_at")
+  settings     UserSettings?
+  sessions     Session[]
+
+  @@map("users")
+}
+
+model UserSettings {
+  userId           String  @id @map("user_id")
+  activeLevel      String  @default("N5") @map("active_level")
+  dailyNewLimit    Int     @default(10) @map("daily_new_limit")
+  desiredRetention Float   @default(0.9) @map("desired_retention")
+  furiganaMode     String  @default("always") @map("furigana_mode")
+  romajiEnabled    Boolean @default(false) @map("romaji_enabled")
+  timezone         String  @default("Europe/Paris")
+  theme            String  @default("system")
+  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+model Session {
+  id         String    @id @default(uuid())
+  userId     String    @map("user_id")
+  tokenHash  String    @unique @map("token_hash")
+  expiresAt  DateTime  @map("expires_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  lastSeenAt DateTime  @default(now()) @map("last_seen_at")
+  revokedAt  DateTime? @map("revoked_at")
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}

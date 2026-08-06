@@ -1,0 +1,35 @@
+{
+  "name": "kanjipath",
+  "private": true,
+  "version": "0.0.1",
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm --parallel --filter \"./apps/*\" dev",
+    "dev:all": "powershell -NoProfile -ExecutionPolicy Bypass -File dev.ps1",
+    "dev:setup": "powershell -NoProfile -ExecutionPolicy Bypass -File dev.ps1 -SetupOnly",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm build && pnpm -r --if-present test",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "db:generate": "pnpm --filter @kanjipath/api prisma:generate",
+    "db:migrate": "pnpm --filter @kanjipath/api prisma:migrate",
+    "db:deploy": "pnpm --filter @kanjipath/api prisma:deploy",
+    "content:download": "node tools/content/run.mjs download",
+    "content:import": "node tools/content/run.mjs import",
+    "content:normalize": "node tools/content/run.mjs normalize",
+    "content:generate": "node tools/content/run.mjs generate",
+    "content:validate": "node tools/content/run.mjs validate",
+    "content:report": "node tools/content/run.mjs report",
+    "content:publish": "node tools/content/run.mjs publish",
+    "content:build": "node tools/content/run.mjs all"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.7",
+    "typescript": "^5.9.3"
+  }
+}

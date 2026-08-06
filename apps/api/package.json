@@ -1,0 +1,43 @@
+{
+  "name": "@kanjipath/api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "node dist/main.js",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit",
+    "test": "dotenv -e ../../.env -- vitest run",
+    "prisma:generate": "dotenv -e ../../.env -- prisma generate",
+    "prisma:migrate": "dotenv -e ../../.env -- prisma migrate dev",
+    "prisma:deploy": "dotenv -e ../../.env -- prisma migrate deploy"
+  },
+  "dependencies": {
+    "@fastify/cookie": "11.1.2",
+    "@fastify/cors": "11.3.0",
+    "@kanjipath/contracts": "workspace:*",
+    "@kanjipath/domain": "workspace:*",
+    "@nestjs/common": "^11.1.28",
+    "@nestjs/config": "^4.0.4",
+    "@nestjs/core": "^11.1.28",
+    "@nestjs/platform-fastify": "^11.1.28",
+    "@nestjs/throttler": "^6.5.0",
+    "@prisma/client": "^6.19.3",
+    "argon2": "^0.45.1",
+    "fastify": "5.10.0",
+    "fastify-plugin": "^6.0.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.1.28",
+    "@types/node": "^24.0.0",
+    "dotenv-cli": "^11.0.0",
+    "prisma": "^6.19.3",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

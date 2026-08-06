@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+.vite/
+.env
+.env.local
+*.tsbuildinfo
+content/raw/
+content/normalized/
+content/generated/
+content/reports/
+!content/**/.gitkeep
