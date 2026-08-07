@@ -8,6 +8,7 @@ import {
   fetchKanjiSentences,
   fetchKanjiVocabulary,
 } from '../content/api';
+import { SentenceView, useDisplaySettings } from '../content/japanese';
 import { KanjiSvg } from './kanji-svg';
 
 const STATUS_LABELS: Record<
@@ -31,29 +32,9 @@ const SKILL_LABELS: Array<{
   { key: 'stroke', label: 'Traits' },
 ];
 
-function splitWithOffsets(
-  text: string,
-  target: string,
-): Array<{ text: string; offset: number; isTarget: boolean }> {
-  const segments: Array<{ text: string; offset: number; isTarget: boolean }> = [];
-  let cursor = 0;
-  let index = text.indexOf(target);
-  while (index !== -1) {
-    if (index > cursor) {
-      segments.push({ text: text.slice(cursor, index), offset: cursor, isTarget: false });
-    }
-    segments.push({ text: target, offset: index, isTarget: true });
-    cursor = index + target.length;
-    index = text.indexOf(target, cursor);
-  }
-  if (cursor < text.length) {
-    segments.push({ text: text.slice(cursor), offset: cursor, isTarget: false });
-  }
-  return segments;
-}
-
 export function KanjiCardPage() {
   const { literal = '' } = useParams();
+  const { romajiEnabled, furiganaMode } = useDisplaySettings();
   const detail = useQuery({
     queryKey: ['kanji', literal],
     queryFn: () => fetchKanjiDetail(literal),
@@ -205,9 +186,12 @@ export function KanjiCardPage() {
                 {onReadings.map((r) => (
                   <span
                     key={`on-${r.reading}`}
-                    className="rounded-lg bg-sky-soft px-3 py-1.5 font-kanji text-lg font-semibold text-sky"
+                    className="flex flex-col items-center rounded-lg bg-sky-soft px-3 py-1.5 text-sky"
                   >
-                    {r.reading}
+                    <span className="font-kanji text-lg font-semibold">{r.reading}</span>
+                    {romajiEnabled && r.romaji ? (
+                      <span className="text-[11px] font-semibold opacity-70">{r.romaji}</span>
+                    ) : null}
                   </span>
                 ))}
                 {onReadings.length === 0 ? (
@@ -223,11 +207,16 @@ export function KanjiCardPage() {
                 {kunReadings.map((r) => (
                   <span
                     key={`kun-${r.reading}-${r.okurigana ?? ''}`}
-                    className="rounded-lg bg-accent-soft px-3 py-1.5 text-lg font-semibold text-accent"
+                    className="flex flex-col items-center rounded-lg bg-accent-soft px-3 py-1.5 text-accent"
                   >
-                    <span className="font-kanji">{r.reading}</span>
-                    {r.okurigana ? (
-                      <span className="text-sm opacity-60">.{r.okurigana}</span>
+                    <span className="text-lg font-semibold">
+                      <span className="font-kanji">{r.reading}</span>
+                      {r.okurigana ? (
+                        <span className="text-sm opacity-60">.{r.okurigana}</span>
+                      ) : null}
+                    </span>
+                    {romajiEnabled && r.romaji ? (
+                      <span className="text-[11px] font-semibold opacity-70">{r.romaji}</span>
                     ) : null}
                   </span>
                 ))}
@@ -254,7 +243,8 @@ export function KanjiCardPage() {
                       key={`rare-${r.reading}`}
                       className="rounded-lg border border-line px-2.5 py-1 text-sm text-muted"
                     >
-                      {r.reading}{' '}
+                      {r.reading}
+                      {romajiEnabled && r.romaji ? ` (${r.romaji})` : ''}{' '}
                       <span className="opacity-60">
                         ({r.type === 'onyomi' ? 'on' : r.type === 'kunyomi' ? 'kun' : 'nanori'})
                       </span>
@@ -411,7 +401,12 @@ export function KanjiCardPage() {
               <li key={word.id} className="card-hover rounded-2xl border border-line bg-card p-4">
                 <div className="flex items-baseline justify-between gap-2">
                   <span className="font-kanji text-2xl text-ink">{word.writtenForm}</span>
-                  <span className="text-sm font-bold text-accent">{word.reading}</span>
+                  <span className="flex flex-col items-end">
+                    <span className="text-sm font-bold text-accent">{word.reading}</span>
+                    {romajiEnabled && word.romaji ? (
+                      <span className="text-[11px] font-medium text-muted">{word.romaji}</span>
+                    ) : null}
+                  </span>
                 </div>
                 <p className="mt-2 text-sm text-ink-soft">{word.meaningFr}</p>
                 <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
@@ -438,20 +433,13 @@ export function KanjiCardPage() {
                 key={sentence.id}
                 className="card-hover rounded-2xl border border-line bg-card p-5"
               >
-                <p className="text-lg leading-relaxed text-ink">
-                  {splitWithOffsets(sentence.japanese, kanji.literal).map((segment) =>
-                    segment.isTarget ? (
-                      <mark
-                        key={`${sentence.id}-${segment.offset}`}
-                        className="font-kanji rounded-md bg-accent-soft px-1 text-accent"
-                      >
-                        {kanji.literal}
-                      </mark>
-                    ) : (
-                      <span key={`${sentence.id}-${segment.offset}`}>{segment.text}</span>
-                    ),
-                  )}
-                </p>
+                <SentenceView
+                  tokens={sentence.tokens}
+                  japanese={sentence.japanese}
+                  highlight={kanji.literal}
+                  romajiEnabled={romajiEnabled}
+                  furiganaMode={furiganaMode}
+                />
                 <p className="mt-2 text-sm text-muted">{sentence.translationFr}</p>
                 <p className="mt-3 text-[11px] text-muted/80">
                   {sentence.author ?? 'Tatoeba'} · {sentence.license ?? 'licence Tatoeba'}

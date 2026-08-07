@@ -86,6 +86,24 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(body.literal).toBe('一');
     expect(body.meanings.length).toBeGreaterThan(0);
     expect(body.readings.length).toBeGreaterThan(0);
+    const onReading = body.readings.find((r: { reading: string }) => r.reading === 'イチ');
+    expect(onReading?.romaji).toBe('ichi');
+  });
+
+  it('retourne les phrases du kanji avec tokens annotés', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/kanji/一/sentences',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(body.sentences.length).toBeGreaterThan(0);
+    const sentence = body.sentences[0];
+    expect(sentence.tokens.length).toBeGreaterThan(0);
+    const kanjiToken = sentence.tokens.find((t: { surface: string }) => t.surface === '一');
+    expect(kanjiToken?.reading).toBe('ひと');
+    expect(kanjiToken?.romaji).toBe('hito');
   });
 
   it('retourne une 404 pour un kanji inconnu', async () => {
@@ -240,7 +258,9 @@ async function seedContent(prisma: PrismaService): Promise<void> {
       strokes: 1,
       meaning: 'un',
       on: 'イチ',
+      onRomaji: 'ichi',
       kun: 'ひと',
+      kunRomaji: 'hito',
     },
     {
       id: 'k-04e8c',
@@ -249,7 +269,9 @@ async function seedContent(prisma: PrismaService): Promise<void> {
       strokes: 2,
       meaning: 'deux',
       on: 'ニ',
+      onRomaji: 'ni',
       kun: 'ふた',
+      kunRomaji: 'futa',
     },
   ];
   for (const def of kanjiDefs) {
@@ -273,14 +295,86 @@ async function seedContent(prisma: PrismaService): Promise<void> {
         },
         readings: {
           create: [
-            { reading: def.on, readingType: 'onyomi', sourceId: source.id },
-            { reading: def.kun, readingType: 'kunyomi', sourceId: source.id },
+            { reading: def.on, romaji: def.onRomaji, readingType: 'onyomi', sourceId: source.id },
+            {
+              reading: def.kun,
+              romaji: def.kunRomaji,
+              readingType: 'kunyomi',
+              sourceId: source.id,
+            },
           ],
         },
       },
       update: {},
     });
+    await prisma.kanjiReading.deleteMany({ where: { kanjiId: def.id } });
+    await prisma.kanjiReading.createMany({
+      data: [
+        {
+          kanjiId: def.id,
+          reading: def.on,
+          romaji: def.onRomaji,
+          readingType: 'onyomi',
+          sourceId: source.id,
+        },
+        {
+          kanjiId: def.id,
+          reading: def.kun,
+          romaji: def.kunRomaji,
+          readingType: 'kunyomi',
+          sourceId: source.id,
+        },
+      ],
+    });
   }
+
+  await prisma.sentence.upsert({
+    where: { id: 's-test-1' },
+    create: {
+      id: 's-test-1',
+      japanese: '一つです。',
+      translationFr: "C'en est un.",
+      difficulty: 'N5',
+      sourceId: source.id,
+      author: 'KanjiPath',
+      license: 'CC BY-SA 4.0',
+      editorialStatus: 'published',
+    },
+    update: {
+      japanese: '一つです。',
+      translationFr: "C'en est un.",
+    },
+  });
+  await prisma.sentenceToken.deleteMany({ where: { sentenceId: 's-test-1' } });
+  await prisma.sentenceToken.createMany({
+    data: [
+      {
+        sentenceId: 's-test-1',
+        surface: '一',
+        reading: 'ひと',
+        romaji: 'hito',
+        startOffset: 0,
+        endOffset: 1,
+      },
+      {
+        sentenceId: 's-test-1',
+        surface: 'つ',
+        reading: 'つ',
+        romaji: 'tsu',
+        startOffset: 1,
+        endOffset: 2,
+      },
+      {
+        sentenceId: 's-test-1',
+        surface: 'です',
+        reading: 'です',
+        romaji: 'desu',
+        startOffset: 2,
+        endOffset: 4,
+      },
+      { sentenceId: 's-test-1', surface: '。', reading: '。', startOffset: 4, endOffset: 5 },
+    ],
+  });
 
   const curriculum = await prisma.curriculum.upsert({
     where: { id: 'curr-JLPT_ALIGNED' },

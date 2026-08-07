@@ -8,6 +8,7 @@ export const kanjiReadingSchema = z.object({
   type: readingTypeSchema,
   okurigana: z.string().optional(),
   commonness: z.enum(['common', 'rare']).default('common'),
+  romaji: z.string().optional(),
 });
 
 export const kanjiMeaningSchema = z.object({

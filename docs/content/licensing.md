@@ -16,6 +16,7 @@ Référence : `adr/2-content-pipeline/README.md` (section « Sources principales
 | Tatoeba | phrases japonais→français avec auteur | CC BY 2.0 FR (attribution affichée) | `jpn_sentences_detailed.tsv.bz2`, `fra_sentences_detailed.tsv.bz2`, `links.tar.bz2` |
 | kanji-data (David Gouveia) | croisement des niveaux JLPT (jlpt_new) | MIT | `kanji-data.json` |
 | Miroir kanjiapi.dev | second croisement des niveaux JLPT | données kanjiapi.dev | `kanjiapi-jlpt.json` |
+| kuromoji (+ dictionnaire IPAdic embarqué) | tokenisation des phrases au build (lectures, romaji) — outil, aucune donnée redistribuée | Apache 2.0 (kuromoji) ; IPAdic : BSD-3 + clause IPADIC | dépendance dev racine |
 
 Les textes EDRDG sont sous Creative Commons Attribution-ShareAlike ; l'attribution et
 le partage à l'identique sont obligatoires. Les checksums (sha256) de chaque fichier

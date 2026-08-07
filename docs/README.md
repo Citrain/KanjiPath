@@ -43,12 +43,14 @@ Ce qui est implémenté :
   CC BY 2.0 FR), 3904 exercices déterministes, SVG KanjiVG assainis.
 - API : curricula, kanji (liste, fiche, SVG, vocabulaire, phrases, progression),
   étude (sessions, réponses FSRS, reprise), progression (tableau de bord, niveaux,
-  points faibles, historique), sources, préférences, signalements.
+  points faibles), sources, préférences, signalements.
 - Web : tableau de bord (hero, historique, points faibles), liste + recherche des
-  kanji N5, fiche kanji complète (tracé animé KanjiVG), session d'étude (quiz animé,
-  résultats), page sources, **page préférences** (niveau actif, limite quotidienne,
-  rétention, furigana, thème encre/washi). Design system « encre & washi »
-  (voir `docs/architecture/overview.md#design-system-web`).
+  kanji N5, fiche kanji complète (tracé animé KanjiVG, lectures avec romaji),
+  session d'étude (quiz animé, résultats), page sources, **page préférences**
+  (niveau actif, limite quotidienne, rétention, furigana, romaji, thème encre/washi).
+  Toutes les phrases d'exemple sont annotées au build (furigana par token + romaji,
+  tokenisation kuromoji), affichées selon les préférences furigana/romaji. Design
+  system « encre & washi » (voir `docs/architecture/overview.md#design-system-web`).
 - Qualité : Vitest (unitaires + intégration MariaDB), Biome.
 
 La Phase 1 a fait l'objet d'une relecture éditoriale (mnémotechniques, étymologies,

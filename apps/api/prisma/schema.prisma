@@ -31,7 +31,7 @@ model UserSettings {
   dailyNewLimit    Int     @default(10) @map("daily_new_limit")
   desiredRetention Float   @default(0.9) @map("desired_retention")
   furiganaMode     String  @default("always") @map("furigana_mode")
-  romajiEnabled    Boolean @default(false) @map("romaji_enabled")
+  romajiEnabled    Boolean @default(true) @map("romaji_enabled")
   timezone         String  @default("Europe/Paris")
   theme            String  @default("system")
   user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -263,6 +263,7 @@ model KanjiReading {
   id          String            @id @default(uuid())
   kanjiId     String            @map("kanji_id")
   reading     String
+  romaji      String?
   readingType ReadingType       @map("reading_type")
   okurigana   String?
   commonness  ReadingCommonness @default(common)
@@ -334,17 +335,18 @@ model CurriculumKanji {
 }
 
 model Vocabulary {
-  id              String           @id @default(uuid())
-  externalId      String?          @unique @map("external_id")
-  writtenForm     String           @map("written_form")
+  id              String            @id @default(uuid())
+  externalId      String?           @unique @map("external_id")
+  writtenForm     String            @map("written_form")
   reading         String
-  meaningFr       String           @map("meaning_fr") @db.Text
-  partOfSpeech    String?          @map("part_of_speech")
-  frequencyRank   Int?             @map("frequency_rank")
-  estimatedLevel  JlptLevel?       @map("estimated_level")
-  sourceId        String?          @map("source_id")
-  editorialStatus EditorialStatus  @default(draft) @map("editorial_status")
-  source          ContentSource?   @relation(fields: [sourceId], references: [id])
+  romaji          String?
+  meaningFr       String            @map("meaning_fr") @db.Text
+  partOfSpeech    String?           @map("part_of_speech")
+  frequencyRank   Int?              @map("frequency_rank")
+  estimatedLevel  JlptLevel?        @map("estimated_level")
+  sourceId        String?           @map("source_id")
+  editorialStatus EditorialStatus   @default(draft) @map("editorial_status")
+  source          ContentSource?    @relation(fields: [sourceId], references: [id])
   kanjiLinks      VocabularyKanji[]
   sentenceTokens  SentenceToken[]
   exercises       ExerciseItem[]
@@ -390,6 +392,7 @@ model SentenceToken {
   sentenceId   String      @map("sentence_id")
   surface      String
   reading      String?
+  romaji       String?
   startOffset  Int         @map("start_offset")
   endOffset    Int         @map("end_offset")
   vocabularyId String?     @map("vocabulary_id")

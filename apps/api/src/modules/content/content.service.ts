@@ -121,6 +121,7 @@ export class ContentService {
       meanings: kanji.meanings.map((m) => ({ meaning: m.meaning, isPrimary: m.isPrimary })),
       readings: kanji.readings.map((r) => ({
         reading: r.reading,
+        romaji: r.romaji,
         type: r.readingType,
         okurigana: r.okurigana,
         commonness: r.commonness,
@@ -183,6 +184,7 @@ export class ContentService {
       id: link.vocabulary.id,
       writtenForm: link.vocabulary.writtenForm,
       reading: link.vocabulary.reading,
+      romaji: link.vocabulary.romaji,
       meaningFr: link.vocabulary.meaningFr,
       partOfSpeech: link.vocabulary.partOfSpeech,
       readingInWord: link.readingInWord,
@@ -198,6 +200,7 @@ export class ContentService {
       where: { japanese: { contains: kanji.literal }, editorialStatus: 'published' },
       orderBy: { id: 'asc' },
       take: 20,
+      include: { tokens: { orderBy: { startOffset: 'asc' } } },
     });
     return sentences.map((sentence) => ({
       id: sentence.id,
@@ -205,6 +208,11 @@ export class ContentService {
       translationFr: sentence.translationFr,
       author: sentence.author,
       license: sentence.license,
+      tokens: sentence.tokens.map((token) => ({
+        surface: token.surface,
+        reading: token.reading,
+        romaji: token.romaji,
+      })),
     }));
   }
 

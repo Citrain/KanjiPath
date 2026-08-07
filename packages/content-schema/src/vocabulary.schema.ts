@@ -6,6 +6,7 @@ export const vocabularyContentSchema = z.object({
   externalId: z.string().min(1).optional(),
   writtenForm: z.string().min(1),
   reading: z.string().min(1),
+  romaji: z.string().optional(),
   meaningFr: z.string().min(1),
   partOfSpeech: z.string().optional(),
   frequencyRank: z.number().int().positive().optional(),

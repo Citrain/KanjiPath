@@ -37,7 +37,7 @@ réutilisés tant qu'ils existent.
 |---|---|---|
 | `download` | télécharge KANJIDIC2, JMdict, KRADFILE (JSON), KanjiVG, Tatoeba, kanji-data ; calcule les checksums sha256 | `content/raw/*`, `content/reports/download.json` |
 | `import` | parse les sources brutes (XML KANJIDIC2, XML JMdict en flux, TSV Tatoeba + liens, zip KanjiVG) | `content/normalized/imported/*.json` |
-| `normalize` | fusionne avec le curaté (`content/curated/`), sélectionne vocabulaire (JMdict FR) et phrases (Tatoeba), extrait et **assainit** les SVG KanjiVG | `content/normalized/{kanji,vocabulary,sentences,curriculum,sources}.json`, `content/generated/kanjivg/*.svg` |
+| `normalize` | fusionne avec le curaté (`content/curated/`), sélectionne vocabulaire (JMdict FR) et phrases (Tatoeba), **annote les phrases** (tokenisation kuromoji : lecture kana + romaji par token), calcule le **romaji** des lectures de kanji et du vocabulaire, extrait et **assainit** les SVG KanjiVG | `content/normalized/{kanji,vocabulary,sentences,curriculum,sources}.json`, `content/generated/kanjivg/*.svg` |
 | `generate` | génère les exercices de façon **déterministe** (seed = gabarit + kanji + variante + version du pack) | `content/generated/exercises-n5.json` |
 | `validate` | applique les règles ADR (doublons, réponses, distracteurs, seuils de couverture, licences, provenance) ; échec bloquant | `content/reports/validate.json` |
 | `report` | rapport de couverture par kanji | `content/reports/report.json` |
@@ -48,9 +48,22 @@ réutilisés tant qu'ils existent.
 
 - Node natif : `fetch`, `zlib`, `node:crypto`.
 - Paquets racine : `fast-xml-parser` (XML), `unbzip2-stream` (bz2), `tar` (archives),
-  `yauzl` (zip KanjiVG), `@prisma/client` (étape `load`).
+  `yauzl` (zip KanjiVG), `kuromoji` (tokenisation japonaise, dictionnaire IPAdic
+  embarqué), `@prisma/client` (étape `load`).
 - `pnpm build` doit avoir été lancé au moins une fois si vous validez contre les
   schémas Zod de `@kanjipath/content-schema` (le pipeline lui-même n'en dépend pas).
+
+### Lectures et romaji
+
+- Le **romaji** (Hepburn modifié) est calculé au build par
+  `tools/content/lib/romaji.mjs` (déterministe, testé) : lectures des kanji,
+  vocabulaire, tokens de phrases. Jamais calculé au runtime.
+- Les **phrases** sont tokenisées par kuromoji au build : chaque token porte
+  `surface`, `reading` (hiragana), `romaji`, `startOffset`/`endOffset`. Une phrase
+  dont un token kanji n'a pas de lecture fait échouer `normalize`.
+- Les exercices qui **demandent une lecture** n'incluent jamais le furigana/romaji
+  du mot cible (masquage par position, voir `sentencePromptTokens` dans
+  `tools/content/lib/generators.mjs`) pour ne pas donner la réponse.
 
 ## Sources et choix N5
 

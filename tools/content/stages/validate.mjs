@@ -85,6 +85,9 @@ export async function stageValidate() {
       if (reading.type === 'kunyomi' && !KANA_RE.test(reading.reading)) {
         errors.push(`Lecture kun invalide pour ${k.literal}: ${reading.reading}`);
       }
+      if (!reading.romaji) {
+        errors.push(`Lecture ${reading.reading} de ${k.literal} sans romaji`);
+      }
     }
     if (k.kanjivgPath) {
       const svgPath = path.join(GENERATED_DIR, k.kanjivgPath);
@@ -115,11 +118,27 @@ export async function stageValidate() {
     if (sentence.editorialStatus === 'draft') {
       errors.push(`Phrase ${sentence.id} en état draft dans le pack`);
     }
+    if (!Array.isArray(sentence.tokens) || sentence.tokens.length === 0) {
+      errors.push(`Phrase ${sentence.id} sans tokens annotés`);
+    } else {
+      const reassembled = sentence.tokens.map((token) => token.surface).join('');
+      if (reassembled !== sentence.japanese) {
+        errors.push(`Phrase ${sentence.id}: tokens ne couvrent pas la phrase`);
+      }
+      for (const token of sentence.tokens) {
+        if (/[\u3400-\u9fff\uf900-\ufaff]/.test(token.surface) && (!token.reading || !token.romaji)) {
+          errors.push(`Phrase ${sentence.id}: token ${token.surface} sans lecture/romaji`);
+        }
+      }
+    }
   }
 
   for (const vocab of vocabulary) {
     if (!vocab.meaningFr) {
       errors.push(`Vocabulaire ${vocab.id} sans traduction française`);
+    }
+    if (!vocab.romaji) {
+      errors.push(`Vocabulaire ${vocab.id} sans romaji`);
     }
     for (const link of vocab.kanji) {
       if (!kanjiIds.has(link.kanjiId)) {

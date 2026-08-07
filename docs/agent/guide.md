@@ -150,6 +150,20 @@ ajoute-le ici.
     `content/curated/components-fr.json` s'affiche sans nom sur la fiche — vérifier la
     complétude après chaque ajout.
 
+22. **kuromoji** : le token expose `surface_form` (pas `surface`), `word_position`
+    (offset de début **1-based**) et `reading` en **katakana** (converti en hiragana
+    pour le furigana). La particule は a `reading=ハ` mais `pronunciation=ワ` : le
+    romaji des tokens kana utilise `pronunciation`. Le dictionnaire IPAdic couvre les
+    lectures des tokens kanji, mais un token inconnu (UNK) n'en a pas : `normalize`
+    échoue alors (choisir une autre phrase ou compléter le curaté).
+
+23. **Fuite de réponse par furigana/romaji** : tout exercice dont la réponse est une
+    lecture (`kanji_to_reading_qcm`, `reading_input_kana`, `vocab_reading_qcm`,
+    `sentence_cloze_reading`) ne doit jamais afficher le furigana/romaji du mot ou du
+    kanji cible. Utiliser `sentencePromptTokens` (`hideSpan`/`blankLiteral`) ; le
+    masquage se fait par **position** (offsets des tokens), car le mot cible peut être
+    découpé en plusieurs tokens (ex. 一人 → 一 + 人, lu ひとり).
+
 ## Recettes
 
 ### Ajouter une route API

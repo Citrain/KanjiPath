@@ -4,6 +4,8 @@ import yauzl from 'yauzl';
 import { XMLParser } from 'fast-xml-parser';
 import { readJson, writeJson, writeText } from '../lib/fs-utils.mjs';
 import { GENERATED_DIR, IMPORTED_DIR, CURATED_DIR, KANJIVG_DIR, NORMALIZED_DIR, RAW_DIR } from '../lib/paths.mjs';
+import { kanaToRomaji } from '../lib/romaji.mjs';
+import { annotateSentence, createTokenizer } from '../lib/tokenize.mjs';
 import { SOURCES, SOURCE_ORDER } from '../sources.mjs';
 
 export function cleanReading(reading) {
@@ -327,6 +329,7 @@ export async function stageNormalize() {
             type: r.type,
             okurigana: r.okurigana,
             commonness: r.type === 'nanori' ? 'rare' : 'common',
+            romaji: kanaToRomaji(reading),
           });
         }
         return out;
@@ -379,6 +382,7 @@ export async function stageNormalize() {
       }),
       sourceId: 'jmdict',
       editorialStatus: 'reviewed',
+      romaji: kanaToRomaji(reb),
     });
   }
 
@@ -397,6 +401,7 @@ export async function stageNormalize() {
       })),
       sourceId: 'kanjipath_editorial',
       editorialStatus: 'reviewed',
+      romaji: kanaToRomaji(curatedWord.reading),
     });
     for (const k of curatedWord.kanji) {
       if (n5Set.has(k.literal)) {
@@ -452,6 +457,15 @@ export async function stageNormalize() {
       author: 'KanjiPath',
       editorialStatus: 'reviewed',
     });
+  }
+
+  const tokenizer = await createTokenizer();
+  for (const sentence of sentencesOut) {
+    const tokens = annotateSentence(tokenizer, sentence.japanese);
+    if (!tokens) {
+      throw new Error(`Phrase sans lecture complète: ${sentence.japanese}`);
+    }
+    sentence.tokens = tokens;
   }
 
   const curriculum = {

@@ -12,7 +12,7 @@
     "dev:all": "powershell -NoProfile -ExecutionPolicy Bypass -File dev.ps1",
     "dev:setup": "powershell -NoProfile -ExecutionPolicy Bypass -File dev.ps1 -SetupOnly",
     "typecheck": "pnpm -r typecheck",
-    "test": "pnpm build && pnpm -r --if-present test",
+    "test": "pnpm build && pnpm -r --if-present test && vitest run tools/content/test",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
@@ -33,9 +33,11 @@
     "@biomejs/biome": "^2.5.7",
     "@prisma/client": "^6.19.3",
     "fast-xml-parser": "^5.10.1",
+    "kuromoji": "^0.1.2",
     "tar": "^7.5.22",
     "typescript": "^5.9.3",
     "unbzip2-stream": "^1.4.3",
+    "vitest": "^4.1.10",
     "yauzl": "^3.4.0"
   }
 }

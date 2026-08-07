@@ -1,9 +1,10 @@
-import type { AnswerResult } from '@kanjipath/contracts';
+import type { AnswerResult, SentenceTokenDto } from '@kanjipath/contracts';
 import { Badge, Button, Card, Ring } from '@kanjipath/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import confetti from 'canvas-confetti';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
+import { Furigana, SentenceView, useDisplaySettings } from '../content/japanese';
 import { createSession, finishSession, resumeSession, sendAnswer } from './api';
 
 const SKILL_LABELS: Record<string, string> = {
@@ -25,6 +26,7 @@ function celebrate() {
 
 export function SessionPage() {
   const queryClient = useQueryClient();
+  const { romajiEnabled, furiganaMode } = useDisplaySettings();
   const [started, setStarted] = useState(false);
   const [currentPosition, setCurrentPosition] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -280,16 +282,49 @@ export function SessionPage() {
                 <span className="font-kanji text-glow text-8xl text-ink">{prompt.kanji}</span>
               ) : null}
               {typeof prompt.word === 'string' ? (
-                <span className="font-kanji text-5xl text-ink">{prompt.word}</span>
-              ) : null}
-              {typeof prompt.sentence === 'string' ? (
-                <span className="font-kanji text-center text-3xl leading-relaxed text-ink">
-                  {prompt.sentence}
+                <span
+                  className={`text-center font-kanji text-5xl text-ink ${
+                    furiganaMode === 'hover' ? 'furigana-hover' : ''
+                  }`}
+                >
+                  <Furigana
+                    text={prompt.word}
+                    reading={
+                      typeof prompt.wordRomaji === 'string' &&
+                      typeof prompt.wordReading === 'string'
+                        ? prompt.wordReading
+                        : null
+                    }
+                    mode={furiganaMode}
+                  />
+                  {romajiEnabled && typeof prompt.wordRomaji === 'string' ? (
+                    <span className="mt-1 block font-sans text-base font-medium tracking-wide text-muted">
+                      {prompt.wordRomaji}
+                    </span>
+                  ) : null}
                 </span>
               ) : null}
+              {typeof prompt.sentence === 'string' ? (
+                Array.isArray(prompt.tokens) ? (
+                  <SentenceView
+                    tokens={prompt.tokens as SentenceTokenDto[]}
+                    japanese={prompt.sentence}
+                    romajiEnabled={romajiEnabled}
+                    furiganaMode={furiganaMode}
+                    className="text-center font-kanji text-3xl"
+                  />
+                ) : (
+                  <span className="font-kanji text-center text-3xl leading-relaxed text-ink">
+                    {prompt.sentence}
+                  </span>
+                )
+              ) : null}
               {typeof prompt.reading === 'string' ? (
-                <span className="rounded-xl bg-sky-soft px-4 py-2 font-kanji text-3xl text-sky">
-                  {prompt.reading}
+                <span className="flex flex-col items-center gap-1 rounded-xl bg-sky-soft px-4 py-2 text-sky">
+                  <span className="font-kanji text-3xl">{prompt.reading}</span>
+                  {romajiEnabled && typeof prompt.readingRomaji === 'string' ? (
+                    <span className="text-sm font-semibold opacity-75">{prompt.readingRomaji}</span>
+                  ) : null}
                 </span>
               ) : null}
               {typeof prompt.meaning === 'string' && typeof prompt.kanji !== 'string' ? (

@@ -4,6 +4,7 @@ import { z } from 'zod';
 export const sentenceTokenSchema = z.object({
   surface: z.string().min(1),
   reading: z.string().optional(),
+  romaji: z.string().optional(),
   startOffset: z.number().int().min(0),
   endOffset: z.number().int().min(0),
   vocabularyId: z.string().optional(),

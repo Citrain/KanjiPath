@@ -2,6 +2,7 @@ import type { JlptLevel, KanjiStatus, ReviewCardSkill, Skill } from '../enums';
 
 export interface KanjiReadingDto {
   reading: string;
+  romaji: string | null;
   type: 'onyomi' | 'kunyomi' | 'nanori';
   okurigana: string | null;
   commonness: 'common' | 'rare';
@@ -66,9 +67,16 @@ export interface KanjiVocabularyDto {
   id: string;
   writtenForm: string;
   reading: string;
+  romaji: string | null;
   meaningFr: string;
   partOfSpeech: string | null;
   readingInWord: string | null;
+}
+
+export interface SentenceTokenDto {
+  surface: string;
+  reading: string | null;
+  romaji: string | null;
 }
 
 export interface KanjiSentenceDto {
@@ -77,6 +85,7 @@ export interface KanjiSentenceDto {
   translationFr: string;
   author: string | null;
   license: string | null;
+  tokens: SentenceTokenDto[];
 }
 
 export interface KanjiProgressDto {

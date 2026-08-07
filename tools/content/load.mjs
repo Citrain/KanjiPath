@@ -134,6 +134,7 @@ async function loadKanji(prisma, kanjiList, versionId) {
         data: kanji.readings.map((r) => ({
           kanjiId: kanji.id,
           reading: r.reading,
+          romaji: r.romaji ?? null,
           readingType: r.type,
           okurigana: r.okurigana ?? null,
           commonness: r.commonness,
@@ -241,6 +242,7 @@ async function loadVocabulary(prisma, vocabulary) {
         externalId: vocab.externalId,
         writtenForm: vocab.writtenForm,
         reading: vocab.reading,
+        romaji: vocab.romaji ?? null,
         meaningFr: vocab.meaningFr,
         partOfSpeech: vocab.partOfSpeech,
         frequencyRank: vocab.frequencyRank,
@@ -251,6 +253,7 @@ async function loadVocabulary(prisma, vocabulary) {
       update: {
         writtenForm: vocab.writtenForm,
         reading: vocab.reading,
+        romaji: vocab.romaji ?? null,
         meaningFr: vocab.meaningFr,
         partOfSpeech: vocab.partOfSpeech,
         estimatedLevel: vocab.estimatedLevel,
@@ -295,6 +298,20 @@ async function loadSentences(prisma, sentences) {
         editorialStatus: sentence.editorialStatus,
       },
     });
+    await prisma.sentenceToken.deleteMany({ where: { sentenceId: sentence.id } });
+    if ((sentence.tokens ?? []).length > 0) {
+      await prisma.sentenceToken.createMany({
+        data: sentence.tokens.map((token) => ({
+          sentenceId: sentence.id,
+          surface: token.surface,
+          reading: token.reading ?? null,
+          romaji: token.romaji ?? null,
+          startOffset: token.startOffset,
+          endOffset: token.endOffset,
+          vocabularyId: token.vocabularyId ?? null,
+        })),
+      });
+    }
   }
 }
 

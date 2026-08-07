@@ -104,6 +104,21 @@ body::before {
   font-family: var(--font-display);
 }
 
+ruby rt {
+  font-size: 0.5em;
+  font-weight: 500;
+  opacity: 0.85;
+  transition: opacity 160ms ease;
+}
+
+.furigana-hover ruby rt {
+  opacity: 0;
+}
+
+.furigana-hover ruby:hover rt {
+  opacity: 0.85;
+}
+
 .card-hover {
   transition:
     transform 220ms cubic-bezier(0.22, 1, 0.36, 1),

@@ -22,7 +22,7 @@ export function SettingsPage() {
   const [dailyNewLimit, setDailyNewLimit] = useState(10);
   const [desiredRetention, setDesiredRetention] = useState(0.9);
   const [furiganaMode, setFuriganaMode] = useState<FuriganaMode>('always');
-  const [romajiEnabled, setRomajiEnabled] = useState(false);
+  const [romajiEnabled, setRomajiEnabled] = useState(true);
   const [theme, setTheme] = useState<Theme>(getStoredTheme());
   const [saved, setSaved] = useState(false);
 

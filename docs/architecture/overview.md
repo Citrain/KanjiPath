@@ -31,7 +31,7 @@ apps/
         dashboard/     # tableau de bord (hero, ring, historique 30j, points faibles)
         kanji/         # liste + recherche + fiche kanji (SVG animé KanjiVG)
         study/         # session d'étude (quiz animé, feedback, résultats + confettis)
-        settings/      # préférences (niveau actif, limites, furigana, thème)
+        settings/      # préférences (niveau actif, limites, furigana, romaji, thème)
         sources/       # page sources et licences
       lib/             # apiFetch (client HTTP, CSRF), theme (encre/washi)
       styles/          # design system Tailwind 4 (tokens, animations)

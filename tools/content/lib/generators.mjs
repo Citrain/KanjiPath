@@ -1,4 +1,5 @@
 import { seededRng, pickSeeded } from './hash.mjs';
+import { kanaToRomaji } from './romaji.mjs';
 
 export function normalizeAnswer(text) {
   return String(text).normalize('NFC').trim().replace(/\s+/g, ' ').toLowerCase();
@@ -68,6 +69,28 @@ export function buildKanjiContext(pack) {
 
 export function primaryMeaning(kanji) {
   return kanji.meanings.find((m) => m.isPrimary)?.meaning ?? kanji.meanings[0].meaning;
+}
+
+export function sentencePromptTokens(sentence, { hideSurfaces = [], hideSpan = null, blankLiteral = null } = {}) {  return (sentence.tokens ?? []).map((token) => {
+    const surface = blankLiteral ? token.surface.split(blankLiteral).join('＿') : token.surface;
+    const overlapsSpan = hideSpan !== null && token.startOffset < hideSpan.end && token.endOffset > hideSpan.start;
+    const hidden = blankLiteral
+      ? token.surface.includes(blankLiteral)
+      : overlapsSpan || hideSurfaces.some((hide) => token.surface.includes(hide));
+    return {
+      surface,
+      reading: hidden ? null : token.reading ?? null,
+      romaji: hidden ? null : token.romaji ?? null,
+    };
+  });
+}
+
+export function hideSpanFor(japanese, word) {
+  const index = japanese.indexOf(word);
+  if (index === -1) {
+    return null;
+  }
+  return { start: index, end: index + [...word].length };
 }
 
 export function generateMeaningExercises(pack, ctx, kanji) {
@@ -190,10 +213,10 @@ export function generateReadingExercises(pack, ctx, kanji) {
 
   const typeVariants = [];
   for (const r of onReadings) {
-    typeVariants.push({ reading: r.reading, type: 'onyomi' });
+    typeVariants.push({ reading: r.reading, romaji: r.romaji ?? kanaToRomaji(r.reading), type: 'onyomi' });
   }
   for (const r of kunReadings) {
-    typeVariants.push({ reading: r.reading.replace(/\..*$/, ''), type: 'kunyomi' });
+    typeVariants.push({ reading: r.reading, romaji: r.romaji ?? kanaToRomaji(r.reading), type: 'kunyomi' });
   }
   typeVariants.slice(0, 3).forEach((item, variant) => {
     const cleanReading = item.reading.replace(/^-/, '').replace(/-$/, '');
@@ -206,6 +229,7 @@ export function generateReadingExercises(pack, ctx, kanji) {
         prompt: {
           kanji: kanji.literal,
           reading: cleanReading,
+          readingRomaji: item.romaji ?? null,
           instruction: 'Cette lecture est-elle une lecture on ou kun ?',
         },
         acceptedAnswers: [item.type],
@@ -267,7 +291,7 @@ export function generateVocabularyExercises(pack, ctx, kanji) {
         level: kanji.level,
         targetKanjiId: kanji.id,
         vocabularyId: vocab.id,
-        prompt: { word: vocab.writtenForm, wordReading: vocab.reading, instruction: 'Quel est le sens de ce mot ?' },
+        prompt: { word: vocab.writtenForm, wordReading: vocab.reading, wordRomaji: vocab.romaji ?? null, instruction: 'Quel est le sens de ce mot ?' },
         acceptedAnswers: [vocab.meaningFr],
         distractors,
         explanation: `${vocab.writtenForm} (${vocab.reading}) signifie « ${vocab.meaningFr} ».`,
@@ -292,7 +316,7 @@ export function generateContextExercises(pack, ctx, kanji) {
     }
     const rng = seededRng(`sentence_cloze_kanji:${kanji.id}:${variant}:${pack.version}`);
     const sentence = sentences[variant % sentences.length];
-    const blanked = sentence.japanese.split(kanji.literal).join('＿');
+    const tokens = sentencePromptTokens(sentence, { blankLiteral: kanji.literal });
     const confusions = kanji.confusions.filter((literal) => ctx.kanjiByLiteral.has(literal));
     const fallback = pack.kanji.filter((k) => k.id !== kanji.id).map((k) => k.literal);
     const distractorSource = confusions.length >= 3 ? confusions : [...confusions, ...fallback];
@@ -305,7 +329,8 @@ export function generateContextExercises(pack, ctx, kanji) {
         targetKanjiId: kanji.id,
         sentenceId: sentence.id,
         prompt: {
-          sentence: blanked,
+          sentence: tokens.map((token) => token.surface).join(''),
+          tokens,
           translation: sentence.translationFr,
           instruction: 'Quel kanji complète cette phrase ?',
         },
@@ -341,6 +366,7 @@ export function generateContextExercises(pack, ctx, kanji) {
         vocabularyId: vocab.id,
         prompt: {
           sentence: sentence.japanese,
+          tokens: sentencePromptTokens(sentence, { hideSpan: hideSpanFor(sentence.japanese, vocab.writtenForm) }),
           word: vocab.writtenForm,
           translation: sentence.translationFr,
           instruction: `Comment lit-on ${vocab.writtenForm} dans cette phrase ?`,
@@ -375,7 +401,11 @@ export function generateContextExercises(pack, ctx, kanji) {
         level: kanji.level,
         targetKanjiId: kanji.id,
         sentenceId: sentence.id,
-        prompt: { sentence: sentence.japanese, instruction: 'Quelle est la traduction de cette phrase ?' },
+        prompt: {
+          sentence: sentence.japanese,
+          tokens: sentencePromptTokens(sentence),
+          instruction: 'Quelle est la traduction de cette phrase ?',
+        },
         acceptedAnswers: [sentence.translationFr],
         distractors,
         explanation: `${sentence.japanese} se traduit par « ${sentence.translationFr} ».`,
