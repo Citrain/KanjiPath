@@ -5,24 +5,23 @@ Référence : `adr/10-testing-deployment/README.md`.
 ## Environnements
 
 - `local` — développement sans Docker (voir `development.md`).
-- `test` — CI GitHub Actions (service MariaDB éphémère).
+- `test` — base `kanjipath_test` locale (voir `development.md`).
 - `staging` — préproduction.
 - `production`.
 
 Le contenu publié doit être **identique** entre staging et production pour une version
 donnée.
 
-## CI (GitHub Actions)
+## Vérifications avant déploiement
 
-`.github/workflows/ci.yml` :
+Pas de CI configurée. Avant tout déploiement, lancer localement :
 
-- service MariaDB 11.4 (conteneur, uniquement côté CI) ;
-- `pnpm install --frozen-lockfile` ;
-- `prisma generate` + `prisma migrate deploy` sur la base de test ;
-- `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm content:build`.
-
-Le Docker utilisé ici ne concerne **que la CI** ; le développement local reste sans
-Docker.
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm content:build
+```
 
 ## Production (recommandé)
 

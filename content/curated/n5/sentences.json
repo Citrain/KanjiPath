@@ -1,0 +1,5 @@
+{
+  "level": "N5",
+  "notes": "Phrases créées ou validées manuellement pour compléter la couverture Tatoeba si besoin. Schéma : { japanese, french, author: 'KanjiPath', license: 'CC BY-SA 4.0', targetKanji: [...] }.",
+  "sentences": []
+}

@@ -8,7 +8,7 @@ Phases de livraison, critères d'acceptation et décisions refusées.
 
 ### Phase 0 — Fondations
 
-- monorepo, CI, NestJS, React, MariaDB (local, sans Docker), Prisma
+- monorepo, vérifications locales, NestJS, React, MariaDB (local, sans Docker), Prisma
 - authentification, documentation, conventions de code
 - premier pipeline vide
 

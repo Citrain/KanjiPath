@@ -1,0 +1,360 @@
+{
+  "level": "N5",
+  "notes": "Vocabulaire créé ou corrigé manuellement (priorité sur JMdict à graphie+lecture identiques). Schéma : { writtenForm, reading, meaningFr, partOfSpeech?, kanji: [{literal, position, readingInWord}] }. Les mois, heures et compteurs de personnes complètent le sous-ensemble FR de JMdict, qui en est dépourvu.",
+  "vocabulary": [
+    {
+      "writtenForm": "六時",
+      "reading": "ろくじ",
+      "meaningFr": "six heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "六", "position": 0, "readingInWord": "ろく" },
+        { "literal": "時", "position": 1, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "六月",
+      "reading": "ろくがつ",
+      "meaningFr": "juin",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "六", "position": 0, "readingInWord": "ろく" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "十六",
+      "reading": "じゅうろく",
+      "meaningFr": "seize",
+      "partOfSpeech": "numéral",
+      "kanji": [
+        { "literal": "十", "position": 0, "readingInWord": "じゅう" },
+        { "literal": "六", "position": 1, "readingInWord": "ろく" }
+      ]
+    },
+    {
+      "writtenForm": "六人",
+      "reading": "ろくにん",
+      "meaningFr": "six personnes",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "六", "position": 0, "readingInWord": "ろく" },
+        { "literal": "人", "position": 1, "readingInWord": "にん" }
+      ]
+    },
+    {
+      "writtenForm": "九時",
+      "reading": "くじ",
+      "meaningFr": "neuf heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "九", "position": 0, "readingInWord": "く" },
+        { "literal": "時", "position": 1, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "九月",
+      "reading": "くがつ",
+      "meaningFr": "septembre",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "九", "position": 0, "readingInWord": "く" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "十九",
+      "reading": "じゅうきゅう",
+      "meaningFr": "dix-neuf",
+      "partOfSpeech": "numéral",
+      "kanji": [
+        { "literal": "十", "position": 0, "readingInWord": "じゅう" },
+        { "literal": "九", "position": 1, "readingInWord": "きゅう" }
+      ]
+    },
+    {
+      "writtenForm": "九人",
+      "reading": "きゅうにん",
+      "meaningFr": "neuf personnes",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "九", "position": 0, "readingInWord": "きゅう" },
+        { "literal": "人", "position": 1, "readingInWord": "にん" }
+      ]
+    },
+    {
+      "writtenForm": "午年",
+      "reading": "うまどし",
+      "meaningFr": "année du Cheval (zodiaque)",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "午", "position": 0, "readingInWord": "うま" },
+        { "literal": "年", "position": 1, "readingInWord": "どし" }
+      ]
+    },
+    {
+      "writtenForm": "一月",
+      "reading": "いちがつ",
+      "meaningFr": "janvier",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "一", "position": 0, "readingInWord": "いち" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "二月",
+      "reading": "にがつ",
+      "meaningFr": "février",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "二", "position": 0, "readingInWord": "に" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "三月",
+      "reading": "さんがつ",
+      "meaningFr": "mars",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "三", "position": 0, "readingInWord": "さん" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "四月",
+      "reading": "しがつ",
+      "meaningFr": "avril",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "四", "position": 0, "readingInWord": "し" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "五月",
+      "reading": "ごがつ",
+      "meaningFr": "mai",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "五", "position": 0, "readingInWord": "ご" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "七月",
+      "reading": "しちがつ",
+      "meaningFr": "juillet",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "七", "position": 0, "readingInWord": "しち" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "八月",
+      "reading": "はちがつ",
+      "meaningFr": "août",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "八", "position": 0, "readingInWord": "はち" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "十月",
+      "reading": "じゅうがつ",
+      "meaningFr": "octobre",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "十", "position": 0, "readingInWord": "じゅう" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "十一月",
+      "reading": "じゅういちがつ",
+      "meaningFr": "novembre",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "十", "position": 0, "readingInWord": "じゅう" },
+        { "literal": "一", "position": 1, "readingInWord": "いち" },
+        { "literal": "月", "position": 2, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "十二月",
+      "reading": "じゅうにがつ",
+      "meaningFr": "décembre",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "十", "position": 0, "readingInWord": "じゅう" },
+        { "literal": "二", "position": 1, "readingInWord": "に" },
+        { "literal": "月", "position": 2, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "何月",
+      "reading": "なんがつ",
+      "meaningFr": "quel mois",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "何", "position": 0, "readingInWord": "なん" },
+        { "literal": "月", "position": 1, "readingInWord": "がつ" }
+      ]
+    },
+    {
+      "writtenForm": "二時",
+      "reading": "にじ",
+      "meaningFr": "deux heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "二", "position": 0, "readingInWord": "に" },
+        { "literal": "時", "position": 1, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "三時",
+      "reading": "さんじ",
+      "meaningFr": "trois heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "三", "position": 0, "readingInWord": "さん" },
+        { "literal": "時", "position": 1, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "四時",
+      "reading": "よじ",
+      "meaningFr": "quatre heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "四", "position": 0, "readingInWord": "よ" },
+        { "literal": "時", "position": 1, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "五時",
+      "reading": "ごじ",
+      "meaningFr": "cinq heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "五", "position": 0, "readingInWord": "ご" },
+        { "literal": "時", "position": 1, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "七時",
+      "reading": "しちじ",
+      "meaningFr": "sept heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "七", "position": 0, "readingInWord": "しち" },
+        { "literal": "時", "position": 1, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "八時",
+      "reading": "はちじ",
+      "meaningFr": "huit heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "八", "position": 0, "readingInWord": "はち" },
+        { "literal": "時", "position": 1, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "十時",
+      "reading": "じゅうじ",
+      "meaningFr": "dix heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "十", "position": 0, "readingInWord": "じゅう" },
+        { "literal": "時", "position": 1, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "十一時",
+      "reading": "じゅういちじ",
+      "meaningFr": "onze heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "十", "position": 0, "readingInWord": "じゅう" },
+        { "literal": "一", "position": 1, "readingInWord": "いち" },
+        { "literal": "時", "position": 2, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "十二時",
+      "reading": "じゅうにじ",
+      "meaningFr": "douze heures",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "十", "position": 0, "readingInWord": "じゅう" },
+        { "literal": "二", "position": 1, "readingInWord": "に" },
+        { "literal": "時", "position": 2, "readingInWord": "じ" }
+      ]
+    },
+    {
+      "writtenForm": "三人",
+      "reading": "さんにん",
+      "meaningFr": "trois personnes",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "三", "position": 0, "readingInWord": "さん" },
+        { "literal": "人", "position": 1, "readingInWord": "にん" }
+      ]
+    },
+    {
+      "writtenForm": "四人",
+      "reading": "よにん",
+      "meaningFr": "quatre personnes",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "四", "position": 0, "readingInWord": "よ" },
+        { "literal": "人", "position": 1, "readingInWord": "にん" }
+      ]
+    },
+    {
+      "writtenForm": "五人",
+      "reading": "ごにん",
+      "meaningFr": "cinq personnes",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "五", "position": 0, "readingInWord": "ご" },
+        { "literal": "人", "position": 1, "readingInWord": "にん" }
+      ]
+    },
+    {
+      "writtenForm": "七人",
+      "reading": "しちにん",
+      "meaningFr": "sept personnes",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "七", "position": 0, "readingInWord": "しち" },
+        { "literal": "人", "position": 1, "readingInWord": "にん" }
+      ]
+    },
+    {
+      "writtenForm": "八人",
+      "reading": "はちにん",
+      "meaningFr": "huit personnes",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "八", "position": 0, "readingInWord": "はち" },
+        { "literal": "人", "position": 1, "readingInWord": "にん" }
+      ]
+    },
+    {
+      "writtenForm": "十人",
+      "reading": "じゅうにん",
+      "meaningFr": "dix personnes",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "十", "position": 0, "readingInWord": "じゅう" },
+        { "literal": "人", "position": 1, "readingInWord": "にん" }
+      ]
+    }
+  ]
+}

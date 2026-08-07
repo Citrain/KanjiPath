@@ -42,7 +42,7 @@ Une tâche n'est **pas terminée** si la documentation correspondante n'est pas 
 | `docs/content/pipeline.md` | humain | Pipeline de contenu (download → publish) |
 | `docs/content/licensing.md` | humain | Sources, licences, provenance |
 | `docs/operations/development.md` | humain | Environnement local (sans Docker), MariaDB |
-| `docs/operations/deployment.md` | humain | Environnements, production |
+| `docs/operations/deployment.md` | humain | Environnements, production, vérifications |
 | `docs/adr/README.md` | les deux | Pointeur vers l'ADR et son découpage |
 | `docs/agent/guide.md` | agent | Conventions, pièges connus, recettes |
 

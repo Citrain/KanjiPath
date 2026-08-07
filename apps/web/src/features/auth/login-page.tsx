@@ -2,6 +2,7 @@ import { Button } from '@kanjipath/ui';
 import { type FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthFormField } from './auth-form-field';
+import { AuthShell } from './auth-shell';
 import { useLogin } from './use-auth';
 
 export function LoginPage() {
@@ -21,11 +22,10 @@ export function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-4">
-      <h1 className="text-2xl font-bold text-zinc-900">Connexion à KanjiPath</h1>
-      <p className="mt-1 text-sm text-zinc-500">
-        Parcours d'apprentissage des kanji aligné sur le JLPT.
-      </p>
+    <AuthShell
+      title="Bon retour parmi nous"
+      subtitle="Reprenez votre parcours là où vous l'aviez laissé."
+    >
       <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4" noValidate>
         <AuthFormField
           id="email"
@@ -46,20 +46,23 @@ export function LoginPage() {
           onChange={(event) => setPassword(event.target.value)}
         />
         {login.isError ? (
-          <p role="alert" className="text-sm text-red-600">
+          <p
+            role="alert"
+            className="rounded-xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm font-medium text-danger"
+          >
             Email ou mot de passe incorrect.
           </p>
         ) : null}
-        <Button type="submit" disabled={login.isPending}>
-          {login.isPending ? 'Connexion…' : 'Se connecter'}
+        <Button type="submit" size="xl" disabled={login.isPending}>
+          {login.isPending ? 'Connexion…' : 'Continuer ma progression'}
         </Button>
       </form>
-      <p className="mt-6 text-sm text-zinc-600">
+      <p className="mt-6 text-sm text-muted">
         Pas encore de compte ?{' '}
-        <Link to="/register" className="font-medium text-indigo-600 hover:underline">
-          Créer un compte
+        <Link to="/register" className="font-bold text-accent hover:underline">
+          Commencer gratuitement
         </Link>
       </p>
-    </main>
+    </AuthShell>
   );
 }

@@ -93,7 +93,9 @@ pnpm dev                # web sur http://localhost:5173, API sur http://localhos
 | `pnpm lint` / `pnpm lint:fix` | Biome |
 | `pnpm db:migrate` | `prisma migrate dev` |
 | `pnpm db:deploy` | `prisma migrate deploy` |
-| `pnpm content:build` | pipeline de contenu complet (squelette) |
+| `pnpm content:build` | pipeline de contenu complet (download → publish) |
+| `pnpm content:validate` | validation seule du contenu |
+| `pnpm content:load` | charge le pack publié dans MariaDB (DATABASE_URL) |
 
 ## Tests d'intégration
 
@@ -112,6 +114,16 @@ Sans `DATABASE_URL_TEST`, les tests d'intégration sont automatiquement ignorés
 ## Contenu
 
 Le contenu pédagogique est versionné, sourcé et validé (aucun LLM au runtime).
-Licences : EDRDG CC BY-SA 4.0 (KANJIDIC2, JMdict, RADKFILE/KRADFILE),
-CC BY-SA 3.0 (KanjiVG), Tatoeba (CC-BY/CC0 avec attribution).
-Détails : `adr/2-content-pipeline/README.md`.
+Licences : EDRDG CC BY-SA 4.0 (KANJIDIC2, JMdict, KRADFILE), CC BY-SA 3.0 (KanjiVG),
+Tatoeba (CC BY 2.0 FR avec attribution), kanji-data (MIT, croisement des niveaux).
+
+Premier remplissage de la base de contenu :
+
+```bash
+pnpm content:build   # download → publish (raw/, normalized/, generated/, manifests/)
+pnpm content:load    # charge le pack publié dans MariaDB (DATABASE_URL)
+```
+
+Détails : [`docs/content/pipeline.md`](./docs/content/pipeline.md),
+[`docs/content/licensing.md`](./docs/content/licensing.md),
+`adr/2-content-pipeline/README.md`.

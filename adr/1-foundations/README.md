@@ -52,7 +52,7 @@ Stack, architecture et configuration du projet KanjiPath.
 - Playwright pour les tests end-to-end
 - ESLint ou Biome
 - Prettier si Biome n'est pas retenu
-- GitHub Actions ou GitLab CI
+- Pas de CI configurée (vérifications locales)
 - Renovate pour les mises à jour contrôlées
 
 ---
@@ -168,7 +168,7 @@ docs/
 > Statut : **terminée** (voir `README.md` racine pour lancer le projet).
 
 - [x] initialiser monorepo pnpm
-- [x] configurer CI (lint, typecheck, tests) — `.github/workflows/ci.yml`
+- [x] configurer vérifications locales (lint, typecheck, tests)
 - [x] configurer NestJS + Fastify — `apps/api`
 - [x] configurer React + Vite — `apps/web`
 - [x] configurer MariaDB local + Prisma (provider `mysql`) — `apps/api/prisma`

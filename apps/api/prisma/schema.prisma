@@ -8,15 +8,19 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  email        String        @unique
-  passwordHash String        @map("password_hash")
-  displayName  String        @map("display_name")
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
-  lastLoginAt  DateTime?     @map("last_login_at")
-  settings     UserSettings?
-  sessions     Session[]
+  id             String              @id @default(uuid())
+  email          String              @unique
+  passwordHash   String              @map("password_hash")
+  displayName    String              @map("display_name")
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
+  lastLoginAt    DateTime?           @map("last_login_at")
+  settings       UserSettings?
+  sessions       Session[]
+  reviewCards    ReviewCard[]
+  kanjiProgress  UserKanjiProgress[]
+  studySessions  StudySession[]
+  contentIssues  ContentIssue[]
 
   @@map("users")
 }
@@ -47,4 +51,506 @@ model Session {
 
   @@index([userId])
   @@map("sessions")
+}
+
+enum EditorialStatus {
+  draft
+  reviewed
+  published
+}
+
+enum JlptLevel {
+  N5
+  N4
+  N3
+  N2
+  N1
+}
+
+enum LevelConfidence {
+  high
+  medium
+  low
+}
+
+enum ReadingType {
+  onyomi
+  kunyomi
+  nanori
+}
+
+enum ReadingCommonness {
+  common
+  rare
+}
+
+enum ComponentType {
+  kanji
+  radical
+  shape
+}
+
+enum ComponentRole {
+  semantic
+  phonetic
+  unknown
+}
+
+enum ReviewCardSkill {
+  KANJI_MEANING_RECOGNITION
+  MEANING_TO_KANJI
+  KANJI_READING
+  READING_TO_KANJI
+  READING_TYPE
+  VOCAB_READING
+  VOCAB_MEANING
+  CONTEXT_CLOZE
+  RADICAL_RECOGNITION
+  STROKE_ORDER
+  KANJI_CONFUSION
+}
+
+enum CardState {
+  New
+  Learning
+  Review
+  Relearning
+  Suspended
+}
+
+enum Rating {
+  again
+  hard
+  good
+  easy
+}
+
+enum Skill {
+  meaning
+  reading
+  vocabulary
+  context
+  stroke
+}
+
+enum SubjectType {
+  kanji
+  vocabulary
+  sentence
+}
+
+enum KanjiProgressStatus {
+  new
+  learning
+  reviewing
+  mastered
+}
+
+enum StudySessionMode {
+  daily
+  weak_points
+  free
+}
+
+enum StudySessionItemStatus {
+  pending
+  answered
+  skipped
+}
+
+enum ContentIssueStatus {
+  open
+  resolved
+  rejected
+}
+
+model ContentSource {
+  id               String             @id @default(uuid())
+  name             String             @unique
+  url              String
+  license          String
+  attributionText  String?            @map("attribution_text") @db.Text
+  sourceVersion    String?            @map("source_version")
+  importedAt       DateTime           @default(now()) @map("imported_at")
+  checksum         String?
+  kanjiMeanings    KanjiMeaning[]
+  kanjiReadings    KanjiReading[]
+  kanjiComponents  KanjiComponent[]
+  curriculumKanji  CurriculumKanji[]
+  vocabulary       Vocabulary[]
+  sentences        Sentence[]
+  exercises        ExerciseItem[]
+
+  @@map("content_sources")
+}
+
+model ContentVersion {
+  id          String    @id @default(uuid())
+  version     String    @unique
+  gitCommit   String?   @map("git_commit")
+  publishedAt DateTime  @default(now()) @map("published_at")
+  notes       String?   @db.Text
+  kanji       Kanji[]
+  exercises   ExerciseItem[]
+
+  @@map("content_versions")
+}
+
+model Radical {
+  id          String  @id @default(uuid())
+  literal     String  @unique
+  variant     String?
+  nameFr      String? @map("name_fr")
+  meaningFr   String? @map("meaning_fr")
+  strokeCount Int?    @map("stroke_count")
+  kanji       Kanji[]
+
+  @@map("radicals")
+}
+
+model Component {
+  id            String           @id @default(uuid())
+  literal       String           @unique
+  nameFr        String?          @map("name_fr")
+  meaningFr     String?          @map("meaning_fr")
+  componentType ComponentType    @map("component_type")
+  kanjiLinks    KanjiComponent[]
+
+  @@map("components")
+}
+
+model Kanji {
+  id                String             @id @default(uuid())
+  literal           String             @unique
+  unicodeCodepoint  String             @unique @map("unicode_codepoint")
+  strokeCount       Int                @map("stroke_count")
+  frequencyRank     Int?               @map("frequency_rank")
+  schoolGrade       Int?               @map("school_grade")
+  primaryRadicalId  String?            @map("primary_radical_id")
+  kanjivgPath       String?            @map("kanjivg_path")
+  status            EditorialStatus    @default(draft)
+  contentVersionId  String?            @map("content_version_id")
+  primaryRadical    Radical?           @relation(fields: [primaryRadicalId], references: [id])
+  contentVersion    ContentVersion?    @relation(fields: [contentVersionId], references: [id])
+  meanings          KanjiMeaning[]
+  readings          KanjiReading[]
+  componentLinks    KanjiComponent[]
+  notes             KanjiNotes?
+  curriculumLinks   CurriculumKanji[]
+  vocabularyLinks   VocabularyKanji[]
+  exercises         ExerciseItem[]
+  userProgress      UserKanjiProgress[]
+
+  @@map("kanji")
+}
+
+model KanjiMeaning {
+  id              String          @id @default(uuid())
+  kanjiId         String          @map("kanji_id")
+  language        String
+  meaning         String
+  isPrimary       Boolean         @default(false) @map("is_primary")
+  sourceId        String?         @map("source_id")
+  editorialStatus EditorialStatus @default(draft) @map("editorial_status")
+  kanji           Kanji           @relation(fields: [kanjiId], references: [id], onDelete: Cascade)
+  source          ContentSource?  @relation(fields: [sourceId], references: [id])
+
+  @@index([kanjiId, language])
+  @@map("kanji_meanings")
+}
+
+model KanjiReading {
+  id          String            @id @default(uuid())
+  kanjiId     String            @map("kanji_id")
+  reading     String
+  readingType ReadingType       @map("reading_type")
+  okurigana   String?
+  commonness  ReadingCommonness @default(common)
+  sourceId    String?           @map("source_id")
+  kanji       Kanji             @relation(fields: [kanjiId], references: [id], onDelete: Cascade)
+  source      ContentSource?    @relation(fields: [sourceId], references: [id])
+
+  @@index([reading])
+  @@index([kanjiId, readingType])
+  @@map("kanji_readings")
+}
+
+model KanjiComponent {
+  kanjiId     String         @map("kanji_id")
+  componentId String         @map("component_id")
+  position    Int
+  isRadical   Boolean        @default(false) @map("is_radical")
+  role        ComponentRole  @default(unknown)
+  confidence  LevelConfidence @default(medium)
+  sourceId    String?        @map("source_id")
+  kanji       Kanji          @relation(fields: [kanjiId], references: [id], onDelete: Cascade)
+  component   Component      @relation(fields: [componentId], references: [id], onDelete: Cascade)
+  source      ContentSource? @relation(fields: [sourceId], references: [id])
+
+  @@id([kanjiId, componentId])
+  @@index([componentId])
+  @@map("kanji_components")
+}
+
+model KanjiNotes {
+  kanjiId         String          @id @map("kanji_id")
+  mnemonicFr      String?         @map("mnemonic_fr") @db.Text
+  etymologyFr     String?         @map("etymology_fr") @db.Text
+  etymologySource String?         @map("etymology_source")
+  confusions      Json?
+  editorialStatus EditorialStatus @default(draft) @map("editorial_status")
+  kanji           Kanji           @relation(fields: [kanjiId], references: [id], onDelete: Cascade)
+
+  @@map("kanji_notes")
+}
+
+model Curriculum {
+  id          String            @id @default(uuid())
+  code        String            @unique
+  name        String
+  version     String
+  status      EditorialStatus   @default(draft)
+  publishedAt DateTime?         @map("published_at")
+  kanjiLinks  CurriculumKanji[]
+
+  @@map("curricula")
+}
+
+model CurriculumKanji {
+  curriculumId String          @map("curriculum_id")
+  kanjiId      String          @map("kanji_id")
+  level        JlptLevel
+  order        Int
+  confidence   LevelConfidence @default(medium)
+  sourceId     String?         @map("source_id")
+  reviewedAt   DateTime?       @map("reviewed_at")
+  curriculum   Curriculum      @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  kanji        Kanji           @relation(fields: [kanjiId], references: [id], onDelete: Cascade)
+  source       ContentSource?  @relation(fields: [sourceId], references: [id])
+
+  @@id([curriculumId, kanjiId])
+  @@index([curriculumId, level, order])
+  @@map("curriculum_kanji")
+}
+
+model Vocabulary {
+  id              String           @id @default(uuid())
+  externalId      String?          @unique @map("external_id")
+  writtenForm     String           @map("written_form")
+  reading         String
+  meaningFr       String           @map("meaning_fr") @db.Text
+  partOfSpeech    String?          @map("part_of_speech")
+  frequencyRank   Int?             @map("frequency_rank")
+  estimatedLevel  JlptLevel?       @map("estimated_level")
+  sourceId        String?          @map("source_id")
+  editorialStatus EditorialStatus  @default(draft) @map("editorial_status")
+  source          ContentSource?   @relation(fields: [sourceId], references: [id])
+  kanjiLinks      VocabularyKanji[]
+  sentenceTokens  SentenceToken[]
+  exercises       ExerciseItem[]
+
+  @@index([reading])
+  @@index([writtenForm])
+  @@map("vocabulary")
+}
+
+model VocabularyKanji {
+  vocabularyId  String     @map("vocabulary_id")
+  kanjiId       String     @map("kanji_id")
+  position      Int
+  readingInWord String?    @map("reading_in_word")
+  vocabulary    Vocabulary @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+  kanji         Kanji      @relation(fields: [kanjiId], references: [id], onDelete: Cascade)
+
+  @@id([vocabularyId, kanjiId, position])
+  @@index([kanjiId])
+  @@map("vocabulary_kanji")
+}
+
+model Sentence {
+  id               String          @id @default(uuid())
+  externalId       String?         @unique @map("external_id")
+  japanese         String
+  translationFr    String          @map("translation_fr") @db.Text
+  difficulty       JlptLevel       @default(N5)
+  sourceId         String?         @map("source_id")
+  author           String?
+  license          String?
+  editorialStatus  EditorialStatus @default(draft) @map("editorial_status")
+  source           ContentSource?  @relation(fields: [sourceId], references: [id])
+  tokens           SentenceToken[]
+  exercises        ExerciseItem[]
+
+  @@index([japanese])
+  @@map("sentences")
+}
+
+model SentenceToken {
+  id           String      @id @default(uuid())
+  sentenceId   String      @map("sentence_id")
+  surface      String
+  reading      String?
+  startOffset  Int         @map("start_offset")
+  endOffset    Int         @map("end_offset")
+  vocabularyId String?     @map("vocabulary_id")
+  sentence     Sentence    @relation(fields: [sentenceId], references: [id], onDelete: Cascade)
+  vocabulary   Vocabulary? @relation(fields: [vocabularyId], references: [id])
+
+  @@index([sentenceId])
+  @@map("sentence_tokens")
+}
+
+model ExerciseTemplate {
+  id            String         @id @default(uuid())
+  type          String
+  skill         Skill
+  schemaVersion Int            @default(1) @map("schema_version")
+  renderer      String
+  grader        String
+  items         ExerciseItem[]
+
+  @@unique([type, schemaVersion])
+  @@map("exercise_templates")
+}
+
+model ExerciseItem {
+  id               String          @id @default(uuid())
+  externalId       String          @unique @map("external_id")
+  templateId       String          @map("template_id")
+  level            JlptLevel
+  skill            Skill
+  kanjiId          String?         @map("kanji_id")
+  vocabularyId     String?         @map("vocabulary_id")
+  sentenceId       String?         @map("sentence_id")
+  promptJson       Json            @map("prompt_json")
+  answerJson       Json            @map("answer_json")
+  explanationJson  Json?           @map("explanation_json")
+  difficulty       Int             @default(1)
+  sourceId         String?         @map("source_id")
+  contentVersionId String?         @map("content_version_id")
+  editorialStatus  EditorialStatus @default(draft) @map("editorial_status")
+  template         ExerciseTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  kanji            Kanji?          @relation(fields: [kanjiId], references: [id], onDelete: Cascade)
+  vocabulary       Vocabulary?     @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+  sentence         Sentence?       @relation(fields: [sentenceId], references: [id], onDelete: Cascade)
+  source           ContentSource?  @relation(fields: [sourceId], references: [id])
+  contentVersion   ContentVersion? @relation(fields: [contentVersionId], references: [id])
+  reviewLogs       ReviewLog[]
+  sessionItems     StudySessionItem[]
+
+  @@index([level, kanjiId, skill])
+  @@index([level, skill, editorialStatus])
+  @@map("exercise_items")
+}
+
+model ReviewCard {
+  id             String          @id @default(uuid())
+  userId         String          @map("user_id")
+  subjectType    SubjectType     @map("subject_type")
+  subjectId      String          @map("subject_id")
+  skill          ReviewCardSkill
+  state          CardState       @default(New)
+  dueAt          DateTime        @default(now()) @map("due_at")
+  stability      Float           @default(0)
+  difficulty     Float           @default(0)
+  reps           Int             @default(0)
+  lapses         Int             @default(0)
+  elapsedDays    Float           @default(0) @map("elapsed_days")
+  scheduledDays  Float           @default(0) @map("scheduled_days")
+  learningSteps  Float           @default(0) @map("learning_steps")
+  lastReviewAt   DateTime?       @map("last_review_at")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs           ReviewLog[]
+
+  @@unique([userId, subjectType, subjectId, skill])
+  @@index([userId, dueAt])
+  @@map("review_cards")
+}
+
+model ReviewLog {
+  id             String       @id @default(uuid())
+  reviewCardId   String       @map("review_card_id")
+  exerciseItemId String?      @map("exercise_item_id")
+  rating         Rating
+  wasCorrect     Boolean      @map("was_correct")
+  responseTimeMs Int?         @map("response_time_ms")
+  answerPayload  Json?        @map("answer_payload")
+  stateBefore    CardState    @map("state_before")
+  stateAfter     CardState    @map("state_after")
+  dueAfter       DateTime     @map("due_after")
+  stabilityAfter Float        @map("stability_after")
+  reviewedAt     DateTime     @default(now()) @map("reviewed_at")
+  reviewCard     ReviewCard   @relation(fields: [reviewCardId], references: [id], onDelete: Cascade)
+  exerciseItem   ExerciseItem? @relation(fields: [exerciseItemId], references: [id], onDelete: SetNull)
+
+  @@index([reviewCardId, reviewedAt])
+  @@index([exerciseItemId])
+  @@map("review_logs")
+}
+
+model UserKanjiProgress {
+  userId        String              @map("user_id")
+  kanjiId       String              @map("kanji_id")
+  meaningScore  Float               @default(0) @map("meaning_score")
+  readingScore  Float               @default(0) @map("reading_score")
+  vocabularyScore Float             @default(0) @map("vocabulary_score")
+  contextScore  Float               @default(0) @map("context_score")
+  strokeScore   Float               @default(0) @map("stroke_score")
+  overallScore  Float               @default(0) @map("overall_score")
+  status        KanjiProgressStatus @default(new)
+  firstSeenAt   DateTime?           @map("first_seen_at")
+  masteredAt    DateTime?           @map("mastered_at")
+  updatedAt     DateTime            @updatedAt @map("updated_at")
+  user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kanji         Kanji               @relation(fields: [kanjiId], references: [id], onDelete: Cascade)
+
+  @@id([userId, kanjiId])
+  @@index([userId, status])
+  @@map("user_kanji_progress")
+}
+
+model StudySession {
+  id              String             @id @default(uuid())
+  userId          String             @map("user_id")
+  mode            StudySessionMode   @default(daily)
+  startedAt       DateTime           @default(now()) @map("started_at")
+  endedAt         DateTime?          @map("ended_at")
+  answeredCount   Int                @default(0) @map("answered_count")
+  correctCount    Int                @default(0) @map("correct_count")
+  durationSeconds Int                @default(0) @map("duration_seconds")
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items           StudySessionItem[]
+
+  @@index([userId, endedAt])
+  @@map("study_sessions")
+}
+
+model StudySessionItem {
+  id             String                @id @default(uuid())
+  sessionId      String                @map("session_id")
+  position       Int
+  exerciseItemId String                @map("exercise_item_id")
+  status         StudySessionItemStatus @default(pending)
+  wasCorrect     Boolean?              @map("was_correct")
+  session        StudySession          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exerciseItem   ExerciseItem          @relation(fields: [exerciseItemId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, position])
+  @@map("study_session_items")
+}
+
+model ContentIssue {
+  id          String             @id @default(uuid())
+  userId      String?            @map("user_id")
+  subjectType SubjectType        @map("subject_type")
+  subjectRef  String             @map("subject_ref")
+  message     String             @db.Text
+  status      ContentIssueStatus @default(open)
+  createdAt   DateTime           @default(now()) @map("created_at")
+  user        User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([subjectType, subjectRef])
+  @@map("content_issues")
 }

@@ -9,7 +9,7 @@ Référence : `adr/2-content-pipeline/README.md`.
 ## Étapes
 
 ```text
-download → import → normalize → generate → validate → report → publish
+download → import → normalize → generate → validate → report → publish → load
 ```
 
 Chaque étape est invocable individuellement ou en chaîne :
@@ -22,26 +22,63 @@ pnpm content:generate
 pnpm content:validate
 pnpm content:report
 pnpm content:publish
-pnpm content:build        # enchaîne toutes les étapes
+pnpm content:build        # enchaîne download → publish (sans load)
+pnpm content:load         # charge le pack publié dans MariaDB (DATABASE_URL)
 ```
 
-## État actuel : squelette
+L'étape `import` est **réutilisable** : chaque artefact (`kanjidic.json`, `krad.json`,
+`jmdict.json`, `tatoeba.json`, `kanjivg-index.json`) n'est recalculé que s'il est
+absent ou avec `--force`. Les téléchargements (`content/raw/`) sont conservés et
+réutilisés tant qu'ils existent.
 
-L'implémentation actuelle (`tools/content/run.mjs`) est un **squelette** : elle crée
-l'arborescence `content/` et écrit un rapport JSON par étape dans `content/reports/`.
-Les importeurs réels (KANJIDIC2, JMdict, KanjiVG, KRADFILE, Tatoeba) arrivent en
-Phase 1.
+## Implémentation (Phase 1)
+
+| Étape | Rôle | Sorties |
+|---|---|---|
+| `download` | télécharge KANJIDIC2, JMdict, KRADFILE (JSON), KanjiVG, Tatoeba, kanji-data ; calcule les checksums sha256 | `content/raw/*`, `content/reports/download.json` |
+| `import` | parse les sources brutes (XML KANJIDIC2, XML JMdict en flux, TSV Tatoeba + liens, zip KanjiVG) | `content/normalized/imported/*.json` |
+| `normalize` | fusionne avec le curaté (`content/curated/`), sélectionne vocabulaire (JMdict FR) et phrases (Tatoeba), extrait et **assainit** les SVG KanjiVG | `content/normalized/{kanji,vocabulary,sentences,curriculum,sources}.json`, `content/generated/kanjivg/*.svg` |
+| `generate` | génère les exercices de façon **déterministe** (seed = gabarit + kanji + variante + version du pack) | `content/generated/exercises-n5.json` |
+| `validate` | applique les règles ADR (doublons, réponses, distracteurs, seuils de couverture, licences, provenance) ; échec bloquant | `content/reports/validate.json` |
+| `report` | rapport de couverture par kanji | `content/reports/report.json` |
+| `publish` | pack final (`editorialStatus: published`) + manifeste versionné | `content/generated/pack/*.json`, `content/manifests/<version>.json` |
+| `load` | upsert idempotent du pack dans MariaDB via Prisma (les id pack deviennent les id DB) | base `kanjipath` |
+
+### Dépendances du pipeline
+
+- Node natif : `fetch`, `zlib`, `node:crypto`.
+- Paquets racine : `fast-xml-parser` (XML), `unbzip2-stream` (bz2), `tar` (archives),
+  `yauzl` (zip KanjiVG), `@prisma/client` (étape `load`).
+- `pnpm build` doit avoir été lancé au moins une fois si vous validez contre les
+  schémas Zod de `@kanjipath/content-schema` (le pipeline lui-même n'en dépend pas).
+
+## Sources et choix N5
+
+- **Liste N5** : 79 kanji, croisement de deux jeux dérivés de kanjiapi.dev
+  (`kanji-data`, MIT, et son miroir) — identiques — vérifiés contre le champ `jlpt`
+  historique de KANJIDIC2 (niveau 4, 103 kanji : les 24 supplémentaires sont
+  signalés comme divergence et classés N4). Voir
+  `content/curated/n5/kanji.json` (ordre pédagogique, radical, confusions,
+  mnémotechniques) et `content/normalized/imported/jlpt_cross.json`.
+- **Vocabulaire** : glosses françaises de JMdict, priorité aux mots courants
+  (`ichi1`, `spec1`, `news1`…) composés de kanji N5 ; complété si besoin par
+  `content/curated/n5/vocabulary.json`.
+- **Phrases** : paires japonais→français de Tatoeba (export détaillé + `links`),
+  licence **CC BY 2.0 FR** (l'export CC0 ne contient quasiment aucune phrase
+  japonaise). Auteur conservé ; si le compte a disparu, attribution « Tatoeba ».
+- **KanjiVG** : SVG nettoyés au build (balises `svg/g/path` et attributs autorisés
+  uniquement), servis par `GET /kanji/:literal/svg`.
 
 ## Arborescence `content/`
 
 ```text
 content/
-  raw/          # sources brutes téléchargées (checksum vérifié)
-  normalized/   # données parsées/normalisées
-  curated/      # enrichissement français (rédigé/validé manuellement)
-  generated/    # exercices générés de façon déterministe (commités)
-  manifests/    # manifeste de chaque pack publié
-  licenses/     # textes de licence / attribution
+  raw/          # sources brutes téléchargées (checksum dans reports/download.json)
+  normalized/   # imported/ (parsé) + kanji|vocabulary|sentences|curriculum|sources.json
+  curated/      # enrichissement français rédigé/validé manuellement (versionné)
+  generated/    # exercices, SVG KanjiVG, pack publié (reproduit par le pipeline)
+  manifests/    # manifeste de chaque pack publié (versionné)
+  licenses/     # textes de licence / attribution (versionné)
   reports/      # rapports d'étape (JSON)
 ```
 
@@ -51,20 +88,33 @@ pipeline).
 
 ## Règles de génération
 
-- Les exercices sont produits par des **gabarits déterministes** pendant le build,
-  puis commités, relus et testés.
+- Les exercices sont produits par des **gabarits déterministes** pendant le build :
+  le même pack produit exactement les mêmes exercices (seed stable).
 - Interdit : générer une réponse aléatoire non validée pendant une session utilisateur.
-- Répartition minimale par kanji : 20 % sens, 20 % lecture, 20 % vocabulaire,
-  20 % contexte, 10 % composants/traits, 10 % confusion/synthèse.
+- Répartition par kanji : sens, lecture, vocabulaire, contexte, composants/traits,
+  confusion (voir `tools/content/lib/generators.mjs`). Minimum validé : 40 exercices,
+  6 mots et 6 phrases par kanji N5.
 
-## Validation (à terme)
+## Validation
 
-Le pipeline refusera le build en cas d'identifiant dupliqué, kanji sans niveau/sens,
-exercice sans correction, phrase sans kanji cible ou sans attribution, seuils non
-atteints, licence manquante, contenu `draft` dans le pack de production, etc.
+Le pipeline refuse le build en cas d'identifiant dupliqué, kanji sans niveau/sens
+français, lecture invalide (kana/katakana), exercice sans correction, distracteur
+identique à la réponse, options dupliquées après normalisation, phrase sans kanji
+cible ou sans attribution (CC BY), seuils non atteints, licence manquante, contenu
+`draft` dans le pack, SVG manquant, référence vers ressource inexistante.
 Liste complète : `adr/2-content-pipeline/README.md#tests-automatiques-de-contenu`.
 
 ## Manifeste de publication
 
 Chaque pack publié produit un manifeste (version, sources + checksums, comptes,
-résultat de validation). Exemple : `adr/2-content-pipeline/README.md#manifeste-de-publication`.
+résultat de validation, commit git). Exemple : `content/manifests/2026.08.1.json`.
+
+## Chargement en base (`content:load`)
+
+- Idempotent : upsert par id stables (les id du pack deviennent les id DB), donc la
+  progression des utilisateurs (cartes FSRS, historiques) survive aux rechargements.
+- Les enfants éditoriaux (sens, lectures, composants, liens curriculum/vocabulaire)
+  sont remplacés ; les `review_logs` conservent l'historique (`exercise_items`
+  référencés par `external_id`).
+- Ordre : sources → version → radicaux → kanji → curriculum → vocabulaire →
+  phrases → gabarits → exercices.

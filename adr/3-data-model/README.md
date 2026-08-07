@@ -107,9 +107,14 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
 
 ### `exercise_items`
 
-- `id`, `template_id`, `level`, `kanji_id`, `vocabulary_id`, `sentence_id`
+- `id`, `external_id` (identifiant stable du pack, unique), `template_id`, `level`,
+  `skill`, `kanji_id`, `vocabulary_id`, `sentence_id`
 - `prompt_json`, `answer_json`, `explanation_json`
 - `difficulty`, `source_id`, `content_version_id`, `editorial_status`
+
+> `external_id` permet un upsert idempotent du pack : les identifiants du pipeline
+> deviennent les identifiants en base, la progression (cartes, historiques) survit
+> aux rechargements de contenu.
 
 ---
 
@@ -140,6 +145,18 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
 - `id`, `user_id`, `mode`
 - `started_at`, `ended_at`
 - `answered_count`, `correct_count`, `duration_seconds`
+
+### `study_session_items` (reprise de session)
+
+- `id`, `session_id`, `position`, `exercise_item_id`
+- `status` (`pending` / `answered` / `skipped`), `was_correct`
+
+> La file d'une session est persistée pour permettre la reprise exacte
+> (`GET /study/resume`).
+
+### `content_issues` (signalements)
+
+- `id`, `user_id`, `subject_type`, `subject_ref`, `message`, `status`, `created_at`
 
 ---
 

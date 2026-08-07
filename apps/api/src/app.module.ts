@@ -6,6 +6,11 @@ import { AppController } from './app.controller';
 import { PrismaModule } from './infrastructure/database/prisma.module';
 import { CsrfGuard } from './infrastructure/security/csrf.guard';
 import { AuthModule } from './modules/auth/auth.module';
+import { ContentModule } from './modules/content/content.module';
+import { CurriculaModule } from './modules/curricula/curricula.module';
+import { ProgressModule } from './modules/progress/progress.module';
+import { SettingsModule } from './modules/settings/settings.module';
+import { StudyModule } from './modules/study/study.module';
 
 @Module({
   imports: [
@@ -13,6 +18,11 @@ import { AuthModule } from './modules/auth/auth.module';
     ThrottlerModule.forRoot([{ name: 'default', ttl: 15 * 60 * 1000, limit: 300 }]),
     PrismaModule,
     AuthModule,
+    ContentModule,
+    CurriculaModule,
+    StudyModule,
+    ProgressModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,0 +1,409 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { PrismaClient } from '@prisma/client';
+import { readJson } from './lib/fs-utils.mjs';
+import { PACK_DIR, MANIFESTS_DIR, ROOT } from './lib/paths.mjs';
+
+function loadEnv() {
+  if (process.env.DATABASE_URL) {
+    return;
+  }
+  const envPath = path.join(ROOT, '.env');
+  if (!fs.existsSync(envPath)) {
+    throw new Error('DATABASE_URL manquant et .env introuvable');
+  }
+  for (const line of fs.readFileSync(envPath, 'utf8').split(/\r?\n/)) {
+    const match = /^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/.exec(line);
+    if (!match) {
+      continue;
+    }
+    const value = match[2].replace(/^"/, '').replace(/"$/, '');
+    if (!process.env[match[1]]) {
+      process.env[match[1]] = value;
+    }
+  }
+}
+
+const TEMPLATE_META = {
+  kanji_to_meaning_qcm: { skill: 'meaning', renderer: 'qcm', grader: 'exact-match' },
+  meaning_to_kanji_qcm: { skill: 'meaning', renderer: 'qcm', grader: 'exact-match' },
+  kanji_to_reading_qcm: { skill: 'reading', renderer: 'qcm', grader: 'kana-normalize' },
+  reading_input_kana: { skill: 'reading', renderer: 'input', grader: 'kana-normalize' },
+  reading_type_qcm: { skill: 'reading', renderer: 'qcm', grader: 'exact-match' },
+  vocab_reading_qcm: { skill: 'vocabulary', renderer: 'qcm', grader: 'kana-normalize' },
+  vocab_meaning_qcm: { skill: 'vocabulary', renderer: 'qcm', grader: 'exact-match' },
+  sentence_cloze_kanji: { skill: 'context', renderer: 'cloze-qcm', grader: 'exact-match' },
+  sentence_cloze_reading: { skill: 'context', renderer: 'cloze-qcm', grader: 'kana-normalize' },
+  sentence_translation_qcm: { skill: 'context', renderer: 'qcm', grader: 'exact-match' },
+  radical_recognition_qcm: { skill: 'stroke', renderer: 'qcm', grader: 'exact-match' },
+  stroke_count_qcm: { skill: 'stroke', renderer: 'qcm', grader: 'numeric' },
+  component_selection_qcm: { skill: 'stroke', renderer: 'qcm', grader: 'set-match' },
+  component_search_qcm: { skill: 'stroke', renderer: 'qcm', grader: 'exact-match' },
+  confusion_pair_qcm: { skill: 'meaning', renderer: 'qcm', grader: 'exact-match' },
+};
+
+async function loadSources(prisma, sources) {
+  for (const source of sources) {
+    await prisma.contentSource.upsert({
+      where: { id: source.id },
+      create: {
+        id: source.id,
+        name: source.name,
+        url: source.url,
+        license: source.license,
+        attributionText: source.attributionText,
+        sourceVersion: source.sourceVersion,
+        checksum: source.checksums?.[0]?.sha256 ?? null,
+      },
+      update: {
+        name: source.name,
+        url: source.url,
+        license: source.license,
+        attributionText: source.attributionText,
+        sourceVersion: source.sourceVersion,
+        checksum: source.checksums?.[0]?.sha256 ?? null,
+      },
+    });
+  }
+}
+
+async function loadKanji(prisma, kanjiList, versionId) {
+  for (const kanji of kanjiList) {
+    let radicalId = null;
+    if (kanji.radical) {
+      const radId = `rad-${kanji.radical.literal}`;
+      await prisma.radical.upsert({
+        where: { id: radId },
+        create: {
+          id: radId,
+          literal: kanji.radical.literal,
+          nameFr: kanji.radical.nameFr,
+          meaningFr: kanji.radical.meaningFr,
+        },
+        update: {
+          nameFr: kanji.radical.nameFr,
+          meaningFr: kanji.radical.meaningFr,
+        },
+      });
+      radicalId = radId;
+    }
+
+    await prisma.kanji.upsert({
+      where: { id: kanji.id },
+      create: {
+        id: kanji.id,
+        literal: kanji.literal,
+        unicodeCodepoint: kanji.unicodeCodepoint,
+        strokeCount: kanji.strokeCount,
+        frequencyRank: kanji.frequencyRank,
+        schoolGrade: kanji.schoolGrade,
+        kanjivgPath: kanji.kanjivgPath,
+        status: kanji.editorialStatus,
+        contentVersionId: versionId,
+        primaryRadicalId: radicalId,
+      },
+      update: {
+        strokeCount: kanji.strokeCount,
+        frequencyRank: kanji.frequencyRank,
+        schoolGrade: kanji.schoolGrade,
+        kanjivgPath: kanji.kanjivgPath,
+        status: kanji.editorialStatus,
+        contentVersionId: versionId,
+        primaryRadicalId: radicalId,
+      },
+    });
+
+    await prisma.kanjiMeaning.deleteMany({ where: { kanjiId: kanji.id } });
+    await prisma.kanjiReading.deleteMany({ where: { kanjiId: kanji.id } });
+    await prisma.kanjiComponent.deleteMany({ where: { kanjiId: kanji.id } });
+
+    if (kanji.meanings.length > 0) {
+      await prisma.kanjiMeaning.createMany({
+        data: kanji.meanings.map((m) => ({
+          kanjiId: kanji.id,
+          language: m.language,
+          meaning: m.meaning,
+          isPrimary: m.isPrimary,
+          sourceId: kanji.sourceId,
+          editorialStatus: kanji.editorialStatus,
+        })),
+      });
+    }
+    if (kanji.readings.length > 0) {
+      await prisma.kanjiReading.createMany({
+        data: kanji.readings.map((r) => ({
+          kanjiId: kanji.id,
+          reading: r.reading,
+          readingType: r.type,
+          okurigana: r.okurigana ?? null,
+          commonness: r.commonness,
+          sourceId: kanji.sourceId,
+        })),
+      });
+    }
+
+    for (let position = 0; position < kanji.components.length; position += 1) {
+      const component = kanji.components[position];
+      const componentId = `comp-${component.literal}`;
+      await prisma.component.upsert({
+        where: { id: componentId },
+        create: {
+          id: componentId,
+          literal: component.literal,
+          nameFr: component.nameFr,
+          meaningFr: component.meaningFr,
+          componentType: 'kanji',
+        },
+        update: {
+          nameFr: component.nameFr,
+          meaningFr: component.meaningFr,
+        },
+      });
+      await prisma.kanjiComponent.upsert({
+        where: { kanjiId_componentId: { kanjiId: kanji.id, componentId } },
+        create: {
+          kanjiId: kanji.id,
+          componentId,
+          position,
+          isRadical: component.literal === kanji.radical?.literal,
+          role: component.role,
+          sourceId: 'kradfile',
+        },
+        update: {
+          position,
+          role: component.role,
+        },
+      });
+    }
+
+    if (kanji.mnemonicFr || kanji.etymologyFr || kanji.confusions) {
+      await prisma.kanjiNotes.upsert({
+        where: { kanjiId: kanji.id },
+        create: {
+          kanjiId: kanji.id,
+          mnemonicFr: kanji.mnemonicFr,
+          etymologyFr: kanji.etymologyFr,
+          etymologySource: kanji.etymologySource,
+          confusions: kanji.confusions,
+          editorialStatus: kanji.editorialStatus,
+        },
+        update: {
+          mnemonicFr: kanji.mnemonicFr,
+          etymologyFr: kanji.etymologyFr,
+          etymologySource: kanji.etymologySource,
+          confusions: kanji.confusions,
+          editorialStatus: kanji.editorialStatus,
+        },
+      });
+    }
+  }
+}
+
+async function loadCurriculum(prisma, curriculum) {
+  const curriculumId = `curr-${curriculum.code}`;
+  await prisma.curriculum.upsert({
+    where: { id: curriculumId },
+    create: {
+      id: curriculumId,
+      code: curriculum.code,
+      name: curriculum.name,
+      version: curriculum.version,
+      status: curriculum.status,
+      publishedAt: curriculum.publishedAt ? new Date(curriculum.publishedAt) : new Date(),
+    },
+    update: {
+      name: curriculum.name,
+      version: curriculum.version,
+      status: curriculum.status,
+    },
+  });
+  await prisma.curriculumKanji.deleteMany({ where: { curriculumId } });
+  if (curriculum.levels.N5.length > 0) {
+    await prisma.curriculumKanji.createMany({
+      data: curriculum.levels.N5.map((entry) => ({
+        curriculumId,
+        kanjiId: entry.kanjiId,
+        level: 'N5',
+        order: entry.order,
+        confidence: entry.confidence,
+        reviewedAt: new Date(),
+      })),
+    });
+  }
+}
+
+async function loadVocabulary(prisma, vocabulary) {
+  for (const vocab of vocabulary) {
+    await prisma.vocabulary.upsert({
+      where: { id: vocab.id },
+      create: {
+        id: vocab.id,
+        externalId: vocab.externalId,
+        writtenForm: vocab.writtenForm,
+        reading: vocab.reading,
+        meaningFr: vocab.meaningFr,
+        partOfSpeech: vocab.partOfSpeech,
+        frequencyRank: vocab.frequencyRank,
+        estimatedLevel: vocab.estimatedLevel,
+        sourceId: vocab.sourceId,
+        editorialStatus: vocab.editorialStatus,
+      },
+      update: {
+        writtenForm: vocab.writtenForm,
+        reading: vocab.reading,
+        meaningFr: vocab.meaningFr,
+        partOfSpeech: vocab.partOfSpeech,
+        estimatedLevel: vocab.estimatedLevel,
+        editorialStatus: vocab.editorialStatus,
+      },
+    });
+    await prisma.vocabularyKanji.deleteMany({ where: { vocabularyId: vocab.id } });
+    if (vocab.kanji.length > 0) {
+      await prisma.vocabularyKanji.createMany({
+        data: vocab.kanji.map((link) => ({
+          vocabularyId: vocab.id,
+          kanjiId: link.kanjiId,
+          position: link.position,
+          readingInWord: link.readingInWord ?? null,
+        })),
+      });
+    }
+  }
+}
+
+async function loadSentences(prisma, sentences) {
+  for (const sentence of sentences) {
+    await prisma.sentence.upsert({
+      where: { id: sentence.id },
+      create: {
+        id: sentence.id,
+        externalId: sentence.externalId,
+        japanese: sentence.japanese,
+        translationFr: sentence.translationFr,
+        difficulty: sentence.difficulty,
+        sourceId: sentence.sourceId,
+        author: sentence.author,
+        license: sentence.license,
+        editorialStatus: sentence.editorialStatus,
+      },
+      update: {
+        japanese: sentence.japanese,
+        translationFr: sentence.translationFr,
+        difficulty: sentence.difficulty,
+        author: sentence.author,
+        license: sentence.license,
+        editorialStatus: sentence.editorialStatus,
+      },
+    });
+  }
+}
+
+async function loadExercises(prisma, exercises, versionId) {
+  const templates = new Map();
+  for (const exercise of exercises) {
+    if (!templates.has(exercise.template)) {
+      templates.set(exercise.template, TEMPLATE_META[exercise.template] ?? {
+        skill: exercise.skill,
+        renderer: 'qcm',
+        grader: 'exact-match',
+      });
+    }
+  }
+  for (const [type, meta] of templates) {
+    const templateId = `tpl-${type}`;
+    await prisma.exerciseTemplate.upsert({
+      where: { id: templateId },
+      create: {
+        id: templateId,
+        type,
+        skill: meta.skill,
+        schemaVersion: 1,
+        renderer: meta.renderer,
+        grader: meta.grader,
+      },
+      update: {
+        skill: meta.skill,
+        renderer: meta.renderer,
+        grader: meta.grader,
+      },
+    });
+  }
+
+  for (const exercise of exercises) {
+    await prisma.exerciseItem.upsert({
+      where: { externalId: exercise.id },
+      create: {
+        externalId: exercise.id,
+        templateId: `tpl-${exercise.template}`,
+        level: exercise.level,
+        skill: exercise.skill,
+        kanjiId: exercise.targetKanjiId,
+        vocabularyId: exercise.vocabularyId ?? null,
+        sentenceId: exercise.sentenceId ?? null,
+        promptJson: exercise.prompt,
+        answerJson: { acceptedAnswers: exercise.acceptedAnswers, distractors: exercise.distractors ?? [] },
+        explanationJson: { explanation: exercise.explanation },
+        difficulty: exercise.difficulty,
+        sourceId: exercise.sourceId,
+        contentVersionId: versionId,
+        editorialStatus: exercise.editorialStatus,
+      },
+      update: {
+        promptJson: exercise.prompt,
+        answerJson: { acceptedAnswers: exercise.acceptedAnswers, distractors: exercise.distractors ?? [] },
+        explanationJson: { explanation: exercise.explanation },
+        difficulty: exercise.difficulty,
+        editorialStatus: exercise.editorialStatus,
+      },
+    });
+  }
+}
+
+export async function stageLoad() {
+  loadEnv();
+  const prisma = new PrismaClient();
+
+  const [kanji, vocabulary, sentences, exercises, curriculum, sources] = await Promise.all([
+    readJson(path.join(PACK_DIR, 'kanji.json')),
+    readJson(path.join(PACK_DIR, 'vocabulary.json')),
+    readJson(path.join(PACK_DIR, 'sentences.json')),
+    readJson(path.join(PACK_DIR, 'exercises.json')),
+    readJson(path.join(PACK_DIR, 'curriculum.json')),
+    readJson(path.join(PACK_DIR, 'sources.json')),
+  ]);
+  const manifest = await readJson(path.join(MANIFESTS_DIR, `${curriculum.version}.json`));
+
+  const versionId = `ver-${curriculum.version}`;
+  await prisma.contentVersion.upsert({
+    where: { id: versionId },
+    create: {
+      id: versionId,
+      version: curriculum.version,
+      gitCommit: manifest.gitCommit,
+      notes: 'Pack N5 publié par le pipeline de contenu',
+    },
+    update: { gitCommit: manifest.gitCommit },
+  });
+
+  console.log('[load] sources...');
+  await loadSources(prisma, sources);
+  console.log('[load] kanji + sens + lectures + composants...');
+  await loadKanji(prisma, kanji, versionId);
+  console.log('[load] curriculum...');
+  await loadCurriculum(prisma, curriculum);
+  console.log('[load] vocabulaire...');
+  await loadVocabulary(prisma, vocabulary);
+  console.log('[load] phrases...');
+  await loadSentences(prisma, sentences);
+  console.log('[load] exercices...');
+  await loadExercises(prisma, exercises, versionId);
+
+  const counts = {
+    kanji: await prisma.kanji.count(),
+    vocabulary: await prisma.vocabulary.count(),
+    sentences: await prisma.sentence.count(),
+    exercises: await prisma.exerciseItem.count(),
+  };
+  console.log(`[load] terminé: ${JSON.stringify(counts)}`);
+  await prisma.$disconnect();
+}

@@ -60,7 +60,8 @@ pnpm lint:fix       # Biome avec corrections
 pnpm db:generate    # régénère le client Prisma
 pnpm db:migrate     # prisma migrate dev (crée une migration si schéma modifié)
 pnpm db:deploy      # prisma migrate deploy (applique les migrations commitées)
-pnpm content:build  # pipeline de contenu (squelette)
+pnpm content:build  # pipeline de contenu complet (download → publish)
+pnpm content:load   # charge le pack publié dans la base de développement
 ```
 
 ## Migrations

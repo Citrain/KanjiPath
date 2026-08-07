@@ -2,6 +2,7 @@ import { Button } from '@kanjipath/ui';
 import { type FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthFormField } from './auth-form-field';
+import { AuthShell } from './auth-shell';
 import { useRegister } from './use-auth';
 
 export function RegisterPage() {
@@ -22,9 +23,10 @@ export function RegisterPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-4">
-      <h1 className="text-2xl font-bold text-zinc-900">Créer un compte KanjiPath</h1>
-      <p className="mt-1 text-sm text-zinc-500">Commencez votre parcours kanji, du N5 au N1.</p>
+    <AuthShell
+      title="Commencez votre parcours"
+      subtitle="Du premier trait au JLPT N1 — à votre rythme."
+    >
       <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4" noValidate>
         <AuthFormField
           id="displayName"
@@ -57,20 +59,23 @@ export function RegisterPage() {
           onChange={(event) => setPassword(event.target.value)}
         />
         {register.isError ? (
-          <p role="alert" className="text-sm text-red-600">
+          <p
+            role="alert"
+            className="rounded-xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm font-medium text-danger"
+          >
             Inscription impossible. Vérifiez les informations saisies.
           </p>
         ) : null}
-        <Button type="submit" disabled={register.isPending}>
+        <Button type="submit" size="xl" disabled={register.isPending}>
           {register.isPending ? 'Création…' : 'Créer mon compte'}
         </Button>
       </form>
-      <p className="mt-6 text-sm text-zinc-600">
+      <p className="mt-6 text-sm text-muted">
         Déjà un compte ?{' '}
-        <Link to="/login" className="font-medium text-indigo-600 hover:underline">
+        <Link to="/login" className="font-bold text-accent hover:underline">
           Se connecter
         </Link>
       </p>
-    </main>
+    </AuthShell>
   );
 }

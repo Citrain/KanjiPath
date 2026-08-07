@@ -43,7 +43,7 @@ Scénario principal :
 
 ### 18.4 Tests de contenu
 
-- suite de tests et rapport CI dédiés
+- suite de tests et rapport de validation de contenu dédiés (`pnpm content:validate`)
 - **aucun déploiement avec erreur de contenu bloquante**
 
 ---

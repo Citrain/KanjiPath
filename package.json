@@ -26,10 +26,16 @@
     "content:validate": "node tools/content/run.mjs validate",
     "content:report": "node tools/content/run.mjs report",
     "content:publish": "node tools/content/run.mjs publish",
-    "content:build": "node tools/content/run.mjs all"
+    "content:build": "node tools/content/run.mjs all",
+    "content:load": "node tools/content/run.mjs load"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.7",
-    "typescript": "^5.9.3"
+    "@prisma/client": "^6.19.3",
+    "fast-xml-parser": "^5.10.1",
+    "tar": "^7.5.22",
+    "typescript": "^5.9.3",
+    "unbzip2-stream": "^1.4.3",
+    "yauzl": "^3.4.0"
   }
 }

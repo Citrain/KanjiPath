@@ -111,7 +111,7 @@ JSON avancé) doivent être évitées dans les requêtes applicatives.
 - Playwright pour les tests end-to-end ;
 - ESLint ou Biome ;
 - Prettier si Biome n’est pas retenu ;
-- GitHub Actions ou GitLab CI ;
+- Pas de CI configurée (vérifications locales : lint, typecheck, tests, pipeline de contenu).
 - Renovate pour les mises à jour contrôlées.
 
 ### 2.2 Pourquoi ne pas utiliser Node.js 26

@@ -13,12 +13,15 @@
     "@kanjipath/contracts": "workspace:*",
     "@kanjipath/ui": "workspace:*",
     "@tanstack/react-query": "^5.101.4",
+    "canvas-confetti": "^1.9.4",
+    "motion": "^13.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.5",
