@@ -32,6 +32,7 @@ apps/
         content/       # accès API contenu (kanji, sources, progression, signalements)
         dashboard/     # tableau de bord (CTA continuer, stats, série, à réviser, parcours)
         kanji/         # liste + recherche + fiche kanji (SVG animé KanjiVG, signalement)
+                       # + entraînement à l'écriture (tracé au pointeur validé, stroke-match)
         progression/   # page progression (onglets : niveaux, activité, points faibles)
         study/         # session d'étude (choix de mode, quiz clavier 1-4/Entrée, résultats)
         settings/      # préférences (niveau actif, limites, furigana, romaji, thème)

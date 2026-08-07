@@ -72,7 +72,10 @@ Afficher séparément :
 - grille de pratique
 - mode fantôme (aide progressive réduite)
 
-> La reconnaissance d'écriture manuscrite est hors V1, mais le modèle doit permettre de l'ajouter.
+> La reconnaissance d'écriture manuscrite libre est hors V1, mais le modèle doit permettre de l'ajouter.
+> En V1, la pratique guidée est implémentée (`/kanji/:literal/ecriture`) : chaque trait
+> dessiné au pointeur est validé de façon déterministe contre le tracé KanjiVG
+> (point de départ, direction, forme) — sans IA ni analyse d'encre complète.
 
 ---
 

@@ -80,7 +80,8 @@ réutilisés tant qu'ils existent.
   licence **CC BY 2.0 FR** (l'export CC0 ne contient quasiment aucune phrase
   japonaise). Auteur conservé ; si le compte a disparu, attribution « Tatoeba ».
 - **KanjiVG** : SVG nettoyés au build (balises `svg/g/path` et attributs autorisés
-  uniquement), servis par `GET /kanji/:literal/svg`.
+  uniquement ; aucun attribut préfixé `kvg:` afin de produire un XML valide sans
+  déclaration de namespace), servis par `GET /kanji/:literal/svg`.
 
 ## Arborescence `content/`
 

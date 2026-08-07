@@ -43,6 +43,7 @@ ajoute-le ici.
 | Client HTTP front | `apps/web/src/lib/api.ts` |
 | Appels API contenu/progression | `apps/web/src/features/content/api.ts` |
 | Une page front | `apps/web/src/features/<domaine>/` |
+| Tracé d'écriture (validation géométrique) | `apps/web/src/features/kanji/stroke-match.ts` (pur, testé) |
 | Série (jours consécutifs) | `apps/web/src/lib/progress.ts` (calcul côté client) |
 | Pipeline de contenu | `tools/content/run.mjs` (stages dans `tools/content/stages/`) |
 | Gabarits d'exercices | `tools/content/lib/generators.mjs` |
@@ -131,7 +132,13 @@ ajoute-le ici.
 17. **KanjiVG** : le zip contient `kanji/<codepoint 5 hex minuscules>.svg`.
     L'index (`kanjivg-index.json`) stocke les codepoints **sans** `.svg` ; les SVG
     sont assainis au build (ne garder que `svg/g/path` + attributs autorisés) dans
-    `content/generated/kanjivg/`.
+    `content/generated/kanjivg/`. **Piège (déjà rencontré)** : ne garder **aucun**
+    attribut préfixé `kvg:` (ex. `kvg:element`) ni la déclaration `xmlns:kvg`.
+    Un préfixe `kvg:` sans namespace déclaré rend le XML invalide : le
+    `DOMParser` du web n'y trouve plus aucun `<path>` → « Tracé indisponible »
+    partout, alors que l'API renvoie bien le fichier en 200. Les attributs `kvg:*`
+    sont donc retirés à l'assainissement (seuls `id`/`class`/`transform`/`d`
+    subsistent). Test de non-régression : `tools/content/test/sanitize-svg.test.mjs`.
 
 18. **Session d'étude : les options QCM doivent arriver mélangées AVEC la bonne
     réponse** (`options` dans `StudyQueueItem`). Ne renvoyer que les distracteurs
@@ -203,10 +210,22 @@ ajoute-le ici.
 29. **Un `pnpm build` / `pnpm test` complet pendant que la stack dev tourne
     provoque des 500 intermittentes.** `nest start --watch` redémarre quand
     `apps/api/dist` est réécrit ; pendant le redémarrage le proxy Vite renvoie 500
-    sur `/api/v1/*`. Préférer les commandes scopées (`pnpm --filter @kanjipath/web
-    typecheck`, `pnpm --filter @kanjipath/web build`) quand l'environnement dev de
+    sur `/api/v1/*`. Un `pnpm install` en cours de dev a le même effet côté Vite
+    (ré-optimisation des dépendances : 500 transitoires sur le proxy). Préférer les
+    commandes scopées (`pnpm --filter @kanjipath/web typecheck`,
+    `pnpm --filter @kanjipath/web build`) quand l'environnement dev de
     l'utilisateur tourne, et réserver `pnpm test`/`pnpm build` complets à un moment
     sans utilisation interactive (ou prévenir l'utilisateur).
+
+30. **Écriture (`/kanji/:literal/ecriture`) : la validation des traits est
+     déterministe et locale.** `stroke-match.ts` échantillonne le tracé KanjiVG
+     (commandes `M/L/H/V/C/S/Q/T/Z`, relatives et absolues) puis compare le trait
+     dessiné (départ, direction, forme, couverture). Aucune IA, aucun appel réseau.
+     Les tolérances sont dans `STROKE_TOLERANCE`. Les SVG assainis n'utilisent en
+     pratique que `M`, `c` et `s`. Si la validation semble trop stricte/laxiste,
+     ajuster ces seuils et relancer `pnpm --filter @kanjipath/web test`. Le pad
+     utilise les Pointer Events avec capture ; l'état du tracé en cours vit dans une
+     `ref` (pas d'effet de bord dans un updater `setState` — StrictMode double-invoque).
 
 ## Recettes
 
@@ -238,7 +257,10 @@ ajoute-le ici.
    états loading (`Skeleton`), vide (`EmptyState`) et erreur (`ErrorState`).
    Jamais de couleurs `zinc-*`/hexadécimales en dur. Voir
    `docs/architecture/overview.md#design-system-web`.
-5. `pnpm --filter @kanjipath/web typecheck`.
+5. Si la page contient de la logique pure (calcul, parsing, géométrie), la mettre
+   dans un module dédié et la tester avec Vitest :
+   `pnpm --filter @kanjipath/web test`.
+6. `pnpm --filter @kanjipath/web typecheck`.
 
 ### Modifier le contenu N5 (curaté)
 

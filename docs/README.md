@@ -46,9 +46,12 @@ Ce qui est implémenté :
   points faibles), sources, préférences, signalements.
 - Web : tableau de bord (CTA « Continuer l'apprentissage », stats du jour, série,
   kanji à réviser, activité 30 j, points faibles, parcours N5→N1), liste + recherche
-  des kanji avec sélecteur de niveau et filtres de statut, fiche kanji complète
-  (tracé animé KanjiVG, lectures avec romaji, radical/composants, mnémotechnique,
-  progression par compétence, navigation précédent/suivant, signalement de contenu),
+   des kanji avec sélecteur de niveau et filtres de statut, fiche kanji complète
+   (tracé animé KanjiVG, lectures avec romaji, radical/composants, mnémotechnique,
+   progression par compétence, navigation précédent/suivant, signalement de contenu),
+   **entraînement à l'écriture** (`/kanji/:literal/ecriture` : grille de pratique,
+   tracé au pointeur validé trait par trait contre KanjiVG — point de départ, sens,
+   forme — aide fantôme réglable, trait passé/effacé, signalement de tracé),
   session d'étude (choix du mode — jour/points faibles/libre, quiz avec raccourcis
   clavier 1-4 et Entrée, feedback animé, résultats + confettis), **page progression**
   (onglets vue d'ensemble/activité/points faibles), page sources, page préférences
