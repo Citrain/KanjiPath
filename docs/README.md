@@ -44,10 +44,16 @@ Ce qui est implémenté :
 - API : curricula, kanji (liste, fiche, SVG, vocabulaire, phrases, progression),
   étude (sessions, réponses FSRS, reprise), progression (tableau de bord, niveaux,
   points faibles), sources, préférences, signalements.
-- Web : tableau de bord (hero, historique, points faibles), liste + recherche des
-  kanji N5, fiche kanji complète (tracé animé KanjiVG, lectures avec romaji),
-  session d'étude (quiz animé, résultats), page sources, **page préférences**
+- Web : tableau de bord (CTA « Continuer l'apprentissage », stats du jour, série,
+  kanji à réviser, activité 30 j, points faibles, parcours N5→N1), liste + recherche
+  des kanji avec sélecteur de niveau et filtres de statut, fiche kanji complète
+  (tracé animé KanjiVG, lectures avec romaji, radical/composants, mnémotechnique,
+  progression par compétence, navigation précédent/suivant, signalement de contenu),
+  session d'étude (choix du mode — jour/points faibles/libre, quiz avec raccourcis
+  clavier 1-4 et Entrée, feedback animé, résultats + confettis), **page progression**
+  (onglets vue d'ensemble/activité/points faibles), page sources, page préférences
   (niveau actif, limite quotidienne, rétention, furigana, romaji, thème encre/washi).
+  Navigation : sidebar desktop + barre inférieure mobile, menu utilisateur, toasts.
   Toutes les phrases d'exemple sont annotées au build (furigana par token + romaji,
   tokenisation kuromoji), affichées selon les préférences furigana/romaji. Design
   system « encre & washi » (voir `docs/architecture/overview.md#design-system-web`).

@@ -1,4 +1,5 @@
 import type {
+  CreateIssueRequest,
   CurriculaResponse,
   CurriculumLevelResponse,
   DashboardResponse,
@@ -69,4 +70,11 @@ export function fetchHistory(): Promise<HistoryResponse> {
 
 export function fetchSettings(): Promise<SettingsDto> {
   return apiFetch<SettingsDto>('/settings');
+}
+
+export function createIssue(payload: CreateIssueRequest): Promise<void> {
+  return apiFetch<void>('/content/issues', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
 }

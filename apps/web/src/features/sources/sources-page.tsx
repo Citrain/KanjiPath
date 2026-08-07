@@ -1,47 +1,43 @@
-import { Badge, Card } from '@kanjipath/ui';
+import { Badge, Card, ErrorState, PageHeader, Skeleton } from '@kanjipath/ui';
 import { useQuery } from '@tanstack/react-query';
+import { CalendarClock, ExternalLink, PackageCheck } from 'lucide-react';
 import { motion } from 'motion/react';
 import { fetchSources } from '../content/api';
 
-const SKELETON_IDS = ['s1', 's2', 's3', 's4'];
+const SKELETON_COUNT = 4;
 
 export function SourcesPage() {
   const sources = useQuery({ queryKey: ['sources'], queryFn: fetchSources });
 
   return (
-    <div>
-      <header className="max-w-2xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">
-          Provenance & licences
-        </p>
-        <h1 className="mt-1 text-3xl font-extrabold tracking-tight">
-          Sources du <span className="gradient-text">contenu</span>
-        </h1>
-        <p className="mt-3 text-muted">
-          Chaque kanji, mot, phrase et exercice provient de sources ouvertes, tracées et attribuées.
-          Les niveaux sont alignés sur le JLPT — les listes ne sont pas officielles.
-        </p>
-      </header>
+    <div className="flex flex-col gap-8">
+      <PageHeader
+        eyebrow="Provenance & licences"
+        title="Sources du contenu"
+        description="Chaque kanji, mot, phrase et exercice provient de sources ouvertes, tracées et attribuées. Les niveaux sont alignés sur le JLPT — les listes ne sont pas officielles."
+      />
 
       {sources.isPending ? (
-        <div className="mt-8 grid gap-4 lg:grid-cols-2">
-          {SKELETON_IDS.map((id) => (
-            <div key={id} className="shimmer h-40 rounded-2xl border border-line" />
+        <div className="grid gap-4 lg:grid-cols-2">
+          {Array.from({ length: SKELETON_COUNT }, (_, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: squelettes interchangeables
+            <Skeleton key={index} className="h-44 rounded-2xl" />
           ))}
         </div>
-      ) : null}
-      {sources.isError ? (
-        <p className="mt-8 rounded-xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm font-medium text-danger">
-          Impossible de charger les sources.
-        </p>
-      ) : null}
-
-      {sources.data ? (
+      ) : sources.isError ? (
+        <ErrorState
+          title="Impossible de charger les sources"
+          description="Vérifiez votre connexion puis réessayez."
+          onRetry={() => sources.refetch()}
+        />
+      ) : sources.data ? (
         <>
           {sources.data.contentVersion ? (
-            <div className="mt-8 flex flex-wrap items-center gap-3 rounded-2xl border border-jade/25 bg-jade-soft px-5 py-4">
-              <span className="font-kanji text-3xl text-jade">版</span>
-              <div className="flex-1">
+            <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-jade/25 bg-jade-soft px-5 py-4">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-jade text-white">
+                <PackageCheck aria-hidden className="size-5" />
+              </span>
+              <div className="min-w-0 flex-1">
                 <p className="font-bold text-ink">
                   Pack de contenu {sources.data.contentVersion.version}
                 </p>
@@ -57,7 +53,7 @@ export function SourcesPage() {
             </div>
           ) : null}
 
-          <ul className="mt-6 grid gap-4 lg:grid-cols-2">
+          <ul className="grid gap-4 lg:grid-cols-2">
             {sources.data.sources.map((source, index) => (
               <motion.li
                 key={source.id}
@@ -67,25 +63,27 @@ export function SourcesPage() {
               >
                 <Card hover className="h-full">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h2 className="text-lg font-bold">{source.name}</h2>
-                    <Badge tone="gold">{source.license}</Badge>
+                    <h2 className="text-lg font-bold tracking-tight">{source.name}</h2>
+                    <Badge tone="warning">{source.license}</Badge>
                   </div>
                   {source.attributionText ? (
                     <p className="mt-3 text-sm leading-relaxed text-muted">
                       {source.attributionText}
                     </p>
                   ) : null}
-                  <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
+                  <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-muted">
                     <a
                       href={source.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="font-semibold text-sky hover:underline"
+                      className="inline-flex max-w-full items-center gap-1.5 font-semibold text-sky hover:underline"
                     >
-                      {source.url}
+                      <span className="truncate">{source.url}</span>
+                      <ExternalLink aria-hidden className="size-3.5 shrink-0" />
                     </a>
                     {source.sourceVersion ? <span>version {source.sourceVersion}</span> : null}
-                    <span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <CalendarClock aria-hidden className="size-3.5" />
                       importé le {new Date(source.importedAt).toLocaleDateString('fr-FR')}
                     </span>
                   </div>

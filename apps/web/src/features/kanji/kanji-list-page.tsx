@@ -1,20 +1,13 @@
-import type { KanjiStatus } from '@kanjipath/contracts';
-import { Badge, Progress } from '@kanjipath/ui';
+import type { JlptLevel, KanjiStatus } from '@kanjipath/contracts';
+import { Badge, EmptyState, ErrorState, Progress, Segmented, Skeleton } from '@kanjipath/ui';
 import { useQuery } from '@tanstack/react-query';
-import { motion } from 'motion/react';
+import { Search } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { fetchKanjiList } from '../content/api';
-
-const STATUS_META: Record<
-  KanjiStatus,
-  { label: string; dot: string; badge: 'neutral' | 'info' | 'warning' | 'success' }
-> = {
-  new: { label: 'Nouveau', dot: 'bg-muted', badge: 'neutral' },
-  learning: { label: 'Apprentissage', dot: 'bg-sky', badge: 'info' },
-  reviewing: { label: 'Révision', dot: 'bg-accent-2', badge: 'warning' },
-  mastered: { label: 'Maîtrisé', dot: 'bg-jade', badge: 'success' },
-};
+import { KanjiTile } from '../../components/kanji-tile';
+import { formatPercent } from '../../lib/format';
+import { JLPT_LEVELS } from '../../lib/levels';
+import { fetchCurricula, fetchKanjiList } from '../content/api';
 
 const FILTERS: Array<{ value: KanjiStatus | 'all'; label: string }> = [
   { value: 'all', label: 'Tous' },
@@ -24,12 +17,23 @@ const FILTERS: Array<{ value: KanjiStatus | 'all'; label: string }> = [
   { value: 'mastered', label: 'Maîtrisés' },
 ];
 
-const SKELETON_IDS = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12'];
+const SKELETON_COUNT = 12;
 
 export function KanjiListPage() {
-  const kanjiList = useQuery({ queryKey: ['kanji', 'N5'], queryFn: () => fetchKanjiList('N5') });
+  const [level, setLevel] = useState<JlptLevel>('N5');
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<KanjiStatus | 'all'>('all');
+
+  const curricula = useQuery({ queryKey: ['curricula'], queryFn: fetchCurricula });
+  const kanjiList = useQuery({
+    queryKey: ['kanji', level],
+    queryFn: () => fetchKanjiList(level),
+  });
+
+  const availableLevels = useMemo(() => {
+    const curriculum = curricula.data?.curricula[0];
+    return new Set<JlptLevel>(curriculum ? curriculum.levels : ['N5']);
+  }, [curricula.data]);
 
   const items = kanjiList.data?.kanji ?? [];
   const filtered = useMemo(() => {
@@ -58,129 +62,171 @@ export function KanjiListPage() {
   const masteredRatio = items.length > 0 ? counts.mastered / items.length : 0;
 
   return (
-    <div>
-      <header className="flex flex-wrap items-end justify-between gap-6">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">
-            Parcours aligné sur le JLPT — non officiel
+    <div className="flex flex-col gap-8">
+      <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-6">
+        <div className="min-w-0">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">
+            Parcours aligné sur le JLPT — listes non officielles
           </p>
-          <h1 className="mt-1 text-3xl font-extrabold tracking-tight">
-            Les kanji <span className="gradient-text">N5</span>
+          <h1 className="mt-1.5 text-2xl font-extrabold tracking-tight sm:text-3xl">
+            Les kanji <span className="text-accent">{level}</span>
           </h1>
-          <p className="mt-2 text-sm text-muted">
-            {items.length} kanji · {counts.mastered} maîtrisés ·{' '}
-            {counts.reviewing + counts.learning} en cours
-          </p>
-          <div className="mt-3 w-64">
-            <Progress value={masteredRatio} tone="jade" label="Progression du niveau N5" />
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+            {kanjiList.data ? (
+              <>
+                <span>
+                  <span className="font-bold text-ink">{items.length}</span> kanji
+                </span>
+                <span>
+                  <span className="font-bold text-jade">{counts.mastered}</span> maîtrisés
+                </span>
+                <span>
+                  <span className="font-bold text-sky">{counts.reviewing + counts.learning}</span>{' '}
+                  en cours
+                </span>
+                <span className="hidden w-56 sm:block">
+                  <Progress
+                    value={masteredRatio}
+                    tone="jade"
+                    className="h-1.5"
+                    label={`Progression du niveau ${level}`}
+                  />
+                </span>
+                <Badge tone="success">{formatPercent(masteredRatio)}</Badge>
+              </>
+            ) : (
+              <Skeleton className="h-5 w-64" />
+            )}
           </div>
         </div>
 
-        <label className="relative block w-full max-w-sm">
+        <div className="flex flex-col items-start gap-3 sm:items-end">
+          <Segmented
+            ariaLabel="Choisir le niveau JLPT"
+            value={level}
+            options={JLPT_LEVELS.map((value) => ({
+              value,
+              label: value,
+              disabled: !availableLevels.has(value),
+            }))}
+            onChange={(next) => {
+              setLevel(next);
+              setFilter('all');
+              setSearch('');
+            }}
+          />
+          <p className="text-xs text-muted">
+            {availableLevels.size < JLPT_LEVELS.length
+              ? 'Les autres niveaux arrivent au fur et à mesure du contenu.'
+              : ''}
+          </p>
+        </div>
+      </header>
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <fieldset aria-label="Filtrer par statut" className="flex min-w-0 flex-wrap gap-2">
+          {FILTERS.map((item) => {
+            const activeFilter = filter === item.value;
+            const count = item.value === 'all' ? items.length : counts[item.value];
+            return (
+              <button
+                key={item.value}
+                type="button"
+                aria-pressed={activeFilter}
+                onClick={() => setFilter(item.value)}
+                className={`cursor-pointer rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-all duration-150 ${
+                  activeFilter
+                    ? 'border-transparent bg-accent text-white shadow-glow'
+                    : 'border-line bg-surface text-muted hover:border-line-strong hover:text-ink'
+                }`}
+              >
+                {item.label} <span className="opacity-70">({count})</span>
+              </button>
+            );
+          })}
+        </fieldset>
+
+        <label className="relative block w-full sm:w-72">
           <span className="sr-only">Rechercher un kanji ou un sens</span>
-          <span
+          <Search
             aria-hidden
-            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-lg text-muted"
-          >
-            🔍
-          </span>
+            className="pointer-events-none absolute left-3.5 top-1/2 size-4.5 -translate-y-1/2 text-muted"
+          />
           <input
             type="search"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Rechercher : 時, montagne…"
-            className="h-12 w-full rounded-2xl border border-line bg-card pl-11 pr-4 text-base text-ink placeholder:text-muted focus:border-accent/60 focus:outline-2 focus:outline-accent/30"
+            className="h-11 w-full rounded-xl border border-line bg-surface-2 pl-10 pr-4 text-[15px] text-ink transition-[border-color,box-shadow] placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_3px_var(--accent-soft)] focus:outline-none"
           />
         </label>
-      </header>
-
-      <div role="tablist" aria-label="Filtrer par statut" className="mt-6 flex flex-wrap gap-2">
-        {FILTERS.map((item) => {
-          const activeFilter = filter === item.value;
-          const count = item.value === 'all' ? items.length : counts[item.value];
-          return (
-            <button
-              key={item.value}
-              type="button"
-              role="tab"
-              aria-selected={activeFilter}
-              onClick={() => setFilter(item.value)}
-              className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition-all ${
-                activeFilter
-                  ? 'gradient-accent border-transparent text-white shadow-[0_8px_20px_-10px_var(--glow)]'
-                  : 'border-line bg-card text-muted hover:border-line-strong hover:text-ink'
-              }`}
-            >
-              {item.label} <span className="opacity-70">({count})</span>
-            </button>
-          );
-        })}
       </div>
 
       {kanjiList.isPending ? (
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-          {SKELETON_IDS.map((id) => (
-            <div key={id} className="shimmer h-44 rounded-2xl border border-line" />
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+          {Array.from({ length: SKELETON_COUNT }, (_, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: squelettes interchangeables
+            <Skeleton key={index} className="h-48" />
           ))}
         </div>
-      ) : null}
-      {kanjiList.isError ? (
-        <p className="mt-8 rounded-xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm font-medium text-danger">
-          Impossible de charger la liste des kanji.
-        </p>
-      ) : null}
-
-      <motion.ul
-        layout
-        className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"
-      >
-        {filtered.map((kanji, index) => {
-          const meta = STATUS_META[kanji.status];
-          return (
-            <motion.li
-              key={kanji.id}
+      ) : kanjiList.isError ? (
+        <ErrorState
+          title="Impossible de charger la liste des kanji"
+          description="Vérifiez votre connexion puis réessayez."
+          onRetry={() => kanjiList.refetch()}
+        />
+      ) : items.length === 0 ? (
+        <EmptyState
+          glyph="来"
+          title={`Le niveau ${level} arrive bientôt`}
+          description="Le contenu est publié niveau par niveau. Revenez bientôt, ou continuez à consolider le niveau actuel."
+        />
+      ) : (
+        <>
+          <AnimatePresence>
+            <motion.ul
               layout
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: Math.min(index * 0.015, 0.35), duration: 0.3 }}
+              className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"
             >
-              <Link
-                to={`/kanji/${kanji.literal}`}
-                className="card-hover group flex h-full flex-col items-center rounded-2xl border border-line bg-card px-4 pb-4 pt-6 text-center"
-              >
-                <span className="relative">
-                  <span className="font-kanji text-glow text-6xl text-ink transition-transform duration-300 group-hover:scale-110 inline-block">
-                    {kanji.literal}
-                  </span>
-                  <span
-                    aria-hidden
-                    className={`absolute -right-2 -top-1 h-2.5 w-2.5 rounded-full ${meta.dot}`}
-                  />
-                </span>
-                <span className="mt-3 line-clamp-2 min-h-9 text-sm font-medium text-ink-soft">
-                  {kanji.primaryMeaning ?? '—'}
-                </span>
-                <span className="mt-2 flex items-center gap-2">
-                  <Badge tone={meta.badge}>{meta.label}</Badge>
-                </span>
-                <span className="mt-3 w-full">
-                  <Progress value={kanji.overallScore} tone="accent" className="h-1.5" />
-                </span>
-                <span className="mt-2 text-[11px] font-semibold text-muted">
-                  {kanji.strokeCount} traits · #{kanji.order}
-                </span>
-              </Link>
-            </motion.li>
-          );
-        })}
-      </motion.ul>
+              {filtered.map((kanji, index) => (
+                <motion.li
+                  key={kanji.id}
+                  layout
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: Math.min(index * 0.012, 0.3), duration: 0.25 }}
+                >
+                  <KanjiTile kanji={kanji} />
+                </motion.li>
+              ))}
+            </motion.ul>
+          </AnimatePresence>
 
-      {kanjiList.data && filtered.length === 0 ? (
-        <div className="mt-12 flex flex-col items-center gap-3 text-center">
-          <span className="font-kanji text-5xl text-muted">探</span>
-          <p className="text-muted">Aucun kanji ne correspond à votre recherche.</p>
-        </div>
-      ) : null}
+          {filtered.length === 0 ? (
+            <EmptyState
+              glyph="探"
+              title="Aucun kanji ne correspond"
+              description="Essayez un autre terme ou réinitialisez les filtres."
+              action={
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch('');
+                    setFilter('all');
+                  }}
+                  className="cursor-pointer text-sm font-bold text-accent hover:underline"
+                >
+                  Réinitialiser la recherche
+                </button>
+              }
+            />
+          ) : null}
+        </>
+      )}
+
+      <p className="sr-only" aria-live="polite">
+        {kanjiList.data ? `${filtered.length} kanji affichés` : ''}
+      </p>
     </div>
   );
 }

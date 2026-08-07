@@ -1,18 +1,52 @@
-import type { AnswerResult, SentenceTokenDto } from '@kanjipath/contracts';
-import { Badge, Button, Card, Ring } from '@kanjipath/ui';
+import type { AnswerResult, SentenceTokenDto, StudyQueueItem } from '@kanjipath/contracts';
+import { Badge, Button, Card, Ring, Skeleton } from '@kanjipath/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import confetti from 'canvas-confetti';
+import { ArrowRight, CheckCircle2, LogOut, Sparkles, Target, XCircle, Zap } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { SKILL_LABELS } from '../../lib/skills';
 import { Furigana, SentenceView, useDisplaySettings } from '../content/japanese';
 import { createSession, finishSession, resumeSession, sendAnswer } from './api';
 
-const SKILL_LABELS: Record<string, string> = {
-  meaning: 'sens',
-  reading: 'lecture',
-  vocabulary: 'vocabulaire',
-  context: 'contexte',
-  stroke: 'composants & traits',
+const CJK_RE = /[\u3400-\u9fff\uf900-\ufaff\u3040-\u30ff]/;
+
+type SessionMode = 'daily' | 'weak_points' | 'free';
+
+const MODES: Array<{
+  mode: SessionMode;
+  title: string;
+  description: string;
+  icon: typeof Sparkles;
+  recommended?: boolean;
+}> = [
+  {
+    mode: 'daily',
+    title: 'Session du jour',
+    description: 'Révisions dues, points faibles et nouveaux kanji : le mélange quotidien idéal.',
+    icon: Sparkles,
+    recommended: true,
+  },
+  {
+    mode: 'weak_points',
+    title: 'Points faibles',
+    description: 'Concentrez-vous sur les kanji et compétences qui résistent encore.',
+    icon: Target,
+  },
+  {
+    mode: 'free',
+    title: 'Session libre',
+    description: 'Un mélange aléatoire du parcours, sans priorité particulière.',
+    icon: Zap,
+  },
+];
+
+const RATING_LABELS: Record<AnswerResult['rating'], string> = {
+  again: 'à revoir',
+  hard: 'difficile',
+  good: 'acquis',
+  easy: 'facile',
 };
 
 function celebrate() {
@@ -26,8 +60,8 @@ function celebrate() {
 
 export function SessionPage() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { romajiEnabled, furiganaMode } = useDisplaySettings();
-  const [started, setStarted] = useState(false);
   const [currentPosition, setCurrentPosition] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [typed, setTyped] = useState('');
@@ -35,6 +69,7 @@ export function SessionPage() {
   const [finished, setFinished] = useState(false);
   const [localCorrect, setLocalCorrect] = useState(0);
   const [localAnswered, setLocalAnswered] = useState(0);
+  const [outcomes, setOutcomes] = useState<Record<string, boolean>>({});
   const shownAtRef = useRef<number>(Date.now());
 
   const resume = useQuery({
@@ -43,18 +78,19 @@ export function SessionPage() {
   });
 
   const startSession = useMutation({
-    mutationFn: () => createSession('daily'),
+    mutationFn: (mode: SessionMode) => createSession(mode),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['study', 'session'] }),
   });
 
   const answer = useMutation({
     mutationFn: sendAnswer,
-    onSuccess: (data) => {
+    onSuccess: (data, payload) => {
       setResult(data);
       setLocalAnswered((value) => value + 1);
       if (data.correct) {
         setLocalCorrect((value) => value + 1);
       }
+      setOutcomes((current) => ({ ...current, [payload.exerciseItemId]: data.correct }));
     },
   });
 
@@ -74,7 +110,7 @@ export function SessionPage() {
 
   const session = resume.data?.session ?? null;
   const items = resume.data?.items ?? [];
-  const pendingItems = items.filter((item) => item.status === 'pending');
+  const pendingItems = useMemo(() => items.filter((item) => item.status === 'pending'), [items]);
   const current = pendingItems[currentPosition] ?? null;
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: réinitialisation volontaire à chaque exercice affiché
@@ -109,16 +145,70 @@ export function SessionPage() {
     }
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: next/submit suivent l'exercice courant via closure
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (!current) {
+        return;
+      }
+      const target = event.target as HTMLElement | null;
+      const isTyping = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
+      if (result && event.key === 'Enter') {
+        event.preventDefault();
+        next();
+        return;
+      }
+      if (isTyping || result || current.template === 'reading_input_kana') {
+        return;
+      }
+      const digit = Number(event.key);
+      if (Number.isInteger(digit) && digit >= 1 && digit <= current.options.length) {
+        const option = current.options[digit - 1];
+        if (option !== undefined) {
+          setSelected(option);
+          submit(option);
+        }
+      }
+    }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [current, result]);
+
   if (resume.isPending) {
     return (
       <div className="mx-auto max-w-2xl">
-        <div className="shimmer h-72 rounded-3xl border border-line" />
+        <Skeleton className="h-96 rounded-3xl" />
       </div>
     );
   }
 
-  if (finished || (!session && started)) {
+  if (resume.isError) {
+    return (
+      <div className="mx-auto max-w-2xl">
+        <Card className="p-10 text-center">
+          <p className="text-lg font-bold">Impossible de charger la session.</p>
+          <Button variant="secondary" className="mt-4" onClick={() => resume.refetch()}>
+            Réessayer
+          </Button>
+        </Card>
+      </div>
+    );
+  }
+
+  if (
+    finished ||
+    (!session && startSession.isSuccess && pendingItems.length === 0 && localAnswered === 0)
+  ) {
     const accuracy = localAnswered > 0 ? localCorrect / localAnswered : 0;
+    const message =
+      localAnswered === 0
+        ? 'La file était vide — rien à réviser cette fois.'
+        : accuracy >= 0.9
+          ? 'Excellent travail, votre mémoire est solide.'
+          : accuracy >= 0.6
+            ? 'Belle session, la progression est bien engagée.'
+            : 'Chaque erreur prépare une meilleure révision. Continuez !';
+
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
@@ -127,43 +217,51 @@ export function SessionPage() {
         className="mx-auto max-w-xl"
       >
         <Card className="flex flex-col items-center p-10 text-center">
-          <span className="font-kanji text-glow animate-pop text-7xl text-accent">完</span>
-          <h1 className="mt-4 text-3xl font-extrabold">Session terminée !</h1>
-          <p className="mt-2 text-muted">
-            Votre progression est enregistrée, les prochaines révisions sont planifiées.
-          </p>
+          <span className="font-jp animate-pop flex size-20 items-center justify-center rounded-3xl bg-jade-soft text-5xl text-jade">
+            完
+          </span>
+          <h1 className="mt-5 text-3xl font-extrabold tracking-tight">Session terminée !</h1>
+          <p className="mt-2 max-w-sm text-muted">{message}</p>
           {localAnswered > 0 ? (
-            <div className="mt-8 flex items-center gap-8">
+            <div className="mt-8 flex items-center gap-10">
               <Ring
                 value={accuracy}
-                size={120}
+                size={124}
                 stroke={10}
-                barClassName={accuracy >= 0.6 ? 'stroke-jade' : 'stroke-accent'}
+                tone={accuracy >= 0.6 ? 'jade' : 'danger'}
+                label="Précision de la session"
               >
                 <span className="text-2xl font-extrabold">{Math.round(accuracy * 100)}%</span>
               </Ring>
               <div className="text-left">
-                <p className="text-3xl font-extrabold">
+                <p className="text-4xl font-extrabold">
                   {localCorrect}
-                  <span className="text-lg text-muted">/{localAnswered}</span>
+                  <span className="text-xl text-muted">/{localAnswered}</span>
                 </p>
-                <p className="text-sm font-semibold text-muted">bonnes réponses</p>
+                <p className="mt-1 text-sm font-semibold text-muted">bonnes réponses</p>
               </div>
             </div>
           ) : null}
-          <div className="mt-8 flex gap-3">
+          <p className="mt-6 text-sm text-muted">
+            Votre progression est enregistrée, les prochaines révisions sont planifiées.
+          </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button
               size="lg"
+              loading={startSession.isPending}
               onClick={() => {
                 setFinished(false);
-                setStarted(false);
                 setCurrentPosition(0);
                 setLocalCorrect(0);
                 setLocalAnswered(0);
-                startSession.mutate();
+                setOutcomes({});
+                startSession.mutate('daily');
               }}
             >
               Nouvelle session
+            </Button>
+            <Button asChild variant="secondary" size="lg">
+              <Link to="/">Tableau de bord</Link>
             </Button>
           </div>
         </Card>
@@ -177,44 +275,70 @@ export function SessionPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="mx-auto max-w-2xl"
+        className="mx-auto max-w-4xl"
       >
-        <Card className="relative overflow-hidden p-10 text-center">
-          <div aria-hidden className="pointer-events-none absolute inset-0">
-            <span className="font-kanji animate-float absolute -right-4 -top-8 select-none text-[9rem] font-bold text-ink opacity-[0.05]">
-              勉
-            </span>
-            <div className="absolute -left-16 -top-16 h-56 w-56 rounded-full bg-accent/10 blur-3xl" />
-          </div>
-          <div className="relative">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">
-              Répétition espacée · FSRS
-            </p>
-            <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">
-              Prêt à <span className="gradient-text">réviser</span> ?
-            </h1>
-            <p className="mx-auto mt-3 max-w-md text-muted">
-              La session mélange révisions dues, points faibles et nouveaux kanji. Chaque réponse
-              ajuste votre planification de révision.
-            </p>
-            <Button
-              className="mt-8"
-              size="xl"
-              disabled={startSession.isPending}
-              onClick={() => {
-                setStarted(true);
-                startSession.mutate();
-              }}
-            >
-              {startSession.isPending ? 'Préparation de la session…' : 'Commencer ma session'}
-            </Button>
-            {startSession.isError ? (
-              <p className="mt-4 text-sm font-medium text-danger">
-                Impossible de démarrer une session pour l'instant.
-              </p>
-            ) : null}
-          </div>
-        </Card>
+        <div className="text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">
+            Répétition espacée · FSRS
+          </p>
+          <h1 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">
+            Prêt à réviser ?
+          </h1>
+          <p className="mx-auto mt-2 max-w-xl text-[15px] text-muted">
+            Chaque réponse ajuste la planification de vos révisions. Choisissez votre session :
+          </p>
+        </div>
+
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {MODES.map((mode, index) => {
+            const Icon = mode.icon;
+            return (
+              <motion.div
+                key={mode.mode}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 + index * 0.06, duration: 0.35 }}
+              >
+                <Card
+                  hover
+                  className={`flex h-full flex-col ${
+                    mode.recommended ? 'border-accent/40 bg-accent-soft' : ''
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span
+                      className={`flex size-11 items-center justify-center rounded-xl ${
+                        mode.recommended ? 'bg-accent text-white' : 'bg-surface-2 text-accent'
+                      }`}
+                    >
+                      <Icon aria-hidden className="size-5" />
+                    </span>
+                    {mode.recommended ? <Badge tone="accent">recommandé</Badge> : null}
+                  </div>
+                  <h2 className="mt-4 text-lg font-bold">{mode.title}</h2>
+                  <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted">
+                    {mode.description}
+                  </p>
+                  <Button
+                    className="mt-5 w-full"
+                    variant={mode.recommended ? 'primary' : 'secondary'}
+                    loading={startSession.isPending && startSession.variables === mode.mode}
+                    disabled={startSession.isPending}
+                    onClick={() => startSession.mutate(mode.mode)}
+                  >
+                    Commencer
+                  </Button>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {startSession.isError ? (
+          <p role="alert" className="mt-6 text-center text-sm font-medium text-danger">
+            Impossible de démarrer une session pour l'instant.
+          </p>
+        ) : null}
       </motion.div>
     );
   }
@@ -224,9 +348,12 @@ export function SessionPage() {
       <div className="mx-auto max-w-xl">
         <Card className="p-10 text-center">
           <h1 className="text-2xl font-extrabold">File d'étude vide</h1>
+          <p className="mt-2 text-sm text-muted">
+            Tous les exercices de cette session ont été traités.
+          </p>
           <Button
             className="mt-6"
-            disabled={finish.isPending}
+            loading={finish.isPending}
             onClick={() => session && finish.mutate(session.id)}
           >
             Terminer la session
@@ -236,62 +363,159 @@ export function SessionPage() {
     );
   }
 
+  return (
+    <ExerciseView
+      current={current}
+      items={items}
+      pendingCount={pendingItems.length}
+      selected={selected}
+      typed={typed}
+      result={result}
+      outcomes={outcomes}
+      answerPending={answer.isPending}
+      answerError={answer.isError}
+      finishPending={finish.isPending}
+      romajiEnabled={romajiEnabled}
+      furiganaMode={furiganaMode}
+      onTyped={setTyped}
+      onSelect={(option) => {
+        setSelected(option);
+        submit(option);
+      }}
+      onSubmit={submit}
+      onNext={next}
+      onQuit={() => navigate('/')}
+      isLast={currentPosition + 1 >= pendingItems.length}
+    />
+  );
+}
+
+interface ExerciseViewProps {
+  current: StudyQueueItem;
+  items: StudyQueueItem[];
+  pendingCount: number;
+  selected: string | null;
+  typed: string;
+  result: AnswerResult | null;
+  outcomes: Record<string, boolean>;
+  answerPending: boolean;
+  answerError: boolean;
+  finishPending: boolean;
+  romajiEnabled: boolean;
+  furiganaMode: 'always' | 'hover' | 'never';
+  onTyped: (value: string) => void;
+  onSelect: (option: string) => void;
+  onSubmit: (value: string) => void;
+  onNext: () => void;
+  onQuit: () => void;
+  isLast: boolean;
+}
+
+function ExerciseView({
+  current,
+  items,
+  pendingCount,
+  selected,
+  typed,
+  result,
+  outcomes,
+  answerPending,
+  answerError,
+  finishPending,
+  romajiEnabled,
+  furiganaMode,
+  onTyped,
+  onSelect,
+  onSubmit,
+  onNext,
+  onQuit,
+  isLast,
+}: ExerciseViewProps) {
   const prompt = current.prompt as Record<string, unknown>;
   const instruction = typeof prompt.instruction === 'string' ? prompt.instruction : '';
   const isInputTemplate = current.template === 'reading_input_kana';
-  const progressRatio =
-    items.length > 0 ? (items.length - pendingItems.length + (result ? 1 : 0)) / items.length : 0;
+  const answeredCount = items.length - pendingCount + (result ? 1 : 0);
+  const answerInputRef = useRef<HTMLInputElement>(null);
+  const exerciseItemId = current.exerciseItemId;
+
+  useEffect(() => {
+    if (exerciseItemId && isInputTemplate && !result) {
+      answerInputRef.current?.focus();
+    }
+  }, [exerciseItemId, isInputTemplate, result]);
 
   return (
     <div className="mx-auto max-w-3xl">
-      <div className="flex items-center justify-between gap-4">
-        <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-line">
-          <motion.div
-            className="gradient-accent h-full rounded-full"
-            animate={{ width: `${Math.max(4, progressRatio * 100)}%` }}
-            transition={{ duration: 0.4 }}
-          />
+      <div className="flex items-center gap-4">
+        <div aria-hidden className="flex flex-1 gap-1">
+          {items.map((item) => {
+            const isCurrent = item.exerciseItemId === current.exerciseItemId;
+            const outcome = outcomes[item.exerciseItemId];
+            const answered = item.status !== 'pending' || outcome !== undefined;
+            return (
+              <span
+                key={item.sessionItemId}
+                className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
+                  answered && outcome === true
+                    ? 'bg-jade'
+                    : answered && outcome === false
+                      ? 'bg-danger'
+                      : isCurrent
+                        ? 'bg-accent'
+                        : 'bg-surface-3'
+                }`}
+              />
+            );
+          })}
         </div>
-        <p className="shrink-0 text-sm font-bold text-muted">
-          {Math.min(items.length - pendingItems.length + 1, items.length)}/{items.length}
+        <p className="shrink-0 text-sm font-bold tabular-nums text-muted">
+          {Math.min(answeredCount + 1, items.length)}/{items.length}
         </p>
+        <button
+          type="button"
+          onClick={onQuit}
+          className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-semibold text-muted transition-colors hover:bg-surface-2 hover:text-ink"
+        >
+          <LogOut aria-hidden className="size-4" />
+          Quitter
+        </button>
       </div>
 
       <AnimatePresence mode="wait">
         <motion.div
           key={current.exerciseItemId}
-          initial={{ opacity: 0, x: 32 }}
+          initial={{ opacity: 0, x: 28 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -32 }}
-          transition={{ duration: 0.25 }}
+          exit={{ opacity: 0, x: -28 }}
+          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Card className="mt-6 p-8 sm:p-10">
+          <Card className="mt-6 p-6 sm:p-10">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <Badge tone="info">compétence · {SKILL_LABELS[current.skill] ?? current.skill}</Badge>
               {current.kanjiLiteral ? (
-                <span className="font-kanji rounded-xl border border-line bg-card-2 px-3 py-1 text-2xl">
+                <span className="font-jp rounded-lg border border-line bg-surface-2 px-2.5 py-0.5 text-xl text-ink">
                   {current.kanjiLiteral}
                 </span>
               ) : null}
             </div>
 
-            <p className="mt-6 text-lg font-bold text-ink">{instruction}</p>
+            <p className="mt-6 text-center text-lg font-bold text-ink">{instruction}</p>
 
             <div className="mt-6 flex flex-col items-center gap-3">
               {typeof prompt.kanji === 'string' ? (
-                <span className="font-kanji text-glow text-8xl text-ink">{prompt.kanji}</span>
+                <span className="font-jp text-8xl leading-none text-ink">{prompt.kanji}</span>
               ) : null}
               {typeof prompt.word === 'string' ? (
                 <span
-                  className={`text-center font-kanji text-5xl text-ink ${
+                  className={`font-jp text-center text-5xl leading-relaxed text-ink ${
                     furiganaMode === 'hover' ? 'furigana-hover' : ''
                   }`}
                 >
                   <Furigana
                     text={prompt.word}
                     reading={
-                      typeof prompt.wordRomaji === 'string' &&
-                      typeof prompt.wordReading === 'string'
+                      typeof prompt.wordReading === 'string' &&
+                      typeof prompt.wordRomaji === 'string'
                         ? prompt.wordReading
                         : null
                     }
@@ -311,19 +535,19 @@ export function SessionPage() {
                     japanese={prompt.sentence}
                     romajiEnabled={romajiEnabled}
                     furiganaMode={furiganaMode}
-                    className="text-center font-kanji text-3xl"
+                    className="font-jp text-center text-3xl"
                   />
                 ) : (
-                  <span className="font-kanji text-center text-3xl leading-relaxed text-ink">
+                  <span className="font-jp text-center text-3xl leading-relaxed text-ink">
                     {prompt.sentence}
                   </span>
                 )
               ) : null}
               {typeof prompt.reading === 'string' ? (
-                <span className="flex flex-col items-center gap-1 rounded-xl bg-sky-soft px-4 py-2 text-sky">
-                  <span className="font-kanji text-3xl">{prompt.reading}</span>
+                <span className="flex flex-col items-center gap-1 rounded-xl border border-sky/20 bg-sky-soft px-5 py-2.5 text-sky">
+                  <span className="font-jp text-3xl">{prompt.reading}</span>
                   {romajiEnabled && typeof prompt.readingRomaji === 'string' ? (
-                    <span className="text-sm font-semibold opacity-75">{prompt.readingRomaji}</span>
+                    <span className="text-sm font-semibold opacity-80">{prompt.readingRomaji}</span>
                   ) : null}
                 </span>
               ) : null}
@@ -331,7 +555,7 @@ export function SessionPage() {
                 <span className="text-2xl font-bold text-ink">« {prompt.meaning} »</span>
               ) : null}
               {typeof prompt.component === 'string' ? (
-                <span className="font-kanji text-glow text-7xl text-sky">{prompt.component}</span>
+                <span className="font-jp text-7xl text-sky">{prompt.component}</span>
               ) : null}
             </div>
 
@@ -342,50 +566,69 @@ export function SessionPage() {
                     onSubmit={(event) => {
                       event.preventDefault();
                       if (typed.trim().length > 0) {
-                        submit(typed.trim());
+                        onSubmit(typed.trim());
                       }
                     }}
                     className="flex flex-col items-center gap-3"
                   >
+                    <label className="sr-only" htmlFor="study-answer">
+                      Votre réponse en kana
+                    </label>
                     <input
+                      id="study-answer"
+                      ref={answerInputRef}
                       value={typed}
-                      onChange={(event) => setTyped(event.target.value)}
-                      placeholder="Écris ta réponse en kana…"
-                      className="h-14 w-full max-w-sm rounded-2xl border border-line bg-bg-soft px-4 text-center text-2xl text-ink placeholder:text-muted focus:border-accent/60 focus:outline-2 focus:outline-accent/30"
+                      onChange={(event) => onTyped(event.target.value)}
+                      placeholder="Écrivez votre réponse en kana…"
+                      autoComplete="off"
+                      lang="ja"
+                      className="h-14 w-full max-w-sm rounded-2xl border border-line bg-surface-2 px-4 text-center text-2xl text-ink transition-[border-color,box-shadow] placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_3px_var(--accent-soft)] focus:outline-none"
                     />
                     <Button
                       type="submit"
                       size="lg"
-                      disabled={typed.trim().length === 0 || answer.isPending}
+                      loading={answerPending}
+                      disabled={typed.trim().length === 0}
                     >
-                      {answer.isPending ? 'Vérification…' : 'Valider'}
+                      Valider
                     </Button>
                   </form>
                 ) : (
                   <div className="grid gap-3 sm:grid-cols-2">
-                    {current.options.map((option) => (
-                      <button
-                        key={option}
-                        type="button"
-                        disabled={answer.isPending}
-                        onClick={() => {
-                          setSelected(option);
-                          submit(option);
-                        }}
-                        className={`cursor-pointer rounded-2xl border-2 px-5 py-4 text-left text-xl font-semibold transition-all duration-150 ${
-                          selected === option
-                            ? 'border-accent bg-accent-soft text-accent'
-                            : 'border-line bg-card-2 text-ink hover:-translate-y-0.5 hover:border-accent/50'
-                        } ${answer.isPending ? 'opacity-60' : ''}`}
-                      >
-                        <span className={isInputTemplate ? '' : 'font-kanji'}>{option}</span>
-                      </button>
-                    ))}
+                    {current.options.map((option, index) => {
+                      const isSelected = selected === option;
+                      return (
+                        <button
+                          key={option}
+                          type="button"
+                          disabled={answerPending}
+                          onClick={() => onSelect(option)}
+                          className={`relative cursor-pointer rounded-2xl border-2 px-5 py-4 text-left text-xl font-semibold transition-all duration-150 disabled:opacity-60 ${
+                            isSelected
+                              ? 'border-accent bg-accent-soft text-accent'
+                              : 'border-line bg-surface-2 text-ink hover:-translate-y-0.5 hover:border-accent/50'
+                          }`}
+                        >
+                          <span
+                            aria-hidden
+                            className="absolute right-3 top-3 flex size-5 items-center justify-center rounded-md bg-surface-3 text-[11px] font-bold text-muted"
+                          >
+                            {index + 1}
+                          </span>
+                          <span className={CJK_RE.test(option) ? 'font-jp' : ''}>{option}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
-                {answer.isError ? (
-                  <p className="mt-4 text-center text-sm font-medium text-danger">
-                    Erreur lors de l'envoi de la réponse. Réessaie.
+                {answerPending ? (
+                  <p className="mt-4 text-center text-sm text-muted" aria-live="polite">
+                    Vérification…
+                  </p>
+                ) : null}
+                {answerError ? (
+                  <p role="alert" className="mt-4 text-center text-sm font-medium text-danger">
+                    Erreur lors de l'envoi de la réponse. Réessayez.
                   </p>
                 ) : null}
               </div>
@@ -396,23 +639,68 @@ export function SessionPage() {
                 transition={{ duration: 0.25 }}
                 className="mt-8"
               >
+                {isInputTemplate ? null : (
+                  <div className="mb-5 grid gap-3 sm:grid-cols-2">
+                    {current.options.map((option) => {
+                      const isAccepted = result.acceptedAnswers.includes(option);
+                      const isSelected = selected === option;
+                      return (
+                        <div
+                          key={option}
+                          aria-hidden
+                          className={`rounded-2xl border-2 px-5 py-3.5 text-xl font-semibold transition-all duration-300 ${
+                            isAccepted
+                              ? 'border-jade/60 bg-jade-soft text-jade'
+                              : isSelected
+                                ? 'border-danger/60 bg-danger-soft text-danger'
+                                : 'border-line bg-surface-2 text-muted opacity-50'
+                          }`}
+                        >
+                          <span className={CJK_RE.test(option) ? 'font-jp' : ''}>{option}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
                 <div
+                  role="status"
                   className={`rounded-2xl border p-5 ${
                     result.correct
                       ? 'border-jade/40 bg-jade-soft'
-                      : 'animate-shake border-danger/40 bg-danger/10'
+                      : 'animate-shake border-danger/40 bg-danger-soft'
                   }`}
-                  role="status"
                 >
                   <p
-                    className={`text-lg font-extrabold ${result.correct ? 'text-jade' : 'text-danger'}`}
+                    className={`flex items-center gap-2.5 text-lg font-extrabold ${
+                      result.correct ? 'text-jade' : 'text-danger'
+                    }`}
                   >
-                    {result.correct
-                      ? '✓ Correct !'
-                      : `✗ Incorrect — réponse : ${result.acceptedAnswers.join(' ou ')}`}
+                    {result.correct ? (
+                      <>
+                        <CheckCircle2 aria-hidden className="size-5 shrink-0" />
+                        Correct !
+                      </>
+                    ) : (
+                      <>
+                        <XCircle aria-hidden className="size-5 shrink-0" />
+                        Incorrect
+                      </>
+                    )}
+                    <Badge tone={result.correct ? 'success' : 'danger'}>
+                      {RATING_LABELS[result.rating]}
+                    </Badge>
                   </p>
+                  {!result.correct ? (
+                    <p className="mt-2 text-sm font-semibold text-ink-soft">
+                      Réponse attendue :{' '}
+                      <span className="font-jp text-base">
+                        {result.acceptedAnswers.join(' ou ')}
+                      </span>
+                    </p>
+                  ) : null}
                   {result.explanation ? (
-                    <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    <p className="mt-2.5 text-sm leading-relaxed text-ink-soft">
                       {result.explanation}
                     </p>
                   ) : null}
@@ -424,12 +712,17 @@ export function SessionPage() {
                     })}
                   </p>
                 </div>
-                <div className="mt-5 flex justify-center">
-                  <Button size="lg" onClick={next} disabled={finish.isPending}>
-                    {currentPosition + 1 >= pendingItems.length
-                      ? 'Terminer la session'
-                      : 'Continuer →'}
+                <div className="mt-5 flex flex-col items-center gap-2">
+                  <Button
+                    size="lg"
+                    className="w-full sm:w-auto sm:min-w-64"
+                    onClick={onNext}
+                    loading={finishPending}
+                  >
+                    {isLast ? 'Terminer la session' : 'Continuer'}
+                    <ArrowRight aria-hidden className="size-4.5" />
                   </Button>
+                  <p className="text-xs text-muted">Astuce : appuyez sur Entrée pour continuer.</p>
                 </div>
               </motion.div>
             )}

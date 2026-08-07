@@ -1,25 +1,51 @@
-import type { ReactElement } from 'react';
+import { MotionConfig } from 'motion/react';
+import { lazy, type ReactElement } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { LoginPage } from '../features/auth/login-page';
 import { RegisterPage } from '../features/auth/register-page';
 import { useMe } from '../features/auth/use-auth';
 import { DashboardPage } from '../features/dashboard/dashboard-page';
-import { KanjiCardPage } from '../features/kanji/kanji-card-page';
-import { KanjiListPage } from '../features/kanji/kanji-list-page';
-import { SettingsPage } from '../features/settings/settings-page';
-import { SourcesPage } from '../features/sources/sources-page';
-import { SessionPage } from '../features/study/session-page';
 import { AppLayout } from './app-layout';
+
+const KanjiListPage = lazy(() =>
+  import('../features/kanji/kanji-list-page').then((m) => ({ default: m.KanjiListPage })),
+);
+const KanjiCardPage = lazy(() =>
+  import('../features/kanji/kanji-card-page').then((m) => ({ default: m.KanjiCardPage })),
+);
+const ProgressionPage = lazy(() =>
+  import('../features/progression/progression-page').then((m) => ({ default: m.ProgressionPage })),
+);
+const SettingsPage = lazy(() =>
+  import('../features/settings/settings-page').then((m) => ({ default: m.SettingsPage })),
+);
+const SourcesPage = lazy(() =>
+  import('../features/sources/sources-page').then((m) => ({ default: m.SourcesPage })),
+);
+const SessionPage = lazy(() =>
+  import('../features/study/session-page').then((m) => ({ default: m.SessionPage })),
+);
+
+function AuthSplash() {
+  return (
+    <main className="flex min-h-dvh flex-col items-center justify-center gap-5">
+      <span aria-hidden className="font-jp animate-float text-6xl font-bold text-accent">
+        漢
+      </span>
+      <span
+        role="status"
+        aria-label="Chargement en cours"
+        className="size-7 animate-spin rounded-full border-2 border-line border-t-accent"
+      />
+      <p className="text-sm font-semibold tracking-widest text-muted">CHARGEMENT…</p>
+    </main>
+  );
+}
 
 function RequireAuth({ children }: { children: ReactElement }) {
   const me = useMe();
   if (me.isPending) {
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <span className="font-kanji animate-float text-glow text-7xl text-accent">漢</span>
-        <p className="text-sm font-semibold tracking-widest text-muted">CHARGEMENT…</p>
-      </main>
-    );
+    return <AuthSplash />;
   }
   if (me.isError) {
     return <Navigate to="/login" replace />;
@@ -27,74 +53,80 @@ function RequireAuth({ children }: { children: ReactElement }) {
   return children;
 }
 
+function Protected({ children }: { children: ReactElement }) {
+  return (
+    <RequireAuth>
+      <AppLayout>{children}</AppLayout>
+    </RequireAuth>
+  );
+}
+
 export function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route
-          path="/"
-          element={
-            <RequireAuth>
-              <AppLayout>
+    <MotionConfig reducedMotion="user">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/"
+            element={
+              <Protected>
                 <DashboardPage />
-              </AppLayout>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/kanji"
-          element={
-            <RequireAuth>
-              <AppLayout>
+              </Protected>
+            }
+          />
+          <Route
+            path="/kanji"
+            element={
+              <Protected>
                 <KanjiListPage />
-              </AppLayout>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/kanji/:literal"
-          element={
-            <RequireAuth>
-              <AppLayout>
+              </Protected>
+            }
+          />
+          <Route
+            path="/kanji/:literal"
+            element={
+              <Protected>
                 <KanjiCardPage />
-              </AppLayout>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/etude"
-          element={
-            <RequireAuth>
-              <AppLayout>
+              </Protected>
+            }
+          />
+          <Route
+            path="/etude"
+            element={
+              <Protected>
                 <SessionPage />
-              </AppLayout>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/sources"
-          element={
-            <RequireAuth>
-              <AppLayout>
+              </Protected>
+            }
+          />
+          <Route
+            path="/progression"
+            element={
+              <Protected>
+                <ProgressionPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/sources"
+            element={
+              <Protected>
                 <SourcesPage />
-              </AppLayout>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/parametres"
-          element={
-            <RequireAuth>
-              <AppLayout>
+              </Protected>
+            }
+          />
+          <Route
+            path="/parametres"
+            element={
+              <Protected>
                 <SettingsPage />
-              </AppLayout>
-            </RequireAuth>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+              </Protected>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </MotionConfig>
   );
 }

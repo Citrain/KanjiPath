@@ -1,7 +1,8 @@
 import { Button } from '@kanjipath/ui';
+import { TriangleAlert } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthFormField } from './auth-form-field';
+import { AuthFormField, AuthPasswordField } from './auth-form-field';
 import { AuthShell } from './auth-shell';
 import { useRegister } from './use-auth';
 
@@ -48,10 +49,10 @@ export function RegisterPage() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
-        <AuthFormField
+        <AuthPasswordField
           id="password"
-          label="Mot de passe (8 caractères minimum)"
-          type="password"
+          label="Mot de passe"
+          hint="8 caractères minimum."
           autoComplete="new-password"
           required
           minLength={8}
@@ -61,12 +62,13 @@ export function RegisterPage() {
         {register.isError ? (
           <p
             role="alert"
-            className="rounded-xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm font-medium text-danger"
+            className="flex items-center gap-2.5 rounded-xl border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-medium text-danger"
           >
+            <TriangleAlert aria-hidden className="size-4.5 shrink-0" />
             Inscription impossible. Vérifiez les informations saisies.
           </p>
         ) : null}
-        <Button type="submit" size="xl" disabled={register.isPending}>
+        <Button type="submit" size="xl" loading={register.isPending} className="mt-2">
           {register.isPending ? 'Création…' : 'Créer mon compte'}
         </Button>
       </form>

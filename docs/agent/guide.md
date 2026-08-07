@@ -38,10 +38,12 @@ ajoute-le ici.
 | Types/schémas partagés | `packages/contracts/src/` |
 | Règles métier (FSRS, maîtrise) | `packages/domain/src/` |
 | Schémas de contenu | `packages/content-schema/src/` |
-| Composants UI | `packages/ui/src/` |
+| Composants UI (design system) | `packages/ui/src/` |
+| Composants domaine web (KanjiTile, badges, graphe) | `apps/web/src/components/` |
 | Client HTTP front | `apps/web/src/lib/api.ts` |
 | Appels API contenu/progression | `apps/web/src/features/content/api.ts` |
 | Une page front | `apps/web/src/features/<domaine>/` |
+| Série (jours consécutifs) | `apps/web/src/lib/progress.ts` (calcul côté client) |
 | Pipeline de contenu | `tools/content/run.mjs` (stages dans `tools/content/stages/`) |
 | Gabarits d'exercices | `tools/content/lib/generators.mjs` |
 | Chargement du pack en base | `tools/content/load.mjs` (`pnpm content:load`) |
@@ -62,6 +64,12 @@ ajoute-le ici.
    rebuilder en CJS `dist/` pour le front : Vite importe en ESM et échouerait
    (`does not provide an export named 'Button'`). `resolve.dedupe: ['react','react-dom']`
    est déjà configuré dans `apps/web/vite.config.ts` pour éviter deux React.
+   **`packages/contracts` est l'inverse** : consommé via son `dist/` CJS (nécessaire
+   à l'API Nest). Le web ne doit y faire que des `import type` (éradiqués à la
+   compilation) ; importer une **valeur** runtime (`JLPT_LEVELS`…) échoue dans Vite
+   (`does not provide an export named 'JLPT_LEVELS'`) et tire tout le dist + zod
+   dans le bundle. Les constantes utiles au web sont redéfinies dans
+   `apps/web/src/lib/` (ex. `lib/levels.ts`).
 
 4. **`apiFetch` ne met `content-type: application/json` que s'il y a un body.**
    Fastify rejette un body JSON vide (400). C'était le bug du logout. Ne pas remettre
@@ -164,6 +172,42 @@ ajoute-le ici.
     masquage se fait par **position** (offsets des tokens), car le mot cible peut être
     découpé en plusieurs tokens (ex. 一人 → 一 + 人, lu ひとり).
 
+24. **`packages/ui` : résolution `bundler` obligatoire.** Les primitives Radix
+    (dialog, dropdown-menu, tooltip) n'exposent leurs types que via la condition
+    `exports` ; le tsconfig du package utilise donc `module: ESNext` +
+    `moduleResolution: bundler`. Ne pas revenir à `node` (erreur TS2307 sur
+    `@radix-ui/*`). Le package reste consommé **en source** par Vite (piège 3).
+
+25. **Tokens design system renommés (refonte UI 2026-08).** Les anciennes classes
+    n'existent plus : `bg-card`→`bg-surface`, `bg-card-2`→`bg-surface-2`,
+    `bg-panel`→`bg-surface` (+ décor), `bg-bg-soft`→`bg-surface-2`,
+    `font-kanji`→`font-jp`, et les utilitaires `text-glow`, `gradient-accent`,
+    `gradient-text`, `card-hover`, `ring-track` ont été supprimés (remplacés par
+    `shadow-1/2`, `shadow-glow`, les variantes `hover:` des composants et
+    `stroke-line`). Toujours vérifier `styles/index.css` avant d'inventer une token.
+
+26. **Toasts : `useToast` exige `<ToastProvider>`**, monté dans `AppLayout`. Les
+    pages hors layout (login/register) n'y ont pas accès ; y afficher les erreurs
+    en inline.
+
+27. **Nouvelle page front = `React.lazy`.** Les pages sont chargées en code-split
+    dans `apps/web/src/app/app.tsx` (`lazy(() => import(...).then(m => ...))`) et
+    rendues sous le `<Suspense>` de `AppLayout`. Ajouter la route au même endroit,
+    enveloppée de `<Protected>`.
+
+28. **La série (streak) est calculée côté client** (`lib/progress.ts`) à partir de
+    `/progress/history`, qui ne renvoie que les jours actifs (dates UTC `YYYY-MM-DD`).
+    Ne pas la présenter comme une donnée serveur ; l'API ne compte pas encore les
+    jours consécutifs.
+
+29. **Un `pnpm build` / `pnpm test` complet pendant que la stack dev tourne
+    provoque des 500 intermittentes.** `nest start --watch` redémarre quand
+    `apps/api/dist` est réécrit ; pendant le redémarrage le proxy Vite renvoie 500
+    sur `/api/v1/*`. Préférer les commandes scopées (`pnpm --filter @kanjipath/web
+    typecheck`, `pnpm --filter @kanjipath/web build`) quand l'environnement dev de
+    l'utilisateur tourne, et réserver `pnpm test`/`pnpm build` complets à un moment
+    sans utilisation interactive (ou prévenir l'utilisateur).
+
 ## Recettes
 
 ### Ajouter une route API
@@ -185,12 +229,13 @@ ajoute-le ici.
 
 ### Ajouter une page front
 
-1. Créer le composant dans `apps/web/src/features/<domaine>/`.
-2. Déclarer la route dans `apps/web/src/app/app.tsx` (protéger avec `RequireAuth` et
-   envelopper de `AppLayout`).
+1. Créer le composant dans `apps/web/src/features/<domaine>/` (export nommé).
+2. Déclarer la route dans `apps/web/src/app/app.tsx` : import `lazy` (piège 27),
+   route enveloppée de `<Protected>` (qui applique `RequireAuth` + `AppLayout`).
 3. Utiliser `apiFetch` (`apps/web/src/lib/api.ts`) pour les appels.
-4. Suivre le design system : tokens de `styles/index.css` (`bg-card`, `text-ink`,
-   `border-line`, `text-accent`…), composants `packages/ui`, animations Motion.
+4. Suivre le design system : tokens de `styles/index.css` (`bg-surface`,
+   `text-ink`, `border-line`, `text-accent`…), composants `packages/ui`,
+   états loading (`Skeleton`), vide (`EmptyState`) et erreur (`ErrorState`).
    Jamais de couleurs `zinc-*`/hexadécimales en dur. Voir
    `docs/architecture/overview.md#design-system-web`.
 5. `pnpm --filter @kanjipath/web typecheck`.

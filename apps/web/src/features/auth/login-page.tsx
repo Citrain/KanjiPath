@@ -1,7 +1,8 @@
 import { Button } from '@kanjipath/ui';
+import { TriangleAlert } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthFormField } from './auth-form-field';
+import { AuthFormField, AuthPasswordField } from './auth-form-field';
 import { AuthShell } from './auth-shell';
 import { useLogin } from './use-auth';
 
@@ -36,10 +37,9 @@ export function LoginPage() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
-        <AuthFormField
+        <AuthPasswordField
           id="password"
           label="Mot de passe"
-          type="password"
           autoComplete="current-password"
           required
           value={password}
@@ -48,12 +48,13 @@ export function LoginPage() {
         {login.isError ? (
           <p
             role="alert"
-            className="rounded-xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm font-medium text-danger"
+            className="flex items-center gap-2.5 rounded-xl border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-medium text-danger"
           >
+            <TriangleAlert aria-hidden className="size-4.5 shrink-0" />
             Email ou mot de passe incorrect.
           </p>
         ) : null}
-        <Button type="submit" size="xl" disabled={login.isPending}>
+        <Button type="submit" size="xl" loading={login.isPending} className="mt-2">
           {login.isPending ? 'Connexion…' : 'Continuer ma progression'}
         </Button>
       </form>

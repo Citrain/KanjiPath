@@ -9,7 +9,7 @@ de contenu propre. Pas de microservices : une seule API modulaire.
 | Couche | Technologie |
 |---|---|
 | Runtime | Node.js 24 LTS, TypeScript strict, pnpm workspaces |
-| Frontend | React 19, Vite 8, React Router 7, TanStack Query 5, Tailwind CSS 4, Radix UI, Motion, canvas-confetti |
+| Frontend | React 19, Vite 8, React Router 7, TanStack Query 5, Tailwind CSS 4, Radix UI (slot, dialog, dropdown-menu, tooltip), lucide-react, Motion, canvas-confetti |
 | Backend | NestJS 11 + adaptateur Fastify, API REST `/api/v1` |
 | Données | MariaDB 11.4+ (testée 12.x), Prisma ORM 6 (provider `mysql`) |
 | Répétition espacée | `ts-fsrs` derrière une interface du domaine |
@@ -24,17 +24,21 @@ Détail et justification : `adr/1-foundations/README.md`.
 apps/
   web/                 # frontend React (port 5173 en dev)
     src/
-      app/             # App, routing, app-layout (nav, thème), garde d'authentification
+      app/             # App, routing (routes lazy), app-layout (sidebar/bottom nav, thème),
+                       # garde d'authentification, transitions de page
+      components/      # composants domaine web : KanjiTile, LevelBadge, StatusBadge, HistoryChart
       features/
-        auth/          # pages login/register (écran scindé), hooks use-auth, api auth
-        content/       # accès API contenu (kanji, sources, progression)
-        dashboard/     # tableau de bord (hero, ring, historique 30j, points faibles)
-        kanji/         # liste + recherche + fiche kanji (SVG animé KanjiVG)
-        study/         # session d'étude (quiz animé, feedback, résultats + confettis)
+        auth/          # pages login/register (écran scindé), champs mot de passe, hooks, api
+        content/       # accès API contenu (kanji, sources, progression, signalements)
+        dashboard/     # tableau de bord (CTA continuer, stats, série, à réviser, parcours)
+        kanji/         # liste + recherche + fiche kanji (SVG animé KanjiVG, signalement)
+        progression/   # page progression (onglets : niveaux, activité, points faibles)
+        study/         # session d'étude (choix de mode, quiz clavier 1-4/Entrée, résultats)
         settings/      # préférences (niveau actif, limites, furigana, romaji, thème)
         sources/       # page sources et licences
-      lib/             # apiFetch (client HTTP, CSRF), theme (encre/washi)
-      styles/          # design system Tailwind 4 (tokens, animations)
+      lib/             # apiFetch (client HTTP, CSRF), theme (encre/washi),
+                       # format (dates), progress (série), skills (libellés)
+      styles/          # design system Tailwind 4 (tokens, animations, reduced-motion)
   api/                 # API NestJS + Fastify (port 3001 en dev)
     prisma/            # schema.prisma + migrations
     src/
@@ -58,8 +62,10 @@ packages/
   contracts/           # types/schémas partagés (enums, API auth, kanji, study, progress)
   domain/              # règles métier : ReviewScheduler (FSRS), maîtrise
   content-schema/      # schémas Zod du contenu (kanji, vocab, phrases, exercices)
-  ui/                  # composants React (Button, Badge, Card, Progress, Ring,
-                       # Toggle, Segmented) — consommé en source
+  ui/                  # design system React : Button, IconButton, Badge, Card, Field/Input/
+                       # Textarea, Toggle, Segmented, Tabs, Progress, Ring, Skeleton, Slider,
+                       # Stat, Tooltip, Dropdown, Modal, Toast, EmptyState/ErrorState,
+                       # PageHeader/SectionHeader — consommé en source
 
 tools/
   content/             # pipeline de contenu : run.mjs (CLI), stages/, lib/, load.mjs
@@ -72,25 +78,51 @@ adr/                   # découpage de l'ADR-001 par tâche
 
 ## Design system (web)
 
-Le frontend suit un design system « encre & washi » défini dans
+Le frontend suit un design system « encre & washi » contemporain défini dans
 `apps/web/src/styles/index.css` (Tailwind CSS 4, tokens via `@theme inline`) :
 
 - **Deux thèmes** par variables CSS : `encre` (sombre, défaut) et `washi` (clair),
   appliqués via `data-theme` sur `<html>` (`apps/web/src/lib/theme.ts`, persisté en
-  localStorage, synchronisable avec la préférence `theme` des settings).
-- **Tokens** : `bg`, `panel`, `card`, `line`, `ink`, `muted`, `accent` (vermillon),
-  `gold`, `jade`, `sky`, `violet`, `danger` → classes Tailwind dédiées
-  (`bg-card`, `text-ink`, `border-line`, `text-accent`…).
-- **Typographie** : `Shippori Mincho` (kanji, titres — classe `font-kanji`) et
-  `Outfit` (interface).
-- **Composants partagés** (`packages/ui`) : `Button`, `Badge`, `Card`, `Progress`,
-  `Ring`, `Toggle`, `Segmented`.
-- **Animations** : Motion (transitions de pages/questions), keyframes maison
-  (`animate-float`, `animate-pop`, `animate-shake`, `shimmer`, tracé SVG), confettis
-  en fin de session réussie.
+  localStorage, bascule dans le menu utilisateur et les préférences).
+- **Tokens de surface** : `bg` (fond de page), `surface` (cartes), `surface-2`
+  (surfaces secondaires), `surface-3` (survol/élévation) → `bg-surface`,
+  `bg-surface-2`, etc.
+- **Tokens de texte** : `ink` (principal), `ink-soft` (secondaire), `muted`
+  (tertiaire) → `text-ink`, `text-ink-soft`, `text-muted`.
+- **Tokens de bordure** : `line`, `line-strong` → `border-line`.
+- **Tokens de couleur** : `accent` (vermillon, action principale) + `accent-soft`,
+  `accent-2`, puis sémantiques `gold`, `jade` (succès), `sky` (info), `violet`,
+  `danger` (erreur), chacune avec sa variante `-soft`.
+- **Ombres** : `shadow-1` (repos), `shadow-2` (survol), `shadow-glow` (halo accent
+  des CTA) — définies par variables pour chaque thème.
+- **Typographie** : `Shippori Mincho` (kanji — classe `font-jp`) et `Outfit`
+  (interface). Hiérarchie : eyebrow (12 px capitales espacées), H1 24/30 px
+  extrabold, H2 18 px bold, corps 15 px, légendes 11-13 px.
+- **Espacement** : échelle Tailwind standard (4/8/12/16/24/32/48/64), sections
+  espacées de `gap-8`, cartes `p-5 sm:p-6`, contenu borné à `max-w-6xl`.
+- **Composants partagés** (`packages/ui`, consommé en source) : `Button`
+  (variantes primary/secondary/ghost/danger, état `loading`), `IconButton`,
+  `Badge`/`BadgeDot`, `Card`/`CardTitle`, `Field`/`Input`/`Textarea`, `Toggle`,
+  `Segmented` (navigation fléchée), `Tabs`, `Progress`, `Ring`, `Skeleton`,
+  `Slider`, `Stat`, `Tooltip` (Radix), `Dropdown` (Radix), `Modal` (Radix),
+  `Toast` (`ToastProvider` + `useToast`), `EmptyState`, `ErrorState`,
+  `PageHeader`, `SectionHeader`.
+- **Composants domaine** (`apps/web/src/components/`) : `KanjiTile`,
+  `LevelBadge` (teinte par niveau N5→N1), `StatusBadge`/`STATUS_META`,
+  `HistoryChart` (fenêtre 30 jours complétée de jours vides).
+- **Layout** (`AppLayout`) : sidebar fixe à gauche (≥ lg) avec navigation,
+  badge de révisions dues, série en cours et menu utilisateur (dropdown) ;
+  barre supérieure + barre de navigation inférieure sur mobile. Transitions de
+  page via `AnimatePresence` ; icônes `lucide-react`.
+- **Animations** : Motion (transitions de pages/questions, apparitions),
+  keyframes maison (`animate-float`, `animate-pop`, `animate-shake`,
+  `animate-rise`, `animate-toast-in`, `shimmer`, tracé SVG), confettis en fin de
+  session réussie. `MotionConfig reducedMotion="user"` + bloc CSS
+  `prefers-reduced-motion` neutralisent les animations si demandé par l'OS.
 
-Règle : toute nouvelle page utilise les tokens (jamais de couleurs en dur `zinc-*`),
-les composants de `packages/ui` et le gabarit `AppLayout`.
+Règle : toute nouvelle page utilise les tokens (jamais de couleurs en dur
+`zinc-*` ni hexadécimales), les composants de `packages/ui` et le gabarit
+`AppLayout` (routes déclarées dans `app.tsx`, pages chargées en `lazy`).
 
 ## Flux de données (authentification)
 

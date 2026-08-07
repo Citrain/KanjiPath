@@ -58,7 +58,9 @@ export function SentenceView({
   const hoverClass = furiganaMode === 'hover' ? 'furigana-hover' : '';
   return (
     <div>
-      <p className={`leading-relaxed text-ink ${hoverClass} ${className ?? 'text-lg'}`.trim()}>
+      <p
+        className={`leading-[1.9] text-ink ${hoverClass} ${className ?? 'text-[22px]'}`.trim()}
+      >
         {tokens.length > 0
           ? tokens.map((token, index) => {
               const content = (
@@ -69,7 +71,7 @@ export function SentenceView({
                   <mark
                     // biome-ignore lint/suspicious/noArrayIndexKey: tokens statiques, jamais réordonnés
                     key={`${token.surface}-${index}`}
-                    className="rounded-md bg-accent-soft px-1 font-kanji text-accent"
+                    className="rounded-md bg-accent-soft px-1 font-jp text-accent"
                   >
                     {content}
                   </mark>
@@ -77,14 +79,17 @@ export function SentenceView({
               }
               return (
                 // biome-ignore lint/suspicious/noArrayIndexKey: tokens statiques, jamais réordonnés
-                <span key={`${token.surface}-${index}`} className="font-kanji">
+                <span key={`${token.surface}-${index}`} className="font-jp">
                   {content}
                 </span>
               );
             })
           : japanese}
       </p>
-      {romaji ? <p className="mt-1 text-sm font-medium tracking-wide text-muted">{romaji}</p> : null}
+      {romaji ? (
+        <p className="mt-1.5 text-[15px] font-medium tracking-wide text-muted">{romaji}</p>
+      ) : null}
     </div>
   );
 }
+

@@ -1,20 +1,35 @@
+import type { ReactNode } from 'react';
+
+export type RingTone = 'accent' | 'jade' | 'sky' | 'gold' | 'violet' | 'danger';
+
+const TONE_CLASSES: Record<RingTone, string> = {
+  accent: 'stroke-accent',
+  jade: 'stroke-jade',
+  sky: 'stroke-sky',
+  gold: 'stroke-gold',
+  violet: 'stroke-violet',
+  danger: 'stroke-danger',
+};
+
 export interface RingProps {
   value: number;
   size?: number;
   stroke?: number;
+  tone?: RingTone;
+  label?: string;
   className?: string;
-  trackClassName?: string;
   barClassName?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export function Ring({
   value,
   size = 140,
   stroke = 10,
+  tone = 'accent',
+  label,
   className = '',
-  trackClassName = 'ring-track',
-  barClassName = 'stroke-accent',
+  barClassName,
   children,
 }: RingProps) {
   const clamped = Math.max(0, Math.min(1, value));
@@ -24,7 +39,12 @@ export function Ring({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center ${className}`}
+      role="progressbar"
+      aria-valuenow={Math.round(clamped * 100)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={label}
+      className={`relative inline-flex shrink-0 items-center justify-center ${className}`}
       style={{ width: size, height: size }}
     >
       <svg
@@ -40,7 +60,7 @@ export function Ring({
           r={radius}
           fill="none"
           strokeWidth={stroke}
-          className={trackClassName}
+          className="stroke-line"
         />
         <circle
           cx={size / 2}
@@ -51,7 +71,7 @@ export function Ring({
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          className={`${barClassName} transition-[stroke-dashoffset] duration-1000 ease-out`}
+          className={`${barClassName ?? TONE_CLASSES[tone]} transition-[stroke-dashoffset] duration-1000 ease-out`}
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">{children}</div>
