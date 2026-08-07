@@ -11,7 +11,15 @@ import {
   Tooltip,
 } from '@kanjipath/ui';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, ChevronLeft, ChevronRight, Flag, Lightbulb, ScrollText } from 'lucide-react';
+import {
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  Flag,
+  Lightbulb,
+  PenLine,
+  ScrollText,
+} from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -350,7 +358,17 @@ export function KanjiCardPage() {
         </Card>
 
         <Card>
-          <SectionHeader title="Ordre des traits" />
+          <SectionHeader
+            title="Ordre des traits"
+            aside={
+              <Button asChild variant="secondary" size="sm">
+                <Link to={`/kanji/${kanji.literal}/ecriture`}>
+                  <PenLine aria-hidden className="size-4" />
+                  Pratiquer l’écriture
+                </Link>
+              </Button>
+            }
+          />
           <div className="mt-5">
             <KanjiSvg literal={kanji.literal} />
           </div>

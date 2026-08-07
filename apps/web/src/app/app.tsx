@@ -13,6 +13,9 @@ const KanjiListPage = lazy(() =>
 const KanjiCardPage = lazy(() =>
   import('../features/kanji/kanji-card-page').then((m) => ({ default: m.KanjiCardPage })),
 );
+const WritingPage = lazy(() =>
+  import('../features/kanji/writing-page').then((m) => ({ default: m.WritingPage })),
+);
 const ProgressionPage = lazy(() =>
   import('../features/progression/progression-page').then((m) => ({ default: m.ProgressionPage })),
 );
@@ -89,6 +92,14 @@ export function App() {
             element={
               <Protected>
                 <KanjiCardPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/kanji/:literal/ecriture"
+            element={
+              <Protected>
+                <WritingPage />
               </Protected>
             }
           />
