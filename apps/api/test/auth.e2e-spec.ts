@@ -3,6 +3,7 @@ import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fa
 import { Test } from '@nestjs/testing';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { AppModule } from '../src/app.module';
+import { PrismaService } from '../src/infrastructure/database/prisma.service';
 import { csrfCookiePlugin } from '../src/infrastructure/security/csrf-cookie.plugin';
 
 const DATABASE_URL_TEST = process.env.DATABASE_URL_TEST ?? '';
@@ -107,6 +108,31 @@ describeWithDb('auth (integration MariaDB)', () => {
     });
     expect(response.statusCode).toBe(200);
     expect(response.json().user.email).toBe(email);
+  });
+
+  it('supporte une rafale parallèle sur la même session (pas de 500)', async () => {
+    const prisma = app.get(PrismaService);
+    const user = await prisma.user.findUnique({ where: { email } });
+    expect(user).not.toBeNull();
+    if (!user) {
+      return;
+    }
+    await prisma.session.updateMany({
+      where: { userId: user.id },
+      data: { lastSeenAt: new Date(Date.now() - 120_000) },
+    });
+    const responses = await Promise.all(
+      Array.from({ length: 12 }, () =>
+        app.inject({
+          method: 'GET',
+          url: '/api/v1/auth/me',
+          headers: { cookie: sessionCookie },
+        }),
+      ),
+    );
+    for (const response of responses) {
+      expect(response.statusCode).toBe(200);
+    }
   });
 
   it('refuse /auth/me sans session', async () => {

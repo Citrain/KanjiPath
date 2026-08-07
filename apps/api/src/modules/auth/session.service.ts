@@ -7,6 +7,8 @@ export interface ResolvedSession {
   userId: string;
 }
 
+const LAST_SEEN_TOUCH_MS = 60_000;
+
 @Injectable()
 export class SessionService {
   constructor(private readonly prisma: PrismaService) {}
@@ -30,10 +32,14 @@ export class SessionService {
     if (!session || session.revokedAt !== null || session.expiresAt.getTime() <= Date.now()) {
       return null;
     }
-    await this.prisma.session.update({
-      where: { id: session.id },
-      data: { lastSeenAt: new Date() },
-    });
+    if (Date.now() - session.lastSeenAt.getTime() >= LAST_SEEN_TOUCH_MS) {
+      await this.prisma.session
+        .updateMany({
+          where: { id: session.id, revokedAt: null },
+          data: { lastSeenAt: new Date() },
+        })
+        .catch(() => undefined);
+    }
     return { sessionId: session.id, userId: session.userId };
   }
 
