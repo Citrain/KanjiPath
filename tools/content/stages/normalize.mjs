@@ -175,7 +175,7 @@ export async function selectVocabulary(jmdictEntries, n5Set, kanjiOrder) {
 const SANITIZE_ALLOWED_TAGS = new Set(['svg', 'g', 'path']);
 const SANITIZE_ALLOWED_ATTRS = {
   svg: ['xmlns', 'viewBox', 'width', 'height'],
-  g: ['id', 'class', 'transform', 'kvg:element', 'kvg:original', 'kvg:part', 'kvmisc'],
+  g: ['id', 'class', 'transform'],
   path: ['id', 'class', 'd'],
 };
 
