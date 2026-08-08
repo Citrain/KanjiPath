@@ -54,3 +54,49 @@ export interface HistoryDay {
 export interface HistoryResponse {
   days: HistoryDay[];
 }
+
+export interface AnswerWindowStat {
+  answered: number;
+  correct: number;
+  accuracy: number | null;
+}
+
+export interface SkillStat extends AnswerWindowStat {
+  skill: Skill;
+}
+
+export interface LevelActivityStat extends AnswerWindowStat {
+  level: JlptLevel;
+}
+
+export interface DueForecastDay {
+  date: string;
+  count: number;
+}
+
+export interface StatsResponse {
+  totals: {
+    reviews: number;
+    correct: number;
+    accuracy: number | null;
+    sessionsCompleted: number;
+    studyTimeMinutes: number;
+    avgResponseTimeMs: number | null;
+  };
+  windows: {
+    last7Days: AnswerWindowStat;
+    last30Days: AnswerWindowStat;
+    last90Days: AnswerWindowStat;
+  };
+  bySkill: SkillStat[];
+  byLevel: LevelActivityStat[];
+  cards: {
+    learning: number;
+    review: number;
+    relearning: number;
+    overdue: number;
+    dueToday: number;
+  };
+  estimatedRetention: number | null;
+  forecast: DueForecastDay[];
+}

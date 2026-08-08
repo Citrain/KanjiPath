@@ -28,5 +28,8 @@ export type Rating = (typeof RATINGS)[number];
 export const KANJI_STATUSES = ['new', 'learning', 'reviewing', 'mastered'] as const;
 export type KanjiStatus = (typeof KANJI_STATUSES)[number];
 
+export const SESSION_MODES = ['daily', 'weak_points', 'free', 'targeted'] as const;
+export type StudySessionMode = (typeof SESSION_MODES)[number];
+
 export const FURIGANA_MODES = ['always', 'hover', 'never'] as const;
 export type FuriganaMode = (typeof FURIGANA_MODES)[number];

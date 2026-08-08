@@ -71,6 +71,17 @@ export class FsrsReviewScheduler implements ReviewScheduler {
       },
     };
   }
+
+  retrievability(card: ReviewCard, now: Date): number | null {
+    if (card.stability <= 0 || card.reps <= 0) {
+      return null;
+    }
+    const value = this.scheduler.get_retrievability(toFsrsCard(card), now, false);
+    if (!Number.isFinite(value)) {
+      return null;
+    }
+    return Math.min(1, Math.max(0, value));
+  }
 }
 
 function toFsrsCard(card: ReviewCard): Card {

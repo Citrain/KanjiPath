@@ -1,4 +1,10 @@
-import type { ReviewCardSkill, Skill } from '../enums';
+import type { JlptLevel, ReviewCardSkill, Skill, StudySessionMode } from '../enums';
+
+export interface StudyTarget {
+  level?: JlptLevel;
+  skill?: Skill;
+  kanjiIds?: string[];
+}
 
 export interface StudyExercisePrompt {
   [key: string]: unknown;
@@ -19,13 +25,14 @@ export interface StudyQueueItem {
 }
 
 export interface CreateSessionRequest {
-  mode?: 'daily' | 'weak_points' | 'free';
-  level?: string;
+  mode?: StudySessionMode;
+  target?: StudyTarget;
 }
 
 export interface StudySessionDto {
   id: string;
-  mode: 'daily' | 'weak_points' | 'free';
+  mode: StudySessionMode;
+  target: StudyTarget | null;
   startedAt: string;
   answeredCount: number;
   correctCount: number;

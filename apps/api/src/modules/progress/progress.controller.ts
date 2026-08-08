@@ -27,4 +27,9 @@ export class ProgressController {
   history(@CurrentUserId() userId: string) {
     return this.progress.history(userId);
   }
+
+  @Get('stats')
+  stats(@CurrentUserId() userId: string) {
+    return this.progress.stats(userId);
+  }
 }

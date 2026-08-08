@@ -142,7 +142,8 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
 
 ### `study_sessions`
 
-- `id`, `user_id`, `mode`
+- `id`, `user_id`, `mode` (`daily` / `weak_points` / `free` / `targeted`)
+- `target_json` (cible optionnelle en mode `targeted` : niveau, compétence, kanji)
 - `started_at`, `ended_at`
 - `answered_count`, `correct_count`, `duration_seconds`
 

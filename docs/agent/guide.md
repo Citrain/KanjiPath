@@ -34,6 +34,9 @@ ajoute-le ici.
 | Besoin | Emplacement |
 |---|---|
 | Une route API | `apps/api/src/modules/<domaine>/` |
+| Statistiques détaillées | `apps/api/src/modules/progress/progress.service.ts#stats` |
+| Révision ciblée (file) | `apps/api/src/modules/study/study.service.ts#buildTargetedQueue` |
+| Validation body session | `packages/contracts/src/schemas/study.ts` (zod) |
 | Schéma / tables | `apps/api/prisma/schema.prisma` |
 | Config CLI Prisma (v7) | `apps/api/prisma.config.ts` |
 | Client Prisma généré | `apps/api/src/generated/prisma/` (gitignoré, `pnpm db:generate`) |
@@ -284,6 +287,30 @@ ajoute-le ici.
     curaté des confusions vers des kanji d'un niveau pas encore publié (elles
     apparaîtront automatiquement à la publication du niveau). Ne pas créer de lien
     côté web sans cette garantie.
+
+34. **Révision ciblée (`mode: 'targeted'`) : au moins un filtre exigé.** Le body de
+    `POST /study/sessions` est validé par `createSessionSchema` (zod, dans
+    `contracts`). Le mode `targeted` requiert `target` avec au moins un de
+    `level` / `skill` / `kanjiIds` (sinon 400) ; `kanjiIds` est borné à 50. La file
+    est construite par `buildTargetedQueue` : cartes dues puis erreurs récentes
+    (restreintes aux filtres), puis remplissage par difficulté croissante en variant
+    kanji × compétence, plafonné à 20 items. Le ciblage est stocké dans
+    `study_sessions.target_json` et renvoyé par `/study/resume`. **Ne pas** réutiliser
+    `buildQueue` (il injecte de nouveaux kanji, hors sujet pour une révision ciblée).
+    Une session ouverte peut être **abandonnée** via `POST /study/sessions/:id/abandon`
+    (items `pending` → `skipped`, `ended_at` posé) ; le web l'expose dans une modale
+    « Quitter » de la session. Sans issue (finish/abandon), `/etude` reprend
+    indéfiniment la dernière session ouverte. À noter : `stats.totals.sessionsCompleted`
+    ne compte que les sessions clôturées avec au moins une réponse.
+
+35. **Statistiques détaillées : la rétention vient du domaine.** `GET /progress/stats`
+    calcule la rétention estimée via `FsrsReviewScheduler.retrievability` ( FSRS ),
+    uniquement pour les cartes avec `stability > 0` et `reps > 0` (sinon `null`).
+    Les ventilations par compétence/niveau lisent `review_logs.exerciseItem.skill` /
+    `.level` ; une réponse sans exercice lié n'est comptée que dans les totaux. La
+    prévision de charge (`forecast`) compte les cartes actives dues sur 7 jours.
+    Côté web, l'onglet Statistiques de la page progression ne charge les données que
+    s'il est actif (`enabled: tab === 'stats'`).
 
 ## Recettes
 

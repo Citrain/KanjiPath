@@ -230,6 +230,117 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     });
     expect(response.statusCode).toBe(204);
   });
+
+  it('renvoie les statistiques détaillées', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/progress/stats',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(body.totals.reviews).toBeGreaterThanOrEqual(1);
+    expect(body.totals.sessionsCompleted).toBeGreaterThanOrEqual(1);
+    expect(body.windows.last7Days.answered).toBeGreaterThanOrEqual(1);
+    expect(body.windows.last30Days.accuracy).toBeGreaterThanOrEqual(0);
+    expect(body.bySkill).toHaveLength(5);
+    const meaning = body.bySkill.find((entry: { skill: string }) => entry.skill === 'meaning');
+    expect(meaning?.answered).toBeGreaterThanOrEqual(1);
+    expect(body.byLevel[0].level).toBe('N5');
+    expect(body.forecast).toHaveLength(7);
+    expect(typeof body.estimatedRetention).toBe('number');
+  });
+
+  it('refuse une session ciblée sans filtre', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/study/sessions',
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+      payload: { mode: 'targeted' },
+    });
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('refuse une session ciblée avec un filtre vide', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/study/sessions',
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+      payload: { mode: 'targeted', target: {} },
+    });
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('refuse une session ciblée sans exercice correspondant', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/study/sessions',
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+      payload: { mode: 'targeted', target: { skill: 'reading' } },
+    });
+    expect(response.statusCode).toBe(400);
+  });
+
+  it('crée une session ciblée par niveau', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/study/sessions',
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+      payload: { mode: 'targeted', target: { level: 'N5' } },
+    });
+    expect(response.statusCode).toBe(201);
+    const body = response.json();
+    expect(body.session.mode).toBe('targeted');
+    expect(body.session.target).toEqual({ level: 'N5' });
+    expect(body.items.length).toBeGreaterThan(0);
+    for (const item of body.items) {
+      expect(item.skill).toBe('meaning');
+    }
+  });
+
+  it('crée une session ciblée sur un kanji précis', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/study/sessions',
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+      payload: { mode: 'targeted', target: { kanjiIds: ['k-04e00'] } },
+    });
+    expect(response.statusCode).toBe(201);
+    const body = response.json();
+    expect(body.items.length).toBeGreaterThan(0);
+    for (const item of body.items) {
+      expect(item.kanjiLiteral).toBe('一');
+    }
+  });
+
+  it('abandonne une session et marque les items restants comme ignorés', async () => {
+    const created = await app.inject({
+      method: 'POST',
+      url: '/api/v1/study/sessions',
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+      payload: { mode: 'targeted', target: { level: 'N5' } },
+    });
+    const sessionId = created.json().session.id;
+    const response = await app.inject({
+      method: 'POST',
+      url: `/api/v1/study/sessions/${sessionId}/abandon`,
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+    });
+    expect(response.statusCode).toBe(204);
+    const session = await prisma.studySession.findUnique({
+      where: { id: sessionId },
+      include: { items: true },
+    });
+    expect(session?.endedAt).not.toBeNull();
+    expect(session?.items.every((item) => item.status !== 'pending')).toBe(true);
+  });
 });
 
 async function seedContent(prisma: PrismaService): Promise<void> {

@@ -262,7 +262,13 @@ export function KanjiCardPage() {
                 ) : null}
               </div>
               <Button asChild variant="secondary" size="sm" className="ml-auto">
-                <Link to="/etude">Étudier ce niveau</Link>
+                <Link
+                  to={`/etude?mode=targeted&kanjiIds=${kanji.id}&kanjiLits=${encodeURIComponent(
+                    kanji.literal,
+                  )}`}
+                >
+                  Réviser ce kanji
+                </Link>
               </Button>
             </div>
           </div>

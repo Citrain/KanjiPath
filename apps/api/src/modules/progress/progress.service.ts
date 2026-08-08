@@ -1,14 +1,20 @@
 import type {
+  AnswerWindowStat,
   DashboardResponse,
   HistoryResponse,
   LevelProgressResponse,
   LevelSummary,
+  StatsResponse,
   WeakPointsResponse,
 } from '@kanjipath/contracts';
+import { FsrsReviewScheduler, type ReviewCard } from '@kanjipath/domain';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../infrastructure/database/prisma.service';
 
 const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'] as const;
+const SKILLS = ['meaning', 'reading', 'vocabulary', 'context', 'stroke'] as const;
+
+const scheduler = new FsrsReviewScheduler();
 
 @Injectable()
 export class ProgressService {
@@ -185,6 +191,136 @@ export class ProgressService {
     return { days };
   }
 
+  async stats(userId: string): Promise<StatsResponse> {
+    const now = new Date();
+    const logs = await this.prisma.reviewLog.findMany({
+      where: { reviewCard: { userId } },
+      select: {
+        wasCorrect: true,
+        reviewedAt: true,
+        responseTimeMs: true,
+        exerciseItem: { select: { skill: true, level: true } },
+      },
+    });
+
+    const totalReviews = logs.length;
+    const totalCorrect = logs.filter((log) => log.wasCorrect).length;
+    const timed = logs.filter((log) => log.responseTimeMs !== null);
+    const avgResponseTimeMs =
+      timed.length > 0
+        ? Math.round(timed.reduce((sum, log) => sum + (log.responseTimeMs ?? 0), 0) / timed.length)
+        : null;
+
+    const sessions = await this.prisma.studySession.aggregate({
+      where: { userId, endedAt: { not: null } },
+      _sum: { durationSeconds: true },
+    });
+    const sessionsCompleted = await this.prisma.studySession.count({
+      where: { userId, endedAt: { not: null }, answeredCount: { gt: 0 } },
+    });
+
+    const windowStat = (days: number): AnswerWindowStat => {
+      const threshold = new Date(now.getTime() - days * 24 * 3600 * 1000);
+      const inWindow = logs.filter((log) => log.reviewedAt >= threshold);
+      const correct = inWindow.filter((log) => log.wasCorrect).length;
+      return {
+        answered: inWindow.length,
+        correct,
+        accuracy: inWindow.length > 0 ? correct / inWindow.length : null,
+      };
+    };
+
+    const bySkill = SKILLS.map((skill) => {
+      const rows = logs.filter((log) => log.exerciseItem?.skill === skill);
+      const correct = rows.filter((log) => log.wasCorrect).length;
+      return {
+        skill,
+        answered: rows.length,
+        correct,
+        accuracy: rows.length > 0 ? correct / rows.length : null,
+      };
+    });
+
+    const byLevel = LEVELS.map((level) => {
+      const rows = logs.filter((log) => log.exerciseItem?.level === level);
+      const correct = rows.filter((log) => log.wasCorrect).length;
+      return {
+        level,
+        answered: rows.length,
+        correct,
+        accuracy: rows.length > 0 ? correct / rows.length : null,
+      };
+    }).filter((entry) => entry.answered > 0);
+
+    const cards = await this.prisma.reviewCard.findMany({
+      where: { userId, subjectType: 'kanji' },
+      select: {
+        state: true,
+        dueAt: true,
+        stability: true,
+        difficulty: true,
+        reps: true,
+        lapses: true,
+        elapsedDays: true,
+        scheduledDays: true,
+        learningSteps: true,
+        lastReviewAt: true,
+      },
+    });
+
+    const endOfToday = new Date(now);
+    endOfToday.setHours(23, 59, 59, 999);
+    const activeCards = cards.filter((card) => card.state !== 'Suspended');
+    const learning = activeCards.filter((card) => card.state === 'Learning').length;
+    const review = activeCards.filter((card) => card.state === 'Review').length;
+    const relearning = activeCards.filter((card) => card.state === 'Relearning').length;
+    const overdue = activeCards.filter((card) => card.dueAt < now).length;
+    const dueToday = activeCards.filter((card) => card.dueAt <= endOfToday).length;
+
+    const retentionValues = activeCards
+      .filter((card) => card.stability > 0 && card.reps > 0)
+      .map((card) => scheduler.retrievability(toDomainCard(card), now))
+      .filter((value): value is number => value !== null);
+    const estimatedRetention =
+      retentionValues.length > 0
+        ? retentionValues.reduce((sum, value) => sum + value, 0) / retentionValues.length
+        : null;
+
+    const forecast: StatsResponse['forecast'] = [];
+    for (let day = 0; day < 7; day += 1) {
+      const dayStart = new Date(now);
+      dayStart.setHours(0, 0, 0, 0);
+      dayStart.setDate(dayStart.getDate() + day);
+      const dayEnd = new Date(dayStart);
+      dayEnd.setHours(23, 59, 59, 999);
+      const count = activeCards.filter(
+        (card) => card.dueAt >= dayStart && card.dueAt <= dayEnd,
+      ).length;
+      forecast.push({ date: dayStart.toISOString().slice(0, 10), count });
+    }
+
+    return {
+      totals: {
+        reviews: totalReviews,
+        correct: totalCorrect,
+        accuracy: totalReviews > 0 ? totalCorrect / totalReviews : null,
+        sessionsCompleted,
+        studyTimeMinutes: Math.round((sessions._sum.durationSeconds ?? 0) / 60),
+        avgResponseTimeMs,
+      },
+      windows: {
+        last7Days: windowStat(7),
+        last30Days: windowStat(30),
+        last90Days: windowStat(90),
+      },
+      bySkill,
+      byLevel,
+      cards: { learning, review, relearning, overdue, dueToday },
+      estimatedRetention,
+      forecast,
+    };
+  }
+
   private async levelSummary(userId: string, level: string): Promise<LevelSummary> {
     const curriculum = await this.prisma.curriculum.findFirst({ where: { status: 'published' } });
     if (!curriculum) {
@@ -238,4 +374,30 @@ export class ProgressService {
       dueToday,
     };
   }
+}
+
+function toDomainCard(card: {
+  state: string;
+  dueAt: Date;
+  stability: number;
+  difficulty: number;
+  reps: number;
+  lapses: number;
+  elapsedDays: number;
+  scheduledDays: number;
+  learningSteps: number;
+  lastReviewAt: Date | null;
+}): ReviewCard {
+  return {
+    state: card.state as ReviewCard['state'],
+    due: card.dueAt,
+    stability: card.stability,
+    difficulty: card.difficulty,
+    reps: card.reps,
+    lapses: card.lapses,
+    elapsedDays: card.elapsedDays,
+    scheduledDays: card.scheduledDays,
+    learningSteps: card.learningSteps,
+    lastReview: card.lastReviewAt,
+  };
 }

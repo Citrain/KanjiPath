@@ -33,6 +33,15 @@ export function todayLong(): string {
   });
 }
 
+export function formatDurationMinutes(minutes: number): string {
+  if (minutes < 60) {
+    return `${minutes} min`;
+  }
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  return rest > 0 ? `${hours} h ${String(rest).padStart(2, '0')}` : `${hours} h`;
+}
+
 export function isSameDay(a: Date, b: Date): boolean {
   return (
     a.getFullYear() === b.getFullYear() &&

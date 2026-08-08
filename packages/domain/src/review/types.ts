@@ -39,4 +39,5 @@ export interface ReviewResult {
 export interface ReviewScheduler {
   preview(card: ReviewCard, now: Date): ReviewOption[];
   review(card: ReviewCard, rating: Rating, now: Date): ReviewResult;
+  retrievability(card: ReviewCard, now: Date): number | null;
 }

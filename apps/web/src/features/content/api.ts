@@ -12,6 +12,7 @@ import type {
   LevelProgressResponse,
   SettingsDto,
   SourcesResponse,
+  StatsResponse,
   WeakPointsResponse,
 } from '@kanjipath/contracts';
 import { apiFetch } from '../../lib/api';
@@ -66,6 +67,10 @@ export function fetchWeakPoints(): Promise<WeakPointsResponse> {
 
 export function fetchHistory(): Promise<HistoryResponse> {
   return apiFetch<HistoryResponse>('/progress/history');
+}
+
+export function fetchStats(): Promise<StatsResponse> {
+  return apiFetch<StatsResponse>('/progress/stats');
 }
 
 export function fetchSettings(): Promise<SettingsDto> {

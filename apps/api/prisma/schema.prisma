@@ -153,6 +153,7 @@ enum StudySessionMode {
   daily
   weak_points
   free
+  targeted
 }
 
 enum StudySessionItemStatus {
@@ -521,6 +522,7 @@ model StudySession {
   id              String             @id @default(uuid())
   userId          String             @map("user_id")
   mode            StudySessionMode   @default(daily)
+  targetJson      Json?              @map("target_json")
   startedAt       DateTime           @default(now()) @map("started_at")
   endedAt         DateTime?          @map("ended_at")
   answeredCount   Int                @default(0) @map("answered_count")

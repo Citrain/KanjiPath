@@ -26,15 +26,18 @@ apps/
     src/
       app/             # App, routing (routes lazy), app-layout (sidebar/bottom nav, thème),
                        # garde d'authentification, transitions de page
-      components/      # composants domaine web : KanjiTile, LevelBadge, StatusBadge, HistoryChart
+      components/      # composants domaine web : KanjiTile, LevelBadge, StatusBadge, HistoryChart,
+                       # ForecastChart
       features/
         auth/          # pages login/register (écran scindé), champs mot de passe, hooks, api
         content/       # accès API contenu (kanji, sources, progression, signalements)
         dashboard/     # tableau de bord (CTA continuer, stats, série, à réviser, parcours)
         kanji/         # liste + recherche + fiche kanji (SVG animé KanjiVG, signalement)
                        # + entraînement à l'écriture (tracé au pointeur validé, stroke-match)
-        progression/   # page progression (onglets : niveaux, activité, points faibles)
-        study/         # session d'étude (choix de mode, quiz clavier 1-4/Entrée, résultats)
+        progression/   # page progression (onglets : niveaux, activité, points faibles,
+                       # statistiques détaillées)
+        study/         # session d'étude (choix de mode — jour/points faibles/libre/ciblée,
+                       # quiz clavier 1-4/Entrée, résultats)
         settings/      # préférences (niveau actif, limites, furigana, romaji, thème)
         sources/       # page sources et licences
       lib/             # apiFetch (client HTTP, CSRF), theme (encre/washi),
@@ -56,13 +59,14 @@ apps/
         users/         # UsersService
         content/       # kanji (liste/fiche/SVG/vocab/phrases), sources, signalements
         curricula/     # curricula et niveaux
-        study/         # sessions, file d'étude, réponses (FSRS), reprise
-        progress/      # tableau de bord, niveaux, points faibles, historique
+        study/         # sessions, file d'étude, réponses (FSRS), reprise, révision ciblée
+        progress/      # tableau de bord, niveaux, points faibles, historique, statistiques
         settings/      # préférences utilisateur
     test/              # tests d'intégration (e2e)
 
 packages/
   contracts/           # types/schémas partagés (enums, API auth, kanji, study, progress)
+                       # + schémas Zod (auth, création de session / ciblage)
   domain/              # règles métier : ReviewScheduler (FSRS), maîtrise
   content-schema/      # schémas Zod du contenu (kanji, vocab, phrases, exercices)
   ui/                  # design system React : Button, IconButton, Badge, Card, Field/Input/
@@ -196,17 +200,19 @@ GET    /kanji/:literal/sentences
 GET    /kanji/:literal/progress
 
 # Étude
-POST   /study/sessions
+POST   /study/sessions              # mode daily/weak_points/free/targeted (+ cible level/skill/kanjiIds)
 GET    /study/queue
 GET    /study/resume
 POST   /study/answers
 POST   /study/sessions/:id/finish
+POST   /study/sessions/:id/abandon   # items restants → skipped, session clôturée
 
 # Progression
 GET    /progress/dashboard
 GET    /progress/levels/:level
 GET    /progress/weak-points
 GET    /progress/history
+GET    /progress/stats              # statistiques détaillées (précision, rétention, prévision)
 
 # Préférences
 GET    /settings

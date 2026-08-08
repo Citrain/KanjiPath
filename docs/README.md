@@ -43,8 +43,9 @@ Ce qui est implémenté :
   (JMdict FR + vocabulaire curaté), 1300 phrases (Tatoeba CC BY 2.0 FR),
   12110 exercices déterministes (3915 N5, 8195 N4), SVG KanjiVG assainis.
 - API : curricula, kanji (liste, fiche, SVG, vocabulaire, phrases, progression),
-  étude (sessions, réponses FSRS, reprise), progression (tableau de bord, niveaux,
-  points faibles), sources, préférences, signalements.
+  étude (sessions, réponses FSRS, reprise, abandon, **révision ciblée** par niveau/
+  compétence/kanji), progression (tableau de bord, niveaux, points faibles,
+  **statistiques détaillées**), sources, préférences, signalements.
 - Web : tableau de bord (CTA « Continuer l'apprentissage », stats du jour, série,
   kanji à réviser, activité 30 j, points faibles, parcours N5→N1), liste + recherche
    des kanji avec sélecteur de niveau et filtres de statut, fiche kanji complète
@@ -53,9 +54,11 @@ Ce qui est implémenté :
    **entraînement à l'écriture** (`/kanji/:literal/ecriture` : grille de pratique,
    tracé au pointeur validé trait par trait contre KanjiVG — point de départ, sens,
    forme — aide fantôme réglable, trait passé/effacé, signalement de tracé),
-  session d'étude (choix du mode — jour/points faibles/libre, quiz avec raccourcis
-  clavier 1-4 et Entrée, feedback animé, résultats + confettis), **page progression**
-  (onglets vue d'ensemble/activité/points faibles), page sources, page préférences
+  session d'étude (choix du mode — jour/points faibles/libre/**ciblée** par niveau/
+  compétence/kanji, quiz avec raccourcis clavier 1-4 et Entrée, feedback animé,
+  résultats + confettis), **page progression** (onglets vue d'ensemble/activité/points
+  faibles/**statistiques détaillées** : précision 7/30/90 j, par compétence et niveau,
+  rétention estimée FSRS, charge de révision à 7 jours), page sources, page préférences
   (niveau actif, limite quotidienne, rétention, furigana, romaji, thème encre/washi).
   Navigation : sidebar desktop + barre inférieure mobile, menu utilisateur, toasts.
   Toutes les phrases d'exemple sont annotées au build (furigana par token + romaji,
@@ -67,9 +70,12 @@ La Phase 1 (N5) a fait l'objet d'une relecture éditoriale (mnémotechniques,
 étymologies, rôles de composants) et d'une complétion du vocabulaire curaté (mois,
 heures, compteurs de personnes absents du sous-ensemble FR de JMdict).
 
-La **Phase 2 (N4)** est livrée pour son critère de sortie (≥ 5000 exercices N4
-validés) : pipeline multi-niveaux, 166 kanji N4 curatés (radicaux, confusions
+La **Phase 2 (N4)** est livrée : critère de sortie atteint (≥ 5000 exercices N4
+validés) — pipeline multi-niveaux, 166 kanji N4 curatés (radicaux, confusions
 visuelles, mnémotechniques), vocabulaire/phrases complétés (以, 勉, 堂),
-8195 exercices N4 validés. L'introduction de nouveaux kanji en session suit l'ordre
-N5 → N4 → … Restent à faire (ADR 11, Phase 2) : statistiques détaillées et mode
-révision ciblée côté application. Prochaine étape contenu : Phase 3 (N3).
+8195 exercices N4 validés — et fonctionnalités applicatives complétées :
+**statistiques détaillées** (`GET /progress/stats`, onglet Statistiques) et
+**mode révision ciblée** (sessions `targeted` filtrées par niveau, compétence ou
+kanji ; liens profonds depuis les points faibles et la fiche kanji). L'introduction
+de nouveaux kanji en session suit l'ordre N5 → N4 → … Prochaine étape contenu :
+Phase 3 (N3).

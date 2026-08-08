@@ -47,6 +47,7 @@ POST   /study/sessions
 GET    /study/queue
 POST   /study/answers
 POST   /study/sessions/:id/finish
+POST   /study/sessions/:id/abandon
 GET    /study/resume
 ```
 
@@ -59,6 +60,7 @@ GET    /progress/dashboard
 GET    /progress/levels/:level
 GET    /progress/weak-points
 GET    /progress/history
+GET    /progress/stats
 ```
 
 ---

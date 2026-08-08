@@ -1,5 +1,7 @@
+import type { StatsResponse } from '@kanjipath/contracts';
 import {
   Badge,
+  Button,
   Card,
   EmptyState,
   ErrorState,
@@ -10,25 +12,36 @@ import {
   Stat,
   Tabs,
 } from '@kanjipath/ui';
-import { useQuery } from '@tanstack/react-query';
+import { type UseQueryResult, useQuery } from '@tanstack/react-query';
 import {
   Activity,
   BadgeCheck,
   BarChart3,
+  BrainCircuit,
+  Clock3,
   Flame,
   ListChecks,
+  PieChart,
   Target,
+  Timer,
   TriangleAlert,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ForecastChart } from '../../components/forecast-chart';
 import { HistoryChart } from '../../components/history-chart';
 import { LevelBadge } from '../../components/level-badge';
 import { StatusBadge } from '../../components/status-badge';
-import { formatDateShort, formatPercent } from '../../lib/format';
+import { formatDateShort, formatDurationMinutes, formatPercent } from '../../lib/format';
 import { computeStreak } from '../../lib/progress';
 import { SKILL_LABELS } from '../../lib/skills';
-import { fetchDashboard, fetchHistory, fetchLevelProgress, fetchWeakPoints } from '../content/api';
+import {
+  fetchDashboard,
+  fetchHistory,
+  fetchLevelProgress,
+  fetchStats,
+  fetchWeakPoints,
+} from '../content/api';
 
 const STATUS_SPLIT = [
   { key: 'newCount', label: 'Nouveaux', className: 'bg-muted' },
@@ -37,13 +50,18 @@ const STATUS_SPLIT = [
   { key: 'masteredCount', label: 'Maîtrisés', className: 'bg-jade' },
 ] as const;
 
-type TabValue = 'overview' | 'activity' | 'weak';
+type TabValue = 'overview' | 'activity' | 'weak' | 'stats';
 
 export function ProgressionPage() {
   const [tab, setTab] = useState<TabValue>('overview');
   const dashboard = useQuery({ queryKey: ['progress', 'dashboard'], queryFn: fetchDashboard });
   const history = useQuery({ queryKey: ['progress', 'history'], queryFn: fetchHistory });
   const weakPoints = useQuery({ queryKey: ['progress', 'weak-points'], queryFn: fetchWeakPoints });
+  const stats = useQuery({
+    queryKey: ['progress', 'stats'],
+    queryFn: fetchStats,
+    enabled: tab === 'stats',
+  });
 
   const activeLevel = dashboard.data?.activeLevel;
   const levelProgress = useQuery({
@@ -97,6 +115,7 @@ export function ProgressionPage() {
           { value: 'overview', label: 'Vue d’ensemble', icon: <ListChecks /> },
           { value: 'activity', label: 'Activité', icon: <Activity /> },
           { value: 'weak', label: 'Points faibles', icon: <TriangleAlert /> },
+          { value: 'stats', label: 'Statistiques', icon: <PieChart /> },
         ]}
       />
 
@@ -348,7 +367,26 @@ export function ProgressionPage() {
             title="Kanji à retravailler"
             aside={
               weakPoints.data && weakPoints.data.weakPoints.length > 0 ? (
-                <Badge tone="warning">{weakPoints.data.weakPoints.length} kanji</Badge>
+                <div className="flex items-center gap-3">
+                  <Badge tone="warning">{weakPoints.data.weakPoints.length} kanji</Badge>
+                  <Button
+                    asChild
+                    size="sm"
+                    variant="secondary"
+                    title="Réviser ces kanji"
+                    aria-label="Réviser ces kanji"
+                  >
+                    <Link
+                      to={`/etude?mode=targeted&kanjiIds=${weakPoints.data.weakPoints
+                        .map((point) => point.kanjiId)
+                        .join(',')}&kanjiLits=${weakPoints.data.weakPoints
+                        .map((point) => encodeURIComponent(point.literal))
+                        .join(',')}`}
+                    >
+                      Réviser
+                    </Link>
+                  </Button>
+                </div>
               ) : null
             }
           />
@@ -402,6 +440,228 @@ export function ProgressionPage() {
           )}
         </Card>
       ) : null}
+
+      {tab === 'stats' ? <StatsTab stats={stats} /> : null}
+    </div>
+  );
+}
+
+function StatsTab({ stats }: { stats: UseQueryResult<StatsResponse, Error> }) {
+  if (stats.isError) {
+    return (
+      <ErrorState
+        title="Impossible de charger les statistiques"
+        description="Vérifiez votre connexion puis réessayez."
+        onRetry={() => stats.refetch()}
+      />
+    );
+  }
+  if (stats.isPending) {
+    return (
+      <div className="flex flex-col gap-6">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {Array.from({ length: 4 }, (_, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: squelettes interchangeables
+            <Skeleton key={index} className="h-28" />
+          ))}
+        </div>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Skeleton className="h-64" />
+          <Skeleton className="h-64" />
+        </div>
+      </div>
+    );
+  }
+
+  const data = stats.data;
+  if (!data || data.totals.reviews === 0) {
+    return (
+      <EmptyState
+        glyph="統"
+        title="Pas encore de statistiques"
+        description="Répondez à quelques exercices : précision, rétention et charge de révision apparaîtront ici."
+      />
+    );
+  }
+
+  const forecastTotal = data.forecast.reduce((sum, day) => sum + day.count, 0);
+
+  return (
+    <div className="flex flex-col gap-6">
+      <section
+        aria-label="Statistiques détaillées"
+        className="grid grid-cols-2 gap-4 lg:grid-cols-4"
+      >
+        <Stat
+          label="Réponses totales"
+          tone="accent"
+          icon={<BarChart3 />}
+          value={`${data.totals.reviews}`}
+          hint={
+            data.totals.accuracy != null ? `${formatPercent(data.totals.accuracy)} de réussite` : ''
+          }
+        />
+        <Stat
+          label="Sessions terminées"
+          tone="sky"
+          icon={<ListChecks />}
+          value={`${data.totals.sessionsCompleted}`}
+          hint={
+            data.totals.studyTimeMinutes > 0
+              ? `${formatDurationMinutes(data.totals.studyTimeMinutes)} d’étude`
+              : ''
+          }
+        />
+        <Stat
+          label="Temps de réponse moyen"
+          tone="gold"
+          icon={<Timer />}
+          value={
+            data.totals.avgResponseTimeMs != null
+              ? `${(data.totals.avgResponseTimeMs / 1000).toFixed(1)} s`
+              : '—'
+          }
+          hint="Par réponse"
+        />
+        <Stat
+          label="Rétention estimée"
+          tone="jade"
+          icon={<BrainCircuit />}
+          value={data.estimatedRetention != null ? formatPercent(data.estimatedRetention) : '—'}
+          hint="Probabilité de rappel (FSRS)"
+        />
+      </section>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card>
+          <SectionHeader title="Précision par période" />
+          <ul className="mt-4 flex flex-col gap-4">
+            {(
+              [
+                ['7 derniers jours', data.windows.last7Days],
+                ['30 derniers jours', data.windows.last30Days],
+                ['90 derniers jours', data.windows.last90Days],
+              ] as const
+            ).map(([label, window]) => (
+              <li key={label} className="flex items-center gap-4">
+                <span className="w-36 shrink-0 text-sm font-semibold text-ink-soft">{label}</span>
+                <Progress
+                  value={window.accuracy ?? 0}
+                  tone={window.accuracy != null && window.accuracy >= 0.7 ? 'jade' : 'accent'}
+                  className="h-2 flex-1"
+                  label={`Précision sur ${label}`}
+                />
+                <span className="w-14 shrink-0 text-right text-sm font-extrabold">
+                  {window.accuracy != null ? formatPercent(window.accuracy) : '—'}
+                </span>
+                <span className="w-20 shrink-0 text-right text-xs font-semibold text-muted">
+                  {window.answered} rép.
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 flex items-center gap-2 text-xs text-muted">
+            <Clock3 aria-hidden className="size-3.5" />
+            {data.totals.correct} bonnes réponses depuis le début.
+          </p>
+        </Card>
+
+        <Card>
+          <SectionHeader title="Cartes de révision" />
+          <ul className="mt-4 grid grid-cols-2 gap-3">
+            <li className="rounded-xl border border-line bg-surface-2 px-4 py-3">
+              <p className="text-2xl font-extrabold text-accent">{data.cards.dueToday}</p>
+              <p className="text-xs font-semibold text-muted">dues aujourd’hui</p>
+            </li>
+            <li className="rounded-xl border border-line bg-surface-2 px-4 py-3">
+              <p className="text-2xl font-extrabold text-danger">{data.cards.overdue}</p>
+              <p className="text-xs font-semibold text-muted">en retard</p>
+            </li>
+            <li className="rounded-xl border border-line bg-surface-2 px-4 py-3">
+              <p className="text-2xl font-extrabold text-sky">{data.cards.learning}</p>
+              <p className="text-xs font-semibold text-muted">en apprentissage</p>
+            </li>
+            <li className="rounded-xl border border-line bg-surface-2 px-4 py-3">
+              <p className="text-2xl font-extrabold text-gold">{data.cards.review}</p>
+              <p className="text-xs font-semibold text-muted">en révision</p>
+            </li>
+          </ul>
+          {data.cards.relearning > 0 ? (
+            <p className="mt-3 text-xs font-semibold text-muted">
+              {data.cards.relearning} carte{data.cards.relearning > 1 ? 's' : ''} en
+              réapprentissage.
+            </p>
+          ) : null}
+        </Card>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card>
+          <SectionHeader title="Précision par compétence" />
+          <ul className="mt-4 flex flex-col gap-4">
+            {data.bySkill.map((entry) => (
+              <li key={entry.skill} className="flex items-center gap-4">
+                <span className="w-36 shrink-0 truncate text-sm font-semibold text-ink-soft">
+                  {SKILL_LABELS[entry.skill] ?? entry.skill}
+                </span>
+                <Progress
+                  value={entry.accuracy ?? 0}
+                  tone={entry.accuracy != null && entry.accuracy >= 0.7 ? 'jade' : 'gold'}
+                  className="h-2 flex-1"
+                  label={`Précision en ${SKILL_LABELS[entry.skill] ?? entry.skill}`}
+                />
+                <span className="w-14 shrink-0 text-right text-sm font-extrabold">
+                  {entry.accuracy != null ? formatPercent(entry.accuracy) : '—'}
+                </span>
+                <span className="w-20 shrink-0 text-right text-xs font-semibold text-muted">
+                  {entry.answered} rép.
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+
+        <Card>
+          <SectionHeader title="Activité par niveau" />
+          {data.byLevel.length > 0 ? (
+            <ul className="mt-4 flex flex-col gap-4">
+              {data.byLevel.map((entry) => (
+                <li key={entry.level} className="flex items-center gap-4">
+                  <LevelBadge level={entry.level} prefix="" className="w-14 shrink-0" />
+                  <Progress
+                    value={entry.accuracy ?? 0}
+                    tone="accent"
+                    className="h-2 flex-1"
+                    label={`Précision en ${entry.level}`}
+                  />
+                  <span className="w-14 shrink-0 text-right text-sm font-extrabold">
+                    {entry.accuracy != null ? formatPercent(entry.accuracy) : '—'}
+                  </span>
+                  <span className="w-20 shrink-0 text-right text-xs font-semibold text-muted">
+                    {entry.answered} rép.
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-4 text-sm text-muted">Aucune réponse enregistrée pour l'instant.</p>
+          )}
+        </Card>
+      </div>
+
+      <Card>
+        <SectionHeader
+          title="Charge de révision à venir"
+          aside={
+            <Badge tone={forecastTotal > 0 ? 'warning' : 'success'}>
+              {forecastTotal} carte{forecastTotal > 1 ? 's' : ''} sur 7 jours
+            </Badge>
+          }
+        />
+        <div className="mt-6">
+          <ForecastChart days={data.forecast} />
+        </div>
+      </Card>
     </div>
   );
 }

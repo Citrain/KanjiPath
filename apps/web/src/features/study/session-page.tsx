@@ -1,18 +1,37 @@
-import type { AnswerResult, SentenceTokenDto, StudyQueueItem } from '@kanjipath/contracts';
-import { Badge, Button, Card, Ring, Skeleton } from '@kanjipath/ui';
+import type {
+  AnswerResult,
+  JlptLevel,
+  SentenceTokenDto,
+  Skill,
+  StudyQueueItem,
+  StudyTarget,
+} from '@kanjipath/contracts';
+import { Badge, Button, Card, Modal, Ring, Segmented, Skeleton } from '@kanjipath/ui';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import confetti from 'canvas-confetti';
-import { ArrowRight, CheckCircle2, LogOut, Sparkles, Target, XCircle, Zap } from 'lucide-react';
+import {
+  ArrowRight,
+  CheckCircle2,
+  Crosshair,
+  LogOut,
+  Sparkles,
+  Target,
+  X,
+  XCircle,
+  Zap,
+} from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { SKILL_LABELS } from '../../lib/skills';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { JLPT_LEVELS } from '../../lib/levels';
+import { SKILL_LABELS, SKILLS } from '../../lib/skills';
+import { fetchDashboard } from '../content/api';
 import { Furigana, SentenceView, useDisplaySettings } from '../content/japanese';
-import { createSession, finishSession, resumeSession, sendAnswer } from './api';
+import { abandonSession, createSession, finishSession, resumeSession, sendAnswer } from './api';
 
 const CJK_RE = /[\u3400-\u9fff\uf900-\ufaff\u3040-\u30ff]/;
 
-type SessionMode = 'daily' | 'weak_points' | 'free';
+type SessionMode = 'daily' | 'weak_points' | 'free' | 'targeted';
 
 const MODES: Array<{
   mode: SessionMode;
@@ -33,6 +52,12 @@ const MODES: Array<{
     title: 'Points faibles',
     description: 'Concentrez-vous sur les kanji et compétences qui résistent encore.',
     icon: Target,
+  },
+  {
+    mode: 'targeted',
+    title: 'Révision ciblée',
+    description: 'Choisissez un niveau, une compétence ou des kanji précis à travailler.',
+    icon: Crosshair,
   },
   {
     mode: 'free',
@@ -58,9 +83,15 @@ function celebrate() {
   });
 }
 
+interface TargetKanji {
+  id: string;
+  literal: string;
+}
+
 export function SessionPage() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { romajiEnabled, furiganaMode } = useDisplaySettings();
   const [currentPosition, setCurrentPosition] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -70,17 +101,75 @@ export function SessionPage() {
   const [localCorrect, setLocalCorrect] = useState(0);
   const [localAnswered, setLocalAnswered] = useState(0);
   const [outcomes, setOutcomes] = useState<Record<string, boolean>>({});
+  const [targetPanelOpen, setTargetPanelOpen] = useState(false);
+  const [targetLevel, setTargetLevel] = useState<'all' | JlptLevel>('all');
+  const [targetSkill, setTargetSkill] = useState<'all' | Skill>('all');
+  const [targetKanji, setTargetKanji] = useState<TargetKanji[]>([]);
+  const [quitModalOpen, setQuitModalOpen] = useState(false);
   const shownAtRef = useRef<number>(Date.now());
 
   const resume = useQuery({
     queryKey: ['study', 'session'],
     queryFn: resumeSession,
   });
+  const dashboard = useQuery({
+    queryKey: ['progress', 'dashboard'],
+    queryFn: fetchDashboard,
+  });
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: lecture unique des paramètres d'arrivée
+  useEffect(() => {
+    if (searchParams.get('mode') !== 'targeted') {
+      return;
+    }
+    setTargetPanelOpen(true);
+    const level = searchParams.get('level');
+    if (level && JLPT_LEVELS.includes(level as JlptLevel)) {
+      setTargetLevel(level as JlptLevel);
+    }
+    const skill = searchParams.get('skill');
+    if (skill && SKILLS.includes(skill as Skill)) {
+      setTargetSkill(skill as Skill);
+    }
+    const ids = searchParams.get('kanjiIds')?.split(',').filter(Boolean) ?? [];
+    const literals = searchParams.get('kanjiLits')?.split(',').filter(Boolean) ?? [];
+    if (ids.length > 0) {
+      setTargetKanji(ids.map((id, index) => ({ id, literal: literals[index] ?? '?' })));
+    }
+    setSearchParams({}, { replace: true });
+  }, []);
 
   const startSession = useMutation({
-    mutationFn: (mode: SessionMode) => createSession(mode),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['study', 'session'] }),
+    mutationFn: (input: { mode: SessionMode; target?: StudyTarget }) =>
+      createSession(input.mode, input.target),
+    onSuccess: () => {
+      setTargetPanelOpen(false);
+      queryClient.invalidateQueries({ queryKey: ['study', 'session'] });
+    },
   });
+
+  function startTargeted() {
+    const target: StudyTarget = {};
+    if (targetLevel !== 'all') {
+      target.level = targetLevel;
+    }
+    if (targetSkill !== 'all') {
+      target.skill = targetSkill;
+    }
+    if (targetKanji.length > 0) {
+      target.kanjiIds = targetKanji.map((kanji) => kanji.id);
+    }
+    if (!target.level && !target.skill && !target.kanjiIds) {
+      return;
+    }
+    startSession.mutate({ mode: 'targeted', target });
+  }
+
+  const targetReady = targetLevel !== 'all' || targetSkill !== 'all' || targetKanji.length > 0;
+  const levelsLoaded = dashboard.data !== undefined;
+  const publishedLevels = new Set(
+    (dashboard.data?.levels ?? []).filter((level) => level.total > 0).map((level) => level.level),
+  );
 
   const answer = useMutation({
     mutationFn: sendAnswer,
@@ -105,6 +194,19 @@ export function SessionPage() {
       queryClient.invalidateQueries({ queryKey: ['study', 'session'] });
       queryClient.invalidateQueries({ queryKey: ['progress'] });
       queryClient.invalidateQueries({ queryKey: ['kanji'] });
+    },
+  });
+
+  const abandon = useMutation({
+    mutationFn: abandonSession,
+    onSuccess: () => {
+      setQuitModalOpen(false);
+      setCurrentPosition(0);
+      setLocalCorrect(0);
+      setLocalAnswered(0);
+      setOutcomes({});
+      queryClient.invalidateQueries({ queryKey: ['study', 'session'] });
+      queryClient.invalidateQueries({ queryKey: ['progress'] });
     },
   });
 
@@ -255,7 +357,7 @@ export function SessionPage() {
                 setLocalCorrect(0);
                 setLocalAnswered(0);
                 setOutcomes({});
-                startSession.mutate('daily');
+                startSession.mutate({ mode: 'daily' });
               }}
             >
               Nouvelle session
@@ -289,9 +391,10 @@ export function SessionPage() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {MODES.map((mode, index) => {
             const Icon = mode.icon;
+            const isTargeted = mode.mode === 'targeted';
             return (
               <motion.div
                 key={mode.mode}
@@ -303,7 +406,7 @@ export function SessionPage() {
                   hover
                   className={`flex h-full flex-col ${
                     mode.recommended ? 'border-accent/40 bg-accent-soft' : ''
-                  }`}
+                  } ${isTargeted && targetPanelOpen ? 'border-accent/40' : ''}`}
                 >
                   <div className="flex items-center justify-between">
                     <span
@@ -322,17 +425,137 @@ export function SessionPage() {
                   <Button
                     className="mt-5 w-full"
                     variant={mode.recommended ? 'primary' : 'secondary'}
-                    loading={startSession.isPending && startSession.variables === mode.mode}
+                    loading={startSession.isPending && startSession.variables?.mode === mode.mode}
                     disabled={startSession.isPending}
-                    onClick={() => startSession.mutate(mode.mode)}
+                    onClick={() => {
+                      if (isTargeted) {
+                        setTargetPanelOpen((open) => !open);
+                      } else {
+                        startSession.mutate({ mode: mode.mode });
+                      }
+                    }}
                   >
-                    Commencer
+                    {isTargeted ? (targetPanelOpen ? 'Fermer' : 'Configurer') : 'Commencer'}
                   </Button>
                 </Card>
               </motion.div>
             );
           })}
         </div>
+
+        <AnimatePresence>
+          {targetPanelOpen ? (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="overflow-hidden"
+            >
+              <Card className="mt-6">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <span className="flex size-10 items-center justify-center rounded-xl bg-accent-soft text-accent">
+                      <Crosshair aria-hidden className="size-5" />
+                    </span>
+                    <div>
+                      <h2 className="text-lg font-bold">Composer votre révision ciblée</h2>
+                      <p className="text-sm text-muted">
+                        Au moins un filtre est nécessaire pour démarrer.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 grid gap-6 lg:grid-cols-2">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm font-bold text-ink-soft">Niveau</p>
+                    <Segmented
+                      ariaLabel="Filtrer par niveau"
+                      size="sm"
+                      value={targetLevel}
+                      onChange={setTargetLevel}
+                      options={[
+                        { value: 'all', label: 'Tous' },
+                        ...JLPT_LEVELS.map((level) => ({
+                          value: level,
+                          label: level,
+                          disabled: levelsLoaded && !publishedLevels.has(level),
+                        })),
+                      ]}
+                    />
+                    <p className="text-xs text-muted">
+                      Seuls les niveaux publiés sont sélectionnables.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm font-bold text-ink-soft">Compétence</p>
+                    <Segmented
+                      ariaLabel="Filtrer par compétence"
+                      size="sm"
+                      value={targetSkill}
+                      onChange={setTargetSkill}
+                      options={[
+                        { value: 'all', label: 'Toutes' },
+                        ...SKILLS.map((skill) => ({
+                          value: skill,
+                          label: SKILL_LABELS[skill] ?? skill,
+                        })),
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                {targetKanji.length > 0 ? (
+                  <div className="mt-6">
+                    <p className="text-sm font-bold text-ink-soft">
+                      Kanji sélectionnés ({targetKanji.length})
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {targetKanji.map((kanji) => (
+                        <span
+                          key={kanji.id}
+                          className="flex items-center gap-1.5 rounded-lg border border-line bg-surface-2 px-2.5 py-1.5"
+                        >
+                          <span className="font-jp text-lg text-ink">{kanji.literal}</span>
+                          <button
+                            type="button"
+                            aria-label={`Retirer ${kanji.literal} de la sélection`}
+                            onClick={() =>
+                              setTargetKanji((list) =>
+                                list.filter((entry) => entry.id !== kanji.id),
+                              )
+                            }
+                            className="cursor-pointer rounded-md p-0.5 text-muted transition-colors hover:bg-surface-3 hover:text-danger"
+                          >
+                            <X aria-hidden className="size-3.5" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <Button
+                    size="lg"
+                    disabled={!targetReady}
+                    loading={startSession.isPending && startSession.variables?.mode === 'targeted'}
+                    onClick={startTargeted}
+                  >
+                    Démarrer la session ciblée
+                    <ArrowRight aria-hidden className="size-4.5" />
+                  </Button>
+                  {!targetReady ? (
+                    <p className="text-sm text-muted">
+                      Choisissez un niveau, une compétence ou des kanji à réviser.
+                    </p>
+                  ) : null}
+                </div>
+              </Card>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
 
         {startSession.isError ? (
           <p role="alert" className="mt-6 text-center text-sm font-medium text-danger">
@@ -364,29 +587,61 @@ export function SessionPage() {
   }
 
   return (
-    <ExerciseView
-      current={current}
-      items={items}
-      pendingCount={pendingItems.length}
-      selected={selected}
-      typed={typed}
-      result={result}
-      outcomes={outcomes}
-      answerPending={answer.isPending}
-      answerError={answer.isError}
-      finishPending={finish.isPending}
-      romajiEnabled={romajiEnabled}
-      furiganaMode={furiganaMode}
-      onTyped={setTyped}
-      onSelect={(option) => {
-        setSelected(option);
-        submit(option);
-      }}
-      onSubmit={submit}
-      onNext={next}
-      onQuit={() => navigate('/')}
-      isLast={currentPosition + 1 >= pendingItems.length}
-    />
+    <>
+      <ExerciseView
+        current={current}
+        items={items}
+        pendingCount={pendingItems.length}
+        selected={selected}
+        typed={typed}
+        result={result}
+        outcomes={outcomes}
+        answerPending={answer.isPending}
+        answerError={answer.isError}
+        finishPending={finish.isPending}
+        romajiEnabled={romajiEnabled}
+        furiganaMode={furiganaMode}
+        onTyped={setTyped}
+        onSelect={(option) => {
+          setSelected(option);
+          submit(option);
+        }}
+        onSubmit={submit}
+        onNext={next}
+        onQuit={() => setQuitModalOpen(true)}
+        isLast={currentPosition + 1 >= pendingItems.length}
+      />
+
+      <Modal
+        open={quitModalOpen}
+        onOpenChange={setQuitModalOpen}
+        title="Quitter la session ?"
+        description="Vos réponses déjà données sont conservées et la progression est enregistrée."
+      >
+        <div className="flex flex-col gap-3">
+          <Button
+            variant="danger"
+            loading={abandon.isPending}
+            onClick={() => session && abandon.mutate(session.id)}
+          >
+            Abandonner la session
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setQuitModalOpen(false);
+              navigate('/');
+            }}
+          >
+            Continuer plus tard
+          </Button>
+          <p className="text-center text-xs text-muted">
+            « Continuer plus tard » garde la session ouverte : vous la reprendrez ici. « Abandonner
+            » ferme la session et libère la file.
+          </p>
+        </div>
+      </Modal>
+    </>
   );
 }
 

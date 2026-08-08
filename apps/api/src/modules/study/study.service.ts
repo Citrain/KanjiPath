@@ -1,8 +1,11 @@
 import type {
   AnswerResult,
+  CreateSessionInput,
   CreateSessionResponse,
   ResumeResponse,
+  ReviewCardSkill,
   StudyQueueItem,
+  StudyTarget,
 } from '@kanjipath/contracts';
 import {
   computeOverallScore,
@@ -16,6 +19,8 @@ import { PrismaService } from '../../infrastructure/database/prisma.service';
 import { CARD_SKILL_TO_TEMPLATES, gradeAnswer, TEMPLATE_TO_CARD_SKILL } from './grader';
 
 const scheduler = new FsrsReviewScheduler();
+
+const TARGETED_QUEUE_SIZE = 20;
 
 interface ExerciseRow {
   id: string;
@@ -48,19 +53,32 @@ function shuffle<T>(items: T[]): T[] {
 export class StudyService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createSession(userId: string, mode: string): Promise<CreateSessionResponse> {
-    const sessionMode = mode === 'weak_points' || mode === 'free' ? mode : 'daily';
+  async createSession(userId: string, input: CreateSessionInput): Promise<CreateSessionResponse> {
+    const sessionMode = input.mode;
+    const target = input.target;
+    if (sessionMode === 'targeted' && !target) {
+      throw new BadRequestException(
+        'Une révision ciblée demande au moins un filtre (niveau, compétence ou kanji)',
+      );
+    }
     const settings = await this.prisma.userSettings.findUnique({ where: { userId } });
     const dailyNewLimit = settings?.dailyNewLimit ?? 10;
 
     const exercises = await this.loadExercises();
-    const queue = await this.buildQueue(userId, sessionMode, dailyNewLimit, exercises);
+    const queue =
+      sessionMode === 'targeted' && target
+        ? await this.buildTargetedQueue(userId, target, exercises)
+        : await this.buildQueue(userId, sessionMode, dailyNewLimit, exercises);
     if (queue.length === 0) {
       throw new BadRequestException('Aucun exercice disponible pour cette session');
     }
 
     const session = await this.prisma.studySession.create({
-      data: { userId, mode: sessionMode as never },
+      data: {
+        userId,
+        mode: sessionMode as never,
+        targetJson: target ? (target as Prisma.InputJsonValue) : undefined,
+      },
     });
     await this.prisma.studySessionItem.createMany({
       data: queue.map((exercise, position) => ({
@@ -75,6 +93,7 @@ export class StudyService {
       session: {
         id: session.id,
         mode: session.mode,
+        target: extractTarget(session.targetJson),
         startedAt: session.startedAt.toISOString(),
         answeredCount: 0,
         correctCount: 0,
@@ -97,6 +116,7 @@ export class StudyService {
       session: {
         id: session.id,
         mode: session.mode,
+        target: extractTarget(session.targetJson),
         startedAt: session.startedAt.toISOString(),
         answeredCount: session.answeredCount,
         correctCount: session.correctCount,
@@ -205,6 +225,28 @@ export class StudyService {
       0,
       Math.round((Date.now() - session.startedAt.getTime()) / 1000),
     );
+    await this.prisma.studySession.update({
+      where: { id: sessionId },
+      data: { endedAt: new Date(), durationSeconds },
+    });
+  }
+
+  async abandon(userId: string, sessionId: string): Promise<void> {
+    const session = await this.prisma.studySession.findFirst({ where: { id: sessionId, userId } });
+    if (!session) {
+      throw new NotFoundException('Session introuvable');
+    }
+    if (session.endedAt) {
+      return;
+    }
+    const durationSeconds = Math.max(
+      0,
+      Math.round((Date.now() - session.startedAt.getTime()) / 1000),
+    );
+    await this.prisma.studySessionItem.updateMany({
+      where: { sessionId, status: 'pending' },
+      data: { status: 'skipped' },
+    });
     await this.prisma.studySession.update({
       where: { id: sessionId },
       data: { endedAt: new Date(), durationSeconds },
@@ -548,6 +590,136 @@ export class StudyService {
     return shuffle(queue);
   }
 
+  private async buildTargetedQueue(
+    userId: string,
+    target: StudyTarget,
+    exercises: Map<string, ExerciseRow[]>,
+  ): Promise<ExerciseRow[]> {
+    const used = new Set<string>();
+    const queue: ExerciseRow[] = [];
+    const now = new Date();
+    const endOfToday = new Date(now);
+    endOfToday.setHours(23, 59, 59, 999);
+    const kanjiFilter =
+      target.kanjiIds && target.kanjiIds.length > 0 ? new Set(target.kanjiIds) : null;
+
+    const matchesTarget = (row: ExerciseRow): boolean => {
+      if (target.level && row.level !== target.level) {
+        return false;
+      }
+      if (target.skill && row.skill !== target.skill) {
+        return false;
+      }
+      if (kanjiFilter && (!row.kanjiId || !kanjiFilter.has(row.kanjiId))) {
+        return false;
+      }
+      return true;
+    };
+
+    const pushFromCard = (subjectId: string, skill: string): void => {
+      const templates = CARD_SKILL_TO_TEMPLATES[skill as ReviewCardSkill] ?? [];
+      for (const template of templates) {
+        const exercise = this.pickExercise(exercises, template, subjectId, used);
+        if (exercise && matchesTarget(exercise)) {
+          used.add(exercise.id);
+          queue.push(exercise);
+          return;
+        }
+      }
+    };
+
+    const dueWhere: Prisma.ReviewCardWhereInput = {
+      userId,
+      subjectType: 'kanji',
+      dueAt: { lte: endOfToday },
+      state: { not: 'Suspended' },
+    };
+    if (kanjiFilter) {
+      dueWhere.subjectId = { in: [...kanjiFilter] };
+    }
+    const dueCards = await this.prisma.reviewCard.findMany({
+      where: dueWhere,
+      orderBy: { dueAt: 'asc' },
+      take: TARGETED_QUEUE_SIZE * 3,
+    });
+    for (const card of dueCards) {
+      if (queue.length >= TARGETED_QUEUE_SIZE) {
+        break;
+      }
+      pushFromCard(card.subjectId, card.skill);
+    }
+
+    if (queue.length < TARGETED_QUEUE_SIZE) {
+      const failureCards: Prisma.ReviewCardWhereInput = { userId };
+      if (kanjiFilter) {
+        failureCards.subjectId = { in: [...kanjiFilter] };
+      }
+      const recentFailures = await this.prisma.reviewLog.findMany({
+        where: {
+          reviewCard: failureCards,
+          wasCorrect: false,
+          reviewedAt: { gte: new Date(now.getTime() - 7 * 24 * 3600 * 1000) },
+        },
+        include: { reviewCard: true },
+        orderBy: { reviewedAt: 'desc' },
+        take: 60,
+      });
+      const seen = new Set<string>();
+      for (const failure of recentFailures) {
+        if (queue.length >= TARGETED_QUEUE_SIZE) {
+          break;
+        }
+        const card = failure.reviewCard;
+        const key = `${card.subjectId}:${card.skill}`;
+        if (seen.has(key)) {
+          continue;
+        }
+        seen.add(key);
+        pushFromCard(card.subjectId, card.skill);
+      }
+    }
+
+    if (queue.length < TARGETED_QUEUE_SIZE) {
+      const pool: ExerciseRow[] = [];
+      for (const rows of exercises.values()) {
+        for (const row of rows) {
+          if (matchesTarget(row)) {
+            pool.push(row);
+          }
+        }
+      }
+      pool.sort((a, b) => a.difficulty - b.difficulty || a.id.localeCompare(b.id));
+      const seenKanjiSkill = new Set<string>();
+      for (const exercise of pool) {
+        if (queue.length >= TARGETED_QUEUE_SIZE) {
+          break;
+        }
+        if (used.has(exercise.id)) {
+          continue;
+        }
+        const key = `${exercise.kanjiId}:${exercise.skill}`;
+        if (seenKanjiSkill.has(key)) {
+          continue;
+        }
+        seenKanjiSkill.add(key);
+        used.add(exercise.id);
+        queue.push(exercise);
+      }
+      for (const exercise of pool) {
+        if (queue.length >= TARGETED_QUEUE_SIZE) {
+          break;
+        }
+        if (used.has(exercise.id)) {
+          continue;
+        }
+        used.add(exercise.id);
+        queue.push(exercise);
+      }
+    }
+
+    return shuffle(queue);
+  }
+
   private async queueItems(sessionId: string): Promise<StudyQueueItem[]> {
     const items = await this.prisma.studySessionItem.findMany({
       where: { sessionId },
@@ -597,4 +769,25 @@ function extractDistractors(answerJson: Prisma.JsonValue): string[] {
 function extractExplanation(explanationJson: Prisma.JsonValue | null): string | null {
   const value = explanationJson as { explanation?: unknown } | null;
   return typeof value?.explanation === 'string' ? value.explanation : null;
+}
+
+function extractTarget(targetJson: Prisma.JsonValue | null): StudyTarget | null {
+  if (!targetJson || typeof targetJson !== 'object') {
+    return null;
+  }
+  const value = targetJson as Partial<StudyTarget>;
+  const target: StudyTarget = {};
+  if (typeof value.level === 'string') {
+    target.level = value.level as StudyTarget['level'];
+  }
+  if (typeof value.skill === 'string') {
+    target.skill = value.skill as StudyTarget['skill'];
+  }
+  if (Array.isArray(value.kanjiIds)) {
+    target.kanjiIds = value.kanjiIds.filter((entry): entry is string => typeof entry === 'string');
+  }
+  if (!target.level && !target.skill && (!target.kanjiIds || target.kanjiIds.length === 0)) {
+    return null;
+  }
+  return target;
 }

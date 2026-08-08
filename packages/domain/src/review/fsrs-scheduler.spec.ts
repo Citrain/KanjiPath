@@ -43,4 +43,20 @@ describe('FsrsReviewScheduler', () => {
     scheduler.review(card, 'good', NOW);
     expect(card.reps).toBe(repsBefore);
   });
+
+  it('returns null retrievability for an untouched card', () => {
+    const card = scheduler.createEmptyCard(NOW);
+    expect(scheduler.retrievability(card, NOW)).toBeNull();
+  });
+
+  it('returns a decreasing retrievability as time passes', () => {
+    const card = scheduler.review(scheduler.createEmptyCard(NOW), 'good', NOW).card;
+    const soon = scheduler.retrievability(card, new Date(NOW.getTime() + 60 * 1000));
+    const later = scheduler.retrievability(card, new Date(NOW.getTime() + 6 * 24 * 3600 * 1000));
+    expect(soon).not.toBeNull();
+    expect(later).not.toBeNull();
+    expect(soon as number).toBeGreaterThan(later as number);
+    expect(soon as number).toBeLessThanOrEqual(1);
+    expect(later as number).toBeGreaterThanOrEqual(0);
+  });
 });

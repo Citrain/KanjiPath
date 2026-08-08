@@ -5,3 +5,4 @@ export * from './api/progress';
 export * from './api/study';
 export * from './enums';
 export * from './schemas/auth';
+export * from './schemas/study';
