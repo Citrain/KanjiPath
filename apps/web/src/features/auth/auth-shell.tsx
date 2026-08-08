@@ -83,7 +83,7 @@ export function AuthShell({
             </span>
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight text-ink">{title}</h1>
-          <p className="mt-2 text-[15px] text-muted">{subtitle}</p>
+          <p className="mt-2 text-[0.9375rem] text-muted">{subtitle}</p>
           {children}
         </div>
       </section>

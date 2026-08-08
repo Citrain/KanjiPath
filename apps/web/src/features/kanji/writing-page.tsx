@@ -622,7 +622,7 @@ function WritingPractice({ literal }: { literal: string }) {
                   : 'Tracez chaque trait du point numéroté vers la flèche, dans l’ordre. Le trait validé s’encre automatiquement.'}
               </p>
               <div className="flex flex-col gap-2.5">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-muted">
+                <p className="text-[0.6875rem] font-bold uppercase tracking-wider text-muted">
                   Aide fantôme
                 </p>
                 <Segmented

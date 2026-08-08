@@ -35,7 +35,7 @@ export function KanjiTile({ kanji }: { kanji: KanjiSummary }) {
           label={`Maîtrise de ${kanji.literal}`}
         />
       </span>
-      <span className="mt-2.5 flex items-center gap-1.5 text-[11px] font-semibold text-muted">
+      <span className="mt-2.5 flex items-center gap-1.5 text-[0.6875rem] font-semibold text-muted">
         <span>{kanji.strokeCount} traits</span>
         <span aria-hidden>·</span>
         <span>#{kanji.order}</span>

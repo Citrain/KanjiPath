@@ -2,7 +2,7 @@ import { AlertCircle } from 'lucide-react';
 import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from 'react';
 
 const CONTROL_BASE =
-  'w-full rounded-xl border bg-surface-2 text-[15px] text-ink placeholder:text-muted ' +
+  'w-full rounded-xl border bg-surface-2 text-[0.9375rem] text-ink placeholder:text-muted ' +
   'transition-[border-color,box-shadow] duration-150 ' +
   'focus:outline-none focus:border-accent/70 focus:shadow-[0_0_0_3px_var(--accent-soft)] ' +
   'disabled:cursor-not-allowed disabled:opacity-50';

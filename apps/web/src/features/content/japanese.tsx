@@ -63,7 +63,7 @@ export function SentenceView({
   return (
     <div>
       <p
-        className={`leading-[1.9] text-ink ${hoverClass} ${className ?? 'text-[22px]'}`.trim()}
+        className={`leading-[1.9] text-ink ${hoverClass} ${className ?? 'text-[1.375rem]'}`.trim()}
       >
         {tokens.length > 0
           ? tokens.map((token, index) => {
@@ -110,7 +110,7 @@ export function SentenceView({
           : japanese}
       </p>
       {romaji ? (
-        <p className="mt-1.5 text-[15px] font-medium tracking-wide text-muted">{romaji}</p>
+        <p className="mt-1.5 text-[0.9375rem] font-medium tracking-wide text-muted">{romaji}</p>
       ) : null}
     </div>
   );

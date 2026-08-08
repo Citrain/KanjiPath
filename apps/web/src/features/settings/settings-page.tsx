@@ -72,7 +72,7 @@ export function SettingsPage() {
 
   if (settings.isPending) {
     return (
-      <div className="mx-auto max-w-2xl">
+      <div>
         <Skeleton className="h-10 w-56" />
         <Skeleton className="mt-6 h-64 w-full rounded-2xl" />
         <Skeleton className="mt-5 h-72 w-full rounded-2xl" />
@@ -81,14 +81,14 @@ export function SettingsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div>
       <PageHeader
         eyebrow="Votre expérience"
         title="Préférences"
         description="Réglez l'apparence et le rythme de votre apprentissage."
       />
 
-      <div className="mt-8 flex flex-col gap-5">
+      <div className="mt-8 grid gap-5 lg:grid-cols-2">
         <Card>
           <SectionHeader title="Apparence" />
           <div className="mt-5 flex flex-col gap-5">
@@ -260,7 +260,7 @@ export function SettingsPage() {
           </div>
         </Card>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 lg:col-span-2">
           <Button size="lg" loading={save.isPending} onClick={() => save.mutate()}>
             {save.isPending ? 'Enregistrement…' : 'Enregistrer mes préférences'}
           </Button>

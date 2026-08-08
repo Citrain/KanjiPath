@@ -34,7 +34,7 @@ export function ForecastChart({ days }: { days: DueForecastDay[] }) {
           );
         })}
       </div>
-      <div className="mt-2 flex justify-between text-[11px] font-semibold text-muted">
+      <div className="mt-2 flex justify-between text-[0.6875rem] font-semibold text-muted">
         <span>Aujourd’hui</span>
         <span>+7 jours</span>
       </div>

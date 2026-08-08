@@ -386,7 +386,7 @@ export function SessionPage() {
           <h1 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">
             Prêt à réviser ?
           </h1>
-          <p className="mx-auto mt-2 max-w-xl text-[15px] text-muted">
+          <p className="mx-auto mt-2 max-w-xl text-[0.9375rem] text-muted">
             Chaque réponse ajuste la planification de vos révisions. Choisissez votre session :
           </p>
         </div>
@@ -866,7 +866,7 @@ function ExerciseView({
                         >
                           <span
                             aria-hidden
-                            className="absolute right-3 top-3 flex size-5 items-center justify-center rounded-md bg-surface-3 text-[11px] font-bold text-muted"
+                            className="absolute right-3 top-3 flex size-5 items-center justify-center rounded-md bg-surface-3 text-[0.6875rem] font-bold text-muted"
                           >
                             {index + 1}
                           </span>

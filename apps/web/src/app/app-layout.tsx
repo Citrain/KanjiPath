@@ -208,14 +208,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
             </nav>
             <div className="flex flex-col gap-3 border-t border-line p-3">
               {streak && streak.days > 0 ? (
-                <p className="flex items-center gap-2 rounded-xl bg-surface-2 px-3 py-2 text-[13px] font-semibold text-ink-soft">
+                <p className="flex items-center gap-2 rounded-xl bg-surface-2 px-3 py-2 text-[0.8125rem] font-semibold text-ink-soft">
                   <Flame aria-hidden className="size-4 text-accent-2" />
                   Série de {streak.days} jour{streak.days > 1 ? 's' : ''}
                   {!streak.activeToday ? ' — à confirmer aujourd’hui' : ''}
                 </p>
               ) : null}
               {userMenu}
-              <p className="px-1 text-[11px] leading-relaxed text-muted">
+              <p className="px-1 text-[0.6875rem] leading-relaxed text-muted">
                 Parcours aligné sur le JLPT — listes non officielles.
               </p>
             </div>
@@ -247,7 +247,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </header>
 
           <div className="lg:pl-64">
-            <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-20 lg:pt-10">
+            <main className="w-full px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-20 lg:pt-10">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={location.pathname}
@@ -287,7 +287,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                     to={item.to}
                     end={item.to === '/'}
                     className={({ isActive }) =>
-                      `flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] font-semibold transition-colors ${
+                      `flex min-h-14 flex-col items-center justify-center gap-1 text-[0.6875rem] font-semibold transition-colors ${
                         isActive ? 'text-accent' : 'text-muted'
                       }`
                     }
@@ -299,7 +299,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                           {item.to === '/etude' && totalDue > 0 ? (
                             <span
                               aria-hidden
-                              className="absolute -right-2 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-white"
+                              className="absolute -right-2 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[0.625rem] font-bold text-white"
                             >
                               {totalDue}
                             </span>

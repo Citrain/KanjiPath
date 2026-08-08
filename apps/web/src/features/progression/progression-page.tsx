@@ -211,7 +211,7 @@ export function ProgressionPage() {
                           {STATUS_SPLIT.map((part) => (
                             <li
                               key={part.key}
-                              className="flex items-center gap-1.5 text-[11px] font-semibold text-muted"
+                              className="flex items-center gap-1.5 text-[0.6875rem] font-semibold text-muted"
                             >
                               <span
                                 aria-hidden

@@ -224,7 +224,7 @@ export function KanjiCardPage() {
                   key={stat.label}
                   className="rounded-xl border border-line bg-surface-2 px-3 py-2.5 text-center"
                 >
-                  <dt className="text-[11px] font-bold uppercase tracking-wider text-muted">
+                  <dt className="text-[0.6875rem] font-bold uppercase tracking-wider text-muted">
                     {stat.label}
                   </dt>
                   <dd className="mt-0.5 text-lg font-extrabold text-ink">{stat.value}</dd>
@@ -291,7 +291,7 @@ export function KanjiCardPage() {
                   >
                     <span className="font-jp text-lg font-semibold leading-tight">{r.reading}</span>
                     {romajiEnabled && r.romaji ? (
-                      <span className="text-[11px] font-semibold opacity-75">{r.romaji}</span>
+                      <span className="text-[0.6875rem] font-semibold opacity-75">{r.romaji}</span>
                     ) : null}
                   </span>
                 ))}
@@ -317,7 +317,7 @@ export function KanjiCardPage() {
                       ) : null}
                     </span>
                     {romajiEnabled && r.romaji ? (
-                      <span className="text-[11px] font-semibold opacity-75">{r.romaji}</span>
+                      <span className="text-[0.6875rem] font-semibold opacity-75">{r.romaji}</span>
                     ) : null}
                   </span>
                 ))}
@@ -388,7 +388,7 @@ export function KanjiCardPage() {
               <div>
                 <p className="font-bold text-ink">{kanji.radical.nameFr ?? 'radical'}</p>
                 <p className="text-sm text-muted">{kanji.radical.meaningFr ?? ''}</p>
-                <p className="mt-1 text-[11px] font-bold uppercase tracking-wide text-accent">
+                <p className="mt-1 text-[0.6875rem] font-bold uppercase tracking-wide text-accent">
                   radical principal
                 </p>
               </div>
@@ -447,7 +447,7 @@ export function KanjiCardPage() {
                 Mnémotechnique
               </p>
               <p className="mt-2 text-sm leading-relaxed text-ink-soft">{kanji.notes.mnemonicFr}</p>
-              <p className="mt-2.5 text-[11px] italic text-muted">
+              <p className="mt-2.5 text-[0.6875rem] italic text-muted">
                 Une aide mémoire, pas une étymologie.
               </p>
             </div>
@@ -462,7 +462,7 @@ export function KanjiCardPage() {
                 {kanji.notes.etymologyFr}
               </p>
               {kanji.notes.etymologySource ? (
-                <p className="mt-2.5 text-[11px] text-muted">
+                <p className="mt-2.5 text-[0.6875rem] text-muted">
                   Source : {kanji.notes.etymologySource}
                 </p>
               ) : null}
@@ -526,12 +526,12 @@ export function KanjiCardPage() {
                   <span className="flex flex-col items-end">
                     <span className="text-sm font-bold text-accent">{word.reading}</span>
                     {romajiEnabled && word.romaji ? (
-                      <span className="text-[11px] font-medium text-muted">{word.romaji}</span>
+                      <span className="text-[0.6875rem] font-medium text-muted">{word.romaji}</span>
                     ) : null}
                   </span>
                 </div>
                 <p className="mt-2 text-sm leading-snug text-ink-soft">{word.meaningFr}</p>
-                <p className="mt-2.5 text-[11px] font-semibold uppercase tracking-wide text-muted">
+                <p className="mt-2.5 text-[0.6875rem] font-semibold uppercase tracking-wide text-muted">
                   {word.partOfSpeech ?? 'mot'}
                   {word.readingInWord ? ` · ${kanji.literal} → ${word.readingInWord}` : ''}
                 </p>
@@ -565,10 +565,10 @@ export function KanjiCardPage() {
                   furiganaMode={furiganaMode}
                   className="text-4xl"
                 />
-                <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-soft">
                   {sentence.translationFr}
                 </p>
-                <p className="mt-3 text-[11px] text-muted/80">
+                <p className="mt-3 text-[0.6875rem] text-muted/80">
                   {sentence.author ?? 'Tatoeba'} · {sentence.license ?? 'licence Tatoeba'}
                 </p>
               </li>

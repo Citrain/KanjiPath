@@ -70,7 +70,7 @@ export function HistoryChart({ days }: { days: HistoryDay[] }) {
           );
         })}
       </div>
-      <div className="mt-2 flex justify-between text-[11px] font-semibold text-muted">
+      <div className="mt-2 flex justify-between text-[0.6875rem] font-semibold text-muted">
         <span>{first ? formatDateShort(first.date) : ''}</span>
         <span>{last ? formatDateShort(last.date) : ''}</span>
       </div>

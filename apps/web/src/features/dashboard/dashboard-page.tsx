@@ -110,7 +110,7 @@ export function DashboardPage() {
               <h2 className="mt-4 text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
                 Continuer l'apprentissage
               </h2>
-              <p className="mt-2 text-[15px] leading-relaxed text-muted">
+              <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted">
                 {active.masteredCount}/{active.total} kanji maîtrisés en {active.level} ·{' '}
                 {active.learningCount + active.reviewingCount} en cours d'acquisition.
               </p>
@@ -148,7 +148,7 @@ export function DashboardPage() {
                     {Math.round(active.weightedMastery * 100)}
                     <span className="text-xl">%</span>
                   </p>
-                  <p className="mt-0.5 text-[11px] font-bold uppercase tracking-widest text-muted">
+                  <p className="mt-0.5 text-[0.6875rem] font-bold uppercase tracking-widest text-muted">
                     maîtrise {active.level}
                   </p>
                 </div>

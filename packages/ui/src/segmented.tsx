@@ -49,7 +49,7 @@ export function Segmented<T extends string>({
   }
 
   const optionClasses =
-    size === 'sm' ? 'rounded-lg px-3 py-1.5 text-[13px]' : 'rounded-lg px-3.5 py-2 text-sm';
+    size === 'sm' ? 'rounded-lg px-3 py-1.5 text-[0.8125rem]' : 'rounded-lg px-3.5 py-2 text-sm';
 
   return (
     <div

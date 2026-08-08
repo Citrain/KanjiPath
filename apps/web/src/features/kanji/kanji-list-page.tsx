@@ -185,7 +185,7 @@ export function KanjiListPage() {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Rechercher : 時, montagne…"
-            className="h-11 w-full rounded-xl border border-line bg-surface-2 pl-10 pr-4 text-[15px] text-ink transition-[border-color,box-shadow] placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_3px_var(--accent-soft)] focus:outline-none"
+            className="h-11 w-full rounded-xl border border-line bg-surface-2 pl-10 pr-4 text-[0.9375rem] text-ink transition-[border-color,box-shadow] placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_3px_var(--accent-soft)] focus:outline-none"
           />
         </label>
       </div>

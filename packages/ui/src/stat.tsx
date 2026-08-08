@@ -35,7 +35,7 @@ export function Stat({ label, value, icon, tone = 'default', hint, className = '
         <p className="text-xs font-bold uppercase tracking-wider text-muted">{label}</p>
       </div>
       <div className="mt-3 text-3xl font-extrabold tracking-tight text-ink">{value}</div>
-      {hint ? <p className="mt-1 text-[13px] text-muted">{hint}</p> : null}
+      {hint ? <p className="mt-1 text-[0.8125rem] text-muted">{hint}</p> : null}
     </div>
   );
 }
