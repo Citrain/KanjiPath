@@ -113,7 +113,9 @@ Le frontend suit un design system « encre & washi » contemporain défini dans
   `Segmented` (navigation fléchée), `Tabs`, `Progress`, `Ring`, `Skeleton`,
   `Slider`, `Stat`, `Tooltip` (Radix), `Dropdown` (Radix), `Modal` (Radix),
   `Toast` (`ToastProvider` + `useToast`), `EmptyState`, `ErrorState`,
-  `PageHeader`, `SectionHeader`.
+  `PageHeader`, `SectionHeader`. Leurs classes Tailwind ne sont générées que grâce
+  à la directive `@source "../../../../packages/ui/src"` dans
+  `apps/web/src/styles/index.css` (piège 40 du guide agent).
 - **Composants domaine** (`apps/web/src/components/`) : `KanjiTile`,
   `LevelBadge` (teinte par niveau N5→N1), `StatusBadge`/`STATUS_META`,
   `HistoryChart` (fenêtre 30 jours complétée de jours vides).

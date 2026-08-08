@@ -349,6 +349,16 @@ ajoute-le ici.
     historique tant que ≤ 35 révisions sont dues. Tester via
     `study-queue.spec.ts` plutôt qu'en session réelle.
 
+40. **Tailwind ne scanne PAS `packages/ui` automatiquement.** Sans directive
+    `@source` dans `apps/web/src/styles/index.css`, les classes utilisées uniquement
+    dans `packages/ui/src` ne sont jamais générées (silencieusement absentes du CSS :
+    le composant perd sa hauteur, son padding, son dégradé…). C'est resté invisible
+    tant que `packages/ui` n'employait que des classes aussi présentes dans
+    `apps/web`. La ligne `@source "../../../../packages/ui/src";` (chemin relatif au
+    fichier CSS) est **obligatoire**. Après tout ajout de classe dans `packages/ui`,
+    vérifier sa présence dans le CSS produit (`vite build` puis grep du `.css` de
+    `dist/assets`) : une classe manquante ne produit aucune erreur.
+
 ## Recettes
 
 ### Ajouter une route API

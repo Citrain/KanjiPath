@@ -12,7 +12,7 @@ import {
   Stat,
 } from '@kanjipath/ui';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowRight, BadgeCheck, Flame, NotebookPen, Target } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Flame, NotebookPen, Shapes, Target } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { HistoryChart } from '../../components/history-chart';
@@ -115,14 +115,23 @@ export function DashboardPage() {
                 {active.learningCount + active.reviewingCount} en cours d'acquisition.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <Button asChild size="xl">
+                <Button asChild size="xl" className="group">
                   <Link to="/etude">
                     Étudier maintenant
-                    <ArrowRight aria-hidden className="size-4.5" />
+                    <ArrowRight
+                      aria-hidden
+                      className="size-4.5 transition-transform duration-200 group-hover:translate-x-1"
+                    />
                   </Link>
                 </Button>
-                <Button asChild variant="secondary" size="xl">
-                  <Link to="/kanji">Explorer les kanji</Link>
+                <Button asChild variant="secondary" size="xl" className="group">
+                  <Link to="/kanji">
+                    <Shapes
+                      aria-hidden
+                      className="size-4.5 text-muted transition-colors duration-200 group-hover:text-accent"
+                    />
+                    Explorer les kanji
+                  </Link>
                 </Button>
               </div>
             </div>
