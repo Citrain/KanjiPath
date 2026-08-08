@@ -46,6 +46,8 @@ export function SentenceView({
   romajiEnabled,
   furiganaMode,
   className,
+  onTokenClick,
+  activeSurface,
 }: {
   tokens: SentenceTokenDto[];
   japanese: string;
@@ -53,6 +55,8 @@ export function SentenceView({
   romajiEnabled: boolean;
   furiganaMode: FuriganaMode;
   className?: string;
+  onTokenClick?: (surface: string) => void;
+  activeSurface?: string | null;
 }) {
   const romaji = romajiEnabled ? romajiLine(tokens) : '';
   const hoverClass = furiganaMode === 'hover' ? 'furigana-hover' : '';
@@ -75,6 +79,25 @@ export function SentenceView({
                   >
                     {content}
                   </mark>
+                );
+              }
+              if (onTokenClick) {
+                const active = activeSurface !== null && activeSurface === token.surface;
+                return (
+                  <button
+                    // biome-ignore lint/suspicious/noArrayIndexKey: tokens statiques, jamais réordonnés
+                    key={`${token.surface}-${index}`}
+                    type="button"
+                    onClick={() => onTokenClick(token.surface)}
+                    aria-label={`Consulter « ${token.surface} »`}
+                    className={`cursor-pointer rounded-md font-jp transition-colors duration-150 ${
+                      active
+                        ? 'bg-accent-soft px-1 text-accent'
+                        : 'px-0.5 text-ink hover:bg-accent-soft hover:text-accent'
+                    }`}
+                  >
+                    {content}
+                  </button>
                 );
               }
               return (

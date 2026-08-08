@@ -41,6 +41,11 @@ export class ContentController {
     return { related: await this.content.kanjiRelated(literal) };
   }
 
+  @Get('words/:surface')
+  async wordLookup(@Param('surface') surface: string) {
+    return this.content.vocabularyLookup(surface);
+  }
+
   @Get('kanji/:literal/progress')
   kanjiProgress(@CurrentUserId() userId: string, @Param('literal') literal: string) {
     return this.content.kanjiProgress(userId, literal);

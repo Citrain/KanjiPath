@@ -1,204 +1,894 @@
 {
-  "一": { "nameFr": "un / trait horizontal", "meaningFr": "le sol, la ligne horizontale" },
-  "二": { "nameFr": "deux", "meaningFr": "deux traits superposés" },
-  "十": { "nameFr": "croix", "meaningFr": "croisement d'un trait vertical et horizontal" },
-  "口": { "nameFr": "bouche", "meaningFr": "la bouche, l'ouverture" },
-  "囗": { "nameFr": "enceinte", "meaningFr": "un espace clos, une frontière" },
-  "土": { "nameFr": "terre", "meaningFr": "le sol, la motte de terre" },
-  "大": { "nameFr": "grand", "meaningFr": "un homme bras écartés" },
-  "女": { "nameFr": "femme", "meaningFr": "personne agenouillée" },
-  "子": { "nameFr": "enfant", "meaningFr": "un bébé avec la tête et les bras" },
-  "山": { "nameFr": "montagne", "meaningFr": "trois pics" },
-  "川": { "nameFr": "rivière", "meaningFr": "l'eau qui coule" },
-  "日": { "nameFr": "soleil", "meaningFr": "le soleil, le jour" },
-  "月": { "nameFr": "lune", "meaningFr": "la lune, la chair (variante)" },
-  "木": { "nameFr": "arbre", "meaningFr": "l'arbre, le bois" },
-  "水": { "nameFr": "eau", "meaningFr": "le courant et les gouttes" },
-  "火": { "nameFr": "feu", "meaningFr": "les flammes" },
-  "田": { "nameFr": "rizière", "meaningFr": "le champ cultivé" },
-  "米": { "nameFr": "riz", "meaningFr": "le grain de riz" },
-  "白": { "nameFr": "blanc", "meaningFr": "la lumière, la clarté" },
-  "目": { "nameFr": "œil", "meaningFr": "l'œil" },
-  "耳": { "nameFr": "oreille", "meaningFr": "l'oreille" },
-  "言": { "nameFr": "parole", "meaningFr": "parler, les mots" },
-  "舌": { "nameFr": "langue", "meaningFr": "la langue (organe)" },
-  "車": { "nameFr": "char", "meaningFr": "le véhicule" },
-  "門": { "nameFr": "porte", "meaningFr": "le portail" },
-  "行": { "nameFr": "marcher", "meaningFr": "le carrefour, la marche" },
-  "見": { "nameFr": "voir", "meaningFr": "l'œil qui regarde" },
-  "金": { "nameFr": "or / métal", "meaningFr": "le métal, l'argent" },
-  "雨": { "nameFr": "pluie", "meaningFr": "les gouttes qui tombent" },
-  "高": { "nameFr": "haut", "meaningFr": "la tour élevée (phonétique)" },
-  "力": { "nameFr": "force", "meaningFr": "la force, l'effort" },
-  "父": { "nameFr": "père", "meaningFr": "l'autorité paternelle" },
-  "母": { "nameFr": "mère", "meaningFr": "la mère" },
-  "毋": { "nameFr": "défense / variante de mère", "meaningFr": "la mère, l'interdiction" },
-  "五": { "nameFr": "cinq", "meaningFr": "le nombre cinq" },
-  "士": { "nameFr": "lettré / guerrier", "meaningFr": "l'homme instruit" },
-  "王": { "nameFr": "roi", "meaningFr": "le souverain" },
-  "又": { "nameFr": "main droite", "meaningFr": "la main qui agit, encore" },
-  "夕": { "nameFr": "soir", "meaningFr": "la lune du soir" },
-  "夂": { "nameFr": "pied qui marche", "meaningFr": "marcher lentement" },
-  "彳": { "nameFr": "petit pas", "meaningFr": "la marche (moitié gauche de 行)" },
-  "寸": { "nameFr": "pouce / mesure", "meaningFr": "la mesure, la main" },
-  "卜": { "nameFr": "divination", "meaningFr": "la fissure de la divination" },
-  "亅": { "nameFr": "crochet vertical", "meaningFr": "un trait vertical crocheté" },
-  "丶": { "nameFr": "point", "meaningFr": "un point" },
-  "ノ": { "nameFr": "trait oblique", "meaningFr": "un trait penché" },
-  "｜": { "nameFr": "trait vertical", "meaningFr": "une ligne verticale" },
-  "ハ": { "nameFr": "huit / séparation", "meaningFr": "séparer, partager" },
-  "乙": { "nameFr": "crochet", "meaningFr": "un bras courbé" },
-  "匕": { "nameFr": "cuillère / renversé", "meaningFr": "renversé, dos à dos" },
-  "𠆢": { "nameFr": "chapeau (variante de 人)", "meaningFr": "un toit en forme de personne" },
-  "⺅": { "nameFr": "personne debout (variante de 人)", "meaningFr": "une personne à gauche" },
-  "⺉": { "nameFr": "couteau à droite (variante de 刀)", "meaningFr": "couper" },
-  "⺌": { "nameFr": "petit (variante de 小)", "meaningFr": "petit, trier" },
-  "冖": { "nameFr": "couverture", "meaningFr": "un couvercle" },
-  "冂": { "nameFr": "boîte ouverte", "meaningFr": "un cadre, une bordure" },
-  "亠": { "nameFr": "couvercle", "meaningFr": "un toit" },
-  "儿": { "nameFr": "jambes", "meaningFr": "les jambes d'une personne" },
-  "丷": { "nameFr": "huit renversé", "meaningFr": "des cornes, un sommet" },
-  "爿": { "nameFr": "bois fendu", "meaningFr": "une planche" },
-  "干": { "nameFr": "sec / sécher", "meaningFr": "sécher, intervenir" },
-  "乞": { "nameFr": "demander", "meaningFr": "demander, prier" },
-  "气": { "nameFr": "souffle / vapeur", "meaningFr": "l'air, la vapeur" },
-  "聿": { "nameFr": "pinceau", "meaningFr": "écrire avec un pinceau" },
-  "戈": { "nameFr": "hallebarde", "meaningFr": "une arme ancienne" },
-  "九": { "nameFr": "neuf", "meaningFr": "le chiffre neuf" },
-  "人": { "nameFr": "personne", "meaningFr": "l'être humain" },
-  "小": { "nameFr": "petit", "meaningFr": "petit, menu" },
-  "入": { "nameFr": "entrer", "meaningFr": "pénétrer" },
-  "西": { "nameFr": "ouest", "meaningFr": "l'ouest" },
-  "幺": { "nameFr": "fil ténu", "meaningFr": "minuscule, un fil délié" },
-  "生": { "nameFr": "vie / naître", "meaningFr": "naître, pousser" },
-  "食": { "nameFr": "manger", "meaningFr": "la nourriture" },
-  "長": { "nameFr": "long", "meaningFr": "long, ancien" },
-  "工": { "nameFr": "travail / outil", "meaningFr": "l'outil, l'ouvrage" },
-  "手": { "nameFr": "main", "meaningFr": "la main" },
-  "文": { "nameFr": "écriture / motif", "meaningFr": "l'écriture, le dessin croisé" },
-  "犬": { "nameFr": "chien", "meaningFr": "le chien" },
-  "止": { "nameFr": "arrêter / pied", "meaningFr": "le pied qui s'arrête" },
-  "立": { "nameFr": "debout", "meaningFr": "se tenir debout" },
-  "元": { "nameFr": "origine", "meaningFr": "l'origine, le commencement" },
-  "厶": { "nameFr": "privé", "meaningFr": "ce qui est replié sur soi, le privé" },
-  "刀": { "nameFr": "couteau", "meaningFr": "couper" },
-  "心": { "nameFr": "cœur", "meaningFr": "le cœur, l'esprit" },
-  "方": { "nameFr": "direction / carré", "meaningFr": "la direction, le côté" },
-  "牛": { "nameFr": "vache", "meaningFr": "le bovin" },
-  "攵": { "nameFr": "frapper (攴)", "meaningFr": "tapoter, agir avec la main" },
-  "广": { "nameFr": "toit sur falaise", "meaningFr": "un abri adossé à une falaise" },
-  "用": { "nameFr": "usage", "meaningFr": "utiliser, l'usage" },
-  "世": { "nameFr": "monde / génération", "meaningFr": "le monde, la génération" },
-  "弋": { "nameFr": "piquet", "meaningFr": "un piquet, lancer" },
-  "勹": { "nameFr": "envelopper", "meaningFr": "envelopper, embrasser" },
-  "宀": { "nameFr": "toit", "meaningFr": "un toit, la maison" },
-  "⺾": { "nameFr": "herbe", "meaningFr": "les plantes, l'herbe" },
-  "赤": { "nameFr": "rouge", "meaningFr": "le rouge" },
-  "足": { "nameFr": "pied", "meaningFr": "le pied, la jambe" },
-  "⺹": { "nameFr": "vieux (variant de 老)", "meaningFr": "la vieillesse" },
-  "肉": { "nameFr": "viande", "meaningFr": "la chair, la viande" },
-  "自": { "nameFr": "soi-même", "meaningFr": "le nez, soi-même" },
-  "色": { "nameFr": "couleur", "meaningFr": "la couleur, l'apparence" },
-  "巴": { "nameFr": "serpent / virgule", "meaningFr": "un serpent enroulé" },
-  "斗": { "nameFr": "louche", "meaningFr": "la louche à mesure" },
-  "弓": { "nameFr": "arc", "meaningFr": "l'arc" },
-  "⺭": { "nameFr": "autel", "meaningFr": "l'autel, l'esprit" },
-  "走": { "nameFr": "courir", "meaningFr": "courir" },
-  "斤": { "nameFr": "hache", "meaningFr": "la hache, la mesure" },
-  "⻌": { "nameFr": "marcher (辵)", "meaningFr": "la route, avancer" },
-  "穴": { "nameFr": "grotte", "meaningFr": "un trou, une grotte" },
-  "青": { "nameFr": "bleu", "meaningFr": "le bleu, le vert" },
-  "音": { "nameFr": "son", "meaningFr": "le son" },
-  "也": { "nameFr": "également", "meaningFr": "aussi, de même" },
-  "歹": { "nameFr": "os dénudés", "meaningFr": "la mort, ce qui est mauvais" },
-  "巾": { "nameFr": "tissu", "meaningFr": "une pièce de tissu" },
-  "凵": { "nameFr": "réceptacle", "meaningFr": "une cavité" },
-  "矢": { "nameFr": "flèche", "meaningFr": "la flèche" },
-  "至": { "nameFr": "arriver", "meaningFr": "atteindre, arriver" },
-  "⺡": { "nameFr": "eau (氵)", "meaningFr": "l'eau" },
-  "豕": { "nameFr": "cochon", "meaningFr": "le porc" },
-  "氏": { "nameFr": "clan", "meaningFr": "le clan, la famille" },
-  "糸": { "nameFr": "fil", "meaningFr": "le fil de soie" },
-  "マ": { "nameFr": "ma (katakana)", "meaningFr": "forme en ma, couvrir" },
-  "虫": { "nameFr": "insecte", "meaningFr": "l'insecte, le ver" },
-  "里": { "nameFr": "village", "meaningFr": "le village, la distance" },
-  "魚": { "nameFr": "poisson", "meaningFr": "le poisson" },
-  "⺣": { "nameFr": "feu (灬)", "meaningFr": "les flammes" },
-  "鳥": { "nameFr": "oiseau", "meaningFr": "l'oiseau" },
-  "黒": { "nameFr": "noir", "meaningFr": "le noir" },
-  "匚": { "nameFr": "boîte ouverte", "meaningFr": "un coffre" },
-  "石": { "nameFr": "pierre", "meaningFr": "la pierre" },
-  "廾": { "nameFr": "deux mains", "meaningFr": "deux mains jointes" },
-  "勿": { "nameFr": "défense / ne pas", "meaningFr": "ne pas, bannière" },
-  "竹": { "nameFr": "bambou", "meaningFr": "le bambou" },
-  "貝": { "nameFr": "coquillage", "meaningFr": "le coquillage, l'argent" },
-  "⺲": { "nameFr": "filet", "meaningFr": "un filet" },
-  "首": { "nameFr": "tête", "meaningFr": "la tête, le cou" },
-  "冫": { "nameFr": "glace", "meaningFr": "la glace, le froid" },
-  "ヨ": { "nameFr": "yo (katakana)", "meaningFr": "une main qui ramasse" },
-  "卩": { "nameFr": "sceau", "meaningFr": "un genou plié, un sceau" },
-  "尸": { "nameFr": "corps", "meaningFr": "le corps, la dépouille" },
-  "⺘": { "nameFr": "main (扌)", "meaningFr": "la main à gauche" },
-  "癶": { "nameFr": "pieds opposés", "meaningFr": "deux pieds qui s'écartent" },
-  "已": { "nameFr": "déjà", "meaningFr": "déjà, achevé" },
-  "⻖": { "nameFr": "colline (阝)", "meaningFr": "une colline, un tertre" },
-  "羽": { "nameFr": "plume", "meaningFr": "la plume, l'aile" },
-  "隹": { "nameFr": "oiseau à queue courte", "meaningFr": "un oiseau" },
-  "欠": { "nameFr": "manquer / bâiller", "meaningFr": "manquer, bâiller" },
-  "羊": { "nameFr": "mouton", "meaningFr": "le mouton" },
-  "耒": { "nameFr": "charrue", "meaningFr": "l'araire, le labour" },
-  "辛": { "nameFr": "épicé / dur", "meaningFr": "l'aiguillon, la peine" },
-  "疒": { "nameFr": "maladie", "meaningFr": "un lit de malade" },
-  "免": { "nameFr": "exempter", "meaningFr": "échapper à, retirer" },
-  "矛": { "nameFr": "lance", "meaningFr": "la lance" },
-  "風": { "nameFr": "vent", "meaningFr": "le vent" },
-  "几": { "nameFr": "table basse", "meaningFr": "une petite table" },
-  "艮": { "nameFr": "limite / arrêt", "meaningFr": "s'arrêter, une limite" },
-  "疋": { "nameFr": "pied / tissu", "meaningFr": "le pied, une pièce de tissu" },
-  "頁": { "nameFr": "tête / page", "meaningFr": "la tête" },
-  "馬": { "nameFr": "cheval", "meaningFr": "le cheval" },
-  "禾": { "nameFr": "céréale", "meaningFr": "le grain sur pied" },
-  "廴": { "nameFr": "étirer", "meaningFr": "un long pas étiré" },
-  "厂": { "nameFr": "falaise", "meaningFr": "un surplomb rocheux" },
-  "品": { "nameFr": "objets (trois bouches)", "meaningFr": "des choses alignées" },
-  "爪": { "nameFr": "griffe", "meaningFr": "la griffe, la serre" },
-  "韋": { "nameFr": "cuir tanné", "meaningFr": "le cuir assoupli" },
-  "衣": { "nameFr": "vêtement", "meaningFr": "l'habit, le vêtement" },
-  "黄": { "nameFr": "jaune", "meaningFr": "la couleur jaune" },
-  "角": { "nameFr": "corne", "meaningFr": "la corne, le coin" },
-  "比": { "nameFr": "comparer", "meaningFr": "comparer, côte à côte" },
-  "井": { "nameFr": "puits", "meaningFr": "le puits, la grille" },
-  "⺖": { "nameFr": "cœur (忄)", "meaningFr": "le cœur à gauche" },
-  "彡": { "nameFr": "poils / décor", "meaningFr": "des traits descendants, une parure" },
-  "豆": { "nameFr": "haricot", "meaningFr": "le haricot, le vase d'offrandes" },
-  "甘": { "nameFr": "doux", "meaningFr": "le goût sucré" },
-  "及": { "nameFr": "atteindre", "meaningFr": "atteindre, s'étendre à" },
-  "禸": { "nameFr": "empreinte de bête", "meaningFr": "la trace d'une bête" },
-  "革": { "nameFr": "cuir", "meaningFr": "la peau tannée, le cuir" },
-  "ユ": { "nameFr": "yu (forme de main)", "meaningFr": "une forme de main" },
-  "彑": { "nameFr": "tête de cochon", "meaningFr": "la tête d'un porc" },
-  "斉": { "nameFr": "égal", "meaningFr": "égal, ensemble" },
-  "示": { "nameFr": "montrer", "meaningFr": "montrer, le signe" },
-  "非": { "nameFr": "négation", "meaningFr": "deux ailes dos à dos, la négation" },
-  "殳": { "nameFr": "arme / hallebarde", "meaningFr": "l'arme, le bâton de commandement" },
-  "支": { "nameFr": "branche / soutien", "meaningFr": "la branche, le soutien" },
-  "歯": { "nameFr": "dent", "meaningFr": "la dent" },
-  "酉": { "nameFr": "jarre / coq", "meaningFr": "la jarre, l'alcool" },
-  "⻂": { "nameFr": "vêtement (衤)", "meaningFr": "le vêtement à gauche" },
-  "戸": { "nameFr": "porte", "meaningFr": "la porte à un battant" },
-  "舟": { "nameFr": "bateau", "meaningFr": "l'embarcation" },
-  "啇": { "nameFr": "racine (phonétique)", "meaningFr": "la base, le pédoncule" },
-  "⻏": { "nameFr": "ville (阝)", "meaningFr": "la ville, le fief à droite" },
-  "皿": { "nameFr": "assiette", "meaningFr": "le plat, la coupe" },
-  "⺨": { "nameFr": "bête (犭)", "meaningFr": "la bête à gauche" },
-  "皮": { "nameFr": "peau", "meaningFr": "la peau, l'écorce" },
-  "髟": { "nameFr": "cheveux longs", "meaningFr": "la chevelure qui pend" },
-  "釆": { "nameFr": "distinguer", "meaningFr": "trier, distinguer" },
-  "飛": { "nameFr": "voler", "meaningFr": "le vol, les ailes déployées" },
-  "舛": { "nameFr": "pieds opposés", "meaningFr": "deux pieds en sens contraire" },
-  "無": { "nameFr": "sans / rien", "meaningFr": "la danse, puis le néant" },
-  "亡": { "nameFr": "fuir / périr", "meaningFr": "disparaître, mourir" },
-  "面": { "nameFr": "face", "meaningFr": "le visage" },
-  "谷": { "nameFr": "vallée", "meaningFr": "la vallée" },
-  "冊": { "nameFr": "volumes", "meaningFr": "des tablettes de bambou reliées" }
+ "⺅": {
+  "nameFr": "personne debout (variante de 人)",
+  "meaningFr": "une personne à gauche"
+ },
+ "⺉": {
+  "nameFr": "couteau à droite (variante de 刀)",
+  "meaningFr": "couper"
+ },
+ "⺌": {
+  "nameFr": "petit (variante de 小)",
+  "meaningFr": "petit, trier"
+ },
+ "⺖": {
+  "nameFr": "cœur (忄)",
+  "meaningFr": "le cœur à gauche"
+ },
+ "⺘": {
+  "nameFr": "main (扌)",
+  "meaningFr": "la main à gauche"
+ },
+ "⺡": {
+  "nameFr": "eau (氵)",
+  "meaningFr": "l'eau"
+ },
+ "⺣": {
+  "nameFr": "feu (灬)",
+  "meaningFr": "les flammes"
+ },
+ "⺨": {
+  "nameFr": "bête (犭)",
+  "meaningFr": "la bête à gauche"
+ },
+ "⺭": {
+  "nameFr": "autel",
+  "meaningFr": "l'autel, l'esprit"
+ },
+ "⺲": {
+  "nameFr": "filet",
+  "meaningFr": "un filet"
+ },
+ "⺹": {
+  "nameFr": "vieux (variant de 老)",
+  "meaningFr": "la vieillesse"
+ },
+ "⺾": {
+  "nameFr": "herbe",
+  "meaningFr": "les plantes, l'herbe"
+ },
+ "⻂": {
+  "nameFr": "vêtement (衤)",
+  "meaningFr": "le vêtement à gauche"
+ },
+ "⻌": {
+  "nameFr": "marcher (辵)",
+  "meaningFr": "la route, avancer"
+ },
+ "⻏": {
+  "nameFr": "ville (阝)",
+  "meaningFr": "la ville, le fief à droite"
+ },
+ "⻖": {
+  "nameFr": "colline (阝)",
+  "meaningFr": "une colline, un tertre"
+ },
+ "ノ": {
+  "nameFr": "trait oblique",
+  "meaningFr": "un trait penché"
+ },
+ "ハ": {
+  "nameFr": "huit / séparation",
+  "meaningFr": "séparer, partager"
+ },
+ "マ": {
+  "nameFr": "ma (katakana)",
+  "meaningFr": "forme en ma, couvrir"
+ },
+ "ユ": {
+  "nameFr": "yu (forme de main)",
+  "meaningFr": "une forme de main"
+ },
+ "ヨ": {
+  "nameFr": "yo (katakana)",
+  "meaningFr": "une main qui ramasse"
+ },
+ "一": {
+  "nameFr": "un / trait horizontal",
+  "meaningFr": "le sol, la ligne horizontale"
+ },
+ "世": {
+  "nameFr": "monde / génération",
+  "meaningFr": "le monde, la génération"
+ },
+ "丶": {
+  "nameFr": "point",
+  "meaningFr": "un point"
+ },
+ "丷": {
+  "nameFr": "huit renversé",
+  "meaningFr": "des cornes, un sommet"
+ },
+ "久": {
+  "nameFr": "longtemps",
+  "meaningFr": "le temps qui dure"
+ },
+ "乙": {
+  "nameFr": "crochet",
+  "meaningFr": "un bras courbé"
+ },
+ "九": {
+  "nameFr": "neuf",
+  "meaningFr": "le chiffre neuf"
+ },
+ "乞": {
+  "nameFr": "demander",
+  "meaningFr": "demander, prier"
+ },
+ "也": {
+  "nameFr": "également",
+  "meaningFr": "aussi, de même"
+ },
+ "亅": {
+  "nameFr": "crochet vertical",
+  "meaningFr": "un trait vertical crocheté"
+ },
+ "二": {
+  "nameFr": "deux",
+  "meaningFr": "deux traits superposés"
+ },
+ "五": {
+  "nameFr": "cinq",
+  "meaningFr": "le nombre cinq"
+ },
+ "井": {
+  "nameFr": "puits",
+  "meaningFr": "le puits, la grille"
+ },
+ "亠": {
+  "nameFr": "couvercle",
+  "meaningFr": "un toit"
+ },
+ "亡": {
+  "nameFr": "fuir / périr",
+  "meaningFr": "disparaître, mourir"
+ },
+ "人": {
+  "nameFr": "personne",
+  "meaningFr": "l'être humain"
+ },
+ "儿": {
+  "nameFr": "jambes",
+  "meaningFr": "les jambes d'une personne"
+ },
+ "元": {
+  "nameFr": "origine",
+  "meaningFr": "l'origine, le commencement"
+ },
+ "免": {
+  "nameFr": "exempter",
+  "meaningFr": "échapper à, retirer"
+ },
+ "入": {
+  "nameFr": "entrer",
+  "meaningFr": "pénétrer"
+ },
+ "冂": {
+  "nameFr": "boîte ouverte",
+  "meaningFr": "un cadre, une bordure"
+ },
+ "冊": {
+  "nameFr": "volumes",
+  "meaningFr": "des tablettes de bambou reliées"
+ },
+ "冖": {
+  "nameFr": "couverture",
+  "meaningFr": "un couvercle"
+ },
+ "冫": {
+  "nameFr": "glace",
+  "meaningFr": "la glace, le froid"
+ },
+ "几": {
+  "nameFr": "table basse",
+  "meaningFr": "une petite table"
+ },
+ "凵": {
+  "nameFr": "réceptacle",
+  "meaningFr": "une cavité"
+ },
+ "刀": {
+  "nameFr": "couteau",
+  "meaningFr": "couper"
+ },
+ "力": {
+  "nameFr": "force",
+  "meaningFr": "la force, l'effort"
+ },
+ "勹": {
+  "nameFr": "envelopper",
+  "meaningFr": "envelopper, embrasser"
+ },
+ "勿": {
+  "nameFr": "défense / ne pas",
+  "meaningFr": "ne pas, bannière"
+ },
+ "匕": {
+  "nameFr": "cuillère / renversé",
+  "meaningFr": "renversé, dos à dos"
+ },
+ "匚": {
+  "nameFr": "boîte ouverte",
+  "meaningFr": "un coffre"
+ },
+ "十": {
+  "nameFr": "croix",
+  "meaningFr": "croisement d'un trait vertical et horizontal"
+ },
+ "卜": {
+  "nameFr": "divination",
+  "meaningFr": "la fissure de la divination"
+ },
+ "卩": {
+  "nameFr": "sceau",
+  "meaningFr": "un genou plié, un sceau"
+ },
+ "厂": {
+  "nameFr": "falaise",
+  "meaningFr": "un surplomb rocheux"
+ },
+ "厶": {
+  "nameFr": "privé",
+  "meaningFr": "ce qui est replié sur soi, le privé"
+ },
+ "又": {
+  "nameFr": "main droite",
+  "meaningFr": "la main qui agit, encore"
+ },
+ "及": {
+  "nameFr": "atteindre",
+  "meaningFr": "atteindre, s'étendre à"
+ },
+ "口": {
+  "nameFr": "bouche",
+  "meaningFr": "la bouche, l'ouverture"
+ },
+ "品": {
+  "nameFr": "objets (trois bouches)",
+  "meaningFr": "des choses alignées"
+ },
+ "啇": {
+  "nameFr": "racine (phonétique)",
+  "meaningFr": "la base, le pédoncule"
+ },
+ "囗": {
+  "nameFr": "enceinte",
+  "meaningFr": "un espace clos, une frontière"
+ },
+ "土": {
+  "nameFr": "terre",
+  "meaningFr": "le sol, la motte de terre"
+ },
+ "士": {
+  "nameFr": "lettré / guerrier",
+  "meaningFr": "l'homme instruit"
+ },
+ "夂": {
+  "nameFr": "pied qui marche",
+  "meaningFr": "marcher lentement"
+ },
+ "夕": {
+  "nameFr": "soir",
+  "meaningFr": "la lune du soir"
+ },
+ "大": {
+  "nameFr": "grand",
+  "meaningFr": "un homme bras écartés"
+ },
+ "女": {
+  "nameFr": "femme",
+  "meaningFr": "personne agenouillée"
+ },
+ "子": {
+  "nameFr": "enfant",
+  "meaningFr": "un bébé avec la tête et les bras"
+ },
+ "宀": {
+  "nameFr": "toit",
+  "meaningFr": "un toit, la maison"
+ },
+ "寸": {
+  "nameFr": "pouce / mesure",
+  "meaningFr": "la mesure, la main"
+ },
+ "小": {
+  "nameFr": "petit",
+  "meaningFr": "petit, menu"
+ },
+ "尢": {
+  "nameFr": "boiteux",
+  "meaningFr": "une jambe faible"
+ },
+ "尸": {
+  "nameFr": "corps",
+  "meaningFr": "le corps, la dépouille"
+ },
+ "屮": {
+  "nameFr": "pousse",
+  "meaningFr": "une plante qui germe"
+ },
+ "屯": {
+  "nameFr": "bourgeon / difficile",
+  "meaningFr": "ce qui germe avec difficulté"
+ },
+ "山": {
+  "nameFr": "montagne",
+  "meaningFr": "trois pics"
+ },
+ "川": {
+  "nameFr": "rivière",
+  "meaningFr": "l'eau qui coule"
+ },
+ "工": {
+  "nameFr": "travail / outil",
+  "meaningFr": "l'outil, l'ouvrage"
+ },
+ "巨": {
+  "nameFr": "gigantesque",
+  "meaningFr": "grand, énorme"
+ },
+ "已": {
+  "nameFr": "déjà",
+  "meaningFr": "déjà, achevé"
+ },
+ "巴": {
+  "nameFr": "serpent / virgule",
+  "meaningFr": "un serpent enroulé"
+ },
+ "巾": {
+  "nameFr": "tissu",
+  "meaningFr": "une pièce de tissu"
+ },
+ "干": {
+  "nameFr": "sec / sécher",
+  "meaningFr": "sécher, intervenir"
+ },
+ "幺": {
+  "nameFr": "fil ténu",
+  "meaningFr": "minuscule, un fil délié"
+ },
+ "广": {
+  "nameFr": "toit sur falaise",
+  "meaningFr": "un abri adossé à une falaise"
+ },
+ "廴": {
+  "nameFr": "étirer",
+  "meaningFr": "un long pas étiré"
+ },
+ "廾": {
+  "nameFr": "deux mains",
+  "meaningFr": "deux mains jointes"
+ },
+ "弋": {
+  "nameFr": "piquet",
+  "meaningFr": "un piquet, lancer"
+ },
+ "弓": {
+  "nameFr": "arc",
+  "meaningFr": "l'arc"
+ },
+ "彑": {
+  "nameFr": "tête de cochon",
+  "meaningFr": "la tête d'un porc"
+ },
+ "彡": {
+  "nameFr": "poils / décor",
+  "meaningFr": "des traits descendants, une parure"
+ },
+ "彳": {
+  "nameFr": "petit pas",
+  "meaningFr": "la marche (moitié gauche de 行)"
+ },
+ "心": {
+  "nameFr": "cœur",
+  "meaningFr": "le cœur, l'esprit"
+ },
+ "戈": {
+  "nameFr": "hallebarde",
+  "meaningFr": "une arme ancienne"
+ },
+ "戸": {
+  "nameFr": "porte",
+  "meaningFr": "la porte à un battant"
+ },
+ "手": {
+  "nameFr": "main",
+  "meaningFr": "la main"
+ },
+ "支": {
+  "nameFr": "branche / soutien",
+  "meaningFr": "la branche, le soutien"
+ },
+ "攵": {
+  "nameFr": "frapper (攴)",
+  "meaningFr": "tapoter, agir avec la main"
+ },
+ "文": {
+  "nameFr": "écriture / motif",
+  "meaningFr": "l'écriture, le dessin croisé"
+ },
+ "斉": {
+  "nameFr": "égal",
+  "meaningFr": "égal, ensemble"
+ },
+ "斗": {
+  "nameFr": "louche",
+  "meaningFr": "la louche à mesure"
+ },
+ "斤": {
+  "nameFr": "hache",
+  "meaningFr": "la hache, la mesure"
+ },
+ "方": {
+  "nameFr": "direction / carré",
+  "meaningFr": "la direction, le côté"
+ },
+ "日": {
+  "nameFr": "soleil",
+  "meaningFr": "le soleil, le jour"
+ },
+ "月": {
+  "nameFr": "lune",
+  "meaningFr": "la lune, la chair (variante)"
+ },
+ "木": {
+  "nameFr": "arbre",
+  "meaningFr": "l'arbre, le bois"
+ },
+ "欠": {
+  "nameFr": "manquer / bâiller",
+  "meaningFr": "manquer, bâiller"
+ },
+ "止": {
+  "nameFr": "arrêter / pied",
+  "meaningFr": "le pied qui s'arrête"
+ },
+ "歯": {
+  "nameFr": "dent",
+  "meaningFr": "la dent"
+ },
+ "歹": {
+  "nameFr": "os dénudés",
+  "meaningFr": "la mort, ce qui est mauvais"
+ },
+ "殳": {
+  "nameFr": "arme / hallebarde",
+  "meaningFr": "l'arme, le bâton de commandement"
+ },
+ "毋": {
+  "nameFr": "défense / variante de mère",
+  "meaningFr": "la mère, l'interdiction"
+ },
+ "母": {
+  "nameFr": "mère",
+  "meaningFr": "la mère"
+ },
+ "比": {
+  "nameFr": "comparer",
+  "meaningFr": "comparer, côte à côte"
+ },
+ "毛": {
+  "nameFr": "poil / plume",
+  "meaningFr": "le poil, la fourrure"
+ },
+ "氏": {
+  "nameFr": "clan",
+  "meaningFr": "le clan, la famille"
+ },
+ "气": {
+  "nameFr": "souffle / vapeur",
+  "meaningFr": "l'air, la vapeur"
+ },
+ "水": {
+  "nameFr": "eau",
+  "meaningFr": "le courant et les gouttes"
+ },
+ "火": {
+  "nameFr": "feu",
+  "meaningFr": "les flammes"
+ },
+ "無": {
+  "nameFr": "sans / rien",
+  "meaningFr": "la danse, puis le néant"
+ },
+ "爪": {
+  "nameFr": "griffe",
+  "meaningFr": "la griffe, la serre"
+ },
+ "父": {
+  "nameFr": "père",
+  "meaningFr": "l'autorité paternelle"
+ },
+ "爿": {
+  "nameFr": "bois fendu",
+  "meaningFr": "une planche"
+ },
+ "片": {
+  "nameFr": "tranche",
+  "meaningFr": "une moitié, une tranche"
+ },
+ "牛": {
+  "nameFr": "vache",
+  "meaningFr": "le bovin"
+ },
+ "犬": {
+  "nameFr": "chien",
+  "meaningFr": "le chien"
+ },
+ "玄": {
+  "nameFr": "mystérieux",
+  "meaningFr": "profond, mystérieux"
+ },
+ "王": {
+  "nameFr": "roi",
+  "meaningFr": "le souverain"
+ },
+ "瓦": {
+  "nameFr": "tuile",
+  "meaningFr": "la tuile"
+ },
+ "甘": {
+  "nameFr": "doux",
+  "meaningFr": "le goût sucré"
+ },
+ "生": {
+  "nameFr": "vie / naître",
+  "meaningFr": "naître, pousser"
+ },
+ "用": {
+  "nameFr": "usage",
+  "meaningFr": "utiliser, l'usage"
+ },
+ "田": {
+  "nameFr": "rizière",
+  "meaningFr": "le champ cultivé"
+ },
+ "疋": {
+  "nameFr": "pied / tissu",
+  "meaningFr": "le pied, une pièce de tissu"
+ },
+ "疒": {
+  "nameFr": "maladie",
+  "meaningFr": "un lit de malade"
+ },
+ "癶": {
+  "nameFr": "pieds opposés",
+  "meaningFr": "deux pieds qui s'écartent"
+ },
+ "白": {
+  "nameFr": "blanc",
+  "meaningFr": "la lumière, la clarté"
+ },
+ "皮": {
+  "nameFr": "peau",
+  "meaningFr": "la peau, l'écorce"
+ },
+ "皿": {
+  "nameFr": "assiette",
+  "meaningFr": "le plat, la coupe"
+ },
+ "目": {
+  "nameFr": "œil",
+  "meaningFr": "l'œil"
+ },
+ "矛": {
+  "nameFr": "lance",
+  "meaningFr": "la lance"
+ },
+ "矢": {
+  "nameFr": "flèche",
+  "meaningFr": "la flèche"
+ },
+ "石": {
+  "nameFr": "pierre",
+  "meaningFr": "la pierre"
+ },
+ "示": {
+  "nameFr": "montrer",
+  "meaningFr": "montrer, le signe"
+ },
+ "禸": {
+  "nameFr": "empreinte de bête",
+  "meaningFr": "la trace d'une bête"
+ },
+ "禾": {
+  "nameFr": "céréale",
+  "meaningFr": "le grain sur pied"
+ },
+ "穴": {
+  "nameFr": "grotte",
+  "meaningFr": "un trou, une grotte"
+ },
+ "立": {
+  "nameFr": "debout",
+  "meaningFr": "se tenir debout"
+ },
+ "竹": {
+  "nameFr": "bambou",
+  "meaningFr": "le bambou"
+ },
+ "米": {
+  "nameFr": "riz",
+  "meaningFr": "le grain de riz"
+ },
+ "糸": {
+  "nameFr": "fil",
+  "meaningFr": "le fil de soie"
+ },
+ "缶": {
+  "nameFr": "jarre / boîte",
+  "meaningFr": "le récipient"
+ },
+ "羊": {
+  "nameFr": "mouton",
+  "meaningFr": "le mouton"
+ },
+ "羽": {
+  "nameFr": "plume",
+  "meaningFr": "la plume, l'aile"
+ },
+ "耒": {
+  "nameFr": "charrue",
+  "meaningFr": "l'araire, le labour"
+ },
+ "耳": {
+  "nameFr": "oreille",
+  "meaningFr": "l'oreille"
+ },
+ "聿": {
+  "nameFr": "pinceau",
+  "meaningFr": "écrire avec un pinceau"
+ },
+ "肉": {
+  "nameFr": "viande",
+  "meaningFr": "la chair, la viande"
+ },
+ "臣": {
+  "nameFr": "serviteur",
+  "meaningFr": "l'œil baissé du serviteur"
+ },
+ "自": {
+  "nameFr": "soi-même",
+  "meaningFr": "le nez, soi-même"
+ },
+ "至": {
+  "nameFr": "arriver",
+  "meaningFr": "atteindre, arriver"
+ },
+ "舌": {
+  "nameFr": "langue",
+  "meaningFr": "la langue (organe)"
+ },
+ "舛": {
+  "nameFr": "pieds opposés",
+  "meaningFr": "deux pieds en sens contraire"
+ },
+ "舟": {
+  "nameFr": "bateau",
+  "meaningFr": "l'embarcation"
+ },
+ "艮": {
+  "nameFr": "limite / arrêt",
+  "meaningFr": "s'arrêter, une limite"
+ },
+ "色": {
+  "nameFr": "couleur",
+  "meaningFr": "la couleur, l'apparence"
+ },
+ "虍": {
+  "nameFr": "tigre (tête)",
+  "meaningFr": "la tête du tigre"
+ },
+ "虫": {
+  "nameFr": "insecte",
+  "meaningFr": "l'insecte, le ver"
+ },
+ "血": {
+  "nameFr": "sang",
+  "meaningFr": "le sang"
+ },
+ "行": {
+  "nameFr": "marcher",
+  "meaningFr": "le carrefour, la marche"
+ },
+ "衣": {
+  "nameFr": "vêtement",
+  "meaningFr": "l'habit, le vêtement"
+ },
+ "西": {
+  "nameFr": "ouest",
+  "meaningFr": "l'ouest"
+ },
+ "見": {
+  "nameFr": "voir",
+  "meaningFr": "l'œil qui regarde"
+ },
+ "角": {
+  "nameFr": "corne",
+  "meaningFr": "la corne, le coin"
+ },
+ "言": {
+  "nameFr": "parole",
+  "meaningFr": "parler, les mots"
+ },
+ "谷": {
+  "nameFr": "vallée",
+  "meaningFr": "la vallée"
+ },
+ "豆": {
+  "nameFr": "haricot",
+  "meaningFr": "le haricot, le vase d'offrandes"
+ },
+ "豕": {
+  "nameFr": "cochon",
+  "meaningFr": "le porc"
+ },
+ "貝": {
+  "nameFr": "coquillage",
+  "meaningFr": "le coquillage, l'argent"
+ },
+ "赤": {
+  "nameFr": "rouge",
+  "meaningFr": "le rouge"
+ },
+ "走": {
+  "nameFr": "courir",
+  "meaningFr": "courir"
+ },
+ "足": {
+  "nameFr": "pied",
+  "meaningFr": "le pied, la jambe"
+ },
+ "身": {
+  "nameFr": "corps",
+  "meaningFr": "le corps"
+ },
+ "車": {
+  "nameFr": "char",
+  "meaningFr": "le véhicule"
+ },
+ "辛": {
+  "nameFr": "épicé / dur",
+  "meaningFr": "l'aiguillon, la peine"
+ },
+ "辰": {
+  "nameFr": "temps / dragon",
+  "meaningFr": "le temps qui passe, le dragon"
+ },
+ "酉": {
+  "nameFr": "jarre / coq",
+  "meaningFr": "la jarre, l'alcool"
+ },
+ "釆": {
+  "nameFr": "distinguer",
+  "meaningFr": "trier, distinguer"
+ },
+ "里": {
+  "nameFr": "village",
+  "meaningFr": "le village, la distance"
+ },
+ "金": {
+  "nameFr": "or / métal",
+  "meaningFr": "le métal, l'argent"
+ },
+ "長": {
+  "nameFr": "long",
+  "meaningFr": "long, ancien"
+ },
+ "門": {
+  "nameFr": "porte",
+  "meaningFr": "le portail"
+ },
+ "隶": {
+  "nameFr": "atteindre / queue",
+  "meaningFr": "atteindre, une queue"
+ },
+ "隹": {
+  "nameFr": "oiseau à queue courte",
+  "meaningFr": "un oiseau"
+ },
+ "雨": {
+  "nameFr": "pluie",
+  "meaningFr": "les gouttes qui tombent"
+ },
+ "青": {
+  "nameFr": "bleu",
+  "meaningFr": "le bleu, le vert"
+ },
+ "非": {
+  "nameFr": "négation",
+  "meaningFr": "deux ailes dos à dos, la négation"
+ },
+ "面": {
+  "nameFr": "face",
+  "meaningFr": "le visage"
+ },
+ "革": {
+  "nameFr": "cuir",
+  "meaningFr": "la peau tannée, le cuir"
+ },
+ "韋": {
+  "nameFr": "cuir tanné",
+  "meaningFr": "le cuir assoupli"
+ },
+ "音": {
+  "nameFr": "son",
+  "meaningFr": "le son"
+ },
+ "頁": {
+  "nameFr": "tête / page",
+  "meaningFr": "la tête"
+ },
+ "風": {
+  "nameFr": "vent",
+  "meaningFr": "le vent"
+ },
+ "飛": {
+  "nameFr": "voler",
+  "meaningFr": "le vol, les ailes déployées"
+ },
+ "食": {
+  "nameFr": "manger",
+  "meaningFr": "la nourriture"
+ },
+ "首": {
+  "nameFr": "tête",
+  "meaningFr": "la tête, le cou"
+ },
+ "香": {
+  "nameFr": "parfum",
+  "meaningFr": "la bonne odeur"
+ },
+ "馬": {
+  "nameFr": "cheval",
+  "meaningFr": "le cheval"
+ },
+ "骨": {
+  "nameFr": "os",
+  "meaningFr": "le squelette"
+ },
+ "高": {
+  "nameFr": "haut",
+  "meaningFr": "la tour élevée (phonétique)"
+ },
+ "髟": {
+  "nameFr": "cheveux longs",
+  "meaningFr": "la chevelure qui pend"
+ },
+ "魚": {
+  "nameFr": "poisson",
+  "meaningFr": "le poisson"
+ },
+ "鳥": {
+  "nameFr": "oiseau",
+  "meaningFr": "l'oiseau"
+ },
+ "麦": {
+  "nameFr": "blé",
+  "meaningFr": "le blé, l'orge"
+ },
+ "麻": {
+  "nameFr": "chanvre",
+  "meaningFr": "le chanvre"
+ },
+ "黄": {
+  "nameFr": "jaune",
+  "meaningFr": "la couleur jaune"
+ },
+ "黒": {
+  "nameFr": "noir",
+  "meaningFr": "le noir"
+ },
+ "鼻": {
+  "nameFr": "nez",
+  "meaningFr": "le nez"
+ },
+ "𠆢": {
+  "nameFr": "chapeau (variante de 人)",
+  "meaningFr": "un toit en forme de personne"
+ },
+ "｜": {
+  "nameFr": "trait vertical",
+  "meaningFr": "une ligne verticale"
+ }
 }

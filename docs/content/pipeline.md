@@ -68,37 +68,57 @@ réutilisés tant qu'ils existent.
 - Les exercices qui **demandent une lecture** n'incluent jamais le furigana/romaji
   du mot cible (masquage par position, voir `sentencePromptTokens` dans
   `tools/content/lib/generators.mjs`) pour ne pas donner la réponse.
+- Les lectures de KANJIDIC2 qui ne sont pas de purs kana (ex. la lecture kun
+  « デシメートル » de 粉) sont **filtrées** à la normalisation : kun en hiragana
+  uniquement, on en katakana uniquement.
 
-## Sources et choix des niveaux (N5, N4, N3)
+## Sources et choix des niveaux (N5, N4, N3, N2)
 
 Le pipeline est **multi-niveaux** : la liste des niveaux est portée par
-`LEVELS = ['N5', 'N4', 'N3']` dans `tools/content/stages/normalize.mjs` et
-`IMPORT_LEVELS = [5, 4, 3]` dans `tools/content/lib/importers.mjs`. Chaque niveau a
-son curaté (`content/curated/n5/`, `content/curated/n4/`, `content/curated/n3/`),
-ses seuils (voir plus bas) et sa sélection propre de vocabulaire/phrases. Le
-vocabulaire et les phrases sont sélectionnés **niveau par niveau** (N5 d'abord),
-sans doublon entre niveaux.
+`LEVELS = ['N5', 'N4', 'N3', 'N2']` dans `tools/content/stages/normalize.mjs` et
+`IMPORT_LEVELS = [5, 4, 3, 2]` dans `tools/content/lib/importers.mjs`. Chaque niveau a
+son curaté (`content/curated/n5/`, `content/curated/n4/`, `content/curated/n3/`,
+`content/curated/n2/`), ses seuils (voir plus bas) et sa sélection propre de
+vocabulaire/phrases. Le vocabulaire et les phrases sont sélectionnés **niveau par
+niveau** (N5 d'abord), sans doublon entre niveaux.
 
-- **Liste N5** : 79 kanji, croisement de deux jeux dérivés de kanjiapi.dev
+- **Liste N5** : 80 kanji, croisement de deux jeux dérivés de kanjiapi.dev
   (`kanji-data`, MIT, et son miroir) — identiques — vérifiés contre le champ `jlpt`
   historique de KANJIDIC2 (niveau 4, 103 kanji : les 24 supplémentaires sont
-  signalés comme divergence et classés N4). Voir
+  signalés comme divergence et classés N4). **1 ajout éditorial** (`IMPORT_EXTRA`) :
+  分 (grade 2, jlpt historique 4), absent des listes `jlpt_new` de kanji-data. Voir
   `content/curated/n5/kanji.json` (ordre pédagogique, radical, confusions,
   mnémotechniques) et `content/normalized/imported/jlpt_cross.json`.
 - **Liste N4** : 166 kanji, même croisement kanji-data / kanjiapi — identiques —
   vérifiés contre le champ `jlpt` historique de KANJIDIC2 (niveau 3 : 143 des 166 y
   figurent ; les 23 autres sont signalés comme divergence). Voir
   `content/curated/n4/kanji.json`.
-- **Liste N3** : 367 kanji, même croisement kanji-data / kanjiapi — identiques —
+- **Liste N3** : 373 kanji, même croisement kanji-data / kanjiapi — identiques —
   vérifiés contre le champ `jlpt` historique de KANJIDIC2 (niveau 2 : 339 des 367 y
-  figurent ; les 28 autres sont signalés comme divergence). Voir
-  `content/curated/n3/kanji.json`.
+  figurent ; les 28 autres sont signalés comme divergence). **6 ajouts éditoriaux**
+  (`IMPORT_EXTRA`) : 里 身 畑 的 無 可 (grades 2-5, jlpt historique 1-2), absents des
+  listes `jlpt_new` de kanji-data. Voir `content/curated/n3/kanji.json`.
+- **Liste N2** : 368 kanji, même croisement kanji-data / kanjiapi — identiques —
+  vérifiés contre le champ `jlpt` historique de KANJIDIC2 (niveau 2 : 349 des 367 y
+  figurent ; 12 de niveau historique 3 et 6 de niveau 1 sont signalés comme
+  divergence). **1 ajout éditorial** (`IMPORT_EXTRA`) : 孝 (grade 6). Ordre curaté :
+  traits croissants puis fréquence (type dictionnaire). Voir
+  `content/curated/n2/kanji.json`.
 - **Vocabulaire** : glosses françaises de JMdict, priorité aux mots courants
-  (`ichi1`, `spec1`, `news1`…) composés de kanji du niveau ; complété si besoin par
-  `content/curated/<niveau>/vocabulary.json`.
+  (`ichi1`, `spec1`, `news1`…, **plus le rang de fréquence journalière `nfXX`**)
+  composés de kanji du niveau ; un mot n'est sélectionné qu'au niveau de son
+  `estimatedLevel` (le kanji publié le plus haut du mot), quota par kanji
+  (`VOCAB_QUOTA`) : 8 mots (N5→N3), 10 mots (N2), complété par une passe « bonus »
+  (`VOCAB_BONUS`, 60 mots/niveau) qui repêche les mots fréquents dont tous les kanji
+  sont publiés ; complété si besoin par `content/curated/<niveau>/vocabulary.json`.
+  Le décompte de couverture compte un mot pour **tous** ses kanji publiés, quel que
+  soit le niveau de sélection.
 - **Phrases** : paires japonais→français de Tatoeba (export détaillé + `links`),
   licence **CC BY 2.0 FR** (l'export CC0 ne contient quasiment aucune phrase
   japonaise). Auteur conservé ; si le compte a disparu, attribution « Tatoeba ».
+  Une phrase Tatoeba dont l'annotation kuromoji échoue (token inconnu sans lecture)
+  est **écartée** de la sélection (comptabilisée dans le rapport de `normalize`) ;
+  une phrase curatée non annotable fait en revanche échouer l'étape.
   Les **phrases curatées** (`content/curated/<niveau>/sentences.json`, rédigées par
   KanjiPath, CC BY-SA 4.0) sont insérées **avant** la sélection Tatoeba : elles sont
   donc servies en priorité dans les exercices de contexte (phrases plus naturelles).
@@ -144,6 +164,7 @@ pipeline).
   | N5 | 40 | 6 | 6 | 2 | ≥ 3000 |
   | N4 | 32 | 5 | 5 | 2 | ≥ 5000 |
   | N3 | 32 | 5 | 5 | 2 | ≥ 10000 |
+  | N2 | 32 | 5 | 5 | 2 | ≥ 10000 |
 
 ## Validation
 

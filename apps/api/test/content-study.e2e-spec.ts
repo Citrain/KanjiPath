@@ -115,6 +115,48 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(response.statusCode).toBe(404);
   });
 
+  it('recherche un mot par forme exacte (lecture en contexte)', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/words/一つ',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(body.surface).toBe('一つ');
+    expect(body.vocabulary.length).toBeGreaterThan(0);
+    expect(body.vocabulary[0].writtenForm).toBe('一つ');
+    expect(body.vocabulary[0].reading).toBe('ひとつ');
+    expect(body.kanji.some((k: { literal: string }) => k.literal === '一')).toBe(true);
+    const kanjiUn = body.kanji.find((k: { literal: string }) => k.literal === '一');
+    expect(kanjiUn.primaryMeaning).toBe('un');
+    expect(kanjiUn.readings.length).toBeGreaterThan(0);
+    expect(kanjiUn.readings.some((r: { type: string }) => r.type === 'onyomi')).toBe(true);
+  });
+
+  it('recherche un mot par inclusion pour un token plus court', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/words/一',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(body.vocabulary.some((v: { writtenForm: string }) => v.writtenForm === '一つ')).toBe(
+      true,
+    );
+  });
+
+  it('rejette une surface vide ou trop longue pour la recherche de mot', async () => {
+    const tooLong = '一二三四五六七八九十一二三';
+    const response = await app.inject({
+      method: 'GET',
+      url: `/api/v1/words/${tooLong}`,
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(400);
+  });
+
   it('liste les sources de contenu', async () => {
     const response = await app.inject({
       method: 'GET',
@@ -569,6 +611,25 @@ async function seedContent(prisma: PrismaService): Promise<void> {
       },
       { sentenceId: 's-test-1', surface: '。', reading: '。', startOffset: 4, endOffset: 5 },
     ],
+  });
+
+  await prisma.vocabulary.upsert({
+    where: { id: 'v-test-1' },
+    create: {
+      id: 'v-test-1',
+      writtenForm: '一つ',
+      reading: 'ひとつ',
+      romaji: 'hitotsu',
+      meaningFr: 'un ; un seul',
+      partOfSpeech: 'nom',
+      sourceId: source.id,
+      editorialStatus: 'published',
+    },
+    update: { editorialStatus: 'published' },
+  });
+  await prisma.vocabularyKanji.deleteMany({ where: { vocabularyId: 'v-test-1' } });
+  await prisma.vocabularyKanji.create({
+    data: { vocabularyId: 'v-test-1', kanjiId: 'k-04e00', position: 0, readingInWord: 'ひと' },
   });
 
   await prisma.miniText.upsert({

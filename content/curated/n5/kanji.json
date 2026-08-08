@@ -1,86 +1,1063 @@
 {
-  "level": "N5",
-  "curriculum": "JLPT_ALIGNED",
-  "notes": "Liste croisée : kanji-data (MIT, jlpt_new=5) et miroir kanjiapi.dev (jlpt=5) — 79 kanji identiques. Vérifié contre le champ jlpt historique de KANJIDIC2 (niveau 4, 103 kanji) : les 79 y figurent tous. Les 24 kanji supplémentaires du niveau historique (安飲駅花会魚空言古口耳社手週少新足多店道買分目立) sont signalés comme divergence et classés N4. Ordre pédagogique interne : nombres, nature, personnes, temps/espace, école/actions, divers.",
-  "kanji": [
-    { "literal": "一", "order": 1, "radical": { "literal": "一", "nameFr": "un / trait horizontal", "meaningFr": "le sol, la ligne horizontale" }, "confusions": ["二", "三"], "mnemonicFr": "Un seul trait horizontal : un, le sol.", "etymologyFr": "Pictogramme d'une ligne horizontale, attesté dès les inscriptions oraculaires.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "二", "order": 2, "radical": { "literal": "二", "nameFr": "deux", "meaningFr": "deux traits superposés" }, "confusions": ["一", "三"], "mnemonicFr": "Deux traits superposés : deux." },
-    { "literal": "三", "order": 3, "radical": { "literal": "一", "nameFr": "un / trait horizontal", "meaningFr": "le sol, la ligne horizontale" }, "confusions": ["二", "川"], "mnemonicFr": "Trois traits superposés : trois." },
-    { "literal": "十", "order": 4, "radical": { "literal": "十", "nameFr": "croix", "meaningFr": "croisement d'un trait vertical et horizontal" }, "confusions": ["千", "七"], "mnemonicFr": "Une horizontale et une verticale qui se croisent : dix, la totalité." },
-    { "literal": "五", "order": 5, "radical": { "literal": "二", "nameFr": "deux", "meaningFr": "deux traits superposés" }, "confusions": [], "mnemonicFr": "Entre deux traits, un croisement : cinq." },
-    { "literal": "六", "order": 6, "radical": { "literal": "八", "nameFr": "huit / séparation", "meaningFr": "séparer, partager" }, "confusions": [], "mnemonicFr": "Un toit (亠) et deux jambes : six." },
-    { "literal": "七", "order": 7, "radical": { "literal": "一", "nameFr": "un / trait horizontal", "meaningFr": "le sol, la ligne horizontale" }, "confusions": ["十", "千"], "mnemonicFr": "Une horizontale coupée par un trait oblique : sept." },
-    { "literal": "八", "order": 8, "radical": { "literal": "八", "nameFr": "huit / séparation", "meaningFr": "séparer, partager" }, "confusions": ["人", "入"], "mnemonicFr": "Deux traits qui s'écartent : huit, l'idée de séparer." },
-    { "literal": "九", "order": 9, "radical": { "literal": "乙", "nameFr": "crochet", "meaningFr": "un bras courbé" }, "confusions": [], "mnemonicFr": "Un bras courbé comme un crochet : neuf." },
-    { "literal": "百", "order": 10, "radical": { "literal": "白", "nameFr": "blanc", "meaningFr": "la lumière, la clarté" }, "confusions": ["白"], "mnemonicFr": "Un (一) + blanc (白) : cent." },
-    { "literal": "万", "order": 11, "radical": { "literal": "一", "nameFr": "un / trait horizontal", "meaningFr": "le sol, la ligne horizontale" }, "confusions": [], "mnemonicFr": "Forme simplifiée de 萬 : dix mille." },
-    { "literal": "山", "order": 12, "radical": { "literal": "山", "nameFr": "montagne", "meaningFr": "trois pics" }, "confusions": [], "mnemonicFr": "Trois pics : la montagne.", "etymologyFr": "Pictogramme d'une chaîne de montagnes à trois sommets.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "川", "order": 13, "radical": { "literal": "川", "nameFr": "rivière", "meaningFr": "l'eau qui coule" }, "confusions": ["三"], "mnemonicFr": "L'eau qui coule entre les berges : la rivière.", "etymologyFr": "Pictogramme d'un cours d'eau entre deux rives.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "日", "order": 14, "radical": { "literal": "日", "nameFr": "soleil", "meaningFr": "le soleil, le jour" }, "confusions": ["白"], "mnemonicFr": "Le soleil avec un rayon en son centre : le jour.", "etymologyFr": "Pictogramme du soleil : un disque avec un point central.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "月", "order": 15, "radical": { "literal": "月", "nameFr": "lune", "meaningFr": "la lune, la chair (variante)" }, "confusions": [], "mnemonicFr": "Un croissant de lune avec deux rayons : la lune, le mois.", "etymologyFr": "Pictogramme d'un croissant de lune.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "火", "order": 16, "radical": { "literal": "火", "nameFr": "feu", "meaningFr": "les flammes" }, "confusions": [], "mnemonicFr": "Des flammes et des étincelles : le feu.", "etymologyFr": "Pictogramme de flammes jaillissantes.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "水", "order": 17, "radical": { "literal": "水", "nameFr": "eau", "meaningFr": "le courant et les gouttes" }, "confusions": [], "mnemonicFr": "Un courant avec des gouttes : l'eau.", "etymologyFr": "Pictogramme d'un cours d'eau avec des éclaboussures.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "木", "order": 18, "radical": { "literal": "木", "nameFr": "arbre", "meaningFr": "l'arbre, le bois" }, "confusions": ["本"], "mnemonicFr": "Un arbre avec branches et racines.", "etymologyFr": "Pictogramme d'un arbre : tronc, branches, racines.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "土", "order": 19, "radical": { "literal": "土", "nameFr": "terre", "meaningFr": "le sol, la motte de terre" }, "confusions": [], "mnemonicFr": "Une motte de terre (十) sur le sol (一)." },
-    { "literal": "雨", "order": 20, "radical": { "literal": "雨", "nameFr": "pluie", "meaningFr": "les gouttes qui tombent" }, "confusions": [], "mnemonicFr": "Des gouttes qui tombent du ciel : la pluie.", "etymologyFr": "Pictogramme de gouttes de pluie tombant du ciel.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "天", "order": 21, "radical": { "literal": "大", "nameFr": "grand", "meaningFr": "un homme bras écartés" }, "confusions": ["大"], "mnemonicFr": "Au-dessus de 大 (un homme bras écartés), ce qui domine : le ciel." },
-    { "literal": "人", "order": 22, "radical": { "literal": "人", "nameFr": "personne", "meaningFr": "l'être humain" }, "confusions": ["入", "八"], "mnemonicFr": "Une personne vue de profil, qui marche.", "etymologyFr": "Pictogramme d'une personne debout, de profil.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "大", "order": 23, "radical": { "literal": "大", "nameFr": "grand", "meaningFr": "un homme bras écartés" }, "confusions": ["天"], "mnemonicFr": "Une personne (人) qui écarte les bras : grand.", "etymologyFr": "Pictogramme d'un homme debout, bras écartés.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "小", "order": 24, "radical": { "literal": "小", "nameFr": "petit", "meaningFr": "petits grains éparpillés" }, "confusions": [], "mnemonicFr": "De petits grains éparpillés : petit." },
-    { "literal": "上", "order": 25, "radical": { "literal": "一", "nameFr": "un / trait horizontal", "meaningFr": "le sol, la ligne horizontale" }, "confusions": ["下"], "mnemonicFr": "Un repère au-dessus de la ligne : le haut, monter." },
-    { "literal": "下", "order": 26, "radical": { "literal": "一", "nameFr": "un / trait horizontal", "meaningFr": "le sol, la ligne horizontale" }, "confusions": ["上"], "mnemonicFr": "Un repère sous la ligne : le bas, descendre." },
-    { "literal": "中", "order": 27, "radical": { "literal": "丨", "nameFr": "trait vertical", "meaningFr": "une ligne verticale" }, "confusions": [], "mnemonicFr": "Une verticale qui traverse le centre du carré : dedans, le milieu." },
-    { "literal": "入", "order": 28, "radical": { "literal": "入", "nameFr": "entrer", "meaningFr": "pénétrer" }, "confusions": ["人", "八"], "mnemonicFr": "Une pointe qui pénètre dans une ouverture : entrer." },
-    { "literal": "出", "order": 29, "radical": { "literal": "凵", "nameFr": "réceptacle", "meaningFr": "une cavité" }, "confusions": [], "mnemonicFr": "Un pied qui sort d'une cavité : sortir." },
-    { "literal": "女", "order": 30, "radical": { "literal": "女", "nameFr": "femme", "meaningFr": "personne agenouillée" }, "confusions": ["母"], "mnemonicFr": "Une personne agenouillée aux bras croisés : la femme.", "etymologyFr": "Pictogramme d'une femme agenouillée, les bras croisés.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "男", "order": 31, "radical": { "literal": "田", "nameFr": "rizière", "meaningFr": "le champ cultivé" }, "confusions": [], "mnemonicFr": "La force (力) qui travaille aux champs (田) : l'homme.", "etymologyFr": "Composé de la rizière et de la force : celui qui travaille aux champs.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "子", "order": 32, "radical": { "literal": "子", "nameFr": "enfant", "meaningFr": "un bébé avec la tête et les bras" }, "confusions": [], "mnemonicFr": "Un bébé avec une grande tête et des bras : l'enfant.", "etymologyFr": "Pictogramme d'un nourrisson aux bras ouverts.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "父", "order": 33, "radical": { "literal": "父", "nameFr": "père", "meaningFr": "l'autorité paternelle" }, "confusions": [], "mnemonicFr": "Une main tenant un bâton : le père, l'autorité." },
-    { "literal": "母", "order": 34, "radical": { "literal": "毋", "nameFr": "défense / variante de mère", "meaningFr": "la mère, l'interdiction" }, "confusions": ["女", "毎"], "mnemonicFr": "Une femme (女) avec deux seins : la mère." },
-    { "literal": "友", "order": 35, "radical": { "literal": "又", "nameFr": "main droite", "meaningFr": "la main qui agit, encore" }, "confusions": [], "mnemonicFr": "Deux mains (又) qui se tendent l'une vers l'autre : l'ami." },
-    { "literal": "休", "order": 36, "radical": { "literal": "人", "nameFr": "personne", "meaningFr": "l'être humain" }, "confusions": [], "mnemonicFr": "Une personne (⺅) appuyée contre un arbre (木) : se reposer.", "etymologyFr": "Une personne adossée à un arbre : le repos.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "今", "order": 37, "radical": { "literal": "人", "nameFr": "personne", "meaningFr": "l'être humain" }, "confusions": [], "mnemonicFr": "Un toit qui couvre le moment présent : maintenant." },
-    { "literal": "年", "order": 38, "radical": { "literal": "干", "nameFr": "sec / sécher", "meaningFr": "sécher, intervenir" }, "confusions": [], "mnemonicFr": "Le grain mûrit une fois : l'année." },
-    { "literal": "午", "order": 39, "radical": { "literal": "十", "nameFr": "croix", "meaningFr": "croisement d'un trait vertical et horizontal" }, "confusions": [], "mnemonicFr": "Un pilon, emprunté pour midi : midi." },
-    { "literal": "半", "order": 40, "radical": { "literal": "十", "nameFr": "croix", "meaningFr": "croisement d'un trait vertical et horizontal" }, "confusions": [], "mnemonicFr": "Une vache (牛) coupée en deux : la moitié." },
-    { "literal": "先", "order": 41, "radical": { "literal": "儿", "nameFr": "jambes", "meaningFr": "les jambes d'une personne" }, "confusions": [], "mnemonicFr": "Des jambes (儿) qui marchent devant : avant, d'abord." },
-    { "literal": "外", "order": 42, "radical": { "literal": "夕", "nameFr": "soir", "meaningFr": "la lune du soir" }, "confusions": [], "mnemonicFr": "Le soir (夕), hors de la maison : l'extérieur." },
-    { "literal": "北", "order": 43, "radical": { "literal": "匕", "nameFr": "cuillère / renversé", "meaningFr": "renversé, dos à dos" }, "confusions": [], "mnemonicFr": "Deux personnes dos à dos : le nord (on tourne le dos au sud).", "etymologyFr": "Deux personnages se tournant le dos.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "南", "order": 44, "radical": { "literal": "十", "nameFr": "croix", "meaningFr": "croisement d'un trait vertical et horizontal" }, "confusions": [], "mnemonicFr": "Une plante qui pousse vers le soleil : le sud." },
-    { "literal": "東", "order": 45, "radical": { "literal": "木", "nameFr": "arbre", "meaningFr": "l'arbre, le bois" }, "confusions": ["車"], "mnemonicFr": "Le soleil (日) qui se lève dans les arbres (木) : l'est.", "etymologyFr": "Le soleil au milieu d'un arbre, à l'orient.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "西", "order": 46, "radical": { "literal": "西", "nameFr": "ouest", "meaningFr": "l'ouest" }, "confusions": ["四"], "mnemonicFr": "L'oiseau qui rentre au nid le soir : l'ouest.", "etymologyFr": "Pictogramme d'un oiseau rentrant au nid au couchant ; sens ancien de « se percher », repris par 栖.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "国", "order": 47, "radical": { "literal": "囗", "nameFr": "enceinte", "meaningFr": "un espace clos, une frontière" }, "confusions": [], "mnemonicFr": "Un roi (王) dans son enceinte (囗) : le pays.", "componentRoles": { "囗": "semantic" } },
-    { "literal": "前", "order": 48, "radical": { "literal": "刀", "nameFr": "couteau", "meaningFr": "couper" }, "confusions": [], "mnemonicFr": "Avancer en coupant la route devant soi : devant, avant.", "componentRoles": { "⺉": "semantic" } },
-    { "literal": "後", "order": 49, "radical": { "literal": "彳", "nameFr": "petit pas", "meaningFr": "la marche (moitié gauche de 行)" }, "confusions": [], "mnemonicFr": "Marcher (彳) en retard : après, derrière.", "componentRoles": { "彳": "semantic" } },
-    { "literal": "間", "order": 50, "radical": { "literal": "門", "nameFr": "porte", "meaningFr": "le portail" }, "confusions": [], "mnemonicFr": "Le soleil qui passe par l'interstice de la porte (門) : l'intervalle.", "componentRoles": { "門": "semantic", "日": "semantic" } },
-    { "literal": "時", "order": 51, "radical": { "literal": "日", "nameFr": "soleil", "meaningFr": "le soleil, le jour" }, "confusions": [], "mnemonicFr": "Le soleil (日) et la phonétique 寺 (土+寸) : le temps, l'heure.", "componentRoles": { "日": "semantic" } },
-    { "literal": "毎", "order": 52, "radical": { "literal": "毋", "nameFr": "défense / variante de mère", "meaningFr": "la mère, l'interdiction" }, "confusions": ["母"], "mnemonicFr": "Chaque jour, la mère (母) veille : chaque." },
-    { "literal": "学", "order": 53, "radical": { "literal": "子", "nameFr": "enfant", "meaningFr": "un bébé avec la tête et les bras" }, "confusions": [], "mnemonicFr": "Un enfant (子) sous un toit, entouré de mains qui enseignent : étudier.", "componentRoles": { "子": "semantic" } },
-    { "literal": "校", "order": 54, "radical": { "literal": "木", "nameFr": "arbre", "meaningFr": "l'arbre, le bois" }, "confusions": [], "mnemonicFr": "Le bois (木) et la phonétique 交 : l'école.", "componentRoles": { "木": "semantic" } },
-    { "literal": "生", "order": 55, "radical": { "literal": "生", "nameFr": "vie", "meaningFr": "naître, pousser" }, "confusions": [], "mnemonicFr": "Une plante qui sort de terre : la vie, naître.", "etymologyFr": "Pictogramme d'une pousse sortant du sol.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "見", "order": 56, "radical": { "literal": "見", "nameFr": "voir", "meaningFr": "l'œil qui regarde" }, "confusions": [], "mnemonicFr": "Un œil (目) sur des jambes (儿) : voir.", "etymologyFr": "Un œil porté par des jambes : regarder.", "etymologySource": "tradition paléographique documentée", "componentRoles": { "目": "semantic", "儿": "semantic" } },
-    { "literal": "行", "order": 57, "radical": { "literal": "行", "nameFr": "marcher", "meaningFr": "le carrefour, la marche" }, "confusions": [], "mnemonicFr": "Un carrefour où l'on marche : aller." },
-    { "literal": "来", "order": 58, "radical": { "literal": "木", "nameFr": "arbre", "meaningFr": "l'arbre, le bois" }, "confusions": [], "mnemonicFr": "Le blé (來) qui vient vers soi : venir.", "etymologyFr": "Pictogramme d'un épi de blé ; le caractère 來 a été emprunté pour noter le verbe « venir ».", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "食", "order": 59, "radical": { "literal": "食", "nameFr": "manger", "meaningFr": "la nourriture" }, "confusions": [], "mnemonicFr": "Un toit sur de bonnes choses à manger : manger." },
-    { "literal": "話", "order": 60, "radical": { "literal": "言", "nameFr": "parole", "meaningFr": "parler, les mots" }, "confusions": [], "mnemonicFr": "La parole (言) et la phonétique 舌 : parler, l'histoire.", "componentRoles": { "言": "semantic", "舌": "phonetic" } },
-    { "literal": "読", "order": 61, "radical": { "literal": "言", "nameFr": "parole", "meaningFr": "parler, les mots" }, "confusions": [], "mnemonicFr": "La parole (言) et la phonétique 売 : lire.", "componentRoles": { "言": "semantic" } },
-    { "literal": "聞", "order": 62, "radical": { "literal": "耳", "nameFr": "oreille", "meaningFr": "l'oreille" }, "confusions": [], "mnemonicFr": "L'oreille (耳) collée à la porte (門) : entendre.", "componentRoles": { "耳": "semantic", "門": "phonetic" } },
-    { "literal": "語", "order": 63, "radical": { "literal": "言", "nameFr": "parole", "meaningFr": "parler, les mots" }, "confusions": [], "mnemonicFr": "La parole (言) et la phonétique 吾 (五+口) : le langage.", "componentRoles": { "言": "semantic", "五": "phonetic" } },
-    { "literal": "書", "order": 64, "radical": { "literal": "曰", "nameFr": "dire", "meaningFr": "parler, dire" }, "confusions": [], "mnemonicFr": "Le pinceau (聿) qui note ce qu'on dit (曰) : écrire.", "componentRoles": { "聿": "semantic" } },
-    { "literal": "本", "order": 65, "radical": { "literal": "木", "nameFr": "arbre", "meaningFr": "l'arbre, le bois" }, "confusions": ["木"], "mnemonicFr": "Le pied de l'arbre (木) marqué d'un trait : l'origine, le livre.", "etymologyFr": "Un trait indiquant la racine de l'arbre : l'origine.", "etymologySource": "tradition paléographique documentée", "componentRoles": { "木": "semantic" } },
-    { "literal": "白", "order": 66, "radical": { "literal": "白", "nameFr": "blanc", "meaningFr": "la lumière, la clarté" }, "confusions": ["日", "百"], "mnemonicFr": "La première lueur de l'aube : blanc." },
-    { "literal": "気", "order": 67, "radical": { "literal": "气", "nameFr": "souffle / vapeur", "meaningFr": "l'air, la vapeur" }, "confusions": [], "mnemonicFr": "La vapeur qui s'élève : l'air, l'esprit, l'humeur.", "componentRoles": { "气": "semantic" } },
-    { "literal": "円", "order": 68, "radical": { "literal": "冂", "nameFr": "boîte ouverte", "meaningFr": "un cadre, une bordure" }, "confusions": [], "mnemonicFr": "Un cercle enfermé dans un cadre : rond, le yen." },
-    { "literal": "金", "order": 69, "radical": { "literal": "金", "nameFr": "or / métal", "meaningFr": "le métal, l'argent" }, "confusions": [], "mnemonicFr": "Le métal sous un abri, dans la terre : l'or, l'argent." },
-    { "literal": "高", "order": 70, "radical": { "literal": "高", "nameFr": "haut", "meaningFr": "la tour élevée (phonétique)" }, "confusions": [], "mnemonicFr": "Une tour élevée avec une porte : haut, cher." },
-    { "literal": "長", "order": 71, "radical": { "literal": "長", "nameFr": "long", "meaningFr": "long, ancien" }, "confusions": [], "mnemonicFr": "Un ancien aux longs cheveux : long, le chef." },
-    { "literal": "名", "order": 72, "radical": { "literal": "口", "nameFr": "bouche", "meaningFr": "la bouche, l'ouverture" }, "confusions": [], "mnemonicFr": "Le soir venu (夕), on annonce son nom à voix haute (口) : le nom.", "componentRoles": { "口": "semantic", "夕": "semantic" } },
-    { "literal": "何", "order": 73, "radical": { "literal": "人", "nameFr": "personne", "meaningFr": "l'être humain" }, "confusions": [], "mnemonicFr": "Une personne (⺅) qui porte une charge en demandant : quoi ?", "componentRoles": { "⺅": "semantic" } },
-    { "literal": "右", "order": 74, "radical": { "literal": "口", "nameFr": "bouche", "meaningFr": "la bouche, l'ouverture" }, "confusions": ["左"], "mnemonicFr": "La main qui aide, au-dessus de la bouche (口) : la droite." },
-    { "literal": "左", "order": 75, "radical": { "literal": "工", "nameFr": "travail / outil", "meaningFr": "l'outil, l'ouvrage" }, "confusions": ["右"], "mnemonicFr": "La main qui tient l'outil (工) : la gauche." },
-    { "literal": "四", "order": 76, "radical": { "literal": "囗", "nameFr": "enceinte", "meaningFr": "un espace clos, une frontière" }, "confusions": ["西"], "mnemonicFr": "Le chiffre quatre dans un cadre." },
-    { "literal": "千", "order": 77, "radical": { "literal": "十", "nameFr": "croix", "meaningFr": "croisement d'un trait vertical et horizontal" }, "confusions": ["十", "七"], "mnemonicFr": "Un trait oblique sur dix (十) : mille." },
-    { "literal": "車", "order": 78, "radical": { "literal": "車", "nameFr": "char", "meaningFr": "le véhicule" }, "confusions": ["東"], "mnemonicFr": "Un char vu de dessus avec ses roues : le véhicule.", "etymologyFr": "Pictogramme d'un char vu de dessus.", "etymologySource": "tradition paléographique documentée" },
-    { "literal": "電", "order": 79, "radical": { "literal": "雨", "nameFr": "pluie", "meaningFr": "les gouttes qui tombent" }, "confusions": [], "mnemonicFr": "L'éclair (申) sous la pluie (雨) : l'électricité.", "componentRoles": { "雨": "semantic" } }
-  ]
+ "level": "N5",
+ "curriculum": "JLPT_ALIGNED",
+ "notes": "Liste croisée : kanji-data (MIT, jlpt_new=5) et miroir kanjiapi.dev (jlpt=5) — 79 kanji identiques. Vérifié contre le champ jlpt historique de KANJIDIC2 (niveau 4, 103 kanji) : les 79 y figurent tous. Les 24 kanji supplémentaires du niveau historique (安飲駅花会魚空言古口耳社手週少新足多店道買分目立) sont signalés comme divergence et classés N4. Ordre pédagogique interne : nombres, nature, personnes, temps/espace, école/actions, divers. Ajout éditorial (kanji de l'école primaire absents des listes jlpt_new de kanji-data, classés d'après le champ jlpt historique de KANJIDIC2) : 分.",
+ "kanji": [
+  {
+   "literal": "一",
+   "order": 1,
+   "radical": {
+    "literal": "一",
+    "nameFr": "un / trait horizontal",
+    "meaningFr": "le sol, la ligne horizontale"
+   },
+   "confusions": [
+    "二",
+    "三"
+   ],
+   "mnemonicFr": "Un seul trait horizontal : un, le sol.",
+   "etymologyFr": "Pictogramme d'une ligne horizontale, attesté dès les inscriptions oraculaires.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "二",
+   "order": 2,
+   "radical": {
+    "literal": "二",
+    "nameFr": "deux",
+    "meaningFr": "deux traits superposés"
+   },
+   "confusions": [
+    "一",
+    "三"
+   ],
+   "mnemonicFr": "Deux traits superposés : deux."
+  },
+  {
+   "literal": "三",
+   "order": 3,
+   "radical": {
+    "literal": "一",
+    "nameFr": "un / trait horizontal",
+    "meaningFr": "le sol, la ligne horizontale"
+   },
+   "confusions": [
+    "二",
+    "川"
+   ],
+   "mnemonicFr": "Trois traits superposés : trois."
+  },
+  {
+   "literal": "十",
+   "order": 4,
+   "radical": {
+    "literal": "十",
+    "nameFr": "croix",
+    "meaningFr": "croisement d'un trait vertical et horizontal"
+   },
+   "confusions": [
+    "千",
+    "七"
+   ],
+   "mnemonicFr": "Une horizontale et une verticale qui se croisent : dix, la totalité."
+  },
+  {
+   "literal": "五",
+   "order": 5,
+   "radical": {
+    "literal": "二",
+    "nameFr": "deux",
+    "meaningFr": "deux traits superposés"
+   },
+   "confusions": [],
+   "mnemonicFr": "Entre deux traits, un croisement : cinq."
+  },
+  {
+   "literal": "六",
+   "order": 6,
+   "radical": {
+    "literal": "八",
+    "nameFr": "huit / séparation",
+    "meaningFr": "séparer, partager"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un toit (亠) et deux jambes : six."
+  },
+  {
+   "literal": "七",
+   "order": 7,
+   "radical": {
+    "literal": "一",
+    "nameFr": "un / trait horizontal",
+    "meaningFr": "le sol, la ligne horizontale"
+   },
+   "confusions": [
+    "十",
+    "千"
+   ],
+   "mnemonicFr": "Une horizontale coupée par un trait oblique : sept."
+  },
+  {
+   "literal": "八",
+   "order": 8,
+   "radical": {
+    "literal": "八",
+    "nameFr": "huit / séparation",
+    "meaningFr": "séparer, partager"
+   },
+   "confusions": [
+    "人",
+    "入"
+   ],
+   "mnemonicFr": "Deux traits qui s'écartent : huit, l'idée de séparer."
+  },
+  {
+   "literal": "九",
+   "order": 9,
+   "radical": {
+    "literal": "乙",
+    "nameFr": "crochet",
+    "meaningFr": "un bras courbé"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un bras courbé comme un crochet : neuf."
+  },
+  {
+   "literal": "百",
+   "order": 10,
+   "radical": {
+    "literal": "白",
+    "nameFr": "blanc",
+    "meaningFr": "la lumière, la clarté"
+   },
+   "confusions": [
+    "白"
+   ],
+   "mnemonicFr": "Un (一) + blanc (白) : cent."
+  },
+  {
+   "literal": "万",
+   "order": 11,
+   "radical": {
+    "literal": "一",
+    "nameFr": "un / trait horizontal",
+    "meaningFr": "le sol, la ligne horizontale"
+   },
+   "confusions": [],
+   "mnemonicFr": "Forme simplifiée de 萬 : dix mille."
+  },
+  {
+   "literal": "山",
+   "order": 12,
+   "radical": {
+    "literal": "山",
+    "nameFr": "montagne",
+    "meaningFr": "trois pics"
+   },
+   "confusions": [],
+   "mnemonicFr": "Trois pics : la montagne.",
+   "etymologyFr": "Pictogramme d'une chaîne de montagnes à trois sommets.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "川",
+   "order": 13,
+   "radical": {
+    "literal": "川",
+    "nameFr": "rivière",
+    "meaningFr": "l'eau qui coule"
+   },
+   "confusions": [
+    "三"
+   ],
+   "mnemonicFr": "L'eau qui coule entre les berges : la rivière.",
+   "etymologyFr": "Pictogramme d'un cours d'eau entre deux rives.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "日",
+   "order": 14,
+   "radical": {
+    "literal": "日",
+    "nameFr": "soleil",
+    "meaningFr": "le soleil, le jour"
+   },
+   "confusions": [
+    "白"
+   ],
+   "mnemonicFr": "Le soleil avec un rayon en son centre : le jour.",
+   "etymologyFr": "Pictogramme du soleil : un disque avec un point central.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "月",
+   "order": 15,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un croissant de lune avec deux rayons : la lune, le mois.",
+   "etymologyFr": "Pictogramme d'un croissant de lune.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "火",
+   "order": 16,
+   "radical": {
+    "literal": "火",
+    "nameFr": "feu",
+    "meaningFr": "les flammes"
+   },
+   "confusions": [],
+   "mnemonicFr": "Des flammes et des étincelles : le feu.",
+   "etymologyFr": "Pictogramme de flammes jaillissantes.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "水",
+   "order": 17,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un courant avec des gouttes : l'eau.",
+   "etymologyFr": "Pictogramme d'un cours d'eau avec des éclaboussures.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "木",
+   "order": 18,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "本"
+   ],
+   "mnemonicFr": "Un arbre avec branches et racines.",
+   "etymologyFr": "Pictogramme d'un arbre : tronc, branches, racines.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "土",
+   "order": 19,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [],
+   "mnemonicFr": "Une motte de terre (十) sur le sol (一)."
+  },
+  {
+   "literal": "雨",
+   "order": 20,
+   "radical": {
+    "literal": "雨",
+    "nameFr": "pluie",
+    "meaningFr": "les gouttes qui tombent"
+   },
+   "confusions": [],
+   "mnemonicFr": "Des gouttes qui tombent du ciel : la pluie.",
+   "etymologyFr": "Pictogramme de gouttes de pluie tombant du ciel.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "天",
+   "order": 21,
+   "radical": {
+    "literal": "大",
+    "nameFr": "grand",
+    "meaningFr": "un homme bras écartés"
+   },
+   "confusions": [
+    "大"
+   ],
+   "mnemonicFr": "Au-dessus de 大 (un homme bras écartés), ce qui domine : le ciel."
+  },
+  {
+   "literal": "人",
+   "order": 22,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "入",
+    "八"
+   ],
+   "mnemonicFr": "Une personne vue de profil, qui marche.",
+   "etymologyFr": "Pictogramme d'une personne debout, de profil.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "大",
+   "order": 23,
+   "radical": {
+    "literal": "大",
+    "nameFr": "grand",
+    "meaningFr": "un homme bras écartés"
+   },
+   "confusions": [
+    "天"
+   ],
+   "mnemonicFr": "Une personne (人) qui écarte les bras : grand.",
+   "etymologyFr": "Pictogramme d'un homme debout, bras écartés.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "小",
+   "order": 24,
+   "radical": {
+    "literal": "小",
+    "nameFr": "petit",
+    "meaningFr": "petits grains éparpillés"
+   },
+   "confusions": [],
+   "mnemonicFr": "De petits grains éparpillés : petit."
+  },
+  {
+   "literal": "上",
+   "order": 25,
+   "radical": {
+    "literal": "一",
+    "nameFr": "un / trait horizontal",
+    "meaningFr": "le sol, la ligne horizontale"
+   },
+   "confusions": [
+    "下"
+   ],
+   "mnemonicFr": "Un repère au-dessus de la ligne : le haut, monter."
+  },
+  {
+   "literal": "下",
+   "order": 26,
+   "radical": {
+    "literal": "一",
+    "nameFr": "un / trait horizontal",
+    "meaningFr": "le sol, la ligne horizontale"
+   },
+   "confusions": [
+    "上"
+   ],
+   "mnemonicFr": "Un repère sous la ligne : le bas, descendre."
+  },
+  {
+   "literal": "中",
+   "order": 27,
+   "radical": {
+    "literal": "丨",
+    "nameFr": "trait vertical",
+    "meaningFr": "une ligne verticale"
+   },
+   "confusions": [],
+   "mnemonicFr": "Une verticale qui traverse le centre du carré : dedans, le milieu."
+  },
+  {
+   "literal": "入",
+   "order": 28,
+   "radical": {
+    "literal": "入",
+    "nameFr": "entrer",
+    "meaningFr": "pénétrer"
+   },
+   "confusions": [
+    "人",
+    "八"
+   ],
+   "mnemonicFr": "Une pointe qui pénètre dans une ouverture : entrer."
+  },
+  {
+   "literal": "出",
+   "order": 29,
+   "radical": {
+    "literal": "凵",
+    "nameFr": "réceptacle",
+    "meaningFr": "une cavité"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un pied qui sort d'une cavité : sortir."
+  },
+  {
+   "literal": "女",
+   "order": 30,
+   "radical": {
+    "literal": "女",
+    "nameFr": "femme",
+    "meaningFr": "personne agenouillée"
+   },
+   "confusions": [
+    "母"
+   ],
+   "mnemonicFr": "Une personne agenouillée aux bras croisés : la femme.",
+   "etymologyFr": "Pictogramme d'une femme agenouillée, les bras croisés.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "男",
+   "order": 31,
+   "radical": {
+    "literal": "田",
+    "nameFr": "rizière",
+    "meaningFr": "le champ cultivé"
+   },
+   "confusions": [],
+   "mnemonicFr": "La force (力) qui travaille aux champs (田) : l'homme.",
+   "etymologyFr": "Composé de la rizière et de la force : celui qui travaille aux champs.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "子",
+   "order": 32,
+   "radical": {
+    "literal": "子",
+    "nameFr": "enfant",
+    "meaningFr": "un bébé avec la tête et les bras"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un bébé avec une grande tête et des bras : l'enfant.",
+   "etymologyFr": "Pictogramme d'un nourrisson aux bras ouverts.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "父",
+   "order": 33,
+   "radical": {
+    "literal": "父",
+    "nameFr": "père",
+    "meaningFr": "l'autorité paternelle"
+   },
+   "confusions": [],
+   "mnemonicFr": "Une main tenant un bâton : le père, l'autorité."
+  },
+  {
+   "literal": "母",
+   "order": 34,
+   "radical": {
+    "literal": "毋",
+    "nameFr": "défense / variante de mère",
+    "meaningFr": "la mère, l'interdiction"
+   },
+   "confusions": [
+    "女",
+    "毎"
+   ],
+   "mnemonicFr": "Une femme (女) avec deux seins : la mère."
+  },
+  {
+   "literal": "友",
+   "order": 35,
+   "radical": {
+    "literal": "又",
+    "nameFr": "main droite",
+    "meaningFr": "la main qui agit, encore"
+   },
+   "confusions": [],
+   "mnemonicFr": "Deux mains (又) qui se tendent l'une vers l'autre : l'ami."
+  },
+  {
+   "literal": "休",
+   "order": 36,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [],
+   "mnemonicFr": "Une personne (⺅) appuyée contre un arbre (木) : se reposer.",
+   "etymologyFr": "Une personne adossée à un arbre : le repos.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "今",
+   "order": 37,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un toit qui couvre le moment présent : maintenant."
+  },
+  {
+   "literal": "年",
+   "order": 38,
+   "radical": {
+    "literal": "干",
+    "nameFr": "sec / sécher",
+    "meaningFr": "sécher, intervenir"
+   },
+   "confusions": [],
+   "mnemonicFr": "Le grain mûrit une fois : l'année."
+  },
+  {
+   "literal": "午",
+   "order": 39,
+   "radical": {
+    "literal": "十",
+    "nameFr": "croix",
+    "meaningFr": "croisement d'un trait vertical et horizontal"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un pilon, emprunté pour midi : midi."
+  },
+  {
+   "literal": "半",
+   "order": 40,
+   "radical": {
+    "literal": "十",
+    "nameFr": "croix",
+    "meaningFr": "croisement d'un trait vertical et horizontal"
+   },
+   "confusions": [],
+   "mnemonicFr": "Une vache (牛) coupée en deux : la moitié."
+  },
+  {
+   "literal": "先",
+   "order": 41,
+   "radical": {
+    "literal": "儿",
+    "nameFr": "jambes",
+    "meaningFr": "les jambes d'une personne"
+   },
+   "confusions": [],
+   "mnemonicFr": "Des jambes (儿) qui marchent devant : avant, d'abord."
+  },
+  {
+   "literal": "外",
+   "order": 42,
+   "radical": {
+    "literal": "夕",
+    "nameFr": "soir",
+    "meaningFr": "la lune du soir"
+   },
+   "confusions": [],
+   "mnemonicFr": "Le soir (夕), hors de la maison : l'extérieur."
+  },
+  {
+   "literal": "北",
+   "order": 43,
+   "radical": {
+    "literal": "匕",
+    "nameFr": "cuillère / renversé",
+    "meaningFr": "renversé, dos à dos"
+   },
+   "confusions": [],
+   "mnemonicFr": "Deux personnes dos à dos : le nord (on tourne le dos au sud).",
+   "etymologyFr": "Deux personnages se tournant le dos.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "南",
+   "order": 44,
+   "radical": {
+    "literal": "十",
+    "nameFr": "croix",
+    "meaningFr": "croisement d'un trait vertical et horizontal"
+   },
+   "confusions": [],
+   "mnemonicFr": "Une plante qui pousse vers le soleil : le sud."
+  },
+  {
+   "literal": "東",
+   "order": 45,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "車"
+   ],
+   "mnemonicFr": "Le soleil (日) qui se lève dans les arbres (木) : l'est.",
+   "etymologyFr": "Le soleil au milieu d'un arbre, à l'orient.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "西",
+   "order": 46,
+   "radical": {
+    "literal": "西",
+    "nameFr": "ouest",
+    "meaningFr": "l'ouest"
+   },
+   "confusions": [
+    "四"
+   ],
+   "mnemonicFr": "L'oiseau qui rentre au nid le soir : l'ouest.",
+   "etymologyFr": "Pictogramme d'un oiseau rentrant au nid au couchant ; sens ancien de « se percher », repris par 栖.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "国",
+   "order": 47,
+   "radical": {
+    "literal": "囗",
+    "nameFr": "enceinte",
+    "meaningFr": "un espace clos, une frontière"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un roi (王) dans son enceinte (囗) : le pays.",
+   "componentRoles": {
+    "囗": "semantic"
+   }
+  },
+  {
+   "literal": "前",
+   "order": 48,
+   "radical": {
+    "literal": "刀",
+    "nameFr": "couteau",
+    "meaningFr": "couper"
+   },
+   "confusions": [],
+   "mnemonicFr": "Avancer en coupant la route devant soi : devant, avant.",
+   "componentRoles": {
+    "⺉": "semantic"
+   }
+  },
+  {
+   "literal": "後",
+   "order": 49,
+   "radical": {
+    "literal": "彳",
+    "nameFr": "petit pas",
+    "meaningFr": "la marche (moitié gauche de 行)"
+   },
+   "confusions": [],
+   "mnemonicFr": "Marcher (彳) en retard : après, derrière.",
+   "componentRoles": {
+    "彳": "semantic"
+   }
+  },
+  {
+   "literal": "間",
+   "order": 50,
+   "radical": {
+    "literal": "門",
+    "nameFr": "porte",
+    "meaningFr": "le portail"
+   },
+   "confusions": [],
+   "mnemonicFr": "Le soleil qui passe par l'interstice de la porte (門) : l'intervalle.",
+   "componentRoles": {
+    "門": "semantic",
+    "日": "semantic"
+   }
+  },
+  {
+   "literal": "時",
+   "order": 51,
+   "radical": {
+    "literal": "日",
+    "nameFr": "soleil",
+    "meaningFr": "le soleil, le jour"
+   },
+   "confusions": [],
+   "mnemonicFr": "Le soleil (日) et la phonétique 寺 (土+寸) : le temps, l'heure.",
+   "componentRoles": {
+    "日": "semantic"
+   }
+  },
+  {
+   "literal": "毎",
+   "order": 52,
+   "radical": {
+    "literal": "毋",
+    "nameFr": "défense / variante de mère",
+    "meaningFr": "la mère, l'interdiction"
+   },
+   "confusions": [
+    "母"
+   ],
+   "mnemonicFr": "Chaque jour, la mère (母) veille : chaque."
+  },
+  {
+   "literal": "学",
+   "order": 53,
+   "radical": {
+    "literal": "子",
+    "nameFr": "enfant",
+    "meaningFr": "un bébé avec la tête et les bras"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un enfant (子) sous un toit, entouré de mains qui enseignent : étudier.",
+   "componentRoles": {
+    "子": "semantic"
+   }
+  },
+  {
+   "literal": "校",
+   "order": 54,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [],
+   "mnemonicFr": "Le bois (木) et la phonétique 交 : l'école.",
+   "componentRoles": {
+    "木": "semantic"
+   }
+  },
+  {
+   "literal": "生",
+   "order": 55,
+   "radical": {
+    "literal": "生",
+    "nameFr": "vie",
+    "meaningFr": "naître, pousser"
+   },
+   "confusions": [],
+   "mnemonicFr": "Une plante qui sort de terre : la vie, naître.",
+   "etymologyFr": "Pictogramme d'une pousse sortant du sol.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "見",
+   "order": 56,
+   "radical": {
+    "literal": "見",
+    "nameFr": "voir",
+    "meaningFr": "l'œil qui regarde"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un œil (目) sur des jambes (儿) : voir.",
+   "etymologyFr": "Un œil porté par des jambes : regarder.",
+   "etymologySource": "tradition paléographique documentée",
+   "componentRoles": {
+    "目": "semantic",
+    "儿": "semantic"
+   }
+  },
+  {
+   "literal": "行",
+   "order": 57,
+   "radical": {
+    "literal": "行",
+    "nameFr": "marcher",
+    "meaningFr": "le carrefour, la marche"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un carrefour où l'on marche : aller."
+  },
+  {
+   "literal": "来",
+   "order": 58,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [],
+   "mnemonicFr": "Le blé (來) qui vient vers soi : venir.",
+   "etymologyFr": "Pictogramme d'un épi de blé ; le caractère 來 a été emprunté pour noter le verbe « venir ».",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "食",
+   "order": 59,
+   "radical": {
+    "literal": "食",
+    "nameFr": "manger",
+    "meaningFr": "la nourriture"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un toit sur de bonnes choses à manger : manger."
+  },
+  {
+   "literal": "話",
+   "order": 60,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [],
+   "mnemonicFr": "La parole (言) et la phonétique 舌 : parler, l'histoire.",
+   "componentRoles": {
+    "言": "semantic",
+    "舌": "phonetic"
+   }
+  },
+  {
+   "literal": "読",
+   "order": 61,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [],
+   "mnemonicFr": "La parole (言) et la phonétique 売 : lire.",
+   "componentRoles": {
+    "言": "semantic"
+   }
+  },
+  {
+   "literal": "聞",
+   "order": 62,
+   "radical": {
+    "literal": "耳",
+    "nameFr": "oreille",
+    "meaningFr": "l'oreille"
+   },
+   "confusions": [],
+   "mnemonicFr": "L'oreille (耳) collée à la porte (門) : entendre.",
+   "componentRoles": {
+    "耳": "semantic",
+    "門": "phonetic"
+   }
+  },
+  {
+   "literal": "語",
+   "order": 63,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [],
+   "mnemonicFr": "La parole (言) et la phonétique 吾 (五+口) : le langage.",
+   "componentRoles": {
+    "言": "semantic",
+    "五": "phonetic"
+   }
+  },
+  {
+   "literal": "書",
+   "order": 64,
+   "radical": {
+    "literal": "曰",
+    "nameFr": "dire",
+    "meaningFr": "parler, dire"
+   },
+   "confusions": [],
+   "mnemonicFr": "Le pinceau (聿) qui note ce qu'on dit (曰) : écrire.",
+   "componentRoles": {
+    "聿": "semantic"
+   }
+  },
+  {
+   "literal": "本",
+   "order": 65,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "木"
+   ],
+   "mnemonicFr": "Le pied de l'arbre (木) marqué d'un trait : l'origine, le livre.",
+   "etymologyFr": "Un trait indiquant la racine de l'arbre : l'origine.",
+   "etymologySource": "tradition paléographique documentée",
+   "componentRoles": {
+    "木": "semantic"
+   }
+  },
+  {
+   "literal": "白",
+   "order": 66,
+   "radical": {
+    "literal": "白",
+    "nameFr": "blanc",
+    "meaningFr": "la lumière, la clarté"
+   },
+   "confusions": [
+    "日",
+    "百"
+   ],
+   "mnemonicFr": "La première lueur de l'aube : blanc."
+  },
+  {
+   "literal": "気",
+   "order": 67,
+   "radical": {
+    "literal": "气",
+    "nameFr": "souffle / vapeur",
+    "meaningFr": "l'air, la vapeur"
+   },
+   "confusions": [],
+   "mnemonicFr": "La vapeur qui s'élève : l'air, l'esprit, l'humeur.",
+   "componentRoles": {
+    "气": "semantic"
+   }
+  },
+  {
+   "literal": "円",
+   "order": 68,
+   "radical": {
+    "literal": "冂",
+    "nameFr": "boîte ouverte",
+    "meaningFr": "un cadre, une bordure"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un cercle enfermé dans un cadre : rond, le yen."
+  },
+  {
+   "literal": "金",
+   "order": 69,
+   "radical": {
+    "literal": "金",
+    "nameFr": "or / métal",
+    "meaningFr": "le métal, l'argent"
+   },
+   "confusions": [],
+   "mnemonicFr": "Le métal sous un abri, dans la terre : l'or, l'argent."
+  },
+  {
+   "literal": "高",
+   "order": 70,
+   "radical": {
+    "literal": "高",
+    "nameFr": "haut",
+    "meaningFr": "la tour élevée (phonétique)"
+   },
+   "confusions": [],
+   "mnemonicFr": "Une tour élevée avec une porte : haut, cher."
+  },
+  {
+   "literal": "長",
+   "order": 71,
+   "radical": {
+    "literal": "長",
+    "nameFr": "long",
+    "meaningFr": "long, ancien"
+   },
+   "confusions": [],
+   "mnemonicFr": "Un ancien aux longs cheveux : long, le chef."
+  },
+  {
+   "literal": "名",
+   "order": 72,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [],
+   "mnemonicFr": "Le soir venu (夕), on annonce son nom à voix haute (口) : le nom.",
+   "componentRoles": {
+    "口": "semantic",
+    "夕": "semantic"
+   }
+  },
+  {
+   "literal": "何",
+   "order": 73,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [],
+   "mnemonicFr": "Une personne (⺅) qui porte une charge en demandant : quoi ?",
+   "componentRoles": {
+    "⺅": "semantic"
+   }
+  },
+  {
+   "literal": "右",
+   "order": 74,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [
+    "左"
+   ],
+   "mnemonicFr": "La main qui aide, au-dessus de la bouche (口) : la droite."
+  },
+  {
+   "literal": "左",
+   "order": 75,
+   "radical": {
+    "literal": "工",
+    "nameFr": "travail / outil",
+    "meaningFr": "l'outil, l'ouvrage"
+   },
+   "confusions": [
+    "右"
+   ],
+   "mnemonicFr": "La main qui tient l'outil (工) : la gauche."
+  },
+  {
+   "literal": "四",
+   "order": 76,
+   "radical": {
+    "literal": "囗",
+    "nameFr": "enceinte",
+    "meaningFr": "un espace clos, une frontière"
+   },
+   "confusions": [
+    "西"
+   ],
+   "mnemonicFr": "Le chiffre quatre dans un cadre."
+  },
+  {
+   "literal": "千",
+   "order": 77,
+   "radical": {
+    "literal": "十",
+    "nameFr": "croix",
+    "meaningFr": "croisement d'un trait vertical et horizontal"
+   },
+   "confusions": [
+    "十",
+    "七"
+   ],
+   "mnemonicFr": "Un trait oblique sur dix (十) : mille."
+  },
+  {
+   "literal": "車",
+   "order": 78,
+   "radical": {
+    "literal": "車",
+    "nameFr": "char",
+    "meaningFr": "le véhicule"
+   },
+   "confusions": [
+    "東"
+   ],
+   "mnemonicFr": "Un char vu de dessus avec ses roues : le véhicule.",
+   "etymologyFr": "Pictogramme d'un char vu de dessus.",
+   "etymologySource": "tradition paléographique documentée"
+  },
+  {
+   "literal": "電",
+   "order": 79,
+   "radical": {
+    "literal": "雨",
+    "nameFr": "pluie",
+    "meaningFr": "les gouttes qui tombent"
+   },
+   "confusions": [],
+   "mnemonicFr": "L'éclair (申) sous la pluie (雨) : l'électricité.",
+   "componentRoles": {
+    "雨": "semantic"
+   }
+  },
+  {
+   "literal": "分",
+   "order": 80,
+   "radical": {
+    "literal": "刀",
+    "nameFr": "couteau",
+    "meaningFr": "couper"
+   },
+   "confusions": [
+    "公",
+    "切"
+   ],
+   "mnemonicFr": "La lame (刀) qui sépare (八) en deux parts : diviser, la minute qui découpe le temps."
+  }
+ ]
 }

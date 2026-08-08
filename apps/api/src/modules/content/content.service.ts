@@ -12,6 +12,7 @@ import type {
   MiniTextDetailDto,
   MiniTextListResponse,
   SourcesResponse,
+  WordLookupResponse,
 } from '@kanjipath/contracts';
 import { JLPT_LEVELS } from '@kanjipath/contracts';
 import { PrismaService } from '../../infrastructure/database/prisma.service';
@@ -230,6 +231,61 @@ export class ContentService {
         romaji: token.romaji,
       })),
     }));
+  }
+
+  async vocabularyLookup(surface: string): Promise<WordLookupResponse> {
+    const clean = surface.normalize('NFC').trim();
+    if (clean.length === 0 || [...clean].length > 12) {
+      throw new BadRequestException('Surface invalide');
+    }
+    let words = await this.prisma.vocabulary.findMany({
+      where: { writtenForm: clean, editorialStatus: 'published' },
+      orderBy: { id: 'asc' },
+      take: 6,
+    });
+    if (words.length === 0) {
+      words = await this.prisma.vocabulary.findMany({
+        where: { writtenForm: { contains: clean }, editorialStatus: 'published' },
+        orderBy: { id: 'asc' },
+        take: 6,
+      });
+    }
+    const literals = [...new Set([...clean].filter((ch) => /[\u3400-\u9fff\uf900-\ufaff]/.test(ch)))];
+    const kanjiRows =
+      literals.length > 0
+        ? await this.prisma.kanji.findMany({
+            where: { literal: { in: literals }, status: 'published' },
+            include: {
+              meanings: { where: { isPrimary: true }, take: 1 },
+              readings: true,
+              curriculumLinks: { orderBy: { order: 'asc' }, take: 1 },
+            },
+          })
+        : [];
+    return {
+      surface: clean,
+      vocabulary: words.map((word) => ({
+        id: word.id,
+        writtenForm: word.writtenForm,
+        reading: word.reading,
+        romaji: word.romaji,
+        meaningFr: word.meaningFr,
+        partOfSpeech: word.partOfSpeech,
+      })),
+      kanji: kanjiRows.map((k) => ({
+        literal: k.literal,
+        level: (k.curriculumLinks[0]?.level ?? 'N5') as WordLookupResponse['kanji'][number]['level'],
+        primaryMeaning: k.meanings[0]?.meaning ?? null,
+        readings: [
+          ...k.readings.filter((r) => r.readingType === 'onyomi').slice(0, 3),
+          ...k.readings.filter((r) => r.readingType === 'kunyomi').slice(0, 3),
+        ].map((r) => ({
+          reading: r.reading,
+          romaji: r.romaji,
+          type: r.readingType as 'onyomi' | 'kunyomi',
+        })),
+      })),
+    };
   }
 
   async kanjiRelated(literal: string): Promise<KanjiSummary[]> {

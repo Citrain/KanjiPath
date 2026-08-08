@@ -1,0 +1,488 @@
+{
+ "level": "N2",
+ "notes": "Vocabulaire créé manuellement pour compléter la sélection JMdict (kanji N2 peu couverts par les glosses françaises).",
+ "vocabulary": [
+  {
+   "writtenForm": "一匹",
+   "reading": "いっぴき",
+   "meaningFr": "un animal (compteur)",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "一",
+     "position": 0,
+     "readingInWord": "いっ"
+    },
+    {
+     "literal": "匹",
+     "position": 1,
+     "readingInWord": "ぴき"
+    }
+   ]
+  },
+  {
+   "writtenForm": "匹数",
+   "reading": "ひきすう",
+   "meaningFr": "nombre d'animaux",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "匹",
+     "position": 0,
+     "readingInWord": "ひき"
+    },
+    {
+     "literal": "数",
+     "position": 1,
+     "readingInWord": "すう"
+    }
+   ]
+  },
+  {
+   "writtenForm": "央求",
+   "reading": "おうきゅう",
+   "meaningFr": "demande instante ; supplier",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "央",
+     "position": 0,
+     "readingInWord": "おう"
+    },
+    {
+     "literal": "求",
+     "position": 1,
+     "readingInWord": "きゅう"
+    }
+   ]
+  },
+  {
+   "writtenForm": "汗腺",
+   "reading": "かんせん",
+   "meaningFr": "glande sudoripare",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "汗",
+     "position": 0,
+     "readingInWord": "かん"
+    }
+   ]
+  },
+  {
+   "writtenForm": "冷や汗",
+   "reading": "ひやあせ",
+   "meaningFr": "sueur froide",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "冷",
+     "position": 0,
+     "readingInWord": "ひや"
+    },
+    {
+     "literal": "汗",
+     "position": 2,
+     "readingInWord": "あせ"
+    }
+   ]
+  },
+  {
+   "writtenForm": "小舟",
+   "reading": "こぶね",
+   "meaningFr": "petite barque",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "小",
+     "position": 0,
+     "readingInWord": "こ"
+    },
+    {
+     "literal": "舟",
+     "position": 1,
+     "readingInWord": "ふね"
+    }
+   ]
+  },
+  {
+   "writtenForm": "希少",
+   "reading": "きしょう",
+   "meaningFr": "rare ; précieux",
+   "partOfSpeech": "adjectif (na)",
+   "kanji": [
+    {
+     "literal": "希",
+     "position": 0,
+     "readingInWord": "き"
+    },
+    {
+     "literal": "少",
+     "position": 1,
+     "readingInWord": "しょう"
+    }
+   ]
+  },
+  {
+   "writtenForm": "貝殻",
+   "reading": "かいがら",
+   "meaningFr": "coquille ; coquillage",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "貝",
+     "position": 0,
+     "readingInWord": "かい"
+    }
+   ]
+  },
+  {
+   "writtenForm": "肯定",
+   "reading": "こうてい",
+   "meaningFr": "affirmation ; approbation",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "肯",
+     "position": 0,
+     "readingInWord": "こう"
+    },
+    {
+     "literal": "定",
+     "position": 1,
+     "readingInWord": "てい"
+    }
+   ]
+  },
+  {
+   "writtenForm": "肯う",
+   "reading": "うべなう",
+   "meaningFr": "consentir ; approuver",
+   "partOfSpeech": "verbe (godan)",
+   "kanji": [
+    {
+     "literal": "肯",
+     "position": 0,
+     "readingInWord": "うべな"
+    }
+   ]
+  },
+  {
+   "writtenForm": "肯首",
+   "reading": "こうしゅ",
+   "meaningFr": "hochement de tête ; acquiescement",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "肯",
+     "position": 0,
+     "readingInWord": "こう"
+    },
+    {
+     "literal": "首",
+     "position": 1,
+     "readingInWord": "しゅ"
+    }
+   ]
+  },
+  {
+   "writtenForm": "秒読み",
+   "reading": "びょうよみ",
+   "meaningFr": "compte à rebours",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "秒",
+     "position": 0,
+     "readingInWord": "びょう"
+    },
+    {
+     "literal": "読",
+     "position": 1,
+     "readingInWord": "よ"
+    }
+   ]
+  },
+  {
+   "writtenForm": "郊外",
+   "reading": "こうがい",
+   "meaningFr": "banlieue ; faubourgs",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "郊",
+     "position": 0,
+     "readingInWord": "こう"
+    },
+    {
+     "literal": "外",
+     "position": 1,
+     "readingInWord": "がい"
+    }
+   ]
+  },
+  {
+   "writtenForm": "近郊",
+   "reading": "きんこう",
+   "meaningFr": "environs proches ; périphérie",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "近",
+     "position": 0,
+     "readingInWord": "きん"
+    },
+    {
+     "literal": "郊",
+     "position": 1,
+     "readingInWord": "こう"
+    }
+   ]
+  },
+  {
+   "writtenForm": "郊市",
+   "reading": "こうし",
+   "meaningFr": "ville de banlieue",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "郊",
+     "position": 0,
+     "readingInWord": "こう"
+    },
+    {
+     "literal": "市",
+     "position": 1,
+     "readingInWord": "し"
+    }
+   ]
+  },
+  {
+   "writtenForm": "耕地",
+   "reading": "こうち",
+   "meaningFr": "terre cultivée ; labour",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "耕",
+     "position": 0,
+     "readingInWord": "こう"
+    },
+    {
+     "literal": "地",
+     "position": 1,
+     "readingInWord": "ち"
+    }
+   ]
+  },
+  {
+   "writtenForm": "紹述",
+   "reading": "しょうじゅつ",
+   "meaningFr": "transmission ; héritage (d'une pensée)",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "紹",
+     "position": 0,
+     "readingInWord": "しょう"
+    },
+    {
+     "literal": "述",
+     "position": 1,
+     "readingInWord": "じゅつ"
+    }
+   ]
+  },
+  {
+   "writtenForm": "紹興酒",
+   "reading": "しょうこうしゅ",
+   "meaningFr": "alcool de riz de Shaoxing",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "紹",
+     "position": 0,
+     "readingInWord": "しょう"
+    },
+    {
+     "literal": "酒",
+     "position": 2,
+     "readingInWord": "しゅ"
+    }
+   ]
+  },
+  {
+   "writtenForm": "紹継",
+   "reading": "しょうけい",
+   "meaningFr": "succession ; reprise",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "紹",
+     "position": 0,
+     "readingInWord": "しょう"
+    }
+   ]
+  },
+  {
+   "writtenForm": "械",
+   "reading": "かせ",
+   "meaningFr": "entrave ; chaînes",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "械",
+     "position": 0,
+     "readingInWord": "かせ"
+    }
+   ]
+  },
+  {
+   "writtenForm": "器械体操",
+   "reading": "きかいたいそう",
+   "meaningFr": "gymnastique aux agrès",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "械",
+     "position": 1,
+     "readingInWord": "かい"
+    },
+    {
+     "literal": "体",
+     "position": 2,
+     "readingInWord": "たい"
+    }
+   ]
+  },
+  {
+   "writtenForm": "森閑",
+   "reading": "しんかん",
+   "meaningFr": "silence profond",
+   "partOfSpeech": "adjectif (na)",
+   "kanji": [
+    {
+     "literal": "森",
+     "position": 0,
+     "readingInWord": "しん"
+    }
+   ]
+  },
+  {
+   "writtenForm": "森厳",
+   "reading": "しんげん",
+   "meaningFr": "solennel ; imposant",
+   "partOfSpeech": "adjectif (na)",
+   "kanji": [
+    {
+     "literal": "森",
+     "position": 0,
+     "readingInWord": "しん"
+    }
+   ]
+  },
+  {
+   "writtenForm": "喫食",
+   "reading": "きっしょく",
+   "meaningFr": "action de manger ; repas pris",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "喫",
+     "position": 0,
+     "readingInWord": "きっ"
+    },
+    {
+     "literal": "食",
+     "position": 1,
+     "readingInWord": "しょく"
+    }
+   ]
+  },
+  {
+   "writtenForm": "隅々",
+   "reading": "すみずみ",
+   "meaningFr": "tous les coins ; les moindres recoins",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "隅",
+     "position": 0,
+     "readingInWord": "すみ"
+    },
+    {
+     "literal": "隅",
+     "position": 1,
+     "readingInWord": "ずみ"
+    }
+   ]
+  },
+  {
+   "writtenForm": "肌膚",
+   "reading": "きふ",
+   "meaningFr": "peau ; teint",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "肌",
+     "position": 0,
+     "readingInWord": "き"
+    },
+    {
+     "literal": "膚",
+     "position": 1,
+     "readingInWord": "ふ"
+    }
+   ]
+  },
+  {
+   "writtenForm": "濯ぐ",
+   "reading": "すすぐ",
+   "meaningFr": "rincer ; laver",
+   "partOfSpeech": "verbe (godan)",
+   "kanji": [
+    {
+     "literal": "濯",
+     "position": 0,
+     "readingInWord": "すす"
+    }
+   ]
+  },
+  {
+   "writtenForm": "濯ぎ",
+   "reading": "すすぎ",
+   "meaningFr": "rinçage",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "濯",
+     "position": 0,
+     "readingInWord": "すす"
+    }
+   ]
+  },
+  {
+   "writtenForm": "放課後",
+   "reading": "ほうかご",
+   "meaningFr": "après les cours",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "放",
+     "position": 0,
+     "readingInWord": "ほう"
+    },
+    {
+     "literal": "課",
+     "position": 1,
+     "readingInWord": "か"
+    },
+    {
+     "literal": "後",
+     "position": 2,
+     "readingInWord": "ご"
+    }
+   ]
+  }
+ ]
+}

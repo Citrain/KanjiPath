@@ -38,6 +38,8 @@ export function sentenceIdOf(jpnId) {
 }
 
 const KANA = /[ぁ-ん]/;
+const KUN_ONLY_RE = /^[ぁ-ゖー]+$/;
+const KATAKANA_ONLY_RE = /^[ァ-ヺー]+$/;
 
 export function isKanaChar(ch) {
   return KANA.test(ch);
@@ -125,9 +127,15 @@ const PRIORITY_SCORES = {
 
 function entryScore(entry, knownSet) {
   let score = 0;
+  let nfBonus = 0;
   for (const priority of entry.priorities) {
     score += PRIORITY_SCORES[priority] ?? 0;
+    const nf = /^nf(\d{2})$/.exec(priority);
+    if (nf) {
+      nfBonus = Math.max(nfBonus, 48 - Number(nf[1]));
+    }
   }
+  score += nfBonus;
   const keb = entry.keb[0];
   const kanji = kanjiLiteralsOf(keb);
   score -= keb.length * 2;
@@ -146,10 +154,11 @@ function hasOnlyKanjiKana(text) {
   return [...text].every((ch) => isKanaChar(ch) || /[\u3400-\u9fff\uf900-\ufaff]/.test(ch));
 }
 
-export function selectVocabulary(jmdictEntries, levelSet, knownSet, seen = new Set(), quota = 8) {
+export function selectVocabulary(jmdictEntries, levelSet, knownSet, seen = new Set(), quota = 8, eligible = () => true, bonusQuota = 0) {
   const candidates = jmdictEntries
     .filter((entry) => entry.keb.some((keb) => [...keb].some((ch) => levelSet.has(ch))))
     .filter((entry) => hasOnlyKanjiKana(entry.keb[0]))
+    .filter((entry) => eligible(entry.keb[0]))
     .map((entry) => ({ entry, score: entryScore(entry, knownSet) }))
     .sort((a, b) => b.score - a.score || a.entry.keb[0].length - b.entry.keb[0].length || Number(a.entry.seq) - Number(b.entry.seq));
 
@@ -179,6 +188,32 @@ export function selectVocabulary(jmdictEntries, levelSet, knownSet, seen = new S
     for (const k of kanjiInWord) {
       perKanji.get(k).push(key);
     }
+  }
+
+  let bonusAdded = 0;
+  for (const { entry } of candidates) {
+    if (bonusAdded >= bonusQuota) {
+      break;
+    }
+    const keb = entry.keb[0];
+    const reb = entry.reb[0];
+    if (!reb) {
+      continue;
+    }
+    const key = `${keb}|${reb}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    const kanji = kanjiLiteralsOf(keb);
+    if (kanji.length === 0 || !kanji.every((ch) => knownSet.has(ch))) {
+      continue;
+    }
+    seen.add(key);
+    selected.push({ entry, keb, reb });
+    for (const k of kanji.filter((ch) => levelSet.has(ch))) {
+      perKanji.get(k).push(key);
+    }
+    bonusAdded += 1;
   }
 
   return { selected, perKanji, seen };
@@ -288,9 +323,11 @@ export async function extractKanjivg(literals) {
   return written;
 }
 
-export const LEVELS = ['N5', 'N4', 'N3'];
+export const LEVELS = ['N5', 'N4', 'N3', 'N2'];
 
-const SENTENCES_PER_KANJI = { N5: 6, N4: 6, N3: 6 };
+const SENTENCES_PER_KANJI = { N5: 6, N4: 6, N3: 6, N2: 6 };
+const VOCAB_QUOTA = { N5: 8, N4: 8, N3: 8, N2: 10 };
+const VOCAB_BONUS = { N5: 60, N4: 60, N3: 60, N2: 60 };
 const LEVEL_RANK = Object.fromEntries(LEVELS.map((level, index) => [level, index]));
 const CURRICULUM_SOURCES = ['kanji-data (MIT)', 'kanjiapi.dev (miroir)', 'KANJIDIC2 jlpt historique'];
 
@@ -360,6 +397,12 @@ export async function stageNormalize() {
             if (reading.length === 0) {
               continue;
             }
+            if (r.type === 'kunyomi' && !KUN_ONLY_RE.test(reading)) {
+              continue;
+            }
+            if (r.type === 'onyomi' && !KATAKANA_ONLY_RE.test(reading)) {
+              continue;
+            }
             const key = `${r.type}:${reading}`;
             if (seen.has(key)) {
               continue;
@@ -397,18 +440,29 @@ export async function stageNormalize() {
   }
 
   const vocabularyOut = [];
-  const perKanjiByLevel = new Map();
+  const allPerKanji = new Map([...allSet].map((k) => [k, []]));
   const seenWords = new Set();
   for (const level of LEVELS) {
     const levelSet = setsByLevel.get(level);
-    const { selected, perKanji } = selectVocabulary(jmdict, levelSet, allSet, seenWords);
-    perKanjiByLevel.set(level, perKanji);
+    const { selected } = selectVocabulary(
+      jmdict,
+      levelSet,
+      allSet,
+      seenWords,
+      VOCAB_QUOTA[level],
+      (keb) => estimatedLevelOf(keb) === level,
+      VOCAB_BONUS[level],
+    );
 
     for (const { entry, keb, reb } of selected) {
       const aligned = alignWord(keb, reb);
       const kanjiPositions = [...keb]
         .map((ch, position) => ({ ch, position }))
         .filter(({ ch }) => allSet.has(ch));
+      const wordKey = `${keb}|${reb}`;
+      for (const { ch } of kanjiPositions) {
+        allPerKanji.get(ch).push(wordKey);
+      }
       vocabularyOut.push({
         id: vocabularyIdOf(entry.seq),
         externalId: `jmdict-${entry.seq}`,
@@ -430,12 +484,6 @@ export async function stageNormalize() {
         editorialStatus: 'reviewed',
         romaji: kanaToRomaji(reb),
       });
-    }
-  }
-  const allPerKanji = new Map([...allSet].map((k) => [k, []]));
-  for (const perKanji of perKanjiByLevel.values()) {
-    for (const [literal, keys] of perKanji) {
-      allPerKanji.get(literal).push(...keys);
     }
   }
 
@@ -473,6 +521,8 @@ export async function stageNormalize() {
   const usedSentences = new Set();
   const sentenceCountByKanji = new Map([...allSet].map((k) => [k, 0]));
   const sortedPairs = [...tatoeba].sort((a, b) => a.japanese.length - b.japanese.length || a.jpnId - b.jpnId);
+  const tokenizer = await createTokenizer();
+  const skippedUnreadable = [];
   for (const level of LEVELS) {
     const levelSet = setsByLevel.get(level);
     const quota = SENTENCES_PER_KANJI[level];
@@ -485,6 +535,10 @@ export async function stageNormalize() {
       if (usedSentences.has(curatedSentence.japanese)) {
         continue;
       }
+      const tokens = annotateSentence(tokenizer, curatedSentence.japanese);
+      if (!tokens) {
+        throw new Error(`Phrase curatée ${level} sans lecture complète: ${curatedSentence.japanese}`);
+      }
       usedSentences.add(curatedSentence.japanese);
       sentencesOut.push({
         id: curatedSentenceId(curatedSentence.japanese),
@@ -492,7 +546,7 @@ export async function stageNormalize() {
         translationFr: curatedSentence.french,
         difficulty: level,
         targetKanjiIds: kanjiInSentence.map(kanjiIdOf),
-        tokens: [],
+        tokens,
         sourceId: 'kanjipath_editorial',
         license: 'CC BY-SA 4.0',
         author: 'KanjiPath',
@@ -515,6 +569,12 @@ export async function stageNormalize() {
       if (starving.length === 0) {
         continue;
       }
+      const tokens = annotateSentence(tokenizer, pair.japanese);
+      if (!tokens) {
+        usedSentences.add(pair.japanese);
+        skippedUnreadable.push(pair.japanese);
+        continue;
+      }
       usedSentences.add(pair.japanese);
       sentencesOut.push({
         id: sentenceIdOf(pair.jpnId),
@@ -522,7 +582,7 @@ export async function stageNormalize() {
         translationFr: pair.french,
         difficulty: level,
         targetKanjiIds: kanjiInSentence.map(kanjiIdOf),
-        tokens: [],
+        tokens,
         sourceId: 'tatoeba',
         externalId: `tatoeba-${pair.jpnId}`,
         author: pair.author ?? 'Tatoeba',
@@ -553,8 +613,10 @@ export async function stageNormalize() {
     }
   }
 
-  const tokenizer = await createTokenizer();
   for (const sentence of sentencesOut) {
+    if (sentence.tokens.length > 0) {
+      continue;
+    }
     const tokens = annotateSentence(tokenizer, sentence.japanese);
     if (!tokens) {
       throw new Error(`Phrase sans lecture complète: ${sentence.japanese}`);
@@ -582,7 +644,7 @@ export async function stageNormalize() {
   const curriculum = {
     code: 'JLPT_ALIGNED',
     name: 'Parcours aligné sur le JLPT',
-    version: '2026.08.4',
+    version: '2026.08.5',
     status: 'published',
     notes: LEVELS.map((level) => `${level} : ${curatedByLevel[level].kanji.notes}`).join('\n'),
     levels,
@@ -612,8 +674,8 @@ export async function stageNormalize() {
   const extracted = await extractKanjivg([...allSet]);
   console.log(`[normalize] KanjiVG: ${extracted.length} SVG extraits et assainis`);
 
-  const MIN_WORDS = { N5: 6, N4: 6, N3: 6 };
-  const MIN_SENTENCES = { N5: 6, N4: 6, N3: 6 };
+  const MIN_WORDS = { N5: 6, N4: 6, N3: 6, N2: 6 };
+  const MIN_SENTENCES = { N5: 6, N4: 6, N3: 6, N2: 6 };
   for (const level of LEVELS) {
     const literals = curatedByLevel[level].kanji.kanji.map((k) => k.literal);
     const missingVocab = literals.filter((k) => (allPerKanji.get(k)?.length ?? 0) < MIN_WORDS[level]);
@@ -630,4 +692,9 @@ export async function stageNormalize() {
   console.log(
     `[normalize] vocabulaire: ${vocabularyOut.length} mots; phrases: ${sentencesOut.length}; mini-textes: ${textsOut.length}`,
   );
+  if (skippedUnreadable.length > 0) {
+    console.log(
+      `[normalize] ${skippedUnreadable.length} phrases Tatoeba écartées (lecture complète impossible, token inconnu)`,
+    );
+  }
 }

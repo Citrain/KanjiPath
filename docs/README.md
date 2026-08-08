@@ -22,7 +22,7 @@ Plateforme web d'apprentissage progressif des kanji — parcours **aligné sur l
 - **Règles agent** : `../AGENTS.md`.
 - **Démarrage rapide** : `../README.md`.
 
-## État actuel (Phase 3 — N3, finalisée)
+## État actuel (Phase 4a — N2, livrée)
 
 Ce qui est implémenté :
 
@@ -38,20 +38,25 @@ Ce qui est implémenté :
 - Domaine : moteur FSRS (`ts-fsrs`) encapsulé, calcul de maîtrise pondéré.
 - Pipeline de contenu complet **multi-niveaux** : download → import → normalize →
   generate → validate → report → publish → load. Référentiels curatés **N5**
-  (79 kanji croisés), **N4** (166 kanji croisés) et **N3** (367 kanji croisés),
-  ordre pédagogique, radicaux, confusions, mnémotechniques. Pack publié 2026.08.4 :
-  612 kanji, 4197 mots (JMdict FR + vocabulaire curaté), 3152 phrases (Tatoeba
-  CC BY 2.0 FR + phrases curatées prioritaires), **6 mini-textes** de lecture graduée
-  (KanjiPath, CC BY-SA 4.0), 31878 exercices déterministes, SVG KanjiVG assainis.
+  (80 kanji), **N4** (166 kanji), **N3** (373 kanji) et **N2** (368 kanji) — listes
+  croisées kanji-data / kanjiapi + 8 kanji de l'école primaire absents des listes
+  `jlpt_new` (分 里 身 畑 的 無 可 孝) ajoutés éditorialement. Ordre pédagogique,
+  radicaux, confusions, mnémotechniques. Pack publié 2026.08.5 : 987 kanji,
+  7161 mots (JMdict FR + vocabulaire curaté, sélection par fréquence `nfXX`),
+  5116 phrases (Tatoeba CC BY 2.0 FR + phrases curatées prioritaires),
+  **8 mini-textes** de lecture graduée (KanjiPath, CC BY-SA 4.0, dont deux textes
+  longs N2), 51377 exercices déterministes, SVG KanjiVG assainis.
 - API : curricula, kanji (liste, fiche, SVG, vocabulaire, phrases, progression),
-  **mini-textes** (`GET /texts`, `GET /texts/:id`), étude (sessions, réponses FSRS,
-  reprise, abandon, **révision ciblée** par niveau/compétence/kanji), progression
-  (tableau de bord, niveaux, points faibles, **statistiques détaillées**), sources,
-  préférences (**limite de révisions + équilibrage automatique de la charge**),
-  signalements.
+  **mini-textes** (`GET /texts`, `GET /texts/:id`), **lookup vocabulaire**
+  (`GET /words/:surface` pour la lecture en contexte), étude (sessions, réponses
+  FSRS, reprise, abandon, **révision ciblée** par niveau/compétence/kanji),
+  progression (tableau de bord, niveaux, points faibles, **statistiques
+  détaillées**), sources, préférences (**limite de révisions + équilibrage
+  automatique de la charge**), signalements.
 - Web : tableau de bord (CTA « Continuer l'apprentissage », stats du jour, série,
   kanji à réviser, activité 30 j, points faibles, parcours N5→N1), liste + recherche
-   des kanji avec sélecteur de niveau et filtres de statut, fiche kanji complète
+   des kanji avec sélecteur de niveau, filtres de statut, **filtres de fréquence
+   (Top 500 / Top 1000) et tri par fréquence**, fiche kanji complète
    (tracé animé KanjiVG, lectures avec romaji, radical/composants, mnémotechnique,
    progression par compétence, navigation précédent/suivant, signalement de contenu),
    **entraînement à l'écriture** (`/kanji/:literal/ecriture` : grille de pratique,
@@ -60,7 +65,10 @@ Ce qui est implémenté :
   session d'étude (choix du mode — jour/points faibles/libre/**ciblée** par niveau/
   compétence/kanji, quiz avec raccourcis clavier 1-4 et Entrée, feedback animé,
   résultats + confettis), **lecture graduée** (`/lecture` : liste des mini-textes ;
-  `/lecture/:id` : texte annoté furigana/romaji + traduction), **page progression**
+  `/lecture/:id` : texte annoté furigana/romaji + traduction, **tokens cliquables :
+  lecture en contexte** — traduction du mot s'il est au référentiel, sinon
+  **décomposition en kanji** (sens + lectures on/kun de chaque kanji, liens fiches)),
+  **page progression**
   (onglets vue d'ensemble/activité/points faibles/**statistiques détaillées** :
   précision 7/30/90 j, par compétence et niveau, rétention estimée FSRS, charge de
   révision à 7 jours), page sources, page préférences
@@ -96,3 +104,22 @@ restantes :
 - **personnalisation de la charge** : préférences `reviewLimit` (révisions par
   session) et `autoBalance` (réduction des nouveaux kanji quand la charge due est
   haute), appliquées par `buildQueue`.
+
+La **Phase 4a (N2)** est livrée. Outre le pack de contenu N2 (368 kanji curatés,
+57 phrases curatées, 32 mots curatés, 2 textes longs, quota vocabulaire relevé à
+10 mots/kanji), elle a livré les fonctionnalités de la phase :
+- **filtres de fréquence** : tri « ordre du parcours / fréquence » et filtres
+  Top 500 / Top 1000 sur la liste des kanji ;
+- **lecture en contexte** : tokens cliquables dans `/lecture/:id`, panneau
+  vocabulaire + décomposition en kanji (sens + lectures) alimenté par
+  `GET /words/:surface` ;
+- **textes plus longs** : les mini-textes N2 font ~300 caractères (contre ~100
+  aux niveaux précédents) ;
+- **grands volumes de vocabulaire** : sélection JMdict enrichie — score de
+  fréquence journalière `nfXX`, éligibilité par niveau estimé du mot, passe bonus
+  de mots fréquents ; 8 kanji de l'école primaire manquants ajoutés au référentiel
+  (分 里 身 畑 的 無 可 孝), débloquant les mots très courants (今日, 日本, 自分,
+  無料, 目的…).
+
+Le pack N1 (1232 kanji) constitue la Phase 4b ; les listes sont déjà croisées à
+l'import (kanji-data / kanjiapi identiques).

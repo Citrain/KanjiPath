@@ -204,6 +204,7 @@ GET    /kanji/:literal/progress
 # Lecture (mini-textes)
 GET    /texts                          # liste (filtre ?level=)
 GET    /texts/:id                      # texte annoté + traduction
+GET    /words/:surface                 # lookup vocabulaire + kanji d'un token (lecture en contexte)
 
 # Étude
 POST   /study/sessions              # mode daily/weak_points/free/targeted (+ cible level/skill/kanjiIds)

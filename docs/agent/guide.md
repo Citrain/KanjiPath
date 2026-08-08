@@ -53,9 +53,10 @@ ajoute-le ici.
 | Tracé d'écriture (validation géométrique) | `apps/web/src/features/kanji/stroke-match.ts` (pur, testé) |
 | Série (jours consécutifs) | `apps/web/src/lib/progress.ts` (calcul côté client) |
 | Pipeline de contenu | `tools/content/run.mjs` (stages dans `tools/content/stages/`) |
+| Ajouts éditoriaux de kanji (hors listes jlpt_new) | `IMPORT_EXTRA` dans `tools/content/lib/importers.mjs` |
 | Gabarits d'exercices | `tools/content/lib/generators.mjs` |
 | Chargement du pack en base | `tools/content/load.mjs` (`pnpm content:load`) |
-| Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json`, `texts.json` (`n5/`, `n4/`, `n3/`) + `components-fr.json` |
+| Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json`, `texts.json` (`n5/`, `n4/`, `n3/`, `n2/`) + `components-fr.json` |
 
 ## Pièges connus (IMPORTANT)
 
@@ -266,14 +267,16 @@ ajoute-le ici.
      utilise les Pointer Events avec capture ; l'état du tracé en cours vit dans une
      `ref` (pas d'effet de bord dans un updater `setState` — StrictMode double-invoque).
 
-31. **Pipeline multi-niveaux (N5, N4, N3).** La liste des niveaux vit à DEUX endroits à
+31. **Pipeline multi-niveaux (N5, N4, N3, N2).** La liste des niveaux vit à DEUX endroits à
     garder alignés : `LEVELS` dans `tools/content/stages/normalize.mjs` et
     `IMPORT_LEVELS` dans `tools/content/lib/importers.mjs`. Chaque niveau a son curaté
     (`content/curated/<niveau>/`) et ses seuils dans `LEVEL_MINIMUMS`
     (`stages/validate.mjs`). Le vocabulaire/phrases est sélectionné niveau par niveau
-    (N5 d'abord) avec un `seen` partagé pour éviter les doublons. **Piège** : les
-    seuils N4/N3 sont plus bas que N5 (32 exercices / 5 mots / 5 phrases par kanji,
-    total ≥ 5000 / ≥ 10000) — ne pas appliquer les seuils N5 à un autre niveau.
+    (N5 d'abord) avec un `seen` partagé pour éviter les doublons. Le quota de
+    vocabulaire JMdict par kanji est dans `VOCAB_QUOTA` (`normalize.mjs`) : 8 mots
+    (N5→N3), 10 mots (N2). **Piège** : les seuils N4/N3/N2 sont plus bas que N5
+    (32 exercices / 5 mots / 5 phrases par kanji, total ≥ 5000 / ≥ 10000) — ne pas
+    appliquer les seuils N5 à un autre niveau.
 
 32. **Id curatés stables (hash, pas position).** Les mots/phrases curatés ont un id
     `curatedVocabId(writtenForm, reading)` / `curatedSentenceId(japanese)` dérivé d'un
@@ -359,6 +362,48 @@ ajoute-le ici.
     vérifier sa présence dans le CSS produit (`vite build` puis grep du `.css` de
     `dist/assets`) : une classe manquante ne produit aucune erreur.
 
+41. **Tatoeba : tokens inconnus de kuromoji.** Une phrase dont un token kanji n'a
+    pas de lecture dans IPAdic (ex. 隕石) ne peut pas être annotée. Les phrases
+    **Tatoeba** illisibles sont écartées de la sélection (et marquées « utilisées »
+    pour ne pas être re-testées aux niveaux suivants) ; une phrase **curatée**
+    illisible fait échouer `normalize` — réécrire la phrase avec des mots du
+    dictionnaire (ex. préférer 乾燥 à 燥ぐ, 家畜 à 畜う, 肯定 à 肯く).
+
+42. **KANJIDIC2 : lectures non-kana.** Certaines lectures kun sont des mots
+    étrangers en katakana (ex. 粉 « デシメートル »). `normalize` filtre : kun
+    hiragana uniquement, on katakana uniquement (`KUN_ONLY_RE`/`KATAKANA_ONLY_RE`).
+    Ne pas assouplir ce filtre sans mettre à jour `validate.mjs` en face.
+
+43. **Toujours re-générer les exercices après `normalize`.** La sélection des
+    phrases/vocabulaire change à chaque `normalize` (quotas, phrases curatées qui
+    prennent la priorité). Si l'on lance `validate` sur un `exercises.json` périmé,
+    il signale des exercices référençant des phrases « inexistantes ». Enchaîner
+    systématiquement `normalize → generate → validate`.
+
+44. **Sélection du vocabulaire (Phase 4a).** `selectVocabulary` score les tags de
+    priorité JMdict (`ichi1`, `news1`…) **plus le rang de fréquence journalière
+    `nfXX`** (nf01 = le plus fréquent). Un mot n'est éligible qu'au niveau de son
+    `estimatedLevel` (le kanji publié le plus haut du mot) : il ne remplit les
+    quotas qu'à ce niveau. Une passe « bonus » (`VOCAB_BONUS`, 60 mots/niveau)
+    repêche ensuite les mots fréquents dont tous les kanji sont publiés. La
+    couverture compte chaque mot pour **tous** ses kanji publiés (agrégation tous
+    niveaux). Conséquences : (a) un kanji peut manquer de mots malgré un gros
+    quota — vérifier le rapport et compléter en curaté (ex. 千) ; (b) les mots
+    contenant un kanji **non publié** gardent une pénalité −150 et ne passent
+    jamais la passe bonus ; (c) ne pas réintroduire la sélection « premier niveau
+    qui prend » : les mots d'un niveau supérieur polluaient les quotas inférieurs
+    (説明 prenait une place de 明 en N5).
+
+45. **`IMPORT_EXTRA` : kanji de l'école primaire absents de `jlpt_new`.**
+    kanji-data/kanjiapi laissent `jlpt_new=null` pour certains kanji des grades
+    1-6 (分 里 身 畑 的 無 可 孝). Ils sont ajoutés explicitement par niveau dans
+    `IMPORT_EXTRA` (`lib/importers.mjs`) et DOIVENT figurer dans le
+    `content/curated/<niveau>/kanji.json` correspondant (radical, confusions,
+    mnémotechnique) avec une note « ajout éditorial ». Tout nouvel ajout impose
+    `import --force` (le jeu de kanji cibles change) puis le cycle complet
+    normalize → publish ; vérifier les phrases (un kanji rare comme 孝 n'a presque
+    rien dans Tatoeba → phrases curatées obligatoires).
+
 ## Recettes
 
 ### Ajouter une route API
@@ -395,7 +440,7 @@ ajoute-le ici.
    `pnpm --filter @kanjipath/web test`.
 6. `pnpm --filter @kanjipath/web typecheck`.
 
-### Modifier le contenu curaté d'un niveau (N5, N4, N3)
+### Modifier le contenu curaté d'un niveau (N5, N4, N3, N2)
 
 1. Éditer `content/curated/<niveau>/kanji.json` (ordre, radicaux, confusions,
    mnémotechniques) ou `vocabulary.json` / `sentences.json` / `texts.json`
@@ -406,7 +451,7 @@ ajoute-le ici.
    `LEVEL_MINIMUMS` : N5 ≥ 40 exercices / 6 mots / 6 phrases, N4 et N3 ≥ 32 / 5 / 5).
 4. `pnpm content:publish && pnpm content:load` pour publier et recharger en base.
 
-### Ajouter un nouveau niveau (ex. N2 — recette appliquée pour N3, voir piège 36)
+### Ajouter un nouveau niveau (ex. N1 — recette appliquée pour N3 puis N2, voir piège 36)
 
 1. Croiser deux listes reconnues (kanji-data `jlpt_new=<n>` + miroir kanjiapi) et
    vérifier contre le champ `jlpt` historique de KANJIDIC2 ; consigner les divergences.

@@ -367,7 +367,13 @@ export async function listKanjivgSvgs() {
   return codepoints;
 }
 
-export const IMPORT_LEVELS = [5, 4, 3];
+export const IMPORT_LEVELS = [5, 4, 3, 2];
+
+export const IMPORT_EXTRA = {
+  5: ['分'],
+  3: ['里', '身', '畑', '的', '無', '可'],
+  2: ['孝'],
+};
 
 const LEGACY_TO_NEW = { 4: 5, 3: 4 };
 
@@ -393,13 +399,16 @@ export async function runImport({ force = false } = {}) {
   for (const level of IMPORT_LEVELS) {
     const kanjiDataSet = new Set(Object.keys(kanjiData).filter((k) => kanjiData[k].jlpt_new === level));
     const kanjiApiSet = new Set(Object.keys(kanjiApiCross).filter((k) => kanjiApiCross[k].jlpt === level));
-    levelSets[level] = kanjiDataSet;
     divergences[`N${level}`] = [...kanjiApiSet].filter((k) => !kanjiDataSet.has(k));
+    for (const literal of IMPORT_EXTRA[level] ?? []) {
+      kanjiDataSet.add(literal);
+    }
+    levelSets[level] = kanjiDataSet;
     for (const literal of kanjiDataSet) {
       targetKanji.add(literal);
     }
     console.log(
-      `[import] N${level} kanji-data: ${kanjiDataSet.size}, N${level} kanjiapi (miroir): ${kanjiApiSet.size}`,
+      `[import] N${level} kanji-data: ${kanjiDataSet.size} (dont ${IMPORT_EXTRA[level]?.length ?? 0} ajoutés éditorialement), N${level} kanjiapi (miroir): ${kanjiApiSet.size}`,
     );
   }
 

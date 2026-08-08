@@ -88,3 +88,31 @@ export interface CreateIssueRequest {
   subjectRef: string;
   message: string;
 }
+
+export interface WordLookupEntryDto {
+  id: string;
+  writtenForm: string;
+  reading: string;
+  romaji: string | null;
+  meaningFr: string;
+  partOfSpeech: string | null;
+}
+
+export interface WordLookupKanjiReadingDto {
+  reading: string;
+  romaji: string | null;
+  type: 'onyomi' | 'kunyomi';
+}
+
+export interface WordLookupKanjiDto {
+  literal: string;
+  level: JlptLevel;
+  primaryMeaning: string | null;
+  readings: WordLookupKanjiReadingDto[];
+}
+
+export interface WordLookupResponse {
+  surface: string;
+  vocabulary: WordLookupEntryDto[];
+  kanji: WordLookupKanjiDto[];
+}

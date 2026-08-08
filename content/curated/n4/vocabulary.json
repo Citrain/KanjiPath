@@ -1,106 +1,232 @@
 {
-  "level": "N4",
-  "notes": "Vocabulaire créé manuellement pour compléter la sélection JMdict. 以 et 勉 ont peu d'entrées JMdict avec glosses françaises.",
-  "vocabulary": [
+ "level": "N4",
+ "notes": "Vocabulaire créé manuellement pour compléter la sélection JMdict. 以 et 勉 ont peu d'entrées JMdict avec glosses françaises.",
+ "vocabulary": [
+  {
+   "writtenForm": "以上",
+   "reading": "いじょう",
+   "meaningFr": "plus que ; au moins ; désormais",
+   "partOfSpeech": "nom",
+   "kanji": [
     {
-      "writtenForm": "以上",
-      "reading": "いじょう",
-      "meaningFr": "plus que ; au moins ; désormais",
-      "partOfSpeech": "nom",
-      "kanji": [
-        { "literal": "以", "position": 0, "readingInWord": "い" },
-        { "literal": "上", "position": 1, "readingInWord": "じょう" }
-      ]
+     "literal": "以",
+     "position": 0,
+     "readingInWord": "い"
     },
     {
-      "writtenForm": "以下",
-      "reading": "いか",
-      "meaningFr": "moins que ; au-dessous de",
-      "partOfSpeech": "nom",
-      "kanji": [
-        { "literal": "以", "position": 0, "readingInWord": "い" },
-        { "literal": "下", "position": 1, "readingInWord": "か" }
-      ]
-    },
-    {
-      "writtenForm": "以内",
-      "reading": "いない",
-      "meaningFr": "moins de ; dans la limite de",
-      "partOfSpeech": "nom",
-      "kanji": [
-        { "literal": "以", "position": 0, "readingInWord": "い" },
-        { "literal": "内", "position": 1, "readingInWord": "ない" }
-      ]
-    },
-    {
-      "writtenForm": "以外",
-      "reading": "いがい",
-      "meaningFr": "sauf ; en dehors de",
-      "partOfSpeech": "nom",
-      "kanji": [
-        { "literal": "以", "position": 0, "readingInWord": "い" },
-        { "literal": "外", "position": 1, "readingInWord": "がい" }
-      ]
-    },
-    {
-      "writtenForm": "以前",
-      "reading": "いぜん",
-      "meaningFr": "avant ; autrefois",
-      "partOfSpeech": "nom",
-      "kanji": [
-        { "literal": "以", "position": 0, "readingInWord": "い" },
-        { "literal": "前", "position": 1, "readingInWord": "ぜん" }
-      ]
-    },
-    {
-      "writtenForm": "以来",
-      "reading": "いらい",
-      "meaningFr": "depuis",
-      "partOfSpeech": "nom",
-      "kanji": [
-        { "literal": "以", "position": 0, "readingInWord": "い" },
-        { "literal": "来", "position": 1, "readingInWord": "らい" }
-      ]
-    },
-    {
-      "writtenForm": "以降",
-      "reading": "いこう",
-      "meaningFr": "à partir de ; après",
-      "partOfSpeech": "nom",
-      "kanji": [
-        { "literal": "以", "position": 0, "readingInWord": "い" },
-        { "literal": "後", "position": 1, "readingInWord": "こう" }
-      ]
-    },
-    {
-      "writtenForm": "勉強",
-      "reading": "べんきょう",
-      "meaningFr": "études ; travailler (ses leçons)",
-      "partOfSpeech": "nom",
-      "kanji": [
-        { "literal": "勉", "position": 0, "readingInWord": "べん" },
-        { "literal": "強", "position": 1, "readingInWord": "きょう" }
-      ]
-    },
-    {
-      "writtenForm": "勉学",
-      "reading": "べんがく",
-      "meaningFr": "études ; application aux études",
-      "partOfSpeech": "nom",
-      "kanji": [
-        { "literal": "勉", "position": 0, "readingInWord": "べん" },
-        { "literal": "学", "position": 1, "readingInWord": "がく" }
-      ]
-    },
-    {
-      "writtenForm": "勤勉",
-      "reading": "きんべん",
-      "meaningFr": "diligence ; assiduité au travail",
-      "partOfSpeech": "adjectif (na)",
-      "kanji": [
-        { "literal": "勤", "position": 0, "readingInWord": "きん" },
-        { "literal": "勉", "position": 1, "readingInWord": "べん" }
-      ]
+     "literal": "上",
+     "position": 1,
+     "readingInWord": "じょう"
     }
-  ]
+   ]
+  },
+  {
+   "writtenForm": "以下",
+   "reading": "いか",
+   "meaningFr": "moins que ; au-dessous de",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "以",
+     "position": 0,
+     "readingInWord": "い"
+    },
+    {
+     "literal": "下",
+     "position": 1,
+     "readingInWord": "か"
+    }
+   ]
+  },
+  {
+   "writtenForm": "以内",
+   "reading": "いない",
+   "meaningFr": "moins de ; dans la limite de",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "以",
+     "position": 0,
+     "readingInWord": "い"
+    },
+    {
+     "literal": "内",
+     "position": 1,
+     "readingInWord": "ない"
+    }
+   ]
+  },
+  {
+   "writtenForm": "以外",
+   "reading": "いがい",
+   "meaningFr": "sauf ; en dehors de",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "以",
+     "position": 0,
+     "readingInWord": "い"
+    },
+    {
+     "literal": "外",
+     "position": 1,
+     "readingInWord": "がい"
+    }
+   ]
+  },
+  {
+   "writtenForm": "以前",
+   "reading": "いぜん",
+   "meaningFr": "avant ; autrefois",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "以",
+     "position": 0,
+     "readingInWord": "い"
+    },
+    {
+     "literal": "前",
+     "position": 1,
+     "readingInWord": "ぜん"
+    }
+   ]
+  },
+  {
+   "writtenForm": "以来",
+   "reading": "いらい",
+   "meaningFr": "depuis",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "以",
+     "position": 0,
+     "readingInWord": "い"
+    },
+    {
+     "literal": "来",
+     "position": 1,
+     "readingInWord": "らい"
+    }
+   ]
+  },
+  {
+   "writtenForm": "以降",
+   "reading": "いこう",
+   "meaningFr": "à partir de ; après",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "以",
+     "position": 0,
+     "readingInWord": "い"
+    },
+    {
+     "literal": "後",
+     "position": 1,
+     "readingInWord": "こう"
+    }
+   ]
+  },
+  {
+   "writtenForm": "勉強",
+   "reading": "べんきょう",
+   "meaningFr": "études ; travailler (ses leçons)",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "勉",
+     "position": 0,
+     "readingInWord": "べん"
+    },
+    {
+     "literal": "強",
+     "position": 1,
+     "readingInWord": "きょう"
+    }
+   ]
+  },
+  {
+   "writtenForm": "勉学",
+   "reading": "べんがく",
+   "meaningFr": "études ; application aux études",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "勉",
+     "position": 0,
+     "readingInWord": "べん"
+    },
+    {
+     "literal": "学",
+     "position": 1,
+     "readingInWord": "がく"
+    }
+   ]
+  },
+  {
+   "writtenForm": "勤勉",
+   "reading": "きんべん",
+   "meaningFr": "diligence ; assiduité au travail",
+   "partOfSpeech": "adjectif (na)",
+   "kanji": [
+    {
+     "literal": "勤",
+     "position": 0,
+     "readingInWord": "きん"
+    },
+    {
+     "literal": "勉",
+     "position": 1,
+     "readingInWord": "べん"
+    }
+   ]
+  },
+  {
+   "writtenForm": "日曜日",
+   "reading": "にちようび",
+   "meaningFr": "dimanche",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "日",
+     "position": 0,
+     "readingInWord": "にち"
+    },
+    {
+     "literal": "曜",
+     "position": 2,
+     "readingInWord": "よう"
+    },
+    {
+     "literal": "日",
+     "position": 3,
+     "readingInWord": "び"
+    }
+   ]
+  },
+  {
+   "writtenForm": "日本人",
+   "reading": "にほんじん",
+   "meaningFr": "Japonais ; Japonaise",
+   "partOfSpeech": "nom",
+   "kanji": [
+    {
+     "literal": "日",
+     "position": 0,
+     "readingInWord": "に"
+    },
+    {
+     "literal": "本",
+     "position": 1,
+     "readingInWord": "ほん"
+    },
+    {
+     "literal": "人",
+     "position": 2,
+     "readingInWord": "じん"
+    }
+   ]
+  }
+ ]
 }

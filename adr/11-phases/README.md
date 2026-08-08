@@ -69,6 +69,27 @@ fonctionnalités de la phase, livrées avec le pack 2026.08.4 :
 - lecture en contexte, filtres de fréquence
 - textes plus longs
 
+**État (2026-08-08)** : Phase 4a livrée (N2 + fonctionnalités). Pack N2 publié
+(2026.08.5) : 368 kanji curatés (radicaux, confusions, mnémotechniques), pipeline
+étendu N5→N2, **51377 exercices** validés au total (987 kanji, 7161 mots, 5116
+phrases, 8 mini-textes). Fonctionnalités livrées :
+- **grands volumes de vocabulaire** : quota de sélection JMdict relevé à 10
+  mots/kanji pour N2, score enrichi du rang de fréquence journalière `nfXX`,
+  sélection par niveau estimé du mot + passe bonus de mots fréquents ; 8 kanji de
+  l'école primaire absents des listes `jlpt_new` ajoutés au référentiel
+  (分 里 身 畑 的 無 可 孝), débloquant les mots très courants (今日, 日本, 自分,
+  無料, 目的…) ;
+- **filtres de fréquence** : tri par fréquence + filtres Top 500 / Top 1000 sur la
+  liste des kanji (rang de fréquence KANJIDIC2 déjà porté par le pack) ;
+- **lecture en contexte** : tokens cliquables sur `/lecture/:id` — lookup
+  vocabulaire + décomposition en kanji (sens + lectures on/kun) via
+  `GET /words/:surface` ;
+- **textes plus longs** : deux textes N2 de lecture graduée (~300 caractères),
+  57 phrases curatées N2 prioritaires.
+
+**Phase 4b (à venir)** : pack N1 (1232 kanji, listes kanji-data / kanjiapi déjà
+croisées et identiques à l'import).
+
 ### Phase 5 — Écriture et audio
 
 - tracé, comparaison de traits

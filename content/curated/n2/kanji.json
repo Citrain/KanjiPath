@@ -1,0 +1,4920 @@
+{
+ "level": "N2",
+ "curriculum": "JLPT_ALIGNED",
+ "notes": "Liste croisée : kanji-data (MIT, jlpt_new=2) et miroir kanjiapi.dev (jlpt=2) — 367 kanji identiques. Vérifié contre le champ jlpt historique de KANJIDIC2 : 349 des 367 y figurent au niveau 2 ; les 12 autres (niveau historique 3) et 6 (niveau historique 1) sont signalés comme divergence et classés N2. Ordre : nombre de traits croissant, puis rang de fréquence croissant (ordre de type dictionnaire, adapté à un niveau avancé). Ajout éditorial (kanji de l'école primaire absents des listes jlpt_new de kanji-data, classés d'après le champ jlpt historique de KANJIDIC2) : 孝.",
+ "kanji": [
+  {
+   "literal": "了",
+   "order": 1,
+   "radical": {
+    "literal": "亅",
+    "nameFr": "crochet vertical",
+    "meaningFr": "un trait vertical crocheté"
+   },
+   "confusions": [
+    "子",
+    "予"
+   ],
+   "mnemonicFr": "Un seul trait qui se termine en crochet (亅) : ce qui est achevé, fini."
+  },
+  {
+   "literal": "丸",
+   "order": 2,
+   "radical": {
+    "literal": "丶",
+    "nameFr": "point",
+    "meaningFr": "un point"
+   },
+   "confusions": [
+    "九",
+    "及"
+   ],
+   "mnemonicFr": "Neuf (九) avec un point (丶) : une figure accomplie, parfaitement ronde."
+  },
+  {
+   "literal": "久",
+   "order": 3,
+   "radical": {
+    "literal": "丿",
+    "nameFr": "trait oblique",
+    "meaningFr": "un trait penché"
+   },
+   "confusions": [
+    "欠",
+    "冬"
+   ],
+   "mnemonicFr": "Un homme (入) qui se tient longtemps courbé : le temps qui dure, une vieille histoire."
+  },
+  {
+   "literal": "干",
+   "order": 4,
+   "radical": {
+    "literal": "干",
+    "nameFr": "sec / sécher",
+    "meaningFr": "sécher, intervenir"
+   },
+   "confusions": [
+    "千",
+    "于",
+    "土"
+   ],
+   "mnemonicFr": "Des traits (十, 一) étendus au soleil pour sécher : sec, desséché."
+  },
+  {
+   "literal": "区",
+   "order": 5,
+   "radical": {
+    "literal": "匸",
+    "nameFr": "boîte ouverte",
+    "meaningFr": "une cachette, un coffre"
+   },
+   "confusions": [
+    "巨",
+    "匹"
+   ],
+   "mnemonicFr": "Un espace clos (匚) qui délimite le territoire : la circonscription, l'arrondissement."
+  },
+  {
+   "literal": "比",
+   "order": 6,
+   "radical": {
+    "literal": "比",
+    "nameFr": "comparer",
+    "meaningFr": "la comparaison"
+   },
+   "confusions": [
+    "北"
+   ],
+   "mnemonicFr": "Deux personnages (比) côte à côte, face à face : comparer, la compétition."
+  },
+  {
+   "literal": "戸",
+   "order": 7,
+   "radical": {
+    "literal": "戸",
+    "nameFr": "porte",
+    "meaningFr": "la porte à un battant"
+   },
+   "confusions": [
+    "尸"
+   ],
+   "mnemonicFr": "Un seul battant (尸) surmonté d'un linteau (一) : la porte, et par extension la maison."
+  },
+  {
+   "literal": "介",
+   "order": 8,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "个",
+    "人"
+   ],
+   "mnemonicFr": "Un homme (𠆢) portant deux écailles (八) : la carapace, puis l'intermédiaire qui s'interpose."
+  },
+  {
+   "literal": "仏",
+   "order": 9,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "伝",
+    "厶"
+   ],
+   "mnemonicFr": "Un homme (⺅) retiré du monde avec son secret (厶) : le Bouddha."
+  },
+  {
+   "literal": "双",
+   "order": 10,
+   "radical": {
+    "literal": "又",
+    "nameFr": "main droite",
+    "meaningFr": "la main qui agit, encore"
+   },
+   "confusions": [
+    "収",
+    "友"
+   ],
+   "mnemonicFr": "Deux mains droites (又) réunies : la paire, le groupe de deux."
+  },
+  {
+   "literal": "片",
+   "order": 11,
+   "radical": {
+    "literal": "片",
+    "nameFr": "tranche",
+    "meaningFr": "une moitié, une tranche"
+   },
+   "confusions": [
+    "爿"
+   ],
+   "mnemonicFr": "La moitié d'un arbre (木) fendu : une tranche, une feuille, un côté."
+  },
+  {
+   "literal": "毛",
+   "order": 12,
+   "radical": {
+    "literal": "毛",
+    "nameFr": "poil / plume",
+    "meaningFr": "le poil, la fourrure"
+   },
+   "confusions": [
+    "手"
+   ],
+   "mnemonicFr": "Un trait recourbé comme un duvet : le poil, la fourrure, la plume."
+  },
+  {
+   "literal": "匹",
+   "order": 13,
+   "radical": {
+    "literal": "匸",
+    "nameFr": "boîte ouverte",
+    "meaningFr": "une cachette, un coffre"
+   },
+   "confusions": [
+    "四",
+    "区"
+   ],
+   "mnemonicFr": "Un objet plié rangé dans une boîte (匚) : un morceau isolé — le compteur des petits animaux."
+  },
+  {
+   "literal": "辺",
+   "order": 14,
+   "radical": {
+    "literal": "⻌",
+    "nameFr": "marcher (辵)",
+    "meaningFr": "la route, avancer"
+   },
+   "confusions": [
+    "込",
+    "近"
+   ],
+   "mnemonicFr": "Marcher (⻌) le long du tranchant (刀) : les environs, la frontière."
+  },
+  {
+   "literal": "史",
+   "order": 15,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [
+    "吏",
+    "更"
+   ],
+   "mnemonicFr": "Une main qui tient le registre des paroles (口) : l'histoire, la chronique."
+  },
+  {
+   "literal": "旧",
+   "order": 16,
+   "radical": {
+    "literal": "日",
+    "nameFr": "soleil",
+    "meaningFr": "le soleil, le jour"
+   },
+   "confusions": [
+    "目",
+    "旦"
+   ],
+   "mnemonicFr": "Le soleil (日) d'un jour passé derrière un trait (丨) : ancien, les vieilles choses."
+  },
+  {
+   "literal": "央",
+   "order": 17,
+   "radical": {
+    "literal": "大",
+    "nameFr": "grand",
+    "meaningFr": "un homme bras écartés"
+   },
+   "confusions": [
+    "英",
+    "大"
+   ],
+   "mnemonicFr": "Un homme (大) au milieu d'un cadre (冂) : le centre, le milieu."
+  },
+  {
+   "literal": "占",
+   "order": 18,
+   "radical": {
+    "literal": "卜",
+    "nameFr": "divination",
+    "meaningFr": "la fissure de la divination"
+   },
+   "confusions": [
+    "点",
+    "古"
+   ],
+   "mnemonicFr": "Les fissures de la divination (卜) interprétées par la parole (口) : prédire, occuper."
+  },
+  {
+   "literal": "圧",
+   "order": 19,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "庄",
+    "厚"
+   ],
+   "mnemonicFr": "La terre (土) comprimée sous la falaise (厂) : la pression, écraser."
+  },
+  {
+   "literal": "玉",
+   "order": 20,
+   "radical": {
+    "literal": "王",
+    "nameFr": "jade",
+    "meaningFr": "le jade, la pierre précieuse"
+   },
+   "confusions": [
+    "王",
+    "主"
+   ],
+   "mnemonicFr": "Le roi (王) portant un point (丶) précieux : le bijou, la balle."
+  },
+  {
+   "literal": "庁",
+   "order": 21,
+   "radical": {
+    "literal": "广",
+    "nameFr": "toit sur falaise",
+    "meaningFr": "un abri adossé à une falaise"
+   },
+   "confusions": [
+    "床",
+    "広"
+   ],
+   "mnemonicFr": "Un abri sous la falaise (广) où l'on cloue (亅) les édits : le bureau du gouvernement."
+  },
+  {
+   "literal": "令",
+   "order": 22,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "冷",
+    "今"
+   ],
+   "mnemonicFr": "Un supérieur (𠆢) qui commande à un homme agenouillé (卩) : l'ordre, le décret."
+  },
+  {
+   "literal": "永",
+   "order": 23,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "泳",
+    "氷"
+   ],
+   "mnemonicFr": "Un point (丶) d'où jaillit un long fleuve (水) : l'éternité, ce qui est long."
+  },
+  {
+   "literal": "刊",
+   "order": 24,
+   "radical": {
+    "literal": "刀",
+    "nameFr": "couteau",
+    "meaningFr": "couper"
+   },
+   "confusions": [
+    "干",
+    "刑"
+   ],
+   "mnemonicFr": "Graver avec le couteau (⺉) ce qui doit rester sec (干) : ciseler, publier."
+  },
+  {
+   "literal": "布",
+   "order": 25,
+   "radical": {
+    "literal": "巾",
+    "nameFr": "tissu",
+    "meaningFr": "une pièce de tissu"
+   },
+   "confusions": [
+    "市",
+    "希"
+   ],
+   "mnemonicFr": "Une main (ノ) étale le tissu (巾) : le linge, répartir."
+  },
+  {
+   "literal": "巨",
+   "order": 26,
+   "radical": {
+    "literal": "工",
+    "nameFr": "travail / outil",
+    "meaningFr": "l'outil, l'ouvrage"
+   },
+   "confusions": [
+    "臣",
+    "区"
+   ],
+   "mnemonicFr": "Une grande équerre (巨) dans l'espace ouvert (匚) : gigantesque."
+  },
+  {
+   "literal": "札",
+   "order": 27,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "礼",
+    "孔"
+   ],
+   "mnemonicFr": "Une tablette de bois (木) attachée par un lien (乙) : l'étiquette, le billet."
+  },
+  {
+   "literal": "包",
+   "order": 28,
+   "radical": {
+    "literal": "勹",
+    "nameFr": "envelopper",
+    "meaningFr": "une main qui enveloppe"
+   },
+   "confusions": [
+    "胞",
+    "勺"
+   ],
+   "mnemonicFr": "Envelopper (勹) un fœtus (已) : emballer, couvrir."
+  },
+  {
+   "literal": "皮",
+   "order": 29,
+   "radical": {
+    "literal": "皮",
+    "nameFr": "peau",
+    "meaningFr": "la peau, l'écorce"
+   },
+   "confusions": [
+    "波",
+    "被"
+   ],
+   "mnemonicFr": "Une main (又) qui arrache l'écorce : la peau, le cuir."
+  },
+  {
+   "literal": "幼",
+   "order": 30,
+   "radical": {
+    "literal": "幺",
+    "nameFr": "fil ténu",
+    "meaningFr": "minuscule, un fil délié"
+   },
+   "confusions": [
+    "幻",
+    "力"
+   ],
+   "mnemonicFr": "Un fil ténu (幺) à peine tordu par la force (力) : la tendre enfance."
+  },
+  {
+   "literal": "甘",
+   "order": 31,
+   "radical": {
+    "literal": "甘",
+    "nameFr": "doux / sucré",
+    "meaningFr": "la douceur"
+   },
+   "confusions": [
+    "某",
+    "廿"
+   ],
+   "mnemonicFr": "Quelque chose de délicieux dans la bouche (口) : doux, sucré."
+  },
+  {
+   "literal": "冊",
+   "order": 32,
+   "radical": {
+    "literal": "冂",
+    "nameFr": "boîte ouverte",
+    "meaningFr": "un cadre, une bordure"
+   },
+   "confusions": [
+    "再",
+    "典"
+   ],
+   "mnemonicFr": "Des lamelles de bambou percées et reliées (冂, 廾) : un tome, un volume."
+  },
+  {
+   "literal": "氷",
+   "order": 33,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "水",
+    "永"
+   ],
+   "mnemonicFr": "L'eau (水) figée par un point de gel (丶) : la glace."
+  },
+  {
+   "literal": "召",
+   "order": 34,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [
+    "招"
+   ],
+   "mnemonicFr": "Appeler (口) avec une parole tranchante comme un couteau (刀) : convoquer."
+  },
+  {
+   "literal": "皿",
+   "order": 35,
+   "radical": {
+    "literal": "皿",
+    "nameFr": "assiette",
+    "meaningFr": "le plat, la coupe"
+   },
+   "confusions": [
+    "血",
+    "四"
+   ],
+   "mnemonicFr": "Une coupe posée sur son pied : l'assiette, le plat."
+  },
+  {
+   "literal": "団",
+   "order": 36,
+   "radical": {
+    "literal": "囗",
+    "nameFr": "enceinte",
+    "meaningFr": "un espace clos, une frontière"
+   },
+   "confusions": [
+    "図",
+    "困"
+   ],
+   "mnemonicFr": "Un espace clos (囗) où l'on rassemble (寸) : le groupe, l'association."
+  },
+  {
+   "literal": "各",
+   "order": 37,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [
+    "客",
+    "名"
+   ],
+   "mnemonicFr": "Chacun arrive (夂) avec son mot à la bouche (口) : chaque, chacun."
+  },
+  {
+   "literal": "再",
+   "order": 38,
+   "radical": {
+    "literal": "冂",
+    "nameFr": "boîte ouverte",
+    "meaningFr": "un cadre, une bordure"
+   },
+   "confusions": [
+    "冊",
+    "両"
+   ],
+   "mnemonicFr": "La même structure (冂, 王) reconduite : encore une fois, la deuxième fois."
+  },
+  {
+   "literal": "州",
+   "order": 39,
+   "radical": {
+    "literal": "川",
+    "nameFr": "rivière",
+    "meaningFr": "l'eau qui coule"
+   },
+   "confusions": [
+    "川",
+    "洲"
+   ],
+   "mnemonicFr": "Des îlots (丶) semés dans le fleuve (川) : la province, l'État."
+  },
+  {
+   "literal": "竹",
+   "order": 40,
+   "radical": {
+    "literal": "竹",
+    "nameFr": "bambou",
+    "meaningFr": "le bambou"
+   },
+   "confusions": [
+    "个"
+   ],
+   "mnemonicFr": "Deux tiges avec leurs feuilles tombantes : le bambou."
+  },
+  {
+   "literal": "印",
+   "order": 41,
+   "radical": {
+    "literal": "卩",
+    "nameFr": "sceau",
+    "meaningFr": "un genou plié, un sceau"
+   },
+   "confusions": [
+    "抑"
+   ],
+   "mnemonicFr": "Une main appuyant sur un homme agenouillé (卩) : le sceau, l'empreinte."
+  },
+  {
+   "literal": "羽",
+   "order": 42,
+   "radical": {
+    "literal": "羽",
+    "nameFr": "plume",
+    "meaningFr": "la plume, l'aile"
+   },
+   "confusions": [
+    "翌",
+    "習"
+   ],
+   "mnemonicFr": "Deux ailes aux barbes déployées : la plume, l'aile."
+  },
+  {
+   "literal": "池",
+   "order": 43,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "地",
+    "他"
+   ],
+   "mnemonicFr": "L'eau (⺡) retenue dans un creux (也) : l'étang, la mare."
+  },
+  {
+   "literal": "血",
+   "order": 44,
+   "radical": {
+    "literal": "血",
+    "nameFr": "sang",
+    "meaningFr": "le sang"
+   },
+   "confusions": [
+    "皿"
+   ],
+   "mnemonicFr": "Une goutte de sang tombée dans la coupe (皿) : le sang."
+  },
+  {
+   "literal": "寺",
+   "order": 45,
+   "radical": {
+    "literal": "寸",
+    "nameFr": "pouce / mesure",
+    "meaningFr": "la mesure, le pouce"
+   },
+   "confusions": [
+    "時",
+    "待"
+   ],
+   "mnemonicFr": "La terre (土) où la main (寸) sert avec constance : le temple bouddhiste."
+  },
+  {
+   "literal": "宇",
+   "order": 46,
+   "radical": {
+    "literal": "宀",
+    "nameFr": "toit",
+    "meaningFr": "un toit de maison"
+   },
+   "confusions": [
+    "字"
+   ],
+   "mnemonicFr": "Le toit (宀) dont les poutres (干) s'étendent comme le firmament : la maison, l'univers."
+  },
+  {
+   "literal": "汚",
+   "order": 47,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "亏"
+   ],
+   "mnemonicFr": "L'eau (⺡) trouble qui stagne : sale, polluer."
+  },
+  {
+   "literal": "仲",
+   "order": 48,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "中",
+    "冲"
+   ],
+   "mnemonicFr": "Une personne (⺅) qui se tient au milieu (中) : la relation, l'entremise."
+  },
+  {
+   "literal": "兆",
+   "order": 49,
+   "radical": {
+    "literal": "儿",
+    "nameFr": "jambes",
+    "meaningFr": "les jambes d'une personne"
+   },
+   "confusions": [
+    "北",
+    "桃"
+   ],
+   "mnemonicFr": "Des fissures de divination (冫) qui s'écartent (儿) : le présage, le billion."
+  },
+  {
+   "literal": "衣",
+   "order": 50,
+   "radical": {
+    "literal": "衣",
+    "nameFr": "vêtement",
+    "meaningFr": "l'habit"
+   },
+   "confusions": [
+    "哀",
+    "表"
+   ],
+   "mnemonicFr": "Le col (亠) d'où tombe le vêtement (衣) : l'habit."
+  },
+  {
+   "literal": "虫",
+   "order": 51,
+   "radical": {
+    "literal": "虫",
+    "nameFr": "insecte",
+    "meaningFr": "l'insecte, le ver"
+   },
+   "confusions": [
+    "中",
+    "申"
+   ],
+   "mnemonicFr": "Un insecte rampant dressé sur sa queue : l'insecte, la vermine."
+  },
+  {
+   "literal": "叫",
+   "order": 52,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [
+    "収"
+   ],
+   "mnemonicFr": "Une bouche (口) qui crie d'un trait tendu (十) : crier, hurler."
+  },
+  {
+   "literal": "糸",
+   "order": 53,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "系",
+    "絲"
+   ],
+   "mnemonicFr": "Deux fils ténus (幺) noués en petit faisceau (小) : le fil."
+  },
+  {
+   "literal": "汗",
+   "order": 54,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "干",
+    "汁"
+   ],
+   "mnemonicFr": "L'eau (⺡) du corps qui sèche (干) à la surface : la sueur."
+  },
+  {
+   "literal": "缶",
+   "order": 55,
+   "radical": {
+    "literal": "缶",
+    "nameFr": "jarre / boîte",
+    "meaningFr": "le récipient"
+   },
+   "confusions": [
+    "岳",
+    "缸"
+   ],
+   "mnemonicFr": "Une jarre de terre (凵) posée sur son support : la boîte, le récipient."
+  },
+  {
+   "literal": "肌",
+   "order": 56,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "机"
+   ],
+   "mnemonicFr": "La chair (月) lisse posée comme sur un support (几) : la peau, le grain de peau."
+  },
+  {
+   "literal": "灯",
+   "order": 57,
+   "radical": {
+    "literal": "火",
+    "nameFr": "feu",
+    "meaningFr": "les flammes"
+   },
+   "confusions": [
+    "丁"
+   ],
+   "mnemonicFr": "Un feu (火) dressé sur son pied (亅) : la lampe, la lumière."
+  },
+  {
+   "literal": "机",
+   "order": 58,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "肌",
+    "几"
+   ],
+   "mnemonicFr": "Une petite table de bois (木, 几) : le bureau."
+  },
+  {
+   "literal": "灰",
+   "order": 59,
+   "radical": {
+    "literal": "火",
+    "nameFr": "feu",
+    "meaningFr": "les flammes"
+   },
+   "confusions": [
+    "炭"
+   ],
+   "mnemonicFr": "Le feu (火) mort sous le surplomb (厂) : la cendre."
+  },
+  {
+   "literal": "舟",
+   "order": 60,
+   "radical": {
+    "literal": "舟",
+    "nameFr": "bateau",
+    "meaningFr": "l'embarcation"
+   },
+   "confusions": [
+    "船",
+    "丹"
+   ],
+   "mnemonicFr": "La coque d'une embarcation vue de profil : le bateau."
+  },
+  {
+   "literal": "改",
+   "order": 61,
+   "radical": {
+    "literal": "攵",
+    "nameFr": "frapper (攴)",
+    "meaningFr": "tapoter, agir avec la main"
+   },
+   "confusions": [
+    "記"
+   ],
+   "mnemonicFr": "Frapper (攵) ce qui est déjà achevé (已) pour le corriger : réformer, changer."
+  },
+  {
+   "literal": "村",
+   "order": 62,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "材",
+    "対"
+   ],
+   "mnemonicFr": "Les arbres (木) autour de la main qui mesure (寸) : le village."
+  },
+  {
+   "literal": "防",
+   "order": 63,
+   "radical": {
+    "literal": "⻖",
+    "nameFr": "colline (阝)",
+    "meaningFr": "une colline, un tertre"
+   },
+   "confusions": [
+    "妨",
+    "坊"
+   ],
+   "mnemonicFr": "Le tertre (⻖) qui fait face (方) au danger : prévenir, défendre."
+  },
+  {
+   "literal": "技",
+   "order": 64,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "枝",
+    "扶"
+   ],
+   "mnemonicFr": "La main (⺘) qui soutient (支) avec adresse : l'habileté, l'art."
+  },
+  {
+   "literal": "低",
+   "order": 65,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "抵",
+    "氏"
+   ],
+   "mnemonicFr": "Une personne (⺅) qui baisse la tête (氏) : bas, humble."
+  },
+  {
+   "literal": "含",
+   "order": 66,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [
+    "吟",
+    "今"
+   ],
+   "mnemonicFr": "Garder (口) quelque chose sous couvert (𠆢) dans sa bouche : contenir, inclure."
+  },
+  {
+   "literal": "谷",
+   "order": 67,
+   "radical": {
+    "literal": "谷",
+    "nameFr": "vallée",
+    "meaningFr": "la vallée"
+   },
+   "confusions": [
+    "俗",
+    "容"
+   ],
+   "mnemonicFr": "Le torrent qui sort (八) de l'ouverture (口) entre les montagnes : la vallée."
+  },
+  {
+   "literal": "兵",
+   "order": 68,
+   "radical": {
+    "literal": "八",
+    "nameFr": "huit / séparation",
+    "meaningFr": "séparer, partager"
+   },
+   "confusions": [
+    "丘",
+    "浜"
+   ],
+   "mnemonicFr": "Deux mains (八) maniant la hache (斤) : le soldat, les troupes."
+  },
+  {
+   "literal": "材",
+   "order": 69,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "村",
+    "才"
+   ],
+   "mnemonicFr": "Le bois (木) débité d'un trait (亅) pour servir : le matériau."
+  },
+  {
+   "literal": "児",
+   "order": 70,
+   "radical": {
+    "literal": "儿",
+    "nameFr": "jambes",
+    "meaningFr": "les jambes d'une personne"
+   },
+   "confusions": [
+    "見",
+    "兒"
+   ],
+   "mnemonicFr": "Un petit aux jambes (儿) encore fragiles sous une grande tête (日) : l'enfant."
+  },
+  {
+   "literal": "均",
+   "order": 71,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "鈞"
+   ],
+   "mnemonicFr": "Niveler la terre (土) avec la truelle (勹) : égaliser, la moyenne."
+  },
+  {
+   "literal": "芸",
+   "order": 72,
+   "radical": {
+    "literal": "⺾",
+    "nameFr": "herbe",
+    "meaningFr": "les plantes, l'herbe"
+   },
+   "confusions": [
+    "雲"
+   ],
+   "mnemonicFr": "Le talent appliqué aux plantes (⺾) que l'on cultive : l'art, la technique."
+  },
+  {
+   "literal": "伸",
+   "order": 73,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "申"
+   ],
+   "mnemonicFr": "Une personne (⺅) qui s'étire droit comme une tige (申) : s'allonger, étendre."
+  },
+  {
+   "literal": "乱",
+   "order": 74,
+   "radical": {
+    "literal": "乙",
+    "nameFr": "crochet",
+    "meaningFr": "un bras courbé"
+   },
+   "confusions": [
+    "乳"
+   ],
+   "mnemonicFr": "La langue (舌) qui s'embrouille à la fin (乙) : le tumulte, le désordre."
+  },
+  {
+   "literal": "囲",
+   "order": 75,
+   "radical": {
+    "literal": "囗",
+    "nameFr": "enceinte",
+    "meaningFr": "un espace clos, une frontière"
+   },
+   "confusions": [
+    "困",
+    "図",
+    "団"
+   ],
+   "mnemonicFr": "Enfermer (囗) complètement : entourer, assièger."
+  },
+  {
+   "literal": "角",
+   "order": 76,
+   "radical": {
+    "literal": "角",
+    "nameFr": "corne",
+    "meaningFr": "la corne, le coin"
+   },
+   "confusions": [
+    "用",
+    "解"
+   ],
+   "mnemonicFr": "La corne (角) pointue de l'animal : l'angle, le coin."
+  },
+  {
+   "literal": "坂",
+   "order": 77,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "板",
+    "返"
+   ],
+   "mnemonicFr": "La pente de terre (土) adossée à la falaise (厂) : la côte."
+  },
+  {
+   "literal": "希",
+   "order": 78,
+   "radical": {
+    "literal": "巾",
+    "nameFr": "tissu",
+    "meaningFr": "une pièce de tissu"
+   },
+   "confusions": [
+    "布",
+    "帯"
+   ],
+   "mnemonicFr": "Les points espacés (巾) d'une broderie rare : l'espoir, ce qui est rare."
+  },
+  {
+   "literal": "快",
+   "order": 79,
+   "radical": {
+    "literal": "心",
+    "nameFr": "cœur",
+    "meaningFr": "le cœur, l'esprit"
+   },
+   "confusions": [
+    "決"
+   ],
+   "mnemonicFr": "Le cœur (⺖) qui s'épanouit pleinement : agréable, gai."
+  },
+  {
+   "literal": "床",
+   "order": 80,
+   "radical": {
+    "literal": "广",
+    "nameFr": "toit sur falaise",
+    "meaningFr": "un abri adossé à une falaise"
+   },
+   "confusions": [
+    "庁",
+    "広",
+    "麻"
+   ],
+   "mnemonicFr": "Le cadre de bois (木) sous l'abri (广) : le lit, le plancher."
+  },
+  {
+   "literal": "臣",
+   "order": 81,
+   "radical": {
+    "literal": "臣",
+    "nameFr": "serviteur",
+    "meaningFr": "l'œil baissé du serviteur"
+   },
+   "confusions": [
+    "巨",
+    "臥"
+   ],
+   "mnemonicFr": "Un œil grand ouvert baissé verticalement : le serviteur, le sujet."
+  },
+  {
+   "literal": "沈",
+   "order": 82,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "枕"
+   ],
+   "mnemonicFr": "S'enfoncer dans l'eau (⺡) en s'inclinant (尢) : couler, sombrer."
+  },
+  {
+   "literal": "卵",
+   "order": 83,
+   "radical": {
+    "literal": "卩",
+    "nameFr": "sceau",
+    "meaningFr": "un genou plié, un sceau"
+   },
+   "confusions": [
+    "印"
+   ],
+   "mnemonicFr": "Deux œufs (丶) couvés dans le nid (卩) : l'œuf."
+  },
+  {
+   "literal": "辛",
+   "order": 84,
+   "radical": {
+    "literal": "辛",
+    "nameFr": "épicé / dur",
+    "meaningFr": "l'aiguillon, la peine"
+   },
+   "confusions": [
+    "幸",
+    "宰"
+   ],
+   "mnemonicFr": "Une lame (十) dressée (立) : piquant, amer, la peine."
+  },
+  {
+   "literal": "麦",
+   "order": 85,
+   "radical": {
+    "literal": "麦",
+    "nameFr": "blé",
+    "meaningFr": "le blé, l'orge"
+   },
+   "confusions": [
+    "青",
+    "表"
+   ],
+   "mnemonicFr": "La céréale qui vient avec l'hiver (夂) : le blé, l'orge."
+  },
+  {
+   "literal": "貝",
+   "order": 86,
+   "radical": {
+    "literal": "貝",
+    "nameFr": "coquillage",
+    "meaningFr": "le coquillage, l'argent"
+   },
+   "confusions": [
+    "目",
+    "見",
+    "具"
+   ],
+   "mnemonicFr": "Le coquillage (目) ouvrant ses deux valves (ハ) : la coquille, l'argent ancien."
+  },
+  {
+   "literal": "伺",
+   "order": 87,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "同",
+    "司"
+   ],
+   "mnemonicFr": "Une personne (⺅) attentive aux paroles (口) d'autrui : visiter respectueusement, demander."
+  },
+  {
+   "literal": "協",
+   "order": 88,
+   "radical": {
+    "literal": "十",
+    "nameFr": "croix",
+    "meaningFr": "croisement d'un trait vertical et horizontal"
+   },
+   "confusions": [
+    "恊"
+   ],
+   "mnemonicFr": "Dix (十) forces (力) unies dans le même effort : la coopération."
+  },
+  {
+   "literal": "府",
+   "order": 89,
+   "radical": {
+    "literal": "广",
+    "nameFr": "toit sur falaise",
+    "meaningFr": "un abri adossé à une falaise"
+   },
+   "confusions": [
+    "庁",
+    "庫"
+   ],
+   "mnemonicFr": "L'abri (广) où l'on rassemble les hommes (⺅) et les biens (寸) : la préfecture, le gouvernement."
+  },
+  {
+   "literal": "委",
+   "order": 90,
+   "radical": {
+    "literal": "女",
+    "nameFr": "femme",
+    "meaningFr": "personne agenouillée"
+   },
+   "confusions": [
+    "季",
+    "秀"
+   ],
+   "mnemonicFr": "Une femme (女) qui présente l'épi (禾) : confier, le comité."
+  },
+  {
+   "literal": "述",
+   "order": 91,
+   "radical": {
+    "literal": "⻌",
+    "nameFr": "marcher (辵)",
+    "meaningFr": "la route, avancer"
+   },
+   "confusions": [
+    "術"
+   ],
+   "mnemonicFr": "Avancer (⻌) en exposant point par point (十) : mentionner, relater."
+  },
+  {
+   "literal": "武",
+   "order": 92,
+   "radical": {
+    "literal": "止",
+    "nameFr": "arrêter / pied",
+    "meaningFr": "le pied qui s'arrête"
+   },
+   "confusions": [
+    "賦"
+   ],
+   "mnemonicFr": "Arrêter (止) la lance (弋) : martial — la vraie force est de stopper le combat."
+  },
+  {
+   "literal": "欧",
+   "order": 93,
+   "radical": {
+    "literal": "欠",
+    "nameFr": "manquer / bâiller",
+    "meaningFr": "manquer, bâiller"
+   },
+   "confusions": [
+    "殴"
+   ],
+   "mnemonicFr": "Un souffle (欠) venu de l'ouest : l'Europe."
+  },
+  {
+   "literal": "担",
+   "order": 94,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "但"
+   ],
+   "mnemonicFr": "La main (⺘) qui porte le fardeau à l'épaule : se charger de, assumer."
+  },
+  {
+   "literal": "門",
+   "order": 95,
+   "radical": {
+    "literal": "門",
+    "nameFr": "porte",
+    "meaningFr": "le portail"
+   },
+   "confusions": [
+    "問",
+    "間"
+   ],
+   "mnemonicFr": "Deux battants symétriques : le portail, la porte."
+  },
+  {
+   "literal": "況",
+   "order": 96,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "兄"
+   ],
+   "mnemonicFr": "L'eau (⺡) dont on observe le cours auprès du frère aîné (兄) : la situation, la condition."
+  },
+  {
+   "literal": "効",
+   "order": 97,
+   "radical": {
+    "literal": "力",
+    "nameFr": "force",
+    "meaningFr": "la force, l'effort"
+   },
+   "confusions": [
+    "功",
+    "勤"
+   ],
+   "mnemonicFr": "L'autorité du père (父) jointe à la force (力) : l'efficacité."
+  },
+  {
+   "literal": "岸",
+   "order": 98,
+   "radical": {
+    "literal": "山",
+    "nameFr": "montagne",
+    "meaningFr": "trois pics"
+   },
+   "confusions": [
+    "崖"
+   ],
+   "mnemonicFr": "Le rocher sec (干) de la montagne (山) qui surplombe l'eau : la rive, la côte."
+  },
+  {
+   "literal": "周",
+   "order": 99,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [
+    "同",
+    "用"
+   ],
+   "mnemonicFr": "L'enceinte (冂) qui fait le tour complet (口) : la circonférence, l'entourage."
+  },
+  {
+   "literal": "券",
+   "order": 100,
+   "radical": {
+    "literal": "刀",
+    "nameFr": "couteau",
+    "meaningFr": "couper"
+   },
+   "confusions": [
+    "巻",
+    "拳"
+   ],
+   "mnemonicFr": "Le contrat scindé au couteau (刀) entre deux parties : le ticket, le bon."
+  },
+  {
+   "literal": "並",
+   "order": 101,
+   "radical": {
+    "literal": "一",
+    "nameFr": "un / trait horizontal",
+    "meaningFr": "le sol, la ligne horizontale"
+   },
+   "confusions": [
+    "普"
+   ],
+   "mnemonicFr": "Deux personnages (丷) debout l'un à côté de l'autre sur la ligne (一) : la rangée, et aussi."
+  },
+  {
+   "literal": "林",
+   "order": 102,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "森"
+   ],
+   "mnemonicFr": "Deux arbres (木) côte à côte : le petit bois, le bosquet."
+  },
+  {
+   "literal": "河",
+   "order": 103,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "何",
+    "湖"
+   ],
+   "mnemonicFr": "L'eau (⺡) qui coule dans son lit creusé (口) : le fleuve, la rivière."
+  },
+  {
+   "literal": "油",
+   "order": 104,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "宙"
+   ],
+   "mnemonicFr": "L'eau (⺡) qui suinte des champs (田) : l'huile, le gras."
+  },
+  {
+   "literal": "波",
+   "order": 105,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "皮",
+    "被"
+   ],
+   "mnemonicFr": "La peau (皮) de l'eau (⺡) qui se plisse : la vague, l'onde."
+  },
+  {
+   "literal": "延",
+   "order": 106,
+   "radical": {
+    "literal": "廴",
+    "nameFr": "étirer",
+    "meaningFr": "un long pas étiré"
+   },
+   "confusions": [
+    "廷"
+   ],
+   "mnemonicFr": "Un pas (廴) qui s'étire au-delà de l'arrêt (止) : prolonger."
+  },
+  {
+   "literal": "固",
+   "order": 107,
+   "radical": {
+    "literal": "囗",
+    "nameFr": "enceinte",
+    "meaningFr": "un espace clos, une frontière"
+   },
+   "confusions": [
+    "国",
+    "囲"
+   ],
+   "mnemonicFr": "Ce qui est enfermé (囗) et verrouillé (口) : dur, solide."
+  },
+  {
+   "literal": "卒",
+   "order": 108,
+   "radical": {
+    "literal": "十",
+    "nameFr": "croix",
+    "meaningFr": "croisement d'un trait vertical et horizontal"
+   },
+   "confusions": [
+    "率"
+   ],
+   "mnemonicFr": "Le serviteur (亠, 人) qui a achevé (十) son temps : le soldat, le diplômé."
+  },
+  {
+   "literal": "承",
+   "order": 109,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "丞"
+   ],
+   "mnemonicFr": "Des mains qui recueillent ce qui est présenté : consentir, recevoir."
+  },
+  {
+   "literal": "岩",
+   "order": 110,
+   "radical": {
+    "literal": "山",
+    "nameFr": "montagne",
+    "meaningFr": "trois pics"
+   },
+   "confusions": [
+    "石",
+    "岸"
+   ],
+   "mnemonicFr": "La pierre (石) au pied de la montagne (山) : le rocher."
+  },
+  {
+   "literal": "版",
+   "order": 111,
+   "radical": {
+    "literal": "片",
+    "nameFr": "tranche",
+    "meaningFr": "une moitié, une tranche"
+   },
+   "confusions": [
+    "板"
+   ],
+   "mnemonicFr": "La demi-planchette (片) tenue par la main (又) pour imprimer : l'édition."
+  },
+  {
+   "literal": "昇",
+   "order": 112,
+   "radical": {
+    "literal": "日",
+    "nameFr": "soleil",
+    "meaningFr": "le soleil, le jour"
+   },
+   "confusions": [
+    "升",
+    "界"
+   ],
+   "mnemonicFr": "Deux mains (廾) qui élèvent le soleil (日) : s'élever, monter."
+  },
+  {
+   "literal": "季",
+   "order": 113,
+   "radical": {
+    "literal": "子",
+    "nameFr": "enfant",
+    "meaningFr": "un bébé avec la tête et les bras"
+   },
+   "confusions": [
+    "委"
+   ],
+   "mnemonicFr": "L'épi de céréale (禾) et l'enfant (子) : la saison, la fin d'un cycle."
+  },
+  {
+   "literal": "底",
+   "order": 114,
+   "radical": {
+    "literal": "广",
+    "nameFr": "toit sur falaise",
+    "meaningFr": "un abri adossé à une falaise"
+   },
+   "confusions": [
+    "低",
+    "邸"
+   ],
+   "mnemonicFr": "Ce qui git sous l'abri (广), tout au fond (氏) : le fond, la semelle."
+  },
+  {
+   "literal": "依",
+   "order": 115,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "衣"
+   ],
+   "mnemonicFr": "Une personne (⺅) appuyée à son vêtement (衣) : dépendre de, selon."
+  },
+  {
+   "literal": "枚",
+   "order": 116,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "枝"
+   ],
+   "mnemonicFr": "On compte les branches (木) une à une en les tapotant (攵) : le compteur des objets plats."
+  },
+  {
+   "literal": "板",
+   "order": 117,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "坂",
+    "版"
+   ],
+   "mnemonicFr": "La planche de bois (木) taillée (厂) à la main (又) : la planche, la plaque."
+  },
+  {
+   "literal": "届",
+   "order": 118,
+   "radical": {
+    "literal": "尸",
+    "nameFr": "corps",
+    "meaningFr": "le corps, la dépouille"
+   },
+   "confusions": [
+    "屈"
+   ],
+   "mnemonicFr": "Ce qui parvient (尸) à destination (田) : livrer, arriver."
+  },
+  {
+   "literal": "刺",
+   "order": 119,
+   "radical": {
+    "literal": "刀",
+    "nameFr": "couteau",
+    "meaningFr": "couper"
+   },
+   "confusions": [
+    "束",
+    "剌"
+   ],
+   "mnemonicFr": "La lame (⺉) parmi les branches (木) : l'épine, piquer."
+  },
+  {
+   "literal": "宝",
+   "order": 120,
+   "radical": {
+    "literal": "宀",
+    "nameFr": "toit",
+    "meaningFr": "un toit de maison"
+   },
+   "confusions": [
+    "玉",
+    "室"
+   ],
+   "mnemonicFr": "Sous le toit (宀), le jade (王) : le trésor."
+  },
+  {
+   "literal": "肩",
+   "order": 121,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "房"
+   ],
+   "mnemonicFr": "La chair (月) qui porte comme un battant de porte (戸) : l'épaule."
+  },
+  {
+   "literal": "泊",
+   "order": 122,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "白"
+   ],
+   "mnemonicFr": "L'eau (⺡) calme et blanche (白) où le bateau s'arrête : passer la nuit, loger."
+  },
+  {
+   "literal": "乳",
+   "order": 123,
+   "radical": {
+    "literal": "乙",
+    "nameFr": "crochet",
+    "meaningFr": "un bras courbé"
+   },
+   "confusions": [
+    "乱"
+   ],
+   "mnemonicFr": "Une griffe (爪) qui saisit l'enfant (子) pour le nourrir : le lait."
+  },
+  {
+   "literal": "刷",
+   "order": 124,
+   "radical": {
+    "literal": "刀",
+    "nameFr": "couteau",
+    "meaningFr": "couper"
+   },
+   "confusions": [
+    "届"
+   ],
+   "mnemonicFr": "La lame (⺉) qui étale l'encre sur le tissu (巾) : imprimer."
+  },
+  {
+   "literal": "枝",
+   "order": 125,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "技"
+   ],
+   "mnemonicFr": "Le support (支) qui pousse de l'arbre (木) : la branche."
+  },
+  {
+   "literal": "毒",
+   "order": 126,
+   "radical": {
+    "literal": "毋",
+    "nameFr": "défense / variante de mère",
+    "meaningFr": "la mère, l'interdiction"
+   },
+   "confusions": [
+    "素",
+    "青"
+   ],
+   "mnemonicFr": "Sous le couvercle (亠), ce qui pousse de la terre (土) et corrompt : le poison."
+  },
+  {
+   "literal": "拝",
+   "order": 127,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "払"
+   ],
+   "mnemonicFr": "Deux mains (⺘) jointes devant la tige (干) : adorer, se prosterner."
+  },
+  {
+   "literal": "祈",
+   "order": 128,
+   "radical": {
+    "literal": "示",
+    "nameFr": "autel / montrer",
+    "meaningFr": "l'autel, révéler"
+   },
+   "confusions": [
+    "折"
+   ],
+   "mnemonicFr": "Implorer à l'autel (⺭) avec la hache rituelle (斤) : prier, souhaiter."
+  },
+  {
+   "literal": "泥",
+   "order": 129,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "混"
+   ],
+   "mnemonicFr": "L'eau (⺡) qui ramollit la terre jusqu'à la fange : la boue."
+  },
+  {
+   "literal": "姓",
+   "order": 130,
+   "radical": {
+    "literal": "女",
+    "nameFr": "femme",
+    "meaningFr": "personne agenouillée"
+   },
+   "confusions": [
+    "性"
+   ],
+   "mnemonicFr": "Né (生) de la femme (女) : le nom de famille."
+  },
+  {
+   "literal": "沸",
+   "order": 131,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "費"
+   ],
+   "mnemonicFr": "L'eau (⺡) qui bouillonne en jets contraires (弗) : bouillir, fermenter."
+  },
+  {
+   "literal": "肯",
+   "order": 132,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "冒"
+   ],
+   "mnemonicFr": "La chair (月) et le pied (止) qui s'accordent : le consentement, accepter."
+  },
+  {
+   "literal": "県",
+   "order": 133,
+   "radical": {
+    "literal": "目",
+    "nameFr": "œil",
+    "meaningFr": "l'œil"
+   },
+   "confusions": [
+    "見"
+   ],
+   "mnemonicFr": "L'œil (目) qui surveille les petites choses (小) du territoire : la préfecture."
+  },
+  {
+   "literal": "査",
+   "order": 134,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "查"
+   ],
+   "mnemonicFr": "Inspecter (目) le bois (木) posé sur la ligne (一) : l'investigation."
+  },
+  {
+   "literal": "軍",
+   "order": 135,
+   "radical": {
+    "literal": "車",
+    "nameFr": "char",
+    "meaningFr": "le véhicule"
+   },
+   "confusions": [
+    "運"
+   ],
+   "mnemonicFr": "Les chars (車) rassemblés sous la couverture (冖) : l'armée."
+  },
+  {
+   "literal": "革",
+   "order": 136,
+   "radical": {
+    "literal": "革",
+    "nameFr": "cuir",
+    "meaningFr": "la peau tannée, le cuir"
+   },
+   "confusions": [
+    "草"
+   ],
+   "mnemonicFr": "La peau écorchée étirée entre deux mains (廾) : le cuir, la réforme."
+  },
+  {
+   "literal": "型",
+   "order": 137,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "形"
+   ],
+   "mnemonicFr": "Le moule de terre (土) découpé (⺉) et tenu des deux mains (廾) : le modèle, le type."
+  },
+  {
+   "literal": "専",
+   "order": 138,
+   "radical": {
+    "literal": "寸",
+    "nameFr": "pouce / mesure",
+    "meaningFr": "la mesure, le pouce"
+   },
+   "confusions": [
+    "伝",
+    "博"
+   ],
+   "mnemonicFr": "La main (寸) appliquée à un seul champ (田) : la spécialité, exclusivement."
+  },
+  {
+   "literal": "省",
+   "order": 139,
+   "radical": {
+    "literal": "目",
+    "nameFr": "œil",
+    "meaningFr": "l'œil"
+   },
+   "confusions": [
+    "少"
+   ],
+   "mnemonicFr": "L'œil (目) attentif aux petites choses (小) : regarder en soi, le ministère."
+  },
+  {
+   "literal": "逆",
+   "order": 140,
+   "radical": {
+    "literal": "⻌",
+    "nameFr": "marcher (辵)",
+    "meaningFr": "la route, avancer"
+   },
+   "confusions": [
+    "朔"
+   ],
+   "mnemonicFr": "Marcher (⻌) à contre-courant (屮) : l'inverse, le contraire."
+  },
+  {
+   "literal": "則",
+   "order": 141,
+   "radical": {
+    "literal": "刀",
+    "nameFr": "couteau",
+    "meaningFr": "couper"
+   },
+   "confusions": [
+    "側"
+   ],
+   "mnemonicFr": "La règle (貝) gravée au couteau (⺉) : le règlement, suivre."
+  },
+  {
+   "literal": "厚",
+   "order": 142,
+   "radical": {
+    "literal": "厂",
+    "nameFr": "falaise",
+    "meaningFr": "un surplomb rocheux"
+   },
+   "confusions": [
+    "圧",
+    "原"
+   ],
+   "mnemonicFr": "La roche (厂) empilée où le soleil (日) s'attarde : épais, riche."
+  },
+  {
+   "literal": "城",
+   "order": 143,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "域",
+    "成"
+   ],
+   "mnemonicFr": "La terre (土) défendue par la hallebarde (戈) : le château fort."
+  },
+  {
+   "literal": "星",
+   "order": 144,
+   "radical": {
+    "literal": "日",
+    "nameFr": "soleil",
+    "meaningFr": "le soleil, le jour"
+   },
+   "confusions": [
+    "晴",
+    "晶"
+   ],
+   "mnemonicFr": "Le soleil (日) qui naît (生) : l'étoile, le point lumineux."
+  },
+  {
+   "literal": "香",
+   "order": 145,
+   "radical": {
+    "literal": "香",
+    "nameFr": "parfum",
+    "meaningFr": "la bonne odeur"
+   },
+   "confusions": [
+    "杏"
+   ],
+   "mnemonicFr": "La bonne odeur de la céréale (禾) mûrie au soleil (日) : le parfum, l'encens."
+  },
+  {
+   "literal": "栄",
+   "order": 146,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "営"
+   ],
+   "mnemonicFr": "L'arbre (木) couronné de fleurs (⺌) sous la lumière (冖) : la prospérité, la gloire."
+  },
+  {
+   "literal": "巻",
+   "order": 147,
+   "radical": {
+    "literal": "己",
+    "nameFr": "soi-même",
+    "meaningFr": "soi, déjà achevé"
+   },
+   "confusions": [
+    "券"
+   ],
+   "mnemonicFr": "Ce qui est étalé (大) puis roulé (已) : le rouleau, le volume."
+  },
+  {
+   "literal": "律",
+   "order": 148,
+   "radical": {
+    "literal": "彳",
+    "nameFr": "petit pas",
+    "meaningFr": "la marche (moitié gauche de 行)"
+   },
+   "confusions": [
+    "建"
+   ],
+   "mnemonicFr": "Marcher (彳) selon ce que le pinceau (聿) a écrit : la loi, le rythme."
+  },
+  {
+   "literal": "秒",
+   "order": 149,
+   "radical": {
+    "literal": "禾",
+    "nameFr": "céréale",
+    "meaningFr": "la céréale sur pied"
+   },
+   "confusions": [
+    "妙"
+   ],
+   "mnemonicFr": "La pointe menue (小) de l'épi (禾) : la seconde, l'infime."
+  },
+  {
+   "literal": "泉",
+   "order": 150,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "原"
+   ],
+   "mnemonicFr": "L'eau (水) blanche (白) qui jaillit de terre : la source."
+  },
+  {
+   "literal": "荒",
+   "order": 151,
+   "radical": {
+    "literal": "⺾",
+    "nameFr": "herbe",
+    "meaningFr": "les plantes, l'herbe"
+   },
+   "confusions": [
+    "流"
+   ],
+   "mnemonicFr": "Les plantes (⺾) dévastées par le fleuve (川) en furie : la dévastation, rude."
+  },
+  {
+   "literal": "柱",
+   "order": 152,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "住",
+    "注"
+   ],
+   "mnemonicFr": "Le bois (木) dressé droit comme un jade (王) : le pilier."
+  },
+  {
+   "literal": "封",
+   "order": 153,
+   "radical": {
+    "literal": "寸",
+    "nameFr": "pouce / mesure",
+    "meaningFr": "la mesure, le pouce"
+   },
+   "confusions": [
+    "卦"
+   ],
+   "mnemonicFr": "La main (寸) qui scelle avec la motte de terre (土) : sceller, fermer."
+  },
+  {
+   "literal": "砂",
+   "order": 154,
+   "radical": {
+    "literal": "石",
+    "nameFr": "pierre",
+    "meaningFr": "la pierre"
+   },
+   "confusions": [
+    "少",
+    "沙"
+   ],
+   "mnemonicFr": "Les petits (小) fragments de pierre (石) : le sable."
+  },
+  {
+   "literal": "祝",
+   "order": 155,
+   "radical": {
+    "literal": "示",
+    "nameFr": "autel / montrer",
+    "meaningFr": "l'autel, révéler"
+   },
+   "confusions": [
+    "兄"
+   ],
+   "mnemonicFr": "La bouche (口) qui prie à l'autel (⺭) : célébrer, féliciter."
+  },
+  {
+   "literal": "柔",
+   "order": 156,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "矛"
+   ],
+   "mnemonicFr": "Le bois (木) d'une lance (矛) que l'on assouplit : tendre, doux."
+  },
+  {
+   "literal": "浅",
+   "order": 157,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "残",
+    "銭"
+   ],
+   "mnemonicFr": "L'eau (⺡) où la lance (戈) touche le fond : peu profond."
+  },
+  {
+   "literal": "紅",
+   "order": 158,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "結"
+   ],
+   "mnemonicFr": "Le fil de soie (糸) teint avec art (工) : le rouge cramoisi."
+  },
+  {
+   "literal": "郊",
+   "order": 159,
+   "radical": {
+    "literal": "⻏",
+    "nameFr": "ville (阝)",
+    "meaningFr": "la ville, le fief à droite"
+   },
+   "confusions": [
+    "効"
+   ],
+   "mnemonicFr": "La lisière de la ville (⻏) tournée vers les champs : la banlieue."
+  },
+  {
+   "literal": "炭",
+   "order": 160,
+   "radical": {
+    "literal": "火",
+    "nameFr": "feu",
+    "meaningFr": "les flammes"
+   },
+   "confusions": [
+    "灰"
+   ],
+   "mnemonicFr": "Le bois brûlé sous le surplomb (厂) de la montagne (山) : le charbon."
+  },
+  {
+   "literal": "勇",
+   "order": 161,
+   "radical": {
+    "literal": "力",
+    "nameFr": "force",
+    "meaningFr": "la force, l'effort"
+   },
+   "confusions": [
+    "男",
+    "通"
+   ],
+   "mnemonicFr": "La force (力) qui jaillit du champ (田) : le courage."
+  },
+  {
+   "literal": "珍",
+   "order": 162,
+   "radical": {
+    "literal": "王",
+    "nameFr": "jade",
+    "meaningFr": "le jade, la pierre précieuse"
+   },
+   "confusions": [
+    "王",
+    "形"
+   ],
+   "mnemonicFr": "Le jade (王) aux reflets rares (彡) : rare, précieux."
+  },
+  {
+   "literal": "拾",
+   "order": 163,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "合",
+    "給"
+   ],
+   "mnemonicFr": "La main (⺘) qui ramasse (口) un à un (𠆢) : cueillir, trouver."
+  },
+  {
+   "literal": "咲",
+   "order": 164,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [
+    "笑"
+   ],
+   "mnemonicFr": "La bouche (口) de la fleur qui s'ouvre largement (大) : fleurir."
+  },
+  {
+   "literal": "胃",
+   "order": 165,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "田",
+    "冒"
+   ],
+   "mnemonicFr": "La chair (月) qui reçoit les aliments comme un champ (田) : l'estomac."
+  },
+  {
+   "literal": "枯",
+   "order": 166,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "故"
+   ],
+   "mnemonicFr": "L'arbre (木) réduit à ses branches (十, 口) : se flétrir, mourir."
+  },
+  {
+   "literal": "挟",
+   "order": 167,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "狭"
+   ],
+   "mnemonicFr": "Tenir (⺘) entre deux personnages (人) : pincer, coincer."
+  },
+  {
+   "literal": "党",
+   "order": 168,
+   "radical": {
+    "literal": "儿",
+    "nameFr": "jambes",
+    "meaningFr": "les jambes d'une personne"
+   },
+   "confusions": [
+    "堂",
+    "常"
+   ],
+   "mnemonicFr": "Un groupe rassemblé (冖) autour de paroles (口) : le parti politique."
+  },
+  {
+   "literal": "島",
+   "order": 169,
+   "radical": {
+    "literal": "山",
+    "nameFr": "montagne",
+    "meaningFr": "trois pics"
+   },
+   "confusions": [
+    "鳥",
+    "嶋"
+   ],
+   "mnemonicFr": "L'oiseau (鳥) perché sur la montagne (山) au milieu de la mer : l'île."
+  },
+  {
+   "literal": "造",
+   "order": 170,
+   "radical": {
+    "literal": "⻌",
+    "nameFr": "marcher (辵)",
+    "meaningFr": "la route, avancer"
+   },
+   "confusions": [
+    "告"
+   ],
+   "mnemonicFr": "Avancer (⻌) en façonnant la terre (土) et la matière (口) : créer, fabriquer."
+  },
+  {
+   "literal": "被",
+   "order": 171,
+   "radical": {
+    "literal": "⻂",
+    "nameFr": "vêtement (衤)",
+    "meaningFr": "le vêtement à gauche"
+   },
+   "confusions": [
+    "波",
+    "破"
+   ],
+   "mnemonicFr": "Le vêtement (⻂) posé sur la peau (皮) : couvrir, subir."
+  },
+  {
+   "literal": "個",
+   "order": 172,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "固",
+    "国"
+   ],
+   "mnemonicFr": "Une personne (⺅) prise individuellement dans son ensemble (囗) : l'individu."
+  },
+  {
+   "literal": "針",
+   "order": 173,
+   "radical": {
+    "literal": "金",
+    "nameFr": "or / métal",
+    "meaningFr": "le métal, l'argent"
+   },
+   "confusions": [
+    "十",
+    "計"
+   ],
+   "mnemonicFr": "La pointe de métal (十) : l'aiguille."
+  },
+  {
+   "literal": "捜",
+   "order": 174,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "搜",
+    "便"
+   ],
+   "mnemonicFr": "La main (⺘) qui fouille champ (田) après champ : chercher."
+  },
+  {
+   "literal": "根",
+   "order": 175,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "限",
+    "退"
+   ],
+   "mnemonicFr": "La limite (艮) de l'arbre (木), là où il s'ancre : la racine."
+  },
+  {
+   "literal": "将",
+   "order": 176,
+   "radical": {
+    "literal": "寸",
+    "nameFr": "pouce / mesure",
+    "meaningFr": "la mesure, le pouce"
+   },
+   "confusions": [
+    "奨"
+   ],
+   "mnemonicFr": "La main griffue (爪) qui commande (寸) depuis la hauteur : le chef, le général."
+  },
+  {
+   "literal": "般",
+   "order": 177,
+   "radical": {
+    "literal": "舟",
+    "nameFr": "bateau",
+    "meaningFr": "l'embarcation"
+   },
+   "confusions": [
+    "船"
+   ],
+   "mnemonicFr": "Le bateau (舟) qu'on déplace à la rame (殳) : transporter, général."
+  },
+  {
+   "literal": "航",
+   "order": 178,
+   "radical": {
+    "literal": "舟",
+    "nameFr": "bateau",
+    "meaningFr": "l'embarcation"
+   },
+   "confusions": [
+    "舷"
+   ],
+   "mnemonicFr": "Le bateau (舟) qui traverse en ligne droite (亠) : naviguer."
+  },
+  {
+   "literal": "倍",
+   "order": 179,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "培"
+   ],
+   "mnemonicFr": "Une personne (⺅) debout (立) auprès de la bouche (口) : le double."
+  },
+  {
+   "literal": "帯",
+   "order": 180,
+   "radical": {
+    "literal": "巾",
+    "nameFr": "tissu",
+    "meaningFr": "une pièce de tissu"
+   },
+   "confusions": [
+    "希"
+   ],
+   "mnemonicFr": "La bande de tissu (巾) nouée sous le couvercle (冖) : la ceinture."
+  },
+  {
+   "literal": "庫",
+   "order": 181,
+   "radical": {
+    "literal": "广",
+    "nameFr": "toit sur falaise",
+    "meaningFr": "un abri adossé à une falaise"
+   },
+   "confusions": [
+    "庁"
+   ],
+   "mnemonicFr": "L'abri (广) où l'on range les chars (車) : l'entrepôt."
+  },
+  {
+   "literal": "骨",
+   "order": 182,
+   "radical": {
+    "literal": "骨",
+    "nameFr": "os",
+    "meaningFr": "le squelette"
+   },
+   "confusions": [
+    "月"
+   ],
+   "mnemonicFr": "La charpente (冂) sous la chair (月) : l'os."
+  },
+  {
+   "literal": "弱",
+   "order": 183,
+   "radical": {
+    "literal": "弓",
+    "nameFr": "arc",
+    "meaningFr": "l'arc"
+   },
+   "confusions": [
+    "強"
+   ],
+   "mnemonicFr": "Deux arcs (弓) ployés sous le gel (冫) : faible, fragile."
+  },
+  {
+   "literal": "純",
+   "order": 184,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "鈍"
+   ],
+   "mnemonicFr": "Le fil de soie (糸) sans mélange (屯) : pur, authentique."
+  },
+  {
+   "literal": "悩",
+   "order": 185,
+   "radical": {
+    "literal": "心",
+    "nameFr": "cœur",
+    "meaningFr": "le cœur, l'esprit"
+   },
+   "confusions": [
+    "脳"
+   ],
+   "mnemonicFr": "Le cœur (⺖) prisonnier (凵) des petites pensées (⺌) : le souci, la peine."
+  },
+  {
+   "literal": "埋",
+   "order": 186,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "理"
+   ],
+   "mnemonicFr": "La terre (土) qui recouvre le village (里) : enterrer."
+  },
+  {
+   "literal": "訓",
+   "order": 187,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [
+    "順",
+    "州"
+   ],
+   "mnemonicFr": "Les paroles (言) qui coulent comme un fleuve (川) : l'instruction, la lecture."
+  },
+  {
+   "literal": "浴",
+   "order": 188,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "容",
+    "俗"
+   ],
+   "mnemonicFr": "L'eau (⺡) qui coule dans la vallée (谷) : se baigner."
+  },
+  {
+   "literal": "胸",
+   "order": 189,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "脳"
+   ],
+   "mnemonicFr": "La chair (月) qui abrite le cœur dans sa cavité (凵) : la poitrine."
+  },
+  {
+   "literal": "荷",
+   "order": 190,
+   "radical": {
+    "literal": "⺾",
+    "nameFr": "herbe",
+    "meaningFr": "les plantes, l'herbe"
+   },
+   "confusions": [
+    "何"
+   ],
+   "mnemonicFr": "Une personne (⺅) qui porte les plantes (⺾) sur l'épaule : le bagage, la charge."
+  },
+  {
+   "literal": "凍",
+   "order": 191,
+   "radical": {
+    "literal": "冫",
+    "nameFr": "glace",
+    "meaningFr": "la glace, le froid"
+   },
+   "confusions": [
+    "東"
+   ],
+   "mnemonicFr": "La glace (冫) qui fige l'arbre (木) et le champ (田) : gelé."
+  },
+  {
+   "literal": "恋",
+   "order": 192,
+   "radical": {
+    "literal": "心",
+    "nameFr": "cœur",
+    "meaningFr": "le cœur, l'esprit"
+   },
+   "confusions": [
+    "変"
+   ],
+   "mnemonicFr": "Le cœur (心) attaché (亠) : la romance, l'amour."
+  },
+  {
+   "literal": "涙",
+   "order": 193,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "戸"
+   ],
+   "mnemonicFr": "L'eau (⺡) qui coule de la porte (戸) des yeux : les larmes."
+  },
+  {
+   "literal": "孫",
+   "order": 194,
+   "radical": {
+    "literal": "子",
+    "nameFr": "enfant",
+    "meaningFr": "un bébé avec la tête et les bras"
+   },
+   "confusions": [
+    "子"
+   ],
+   "mnemonicFr": "L'enfant (子) qui prolonge le fil (糸) de la lignée : le petit-enfant."
+  },
+  {
+   "literal": "軒",
+   "order": 195,
+   "radical": {
+    "literal": "車",
+    "nameFr": "char",
+    "meaningFr": "le véhicule"
+   },
+   "confusions": [
+    "幹"
+   ],
+   "mnemonicFr": "Le toit sec (干) au-dessus du char (車) : l'auvent, le compteur des maisons."
+  },
+  {
+   "literal": "粉",
+   "order": 196,
+   "radical": {
+    "literal": "米",
+    "nameFr": "riz",
+    "meaningFr": "le grain de riz"
+   },
+   "confusions": [
+    "米"
+   ],
+   "mnemonicFr": "Le riz (米) fendu par la lame (刀) : la farine, la poudre."
+  },
+  {
+   "literal": "隻",
+   "order": 197,
+   "radical": {
+    "literal": "隹",
+    "nameFr": "oiseau à queue courte",
+    "meaningFr": "un oiseau"
+   },
+   "confusions": [
+    "双",
+    "獲"
+   ],
+   "mnemonicFr": "Une main (又) tenant un oiseau (隹) : le compteur des bateaux, une seule unité."
+  },
+  {
+   "literal": "脂",
+   "order": 198,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "指"
+   ],
+   "mnemonicFr": "La graisse (chair 月) sous la peau : la graisse, le gras."
+  },
+  {
+   "literal": "耕",
+   "order": 199,
+   "radical": {
+    "literal": "耒",
+    "nameFr": "charrue",
+    "meaningFr": "l'araire, le labour"
+   },
+   "confusions": [
+    "井",
+    "講"
+   ],
+   "mnemonicFr": "La charrue (耒) qui sillonne le champ (井) : labourer."
+  },
+  {
+   "literal": "畜",
+   "order": 200,
+   "radical": {
+    "literal": "田",
+    "nameFr": "rizière",
+    "meaningFr": "le champ cultivé"
+   },
+   "confusions": [
+    "蓄"
+   ],
+   "mnemonicFr": "Les animaux mystérieux (玄) élevés sous le toit du champ (田) : le bétail."
+  },
+  {
+   "literal": "設",
+   "order": 201,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [
+    "没"
+   ],
+   "mnemonicFr": "Des paroles (言) accompagnées d'actes (殳) : établir, prévoir."
+  },
+  {
+   "literal": "副",
+   "order": 202,
+   "radical": {
+    "literal": "刀",
+    "nameFr": "couteau",
+    "meaningFr": "couper"
+   },
+   "confusions": [
+    "幅",
+    "福"
+   ],
+   "mnemonicFr": "Le champ (田) partagé (⺉) en deux : la copie, le vice-."
+  },
+  {
+   "literal": "域",
+   "order": 203,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "城"
+   ],
+   "mnemonicFr": "Le territoire de terre (土) défendu par la hallebarde (戈) : la zone, le domaine."
+  },
+  {
+   "literal": "移",
+   "order": 204,
+   "radical": {
+    "literal": "禾",
+    "nameFr": "céréale",
+    "meaningFr": "la céréale sur pied"
+   },
+   "confusions": [
+    "多"
+   ],
+   "mnemonicFr": "L'épi (禾) repiqué à la tombée du soir (夕) : déplacer, changer."
+  },
+  {
+   "literal": "脳",
+   "order": 205,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "悩"
+   ],
+   "mnemonicFr": "La chair (月) où les petites pensées (⺌) tournent en creux (凵) : le cerveau."
+  },
+  {
+   "literal": "接",
+   "order": 206,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "妾"
+   ],
+   "mnemonicFr": "La main (⺘) qui joint (立) une chose à une autre : toucher, accueillir."
+  },
+  {
+   "literal": "細",
+   "order": 207,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "累"
+   ],
+   "mnemonicFr": "Le fil de soie (糸) aussi ténu qu'un sillon (田) : fin, menu."
+  },
+  {
+   "literal": "採",
+   "order": 208,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "菜",
+    "探"
+   ],
+   "mnemonicFr": "La main (⺘) qui cueille le fruit (爪) de l'arbre (木) : prendre, adopter."
+  },
+  {
+   "literal": "販",
+   "order": 209,
+   "radical": {
+    "literal": "貝",
+    "nameFr": "coquillage",
+    "meaningFr": "le coquillage, l'argent"
+   },
+   "confusions": [
+    "敗"
+   ],
+   "mnemonicFr": "Vendre les biens (貝) à la main (又) : la vente, le commerce."
+  },
+  {
+   "literal": "清",
+   "order": 210,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "青",
+    "晴"
+   ],
+   "mnemonicFr": "L'eau (⺡) bleue (青) : pur, limpide."
+  },
+  {
+   "literal": "停",
+   "order": 211,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "亭"
+   ],
+   "mnemonicFr": "Une personne (⺅) arrêtée devant l'abri (亠) : l'arrêt, la halte."
+  },
+  {
+   "literal": "陸",
+   "order": 212,
+   "radical": {
+    "literal": "⻖",
+    "nameFr": "colline (阝)",
+    "meaningFr": "une colline, un tertre"
+   },
+   "confusions": [
+    "続"
+   ],
+   "mnemonicFr": "La terre (土) qui s'élève du tertre (⻖) : la terre ferme, le continent."
+  },
+  {
+   "literal": "略",
+   "order": 213,
+   "radical": {
+    "literal": "田",
+    "nameFr": "rizière",
+    "meaningFr": "le champ cultivé"
+   },
+   "confusions": [
+    "格"
+   ],
+   "mnemonicFr": "Parcourir (夂) le champ (田) sans s'arrêter : l'abrégé, l'essentiel."
+  },
+  {
+   "literal": "患",
+   "order": 214,
+   "radical": {
+    "literal": "心",
+    "nameFr": "cœur",
+    "meaningFr": "le cœur, l'esprit"
+   },
+   "confusions": [
+    "忠",
+    "串"
+   ],
+   "mnemonicFr": "Le cœur (心) traversé (口) par le souci : la maladie, souffrir."
+  },
+  {
+   "literal": "貨",
+   "order": 215,
+   "radical": {
+    "literal": "貝",
+    "nameFr": "coquillage",
+    "meaningFr": "le coquillage, l'argent"
+   },
+   "confusions": [
+    "貸",
+    "化"
+   ],
+   "mnemonicFr": "Les biens (貝) que l'homme (⺅) transforme : la marchandise, la monnaie."
+  },
+  {
+   "literal": "混",
+   "order": 216,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "比",
+    "昆"
+   ],
+   "mnemonicFr": "L'eau (⺡) où les choses (比) se mêlent : mélanger, confondre."
+  },
+  {
+   "literal": "著",
+   "order": 217,
+   "radical": {
+    "literal": "⺾",
+    "nameFr": "herbe",
+    "meaningFr": "les plantes, l'herbe"
+   },
+   "confusions": [
+    "者",
+    "書"
+   ],
+   "mnemonicFr": "La plante (⺾) qui se dresse au soleil (日) : remarquable, publier."
+  },
+  {
+   "literal": "郵",
+   "order": 218,
+   "radical": {
+    "literal": "⻏",
+    "nameFr": "ville (阝)",
+    "meaningFr": "la ville, le fief à droite"
+   },
+   "confusions": [
+    "郷"
+   ],
+   "mnemonicFr": "Le village (⻏) atteint par le courrier à cheval : le courrier, la poste."
+  },
+  {
+   "literal": "紹",
+   "order": 219,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "招",
+    "給"
+   ],
+   "mnemonicFr": "Le fil (糸) que l'on noue (口) puis tranche (刀) pour raccorder : présenter, introduire."
+  },
+  {
+   "literal": "章",
+   "order": 220,
+   "radical": {
+    "literal": "立",
+    "nameFr": "debout",
+    "meaningFr": "se tenir debout"
+   },
+   "confusions": [
+    "音",
+    "意"
+   ],
+   "mnemonicFr": "Un chapitre net (立) et visible (日, 十) : le chapitre, l'insigne."
+  },
+  {
+   "literal": "翌",
+   "order": 221,
+   "radical": {
+    "literal": "羽",
+    "nameFr": "plume",
+    "meaningFr": "la plume, l'aile"
+   },
+   "confusions": [
+    "羽"
+   ],
+   "mnemonicFr": "Les deux ailes (羽) dressées (立) pour le lendemain : suivant."
+  },
+  {
+   "literal": "祭",
+   "order": 222,
+   "radical": {
+    "literal": "示",
+    "nameFr": "autel / montrer",
+    "meaningFr": "l'autel, révéler"
+   },
+   "confusions": [
+    "察"
+   ],
+   "mnemonicFr": "Offrir (示) des deux mains (癶) : le rituel, la fête."
+  },
+  {
+   "literal": "袋",
+   "order": 223,
+   "radical": {
+    "literal": "衣",
+    "nameFr": "vêtement",
+    "meaningFr": "l'habit"
+   },
+   "confusions": [
+    "代"
+   ],
+   "mnemonicFr": "Le vêtement (衣) fermé par un lien (弋) : le sac."
+  },
+  {
+   "literal": "液",
+   "order": 224,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "夜"
+   ],
+   "mnemonicFr": "L'eau (⺡) de la nuit (夕) qui s'épanche : le liquide."
+  },
+  {
+   "literal": "黄",
+   "order": 225,
+   "radical": {
+    "literal": "黄",
+    "nameFr": "jaune",
+    "meaningFr": "la couleur jaune"
+   },
+   "confusions": [
+    "共",
+    "横"
+   ],
+   "mnemonicFr": "La couleur de la terre sous le champ (田) : le jaune."
+  },
+  {
+   "literal": "掃",
+   "order": 226,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "帰"
+   ],
+   "mnemonicFr": "La main (⺘) qui manie le balai (ヨ) de tissu (巾) : balayer."
+  },
+  {
+   "literal": "掘",
+   "order": 227,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "堀"
+   ],
+   "mnemonicFr": "La main (⺘) qui creuse la caverne (尸) dans la montagne (山) : creuser."
+  },
+  {
+   "literal": "捨",
+   "order": 228,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "合",
+    "拾"
+   ],
+   "mnemonicFr": "La main (⺘) qui délaisse (舍) : jeter, abandonner."
+  },
+  {
+   "literal": "軟",
+   "order": 229,
+   "radical": {
+    "literal": "車",
+    "nameFr": "char",
+    "meaningFr": "le véhicule"
+   },
+   "confusions": [
+    "次"
+   ],
+   "mnemonicFr": "Le char (車) qui manque (欠) de rigidité : mou, doux."
+  },
+  {
+   "literal": "械",
+   "order": 230,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "戒"
+   ],
+   "mnemonicFr": "L'engin de bois (木) tenu par la hallebarde (戈) : la machine, l'entrave."
+  },
+  {
+   "literal": "菜",
+   "order": 231,
+   "radical": {
+    "literal": "⺾",
+    "nameFr": "herbe",
+    "meaningFr": "les plantes, l'herbe"
+   },
+   "confusions": [
+    "採"
+   ],
+   "mnemonicFr": "La plante (⺾) cueillie par la griffe (爪) : le légume."
+  },
+  {
+   "literal": "乾",
+   "order": 232,
+   "radical": {
+    "literal": "乙",
+    "nameFr": "crochet",
+    "meaningFr": "un bras courbé"
+   },
+   "confusions": [
+    "朝",
+    "幹"
+   ],
+   "mnemonicFr": "Le soleil (日) qui perce la brume (乙) du matin et sèche tout : sec."
+  },
+  {
+   "literal": "瓶",
+   "order": 233,
+   "radical": {
+    "literal": "瓦",
+    "nameFr": "tuile",
+    "meaningFr": "la tuile"
+   },
+   "confusions": [
+    "併"
+   ],
+   "mnemonicFr": "La jarre de terre cuite (瓦) : la bouteille, le pot."
+  },
+  {
+   "literal": "粒",
+   "order": 234,
+   "radical": {
+    "literal": "米",
+    "nameFr": "riz",
+    "meaningFr": "le grain de riz"
+   },
+   "confusions": [
+    "位"
+   ],
+   "mnemonicFr": "Le grain de riz (米) dressé (立) : le grain, la goutte."
+  },
+  {
+   "literal": "菓",
+   "order": 235,
+   "radical": {
+    "literal": "⺾",
+    "nameFr": "herbe",
+    "meaningFr": "les plantes, l'herbe"
+   },
+   "confusions": [
+    "果"
+   ],
+   "mnemonicFr": "Le fruit des plantes (⺾) porté par l'arbre (木) : les friandises, les fruits."
+  },
+  {
+   "literal": "涼",
+   "order": 236,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "京"
+   ],
+   "mnemonicFr": "L'eau (⺡) fraîche au petit pont (亠) des bouches (口) assoiffées : frais, rafraîchissant."
+  },
+  {
+   "literal": "符",
+   "order": 237,
+   "radical": {
+    "literal": "竹",
+    "nameFr": "bambou",
+    "meaningFr": "le bambou"
+   },
+   "confusions": [
+    "府"
+   ],
+   "mnemonicFr": "Le tally de bambou (竹) scindé et gardé (寸) : le signe, le jeton."
+  },
+  {
+   "literal": "減",
+   "order": 238,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "滅"
+   ],
+   "mnemonicFr": "L'eau (⺡) que l'on entaille (戈) pour la faire baisser : diminuer."
+  },
+  {
+   "literal": "税",
+   "order": 239,
+   "radical": {
+    "literal": "禾",
+    "nameFr": "céréale",
+    "meaningFr": "la céréale sur pied"
+   },
+   "confusions": [
+    "脱"
+   ],
+   "mnemonicFr": "L'épi (禾) cédé (丷) en échange de la protection : la taxe."
+  },
+  {
+   "literal": "営",
+   "order": 240,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [
+    "栄"
+   ],
+   "mnemonicFr": "L'abri (冖) où l'on veille (⺌) et travaille (口) : gérer, l'activité."
+  },
+  {
+   "literal": "補",
+   "order": 241,
+   "radical": {
+    "literal": "⻂",
+    "nameFr": "vêtement (衤)",
+    "meaningFr": "le vêtement à gauche"
+   },
+   "confusions": [
+    "捕"
+   ],
+   "mnemonicFr": "Le vêtement (⻂) réparé (用) et renforcé (十) : compléter, suppléer."
+  },
+  {
+   "literal": "象",
+   "order": 242,
+   "radical": {
+    "literal": "豕",
+    "nameFr": "cochon",
+    "meaningFr": "le porc"
+   },
+   "confusions": [
+    "家"
+   ],
+   "mnemonicFr": "Le grand animal (豕) à la trompe recourbée (勹) : l'éléphant, la figure."
+  },
+  {
+   "literal": "復",
+   "order": 243,
+   "radical": {
+    "literal": "彳",
+    "nameFr": "petit pas",
+    "meaningFr": "la marche (moitié gauche de 行)"
+   },
+   "confusions": [
+    "後"
+   ],
+   "mnemonicFr": "Revenir (彳) là où le soleil (日) était : retourner, restaurer."
+  },
+  {
+   "literal": "極",
+   "order": 244,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "級"
+   ],
+   "mnemonicFr": "Le bois (木) dont on atteint la fin (又) : le pôle, l'extrême."
+  },
+  {
+   "literal": "量",
+   "order": 245,
+   "radical": {
+    "literal": "里",
+    "nameFr": "village",
+    "meaningFr": "le village, la distance"
+   },
+   "confusions": [
+    "童"
+   ],
+   "mnemonicFr": "Mesurer (一, 日) la contenance du village (里) : la quantité."
+  },
+  {
+   "literal": "階",
+   "order": 246,
+   "radical": {
+    "literal": "⻖",
+    "nameFr": "colline (阝)",
+    "meaningFr": "une colline, un tertre"
+   },
+   "confusions": [
+    "皆"
+   ],
+   "mnemonicFr": "Le tertre (⻖) où les marches (比) s'alignent : l'escalier, l'étage."
+  },
+  {
+   "literal": "湾",
+   "order": 247,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "彎"
+   ],
+   "mnemonicFr": "L'eau (⺡) recourbée comme un arc (弓) : la baie, le golfe."
+  },
+  {
+   "literal": "超",
+   "order": 248,
+   "radical": {
+    "literal": "走",
+    "nameFr": "courir",
+    "meaningFr": "courir"
+   },
+   "confusions": [
+    "走",
+    "越"
+   ],
+   "mnemonicFr": "Courir (走) par-dessus (口) le sol (土) : dépasser, franchir."
+  },
+  {
+   "literal": "森",
+   "order": 249,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "林"
+   ],
+   "mnemonicFr": "Trois arbres (木) : la forêt."
+  },
+  {
+   "literal": "幅",
+   "order": 250,
+   "radical": {
+    "literal": "巾",
+    "nameFr": "tissu",
+    "meaningFr": "une pièce de tissu"
+   },
+   "confusions": [
+    "副"
+   ],
+   "mnemonicFr": "Le tissu (巾) suspendu au mur, d'un bord (口) à l'autre : la largeur."
+  },
+  {
+   "literal": "貿",
+   "order": 251,
+   "radical": {
+    "literal": "貝",
+    "nameFr": "coquillage",
+    "meaningFr": "le coquillage, l'argent"
+   },
+   "confusions": [
+    "貨"
+   ],
+   "mnemonicFr": "Les biens (貝) échangés (刀) : le commerce."
+  },
+  {
+   "literal": "装",
+   "order": 252,
+   "radical": {
+    "literal": "衣",
+    "nameFr": "vêtement",
+    "meaningFr": "l'habit"
+   },
+   "confusions": [
+    "袋"
+   ],
+   "mnemonicFr": "Le vêtement (衣) du guerrier (士) : la tenue, revêtir."
+  },
+  {
+   "literal": "換",
+   "order": 253,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "喚"
+   ],
+   "mnemonicFr": "La main (⺘) qui fait passer (勹) d'un camp à l'autre : échanger."
+  },
+  {
+   "literal": "短",
+   "order": 254,
+   "radical": {
+    "literal": "矢",
+    "nameFr": "flèche",
+    "meaningFr": "la flèche"
+   },
+   "confusions": [
+    "矢"
+   ],
+   "mnemonicFr": "La flèche (矢) à côté du haricot (豆) : court."
+  },
+  {
+   "literal": "植",
+   "order": 255,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "値"
+   ],
+   "mnemonicFr": "L'arbre (木) dressé (十) devant l'œil (目) : planter."
+  },
+  {
+   "literal": "普",
+   "order": 256,
+   "radical": {
+    "literal": "日",
+    "nameFr": "soleil",
+    "meaningFr": "le soleil, le jour"
+   },
+   "confusions": [
+    "並"
+   ],
+   "mnemonicFr": "Le même soleil (日) partout (丷), également (一) : universel."
+  },
+  {
+   "literal": "測",
+   "order": 257,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "側"
+   ],
+   "mnemonicFr": "Mesurer (⺉) la profondeur de l'eau (⺡) : sonder, prévoir."
+  },
+  {
+   "literal": "順",
+   "order": 258,
+   "radical": {
+    "literal": "頁",
+    "nameFr": "tête / page",
+    "meaningFr": "la tête"
+   },
+   "confusions": [
+    "訓",
+    "川"
+   ],
+   "mnemonicFr": "L'œil (貝) qui suit le courant (川) de la page (頁) : l'ordre, obéir."
+  },
+  {
+   "literal": "軽",
+   "order": 259,
+   "radical": {
+    "literal": "車",
+    "nameFr": "char",
+    "meaningFr": "le véhicule"
+   },
+   "confusions": [
+    "経"
+   ],
+   "mnemonicFr": "Le char (車) allégé de sa terre (土) : léger."
+  },
+  {
+   "literal": "絡",
+   "order": 260,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "終"
+   ],
+   "mnemonicFr": "Les fils (糸) qui s'entrelacent (夂) : enlacer, tisser."
+  },
+  {
+   "literal": "募",
+   "order": 261,
+   "radical": {
+    "literal": "力",
+    "nameFr": "force",
+    "meaningFr": "la force, l'effort"
+   },
+   "confusions": [
+    "慕"
+   ],
+   "mnemonicFr": "Rassembler (⺾) largement (大) avec effort (力) : recruter, collecter."
+  },
+  {
+   "literal": "温",
+   "order": 262,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "顕"
+   ],
+   "mnemonicFr": "L'eau (⺡) réchauffée par le soleil (日) dans la coupe (皿) : tiède, chaud."
+  },
+  {
+   "literal": "雇",
+   "order": 263,
+   "radical": {
+    "literal": "隹",
+    "nameFr": "oiseau à queue courte",
+    "meaningFr": "un oiseau"
+   },
+   "confusions": [
+    "戸"
+   ],
+   "mnemonicFr": "L'oiseau (隹) migrateur qui revient à la porte (戸) chaque saison : employer, embaucher."
+  },
+  {
+   "literal": "替",
+   "order": 264,
+   "radical": {
+    "literal": "曰",
+    "nameFr": "dire",
+    "meaningFr": "parler, dire"
+   },
+   "confusions": [
+    "潜"
+   ],
+   "mnemonicFr": "Deux hommes (人, 大) qui alternent le jour (日) : substituer, remplacer."
+  },
+  {
+   "literal": "焼",
+   "order": 265,
+   "radical": {
+    "literal": "火",
+    "nameFr": "feu",
+    "meaningFr": "les flammes"
+   },
+   "confusions": [
+    "晩"
+   ],
+   "mnemonicFr": "Le feu (火) qui gagne la plaine (儿) : brûler, griller."
+  },
+  {
+   "literal": "奥",
+   "order": 266,
+   "radical": {
+    "literal": "大",
+    "nameFr": "grand",
+    "meaningFr": "un homme bras écartés"
+   },
+   "confusions": [
+    "米"
+   ],
+   "mnemonicFr": "Le riz (米) caché au fond (冂) de la maison : l'intérieur, le cœur."
+  },
+  {
+   "literal": "敬",
+   "order": 267,
+   "radical": {
+    "literal": "攵",
+    "nameFr": "frapper (攴)",
+    "meaningFr": "tapoter, agir avec la main"
+   },
+   "confusions": [
+    "警"
+   ],
+   "mnemonicFr": "Rassembler (⺾) ses paroles (口) et frapper doucement (攵) : le respect."
+  },
+  {
+   "literal": "貯",
+   "order": 268,
+   "radical": {
+    "literal": "貝",
+    "nameFr": "coquillage",
+    "meaningFr": "le coquillage, l'argent"
+   },
+   "confusions": [
+    "買"
+   ],
+   "mnemonicFr": "Les biens (貝) amassés sous le toit (宀) : l'épargne, les économies."
+  },
+  {
+   "literal": "硬",
+   "order": 269,
+   "radical": {
+    "literal": "石",
+    "nameFr": "pierre",
+    "meaningFr": "la pierre"
+   },
+   "confusions": [
+    "確"
+   ],
+   "mnemonicFr": "La pierre (石) que rien n'entame (更) : dur, raide."
+  },
+  {
+   "literal": "筆",
+   "order": 270,
+   "radical": {
+    "literal": "竹",
+    "nameFr": "bambou",
+    "meaningFr": "le bambou"
+   },
+   "confusions": [
+    "書"
+   ],
+   "mnemonicFr": "Le bambou (竹) tenant le pinceau (聿) : le pinceau, l'écriture."
+  },
+  {
+   "literal": "童",
+   "order": 271,
+   "radical": {
+    "literal": "立",
+    "nameFr": "debout",
+    "meaningFr": "se tenir debout"
+   },
+   "confusions": [
+    "量"
+   ],
+   "mnemonicFr": "Le serviteur (立) du village (里) : le jeune enfant."
+  },
+  {
+   "literal": "腕",
+   "order": 272,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "苑"
+   ],
+   "mnemonicFr": "La chair (月) articulée (夕) sous le couvercle (宀) : le bras, le talent."
+  },
+  {
+   "literal": "尊",
+   "order": 273,
+   "radical": {
+    "literal": "寸",
+    "nameFr": "pouce / mesure",
+    "meaningFr": "la mesure, le pouce"
+   },
+   "confusions": [
+    "酋",
+    "導"
+   ],
+   "mnemonicFr": "Deux mains (丷) offrant la jarre d'alcool (酉) : précieux, respecter."
+  },
+  {
+   "literal": "雲",
+   "order": 274,
+   "radical": {
+    "literal": "雨",
+    "nameFr": "pluie",
+    "meaningFr": "les gouttes qui tombent"
+   },
+   "confusions": [
+    "雨",
+    "芸"
+   ],
+   "mnemonicFr": "La pluie (雨) devenue vapeur (厶) : le nuage."
+  },
+  {
+   "literal": "湖",
+   "order": 275,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "河"
+   ],
+   "mnemonicFr": "L'eau (⺡) étendue comme une grande bouche (口) entre les montagnes : le lac."
+  },
+  {
+   "literal": "喫",
+   "order": 276,
+   "radical": {
+    "literal": "口",
+    "nameFr": "bouche",
+    "meaningFr": "la bouche, l'ouverture"
+   },
+   "confusions": [
+    "契"
+   ],
+   "mnemonicFr": "La bouche (口) qui tranche (刀) et avale : consommer, boire."
+  },
+  {
+   "literal": "湯",
+   "order": 277,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "場"
+   ],
+   "mnemonicFr": "L'eau (⺡) chauffée sous le soleil couchant (勿) : l'eau chaude, le bain."
+  },
+  {
+   "literal": "棒",
+   "order": 278,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "俸"
+   ],
+   "mnemonicFr": "Le bois (木) porté à deux (大) : le bâton, la baguette."
+  },
+  {
+   "literal": "湿",
+   "order": 279,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "顕",
+    "涙"
+   ],
+   "mnemonicFr": "L'eau (⺡) qui s'infiltre au fil du jour (日) : humide, moite."
+  },
+  {
+   "literal": "鈍",
+   "order": 280,
+   "radical": {
+    "literal": "金",
+    "nameFr": "or / métal",
+    "meaningFr": "le métal, l'argent"
+   },
+   "confusions": [
+    "純"
+   ],
+   "mnemonicFr": "Le métal (金) qui ne rebondit pas (屯) : émoussé, lent."
+  },
+  {
+   "literal": "隅",
+   "order": 281,
+   "radical": {
+    "literal": "⻖",
+    "nameFr": "colline (阝)",
+    "meaningFr": "une colline, un tertre"
+   },
+   "confusions": [
+    "偶"
+   ],
+   "mnemonicFr": "Le recoin (厶) du tertre (⻖) où l'on se retire : le coin."
+  },
+  {
+   "literal": "筒",
+   "order": 282,
+   "radical": {
+    "literal": "竹",
+    "nameFr": "bambou",
+    "meaningFr": "le bambou"
+   },
+   "confusions": [
+    "同"
+   ],
+   "mnemonicFr": "Le tube (冂) creux dans le bambou (竹) : le cylindre."
+  },
+  {
+   "literal": "詞",
+   "order": 283,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [
+    "司"
+   ],
+   "mnemonicFr": "Les paroles (言) qui sortent de la bouche (口) : le mot, la poésie."
+  },
+  {
+   "literal": "畳",
+   "order": 284,
+   "radical": {
+    "literal": "田",
+    "nameFr": "rizière",
+    "meaningFr": "le champ cultivé"
+   },
+   "confusions": [
+    "富"
+   ],
+   "mnemonicFr": "Le champ (田) aplati (一) sous le couvercle (冖) : le tatami, plier."
+  },
+  {
+   "literal": "塔",
+   "order": 285,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "答"
+   ],
+   "mnemonicFr": "La terre (土) élevée (𠆢) parmi les plantes (⺾) : la pagode, la tour."
+  },
+  {
+   "literal": "帽",
+   "order": 286,
+   "radical": {
+    "literal": "巾",
+    "nameFr": "tissu",
+    "meaningFr": "une pièce de tissu"
+   },
+   "confusions": [
+    "目"
+   ],
+   "mnemonicFr": "Le tissu (巾) qui couvre le regard (目) : la casquette, le couvre-chef."
+  },
+  {
+   "literal": "勢",
+   "order": 287,
+   "radical": {
+    "literal": "力",
+    "nameFr": "force",
+    "meaningFr": "la force, l'effort"
+   },
+   "confusions": [
+    "熱"
+   ],
+   "mnemonicFr": "La force (力) qui jaillit de la terre (土) : la vigueur, l'élan."
+  },
+  {
+   "literal": "農",
+   "order": 288,
+   "radical": {
+    "literal": "辰",
+    "nameFr": "temps / dragon",
+    "meaningFr": "le temps qui passe, le dragon"
+   },
+   "confusions": [
+    "濃"
+   ],
+   "mnemonicFr": "Le dragon du temps (辰) qui éveille les champs au point du jour : l'agriculture."
+  },
+  {
+   "literal": "準",
+   "order": 289,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "淮"
+   ],
+   "mnemonicFr": "L'eau (⺡) nivelée avec la précision du vol de l'oiseau (隹) : le standard, semi-."
+  },
+  {
+   "literal": "鉄",
+   "order": 290,
+   "radical": {
+    "literal": "金",
+    "nameFr": "or / métal",
+    "meaningFr": "le métal, l'argent"
+   },
+   "confusions": [
+    "矢",
+    "失"
+   ],
+   "mnemonicFr": "Le métal (金) dur comme deux flèches (矢) : le fer."
+  },
+  {
+   "literal": "禁",
+   "order": 291,
+   "radical": {
+    "literal": "示",
+    "nameFr": "autel / montrer",
+    "meaningFr": "l'autel, révéler"
+   },
+   "confusions": [
+    "林"
+   ],
+   "mnemonicFr": "L'autel (示) sous l'arbre (木) où l'on interdit : la prohibition."
+  },
+  {
+   "literal": "署",
+   "order": 292,
+   "radical": {
+    "literal": "罒",
+    "nameFr": "filet",
+    "meaningFr": "un filet"
+   },
+   "confusions": [
+    "暑"
+   ],
+   "mnemonicFr": "Apposer (⺹) le filet (⺲) de la signature sur le jour (日) : le bureau, la signature."
+  },
+  {
+   "literal": "豊",
+   "order": 293,
+   "radical": {
+    "literal": "豆",
+    "nameFr": "haricot",
+    "meaningFr": "la légumineuse, un vase ancien"
+   },
+   "confusions": [
+    "曲"
+   ],
+   "mnemonicFr": "Le vase rituel (豆) débordant d'offrandes (丷) : l'abondance."
+  },
+  {
+   "literal": "損",
+   "order": 294,
+   "radical": {
+    "literal": "手",
+    "nameFr": "main",
+    "meaningFr": "la main"
+   },
+   "confusions": [
+    "員"
+   ],
+   "mnemonicFr": "La main (⺘) qui brise les biens (貝) : le dommage, la perte."
+  },
+  {
+   "literal": "裏",
+   "order": 295,
+   "radical": {
+    "literal": "衣",
+    "nameFr": "vêtement",
+    "meaningFr": "l'habit"
+   },
+   "confusions": [
+    "表",
+    "里"
+   ],
+   "mnemonicFr": "Le village (里) caché sous le vêtement (衣) : l'envers, l'intérieur."
+  },
+  {
+   "literal": "触",
+   "order": 296,
+   "radical": {
+    "literal": "角",
+    "nameFr": "corne",
+    "meaningFr": "la corne, le coin"
+   },
+   "confusions": [
+    "解"
+   ],
+   "mnemonicFr": "La corne (角) qui heurte l'insecte (虫) : le contact, toucher."
+  },
+  {
+   "literal": "傾",
+   "order": 297,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "頃"
+   ],
+   "mnemonicFr": "Une personne (⺅) penchée vers la page (頁) : incliner, pencher."
+  },
+  {
+   "literal": "跡",
+   "order": 298,
+   "radical": {
+    "literal": "足",
+    "nameFr": "pied",
+    "meaningFr": "le pied, la jambe"
+   },
+   "confusions": [
+    "路"
+   ],
+   "mnemonicFr": "Le pied (足) qui s'arrête (止) et laisse sa marque : la trace."
+  },
+  {
+   "literal": "預",
+   "order": 299,
+   "radical": {
+    "literal": "頁",
+    "nameFr": "tête / page",
+    "meaningFr": "la tête"
+   },
+   "confusions": [
+    "領"
+   ],
+   "mnemonicFr": "Les biens (貝) confiés d'avance (欠) sous bonne garde (頁) : le dépôt."
+  },
+  {
+   "literal": "照",
+   "order": 300,
+   "radical": {
+    "literal": "火",
+    "nameFr": "feu",
+    "meaningFr": "les flammes"
+   },
+   "confusions": [
+    "昭"
+   ],
+   "mnemonicFr": "Le soleil (日) ardent (⺣) qui éclaire la bouche (口) de la terre : illuminer."
+  },
+  {
+   "literal": "群",
+   "order": 301,
+   "radical": {
+    "literal": "羊",
+    "nameFr": "mouton",
+    "meaningFr": "le mouton"
+   },
+   "confusions": [
+    "君"
+   ],
+   "mnemonicFr": "Les moutons (羊) rassemblés sous la houlette du prince (君) : le troupeau, la foule."
+  },
+  {
+   "literal": "詰",
+   "order": 302,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [
+    "吉"
+   ],
+   "mnemonicFr": "Les paroles (言) serrées (士) : compact, pressé, interroger."
+  },
+  {
+   "literal": "塩",
+   "order": 303,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "監"
+   ],
+   "mnemonicFr": "La terre (土) du marais séchée dans la coupe (皿) : le sel."
+  },
+  {
+   "literal": "殿",
+   "order": 304,
+   "radical": {
+    "literal": "殳",
+    "nameFr": "arme / hallebarde",
+    "meaningFr": "l'arme, le bâton de commandement"
+   },
+   "confusions": [
+    "殴"
+   ],
+   "mnemonicFr": "La grande salle (尸) où résonnent les coups (殳) : le seigneur, le palais."
+  },
+  {
+   "literal": "零",
+   "order": 305,
+   "radical": {
+    "literal": "雨",
+    "nameFr": "pluie",
+    "meaningFr": "les gouttes qui tombent"
+   },
+   "confusions": [
+    "令"
+   ],
+   "mnemonicFr": "Les gouttes de pluie (雨) qui tombent (𠆢) : zéro, se répandre."
+  },
+  {
+   "literal": "腰",
+   "order": 306,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "要"
+   ],
+   "mnemonicFr": "La chair (月) au centre du corps (要), là où l'on se penche : la taille, les reins."
+  },
+  {
+   "literal": "溶",
+   "order": 307,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "浴"
+   ],
+   "mnemonicFr": "L'eau (⺡) qui fond dans la vallée (谷) de la grotte (穴) : fondre, dissoudre."
+  },
+  {
+   "literal": "鉱",
+   "order": 308,
+   "radical": {
+    "literal": "金",
+    "nameFr": "or / métal",
+    "meaningFr": "le métal, l'argent"
+   },
+   "confusions": [
+    "広"
+   ],
+   "mnemonicFr": "Le métal (金) caché sous la roche (广) : le minerai."
+  },
+  {
+   "literal": "塗",
+   "order": 309,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "途"
+   ],
+   "mnemonicFr": "La terre (土) délayée à l'eau (⺡) que l'on étale : peindre, enduire."
+  },
+  {
+   "literal": "蒸",
+   "order": 310,
+   "radical": {
+    "literal": "⺾",
+    "nameFr": "herbe",
+    "meaningFr": "les plantes, l'herbe"
+   },
+   "confusions": [
+    "燕"
+   ],
+   "mnemonicFr": "Les plantes (⺾) cuites à la vapeur du feu (⺣) : cuire à la vapeur."
+  },
+  {
+   "literal": "総",
+   "order": 311,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "線"
+   ],
+   "mnemonicFr": "Les fils (糸) rassemblés par le cœur (心) : général, l'ensemble."
+  },
+  {
+   "literal": "領",
+   "order": 312,
+   "radical": {
+    "literal": "頁",
+    "nameFr": "tête / page",
+    "meaningFr": "la tête"
+   },
+   "confusions": [
+    "預"
+   ],
+   "mnemonicFr": "Les biens (貝) commandés par la tête (頁) : le domaine, le territoire."
+  },
+  {
+   "literal": "境",
+   "order": 313,
+   "radical": {
+    "literal": "土",
+    "nameFr": "terre",
+    "meaningFr": "le sol, la motte de terre"
+   },
+   "confusions": [
+    "競"
+   ],
+   "mnemonicFr": "La terre (土) où le son (音) s'arrête : la frontière, la région."
+  },
+  {
+   "literal": "算",
+   "order": 314,
+   "radical": {
+    "literal": "竹",
+    "nameFr": "bambou",
+    "meaningFr": "le bambou"
+   },
+   "confusions": [
+    "答"
+   ],
+   "mnemonicFr": "Les bâtonnets de bambou (竹) alignés sous l'œil (目) : calculer."
+  },
+  {
+   "literal": "管",
+   "order": 315,
+   "radical": {
+    "literal": "竹",
+    "nameFr": "bambou",
+    "meaningFr": "le bambou"
+   },
+   "confusions": [
+    "館"
+   ],
+   "mnemonicFr": "Le tube de bambou (竹) à l'embouchure (口) : le tuyau, l'instrument."
+  },
+  {
+   "literal": "歴",
+   "order": 316,
+   "radical": {
+    "literal": "止",
+    "nameFr": "arrêter / pied",
+    "meaningFr": "le pied qui s'arrête"
+   },
+   "confusions": [
+    "暦"
+   ],
+   "mnemonicFr": "Le pied (止) qui traverse les champs de chanvre (麻) : l'histoire, le parcours."
+  },
+  {
+   "literal": "練",
+   "order": 317,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "東"
+   ],
+   "mnemonicFr": "La soie (糸) bouillie et assouplie à l'est (東) : s'entraîner, polir."
+  },
+  {
+   "literal": "層",
+   "order": 318,
+   "radical": {
+    "literal": "尸",
+    "nameFr": "corps",
+    "meaningFr": "le corps, la dépouille"
+   },
+   "confusions": [
+    "曽"
+   ],
+   "mnemonicFr": "Les étages (尸) superposés (日) de l'édifice : la strate, la couche."
+  },
+  {
+   "literal": "誌",
+   "order": 319,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [
+    "識"
+   ],
+   "mnemonicFr": "Les paroles (言) fixées par le cœur (心) du lettré (士) : le document, la revue."
+  },
+  {
+   "literal": "像",
+   "order": 320,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "象"
+   ],
+   "mnemonicFr": "Une personne (⺅) modelée à l'image de l'animal (豕) : la statue, l'image."
+  },
+  {
+   "literal": "複",
+   "order": 321,
+   "radical": {
+    "literal": "⻂",
+    "nameFr": "vêtement (衤)",
+    "meaningFr": "le vêtement à gauche"
+   },
+   "confusions": [
+    "覆"
+   ],
+   "mnemonicFr": "Le vêtement (⻂) doublé (夂) sur le jour (日) : double, composé."
+  },
+  {
+   "literal": "漁",
+   "order": 322,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "魚"
+   ],
+   "mnemonicFr": "Pêcher (魚) dans l'eau (⺡) : la pêche, la pêcherie."
+  },
+  {
+   "literal": "緑",
+   "order": 323,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "録"
+   ],
+   "mnemonicFr": "Le fil de soie (糸) de la couleur de l'eau (水) : le vert."
+  },
+  {
+   "literal": "踊",
+   "order": 324,
+   "radical": {
+    "literal": "足",
+    "nameFr": "pied",
+    "meaningFr": "le pied, la jambe"
+   },
+   "confusions": [
+    "勇"
+   ],
+   "mnemonicFr": "Le pied (足) qui bondit avec élan (用) : danser, sauter."
+  },
+  {
+   "literal": "綿",
+   "order": 325,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "線"
+   ],
+   "mnemonicFr": "Le fil blanc (白) de soie (糸) doux comme un tissu (巾) : le coton."
+  },
+  {
+   "literal": "銅",
+   "order": 326,
+   "radical": {
+    "literal": "金",
+    "nameFr": "or / métal",
+    "meaningFr": "le métal, l'argent"
+   },
+   "confusions": [
+    "同"
+   ],
+   "mnemonicFr": "Le métal (金) de la même (同) famille que le fer : le cuivre."
+  },
+  {
+   "literal": "鼻",
+   "order": 327,
+   "radical": {
+    "literal": "鼻",
+    "nameFr": "nez",
+    "meaningFr": "le nez"
+   },
+   "confusions": [
+    "自"
+   ],
+   "mnemonicFr": "Le nez (自) qui aspire l'air vers le champ (田) : le nez."
+  },
+  {
+   "literal": "憎",
+   "order": 328,
+   "radical": {
+    "literal": "心",
+    "nameFr": "cœur",
+    "meaningFr": "le cœur, l'esprit"
+   },
+   "confusions": [
+    "増"
+   ],
+   "mnemonicFr": "Le cœur (⺖) qui bout (田) de colère : haïr, détester."
+  },
+  {
+   "literal": "滴",
+   "order": 329,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "商"
+   ],
+   "mnemonicFr": "L'eau (⺡) qui tombe goutte (丷) à goutte : la goutte."
+  },
+  {
+   "literal": "導",
+   "order": 330,
+   "radical": {
+    "literal": "寸",
+    "nameFr": "pouce / mesure",
+    "meaningFr": "la mesure, le pouce"
+   },
+   "confusions": [
+    "道"
+   ],
+   "mnemonicFr": "La main (寸) qui mène la tête (首) sur la route (⻌) : guider, conduire."
+  },
+  {
+   "literal": "線",
+   "order": 331,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "総"
+   ],
+   "mnemonicFr": "Le fil de soie (糸) blanc (白) tendu comme l'eau (水) : la ligne, la voie."
+  },
+  {
+   "literal": "賞",
+   "order": 332,
+   "radical": {
+    "literal": "貝",
+    "nameFr": "coquillage",
+    "meaningFr": "le coquillage, l'argent"
+   },
+   "confusions": [
+    "党",
+    "堂"
+   ],
+   "mnemonicFr": "Les biens (貝) offerts sous l'abri (冖) aux meilleurs (⺌) : le prix, la récompense."
+  },
+  {
+   "literal": "課",
+   "order": 333,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [
+    "果"
+   ],
+   "mnemonicFr": "Les paroles (言) pesées au champ (田) : la leçon, la section."
+  },
+  {
+   "literal": "蔵",
+   "order": 334,
+   "radical": {
+    "literal": "⺾",
+    "nameFr": "herbe",
+    "meaningFr": "les plantes, l'herbe"
+   },
+   "confusions": [
+    "臓"
+   ],
+   "mnemonicFr": "Les biens (臣) dissimulés sous les herbes (⺾) et gardés par la hallebarde (戈) : l'entrepôt, cacher."
+  },
+  {
+   "literal": "編",
+   "order": 335,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "遍"
+   ],
+   "mnemonicFr": "Les fils (糸) tissés en pages (冊) : compiler, tricoter."
+  },
+  {
+   "literal": "諸",
+   "order": 336,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [
+    "者"
+   ],
+   "mnemonicFr": "Les paroles (言) qui se répandent vers le soleil (日) : plusieurs, divers."
+  },
+  {
+   "literal": "劇",
+   "order": 337,
+   "radical": {
+    "literal": "刀",
+    "nameFr": "couteau",
+    "meaningFr": "couper"
+   },
+   "confusions": [
+    "虎"
+   ],
+   "mnemonicFr": "Le combat violent (虍) frappé de la lame (⺉) : le drame, la pièce."
+  },
+  {
+   "literal": "暴",
+   "order": 338,
+   "radical": {
+    "literal": "日",
+    "nameFr": "soleil",
+    "meaningFr": "le soleil, le jour"
+   },
+   "confusions": [
+    "爆"
+   ],
+   "mnemonicFr": "Le soleil (日) qui éclate hors de l'eau (水) : l'explosion, la violence."
+  },
+  {
+   "literal": "輪",
+   "order": 339,
+   "radical": {
+    "literal": "車",
+    "nameFr": "char",
+    "meaningFr": "le véhicule"
+   },
+   "confusions": [
+    "輸"
+   ],
+   "mnemonicFr": "Le char (車) aux rayons ordonnés comme des pages (冊) : la roue, l'anneau."
+  },
+  {
+   "literal": "億",
+   "order": 340,
+   "radical": {
+    "literal": "人",
+    "nameFr": "personne",
+    "meaningFr": "l'être humain"
+   },
+   "confusions": [
+    "意"
+   ],
+   "mnemonicFr": "Le cœur (心) de l'homme (⺅) dépassé par le son (音) du nombre : cent millions."
+  },
+  {
+   "literal": "震",
+   "order": 341,
+   "radical": {
+    "literal": "雨",
+    "nameFr": "pluie",
+    "meaningFr": "les gouttes qui tombent"
+   },
+   "confusions": [
+    "農"
+   ],
+   "mnemonicFr": "La pluie (雨) qui fait trembler le dragon du temps (辰) : le séisme, secouer."
+  },
+  {
+   "literal": "駐",
+   "order": 342,
+   "radical": {
+    "literal": "馬",
+    "nameFr": "cheval",
+    "meaningFr": "le cheval"
+   },
+   "confusions": [
+    "主"
+   ],
+   "mnemonicFr": "Le cheval (馬) arrêté net comme un prince (主) : stationner, résider."
+  },
+  {
+   "literal": "鋭",
+   "order": 343,
+   "radical": {
+    "literal": "金",
+    "nameFr": "or / métal",
+    "meaningFr": "le métal, l'argent"
+   },
+   "confusions": [
+    "悦"
+   ],
+   "mnemonicFr": "Le métal (金) affûté jusqu'à la pointe (儿) : pointu, vif."
+  },
+  {
+   "literal": "膚",
+   "order": 344,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "虚"
+   ],
+   "mnemonicFr": "La peau (月) couvrant la chair comme un tigre (虍) sa robe : la peau, le corps."
+  },
+  {
+   "literal": "輸",
+   "order": 345,
+   "radical": {
+    "literal": "車",
+    "nameFr": "char",
+    "meaningFr": "le véhicule"
+   },
+   "confusions": [
+    "輪"
+   ],
+   "mnemonicFr": "Le char (車) qui tranche (⺉) la distance : transporter."
+  },
+  {
+   "literal": "録",
+   "order": 346,
+   "radical": {
+    "literal": "金",
+    "nameFr": "or / métal",
+    "meaningFr": "le métal, l'argent"
+   },
+   "confusions": [
+    "緑"
+   ],
+   "mnemonicFr": "Le métal (金) gravé point (丶) après point : enregistrer."
+  },
+  {
+   "literal": "橋",
+   "order": 347,
+   "radical": {
+    "literal": "木",
+    "nameFr": "arbre",
+    "meaningFr": "l'arbre, le bois"
+   },
+   "confusions": [
+    "嬌"
+   ],
+   "mnemonicFr": "L'arbre (木) couché (冂) comme une bouche (口) au-dessus de l'eau : le pont."
+  },
+  {
+   "literal": "築",
+   "order": 348,
+   "radical": {
+    "literal": "竹",
+    "nameFr": "bambou",
+    "meaningFr": "le bambou"
+   },
+   "confusions": [
+    "篤"
+   ],
+   "mnemonicFr": "Le bambou (竹) et le bois (木) assemblés avec art (工) : bâtir, construire."
+  },
+  {
+   "literal": "燃",
+   "order": 349,
+   "radical": {
+    "literal": "火",
+    "nameFr": "feu",
+    "meaningFr": "les flammes"
+   },
+   "confusions": [
+    "然"
+   ],
+   "mnemonicFr": "Le feu (火) qui dévore comme un chien (犬) sa proie : brûler."
+  },
+  {
+   "literal": "薄",
+   "order": 350,
+   "radical": {
+    "literal": "⺾",
+    "nameFr": "herbe",
+    "meaningFr": "les plantes, l'herbe"
+   },
+   "confusions": [
+    "簿"
+   ],
+   "mnemonicFr": "Les plantes (⺾) qui poussent finement (寸) sous l'eau (⺡) : mince, dilué."
+  },
+  {
+   "literal": "賢",
+   "order": 351,
+   "radical": {
+    "literal": "貝",
+    "nameFr": "coquillage",
+    "meaningFr": "le coquillage, l'argent"
+   },
+   "confusions": [
+    "堅"
+   ],
+   "mnemonicFr": "L'œil (貝) du serviteur (臣) et la main (又) vigilante : sage, intelligent."
+  },
+  {
+   "literal": "濃",
+   "order": 352,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "農"
+   ],
+   "mnemonicFr": "L'eau (⺡) épaissie par le dragon du temps (辰) : concentré."
+  },
+  {
+   "literal": "磨",
+   "order": 353,
+   "radical": {
+    "literal": "石",
+    "nameFr": "pierre",
+    "meaningFr": "la pierre"
+   },
+   "confusions": [
+    "摩"
+   ],
+   "mnemonicFr": "La pierre (石) frottée sous l'abri (广) : polir, moudre."
+  },
+  {
+   "literal": "曇",
+   "order": 354,
+   "radical": {
+    "literal": "日",
+    "nameFr": "soleil",
+    "meaningFr": "le soleil, le jour"
+   },
+   "confusions": [
+    "雲"
+   ],
+   "mnemonicFr": "Le soleil (日) caché par le voile (厶) de la pluie (雨) : couvert."
+  },
+  {
+   "literal": "療",
+   "order": 355,
+   "radical": {
+    "literal": "疒",
+    "nameFr": "maladie",
+    "meaningFr": "un lit de malade"
+   },
+   "confusions": [
+    "寮"
+   ],
+   "mnemonicFr": "Le lit du malade (疒) où l'on soigne les petits (小) maux : le traitement."
+  },
+  {
+   "literal": "講",
+   "order": 356,
+   "radical": {
+    "literal": "言",
+    "nameFr": "parole",
+    "meaningFr": "parler, les mots"
+   },
+   "confusions": [
+    "購"
+   ],
+   "mnemonicFr": "Les paroles (言) qui traversent (冂) les lignes (十) du champ : la conférence, le club."
+  },
+  {
+   "literal": "齢",
+   "order": 357,
+   "radical": {
+    "literal": "歯",
+    "nameFr": "dent",
+    "meaningFr": "les dents"
+   },
+   "confusions": [
+    "歯"
+   ],
+   "mnemonicFr": "Les dents (歯) et les épis (米) qui marquent les années : l'âge."
+  },
+  {
+   "literal": "績",
+   "order": 358,
+   "radical": {
+    "literal": "糸",
+    "nameFr": "fil",
+    "meaningFr": "le fil de soie"
+   },
+   "confusions": [
+    "積"
+   ],
+   "mnemonicFr": "Les fils de soie (糸) accumulés comme des biens (貝) : les exploits, les résultats."
+  },
+  {
+   "literal": "濯",
+   "order": 359,
+   "radical": {
+    "literal": "水",
+    "nameFr": "eau",
+    "meaningFr": "le courant et les gouttes"
+   },
+   "confusions": [
+    "鶴"
+   ],
+   "mnemonicFr": "L'eau (⺡) qui rince l'oiseau (隹) : la lessive, laver."
+  },
+  {
+   "literal": "燥",
+   "order": 360,
+   "radical": {
+    "literal": "火",
+    "nameFr": "feu",
+    "meaningFr": "les flammes"
+   },
+   "confusions": [
+    "操"
+   ],
+   "mnemonicFr": "Le feu (火) qui assèche la bouche (口) des arbres (木) : dessécher."
+  },
+  {
+   "literal": "額",
+   "order": 361,
+   "radical": {
+    "literal": "頁",
+    "nameFr": "tête / page",
+    "meaningFr": "la tête"
+   },
+   "confusions": [
+    "領",
+    "預"
+   ],
+   "mnemonicFr": "La page (頁) au-dessus des biens (貝) : le front, le montant."
+  },
+  {
+   "literal": "簡",
+   "order": 362,
+   "radical": {
+    "literal": "竹",
+    "nameFr": "bambou",
+    "meaningFr": "le bambou"
+   },
+   "confusions": [
+    "間"
+   ],
+   "mnemonicFr": "La tablette de bambou (竹) glissée sous la porte (門) : la simplicité."
+  },
+  {
+   "literal": "贈",
+   "order": 363,
+   "radical": {
+    "literal": "貝",
+    "nameFr": "coquillage",
+    "meaningFr": "le coquillage, l'argent"
+   },
+   "confusions": [
+    "増"
+   ],
+   "mnemonicFr": "Les biens (貝) offerts au champ (田) : le cadeau, offrir."
+  },
+  {
+   "literal": "爆",
+   "order": 364,
+   "radical": {
+    "literal": "火",
+    "nameFr": "feu",
+    "meaningFr": "les flammes"
+   },
+   "confusions": [
+    "暴"
+   ],
+   "mnemonicFr": "Le feu (火) qui éclate hors de l'eau (水) : la bombe, exploser."
+  },
+  {
+   "literal": "臓",
+   "order": 365,
+   "radical": {
+    "literal": "月",
+    "nameFr": "lune",
+    "meaningFr": "la lune, la chair (variante)"
+   },
+   "confusions": [
+    "蔵"
+   ],
+   "mnemonicFr": "La chair (月) cachée sous les herbes (⺾) comme un trésor (蔵) : les viscères."
+  },
+  {
+   "literal": "競",
+   "order": 366,
+   "radical": {
+    "literal": "立",
+    "nameFr": "debout",
+    "meaningFr": "se tenir debout"
+   },
+   "confusions": [
+    "境"
+   ],
+   "mnemonicFr": "Deux rivaux (儿) debout (立) face à face en paroles (口) : rivaliser, enchérir."
+  },
+  {
+   "literal": "籍",
+   "order": 367,
+   "radical": {
+    "literal": "竹",
+    "nameFr": "bambou",
+    "meaningFr": "le bambou"
+   },
+   "confusions": [
+    "藉"
+   ],
+   "mnemonicFr": "Le registre de bambou (竹) des champs (田) labourés (耒) : l'inscription, le domicile."
+  },
+  {
+   "literal": "孝",
+   "order": 368,
+   "radical": {
+    "literal": "子",
+    "nameFr": "enfant",
+    "meaningFr": "un bébé avec la tête et les bras"
+   },
+   "confusions": [
+    "教",
+    "考"
+   ],
+   "mnemonicFr": "Un ancien (⺹) porté par son enfant (子) : la piété filiale."
+  }
+ ]
+}

@@ -16,6 +16,7 @@ import type {
   SourcesResponse,
   StatsResponse,
   WeakPointsResponse,
+  WordLookupResponse,
 } from '@kanjipath/contracts';
 import { apiFetch } from '../../lib/api';
 
@@ -54,6 +55,10 @@ export function fetchTexts(level?: string): Promise<MiniTextListResponse> {
 
 export function fetchTextDetail(id: string): Promise<MiniTextDetailDto> {
   return apiFetch<MiniTextDetailDto>(`/texts/${encodeURIComponent(id)}`);
+}
+
+export function fetchWordLookup(surface: string): Promise<WordLookupResponse> {
+  return apiFetch<WordLookupResponse>(`/words/${encodeURIComponent(surface)}`);
 }
 
 export function fetchCurricula(): Promise<CurriculaResponse> {

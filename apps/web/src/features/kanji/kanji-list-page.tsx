@@ -17,12 +17,23 @@ const FILTERS: Array<{ value: KanjiStatus | 'all'; label: string }> = [
   { value: 'mastered', label: 'Maîtrisés' },
 ];
 
+type FrequencyFilter = 'all' | 'top500' | 'top1000';
+type SortMode = 'order' | 'frequency';
+
+const FREQUENCY_FILTERS: Array<{ value: FrequencyFilter; label: string }> = [
+  { value: 'all', label: 'Toutes fréquences' },
+  { value: 'top500', label: 'Top 500' },
+  { value: 'top1000', label: 'Top 1000' },
+];
+
 const SKELETON_COUNT = 12;
 
 export function KanjiListPage() {
   const [level, setLevel] = useState<JlptLevel>('N5');
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<KanjiStatus | 'all'>('all');
+  const [frequencyFilter, setFrequencyFilter] = useState<FrequencyFilter>('all');
+  const [sort, setSort] = useState<SortMode>('order');
 
   const curricula = useQuery({ queryKey: ['curricula'], queryFn: fetchCurricula });
   const kanjiList = useQuery({
@@ -38,8 +49,16 @@ export function KanjiListPage() {
   const items = kanjiList.data?.kanji ?? [];
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return items.filter((kanji) => {
+    const frequencyMax =
+      frequencyFilter === 'top500' ? 500 : frequencyFilter === 'top1000' ? 1000 : null;
+    const matching = items.filter((kanji) => {
       if (filter !== 'all' && kanji.status !== filter) {
+        return false;
+      }
+      if (
+        frequencyMax !== null &&
+        (kanji.frequencyRank === null || kanji.frequencyRank > frequencyMax)
+      ) {
         return false;
       }
       if (query.length === 0) {
@@ -49,7 +68,15 @@ export function KanjiListPage() {
         kanji.literal.includes(query) || (kanji.primaryMeaning ?? '').toLowerCase().includes(query)
       );
     });
-  }, [items, search, filter]);
+    if (sort === 'frequency') {
+      return [...matching].sort(
+        (a, b) =>
+          (a.frequencyRank ?? Number.MAX_SAFE_INTEGER) -
+          (b.frequencyRank ?? Number.MAX_SAFE_INTEGER),
+      );
+    }
+    return matching;
+  }, [items, search, filter, frequencyFilter, sort]);
 
   const counts = useMemo(() => {
     const base: Record<KanjiStatus, number> = { new: 0, learning: 0, reviewing: 0, mastered: 0 };
@@ -112,6 +139,7 @@ export function KanjiListPage() {
             onChange={(next) => {
               setLevel(next);
               setFilter('all');
+              setFrequencyFilter('all');
               setSearch('');
             }}
           />
@@ -160,6 +188,39 @@ export function KanjiListPage() {
             className="h-11 w-full rounded-xl border border-line bg-surface-2 pl-10 pr-4 text-[15px] text-ink transition-[border-color,box-shadow] placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_3px_var(--accent-soft)] focus:outline-none"
           />
         </label>
+      </div>
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <fieldset aria-label="Filtrer par fréquence" className="flex min-w-0 flex-wrap gap-2">
+          {FREQUENCY_FILTERS.map((item) => {
+            const active = frequencyFilter === item.value;
+            return (
+              <button
+                key={item.value}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setFrequencyFilter(item.value)}
+                className={`cursor-pointer rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-all duration-150 ${
+                  active
+                    ? 'border-transparent bg-sky text-white'
+                    : 'border-line bg-surface text-muted hover:border-line-strong hover:text-ink'
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </fieldset>
+
+        <Segmented
+          ariaLabel="Trier les kanji"
+          value={sort}
+          options={[
+            { value: 'order', label: 'Ordre du parcours' },
+            { value: 'frequency', label: 'Fréquence' },
+          ]}
+          onChange={setSort}
+        />
       </div>
 
       {kanjiList.isPending ? (
