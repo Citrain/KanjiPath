@@ -13,6 +13,7 @@ import {
   ArrowRight,
   CheckCircle2,
   Crosshair,
+  Delete,
   LogOut,
   Sparkles,
   Target,
@@ -74,6 +75,58 @@ const RATING_LABELS: Record<AnswerResult['rating'], string> = {
   good: 'acquis',
   easy: 'facile',
 };
+
+const KANA_GROUPS = [
+  {
+    label: 'Kana courants, regroupés par son',
+    rows: [
+      [['あ', 'い', 'う', 'え', 'お']],
+      [
+        ['か', 'が'],
+        ['き', 'ぎ'],
+        ['く', 'ぐ'],
+        ['け', 'げ'],
+        ['こ', 'ご'],
+      ],
+      [
+        ['さ', 'ざ'],
+        ['し', 'じ'],
+        ['す', 'ず'],
+        ['せ', 'ぜ'],
+        ['そ', 'ぞ'],
+      ],
+      [
+        ['た', 'だ'],
+        ['ち', 'ぢ'],
+        ['つ', 'づ'],
+        ['て', 'で'],
+        ['と', 'ど'],
+      ],
+      [['な', 'に', 'ぬ', 'ね', 'の']],
+      [
+        ['は', 'ば', 'ぱ'],
+        ['ひ', 'び', 'ぴ'],
+        ['ふ', 'ぶ', 'ぷ'],
+        ['へ', 'べ', 'ぺ'],
+        ['ほ', 'ぼ', 'ぽ'],
+      ],
+      [['ま', 'み', 'む', 'め', 'も']],
+      [['や', 'ゆ', 'よ']],
+      [['ら', 'り', 'る', 'れ', 'ろ']],
+      [['わ', 'を', 'ん']],
+    ],
+  },
+  {
+    label: 'Petits kana et signes',
+    rows: [
+      [
+        ['ゃ', 'ゅ', 'ょ', 'っ'],
+        ['ぁ', 'ぃ', 'ぅ', 'ぇ', 'ぉ'],
+      ],
+      [['ー', '、', '。']],
+    ],
+  },
+];
 
 function celebrate() {
   confetti({
@@ -707,7 +760,7 @@ function ExerciseView({
   }, [exerciseItemId, isInputTemplate, result]);
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-5xl">
       <div className="flex items-center gap-4">
         <div aria-hidden className="flex flex-1 gap-1">
           {items.map((item) => {
@@ -858,6 +911,56 @@ function ExerciseView({
                       lang="ja"
                       className="h-14 w-full max-w-sm rounded-2xl border border-line bg-surface-2 px-4 text-center text-2xl text-ink transition-[border-color,box-shadow] placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_3px_var(--accent-soft)] focus:outline-none"
                     />
+                    <fieldset className="w-full max-w-4xl">
+                      <legend className="mb-2 w-full text-center text-xs font-semibold text-muted">
+                        Clavier hiragana
+                      </legend>
+                      <div className="flex flex-col gap-4">
+                        {KANA_GROUPS.map((group) => (
+                          <div key={group.label}>
+                            <p className="mb-1.5 text-center text-[0.6875rem] font-bold uppercase tracking-wide text-muted">
+                              {group.label}
+                            </p>
+                            <div className="flex flex-col gap-1.5">
+                              {group.rows.map((row) => (
+                                <div
+                                  key={row.flat().join('')}
+                                  className="flex flex-wrap justify-center gap-2"
+                                >
+                                  {row.map((variant) => (
+                                    <div
+                                      key={variant.join('')}
+                                      className="flex gap-2 rounded-xl border border-line/70 p-1.5"
+                                    >
+                                      {variant.map((kana) => (
+                                        <button
+                                          key={kana}
+                                          type="button"
+                                          onClick={() => onTyped(`${typed}${kana}`)}
+                                          className="font-jp flex size-11 items-center justify-center rounded-lg bg-surface-2 text-2xl font-semibold text-ink transition-colors hover:bg-accent-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                                          aria-label={`Ajouter ${kana}`}
+                                        >
+                                          {kana}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  ))}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                        <button
+                          type="button"
+                          onClick={() => onTyped([...typed].slice(0, -1).join(''))}
+                          disabled={typed.length === 0}
+                          className="inline-flex h-9 items-center justify-center gap-2 self-center rounded-lg border border-line bg-surface-2 px-3 text-sm font-semibold text-muted transition-colors hover:border-danger/50 hover:text-danger disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <Delete aria-hidden className="size-4" />
+                          Effacer
+                        </button>
+                      </div>
+                    </fieldset>
                     <Button
                       type="submit"
                       size="lg"
