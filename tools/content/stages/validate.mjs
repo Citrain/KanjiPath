@@ -23,6 +23,7 @@ const TEMPLATE_CATEGORY = {
   component_selection_qcm: 'stroke',
   component_search_qcm: 'stroke',
   confusion_pair_qcm: 'confusion',
+  audio_dictation_kana: 'listening',
 };
 
 const LEVEL_MINIMUMS = {
@@ -47,11 +48,12 @@ function norm(text) {
 }
 
 export async function stageValidate() {
-  const [kanji, vocabulary, sentences, texts, curriculum, sources, exercises] = await Promise.all([
+  const [kanji, vocabulary, sentences, texts, audio, curriculum, sources, exercises] = await Promise.all([
     readJson(path.join(NORMALIZED_DIR, 'kanji.json')),
     readJson(path.join(NORMALIZED_DIR, 'vocabulary.json')),
     readJson(path.join(NORMALIZED_DIR, 'sentences.json')),
     readJson(path.join(NORMALIZED_DIR, 'texts.json')),
+    readJson(path.join(NORMALIZED_DIR, 'audio.json')),
     readJson(path.join(NORMALIZED_DIR, 'curriculum.json')),
     readJson(path.join(NORMALIZED_DIR, 'sources.json')),
     readJson(path.join(GENERATED_DIR, 'exercises.json')),
@@ -63,14 +65,37 @@ export async function stageValidate() {
   const kanjiIds = new Set(kanji.map((k) => k.id));
   const vocabIds = new Set(vocabulary.map((v) => v.id));
   const sentenceIds = new Set(sentences.map((s) => s.id));
+  const audioIds = new Set(audio.map((item) => item.id));
 
   const ids = new Set();
-  for (const list of [kanji, vocabulary, sentences, texts, exercises]) {
+  for (const list of [kanji, vocabulary, sentences, texts, audio, exercises]) {
     for (const item of list) {
       if (ids.has(item.id)) {
         errors.push(`Identifiant dupliqué: ${item.id}`);
       }
       ids.add(item.id);
+    }
+  }
+
+  for (const resource of audio) {
+    if (!resource.sourceId || !resource.license || !resource.attribution || !resource.checksum) {
+      errors.push(`Audio ${resource.id} sans provenance complète`);
+    }
+    if (resource.editorialStatus === 'draft') {
+      errors.push(`Audio ${resource.id} en état draft dans le pack`);
+    }
+    if (resource.sentenceId && !sentenceIds.has(resource.sentenceId)) {
+      errors.push(`Audio ${resource.id} référence une phrase inexistante`);
+    }
+    if (resource.vocabularyId && !vocabIds.has(resource.vocabularyId)) {
+      errors.push(`Audio ${resource.id} référence un vocabulaire inexistant`);
+    }
+    if (!resource.filePath?.startsWith('audio/')) {
+      errors.push(`Audio ${resource.id} avec chemin invalide`);
+    } else {
+      await fs.access(path.join(GENERATED_DIR, resource.filePath)).catch(() => {
+        errors.push(`Fichier audio manquant: ${resource.filePath}`);
+      });
     }
   }
 
@@ -248,7 +273,7 @@ export async function stageValidate() {
     }
   }
 
-  const categoryCounts = { meaning: 0, reading: 0, vocabulary: 0, context: 0, stroke: 0, confusion: 0 };
+  const categoryCounts = { meaning: 0, reading: 0, vocabulary: 0, context: 0, stroke: 0, confusion: 0, listening: 0 };
   for (const exercise of exercises) {
     if (!exercise.acceptedAnswers || exercise.acceptedAnswers.length === 0) {
       errors.push(`Exercice ${exercise.id} sans correction`);
@@ -277,6 +302,17 @@ export async function stageValidate() {
     }
     if (exercise.sentenceId && !sentenceIds.has(exercise.sentenceId)) {
       errors.push(`Exercice ${exercise.id} référence une phrase inexistante: ${exercise.sentenceId}`);
+    }
+    if (exercise.audioResourceId && !audioIds.has(exercise.audioResourceId)) {
+      errors.push(`Exercice ${exercise.id} référence un audio inexistant: ${exercise.audioResourceId}`);
+    }
+    if (exercise.template === 'audio_dictation_kana') {
+      if (!exercise.audioResourceId || Object.hasOwn(exercise.prompt, 'transcript')) {
+        errors.push(`Exercice ${exercise.id}: prompt de dictée invalide ou fuite de réponse`);
+      }
+      if (exercise.skill !== 'listening') {
+        errors.push(`Exercice ${exercise.id}: la dictée doit relever de l'écoute`);
+      }
     }
     if (exercise.editorialStatus === 'draft') {
       errors.push(`Exercice ${exercise.id} en état draft dans le pack`);
@@ -335,6 +371,7 @@ export async function stageValidate() {
       vocabulary: vocabulary.length,
       sentences: sentences.length,
       texts: texts.length,
+      audio: audio.length,
       exercises: exercises.length,
     },
     categoryCounts,

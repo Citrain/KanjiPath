@@ -68,6 +68,10 @@ pnpm dev                # serveurs seul (DB déjà à jour)
 - Node.js 24 LTS, TypeScript strict, pnpm workspaces.
 - MariaDB local (pas de Docker) + Prisma provider `mysql`.
 - Aucun appel LLM au runtime ; exercices fixes, versionnés, validés.
+- Audio : importer uniquement des clips avec licence individuelle explicite. Pour cette
+  instance personnelle privée, CC BY-NC est autorisée selon `ADR-002` ; toute
+  distribution publique ou commerciale reste interdite tant que ces clips sont présents.
+  Conserver fichier brut, checksum, version, attribution et licence dans le pipeline.
 - Ne jamais présenter les listes de kanji comme « officielles JLPT » :
   formulation obligatoire « Parcours aligné sur le JLPT ».
 - Authentification : Argon2id, cookie `HttpOnly` + `SameSite=Lax`, CSRF double-submit,

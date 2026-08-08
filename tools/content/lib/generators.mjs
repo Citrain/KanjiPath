@@ -25,7 +25,7 @@ export function pickDistractors(rng, pool, answer, count) {
   return pickSeeded(rng, candidates, count);
 }
 
-export function makeExercise({ template, skill, level, targetKanjiId, prompt, acceptedAnswers, distractors, explanation, difficulty, vocabularyId, sentenceId, variantKey, sourceId }) {
+export function makeExercise({ template, skill, level, targetKanjiId, prompt, acceptedAnswers, distractors, explanation, difficulty, vocabularyId, sentenceId, audioResourceId, variantKey, sourceId }) {
   const id = `x-${template}-${targetKanjiId.replace('k-', '')}-${variantKey}`;
   return {
     id,
@@ -35,6 +35,7 @@ export function makeExercise({ template, skill, level, targetKanjiId, prompt, ac
     targetKanjiId,
     vocabularyId,
     sentenceId,
+    audioResourceId,
     prompt,
     acceptedAnswers: uniqueByNorm(acceptedAnswers),
     distractors: distractors ?? [],

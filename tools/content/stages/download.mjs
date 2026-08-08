@@ -13,6 +13,11 @@ export async function stageDownload({ force = false } = {}) {
       const destPath = path.join(RAW_DIR, fileDef.file);
       console.log(`[download] ${source.name}: ${fileDef.file}`);
       const result = await downloadFile(fileDef.url, destPath, { force });
+      if (fileDef.sha256 && result.sha256 !== `sha256:${fileDef.sha256}`) {
+        throw new Error(
+          `Checksum inattendu pour ${fileDef.file}: ${result.sha256} (attendu ${fileDef.sha256})`,
+        );
+      }
       files.push({
         sourceId: source.id,
         file: fileDef.file,

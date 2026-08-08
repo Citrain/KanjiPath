@@ -33,6 +33,7 @@ import {
   fetchKanjiSentences,
   fetchKanjiVocabulary,
 } from '../content/api';
+import { AudioButton } from '../content/audio-button';
 import { SentenceView, useDisplaySettings } from '../content/japanese';
 import { IssueModal } from './issue-modal';
 import { KanjiSvg } from './kanji-svg';
@@ -531,6 +532,11 @@ export function KanjiCardPage() {
                   </span>
                 </div>
                 <p className="mt-2 text-sm leading-snug text-ink-soft">{word.meaningFr}</p>
+                {word.audio ? (
+                  <div className="mt-3">
+                    <AudioButton audio={word.audio} label={`Écouter ${word.writtenForm}`} />
+                  </div>
+                ) : null}
                 <p className="mt-2.5 text-[0.6875rem] font-semibold uppercase tracking-wide text-muted">
                   {word.partOfSpeech ?? 'mot'}
                   {word.readingInWord ? ` · ${kanji.literal} → ${word.readingInWord}` : ''}
@@ -568,6 +574,11 @@ export function KanjiCardPage() {
                 <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-soft">
                   {sentence.translationFr}
                 </p>
+                {sentence.audio ? (
+                  <div className="mt-3">
+                    <AudioButton audio={sentence.audio} label="Écouter la phrase" />
+                  </div>
+                ) : null}
                 <p className="mt-3 text-[0.6875rem] text-muted/80">
                   {sentence.author ?? 'Tatoeba'} · {sentence.license ?? 'licence Tatoeba'}
                 </p>

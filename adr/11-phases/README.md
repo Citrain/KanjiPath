@@ -112,6 +112,12 @@ curation des kanji pending reportée (voir `docs/agent/suivi-phase-4b.md`).
 - dictée, audio sous licence
 - exercices d'écoute
 
+**État (2026-08-08)** : l'écriture existante est conservée ; l'audio utilise des clips
+Tatoeba filtrés sur leur licence individuelle CC BY 4.0, avec binaire brut, SHA-256,
+attribution et licence dans le pipeline. Les fiches ont une lecture explicite sans
+autoplay, et les dictées fixes `audio_dictation_kana` alimentent la compétence
+`listening` et la carte `AUDIO_DICTATION`.
+
 ---
 
 ## Critères d'acceptation fonctionnels

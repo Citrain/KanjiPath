@@ -1,7 +1,7 @@
 {
   "version": "2026.08.7",
-  "createdAt": "2026-08-08T19:28:10.481Z",
-  "gitCommit": "0c27e0771383216c04418c7cb8c992fb49cc5258",
+  "createdAt": "2026-08-08T20:44:38.420Z",
+  "gitCommit": "779357bcecbb9cb554f97afc48119f3193813c2f",
   "sources": [
     {
       "name": "KANJIDIC2",
@@ -71,6 +71,25 @@
       ]
     },
     {
+      "name": "Tatoeba - enregistrements japonais sélectionnés",
+      "license": "Audio : CC BY 4.0 ; textes associés : CC BY 2.0 FR",
+      "version": "2026-08-08",
+      "checksums": [
+        {
+          "file": "tatoeba-audio-1283521.mp3",
+          "sha256": "sha256:a65a509700d64a5544f772e56c32b7627213a159959ffc2bb769038bc8f10450"
+        },
+        {
+          "file": "tatoeba-audio-1283538.mp3",
+          "sha256": "sha256:7f35132d0b6a24d37fef350b927272e4b208bb5b6a2f9129ef6e7ab2a75c78e3"
+        },
+        {
+          "file": "tatoeba-audio-1283544.mp3",
+          "sha256": "sha256:ae2f859262ac19f9896d716b1329d7608ccdbe20617ca64ce239d32d26c5e27d"
+        }
+      ]
+    },
+    {
       "name": "kanji-data (David Gouveia)",
       "license": "MIT",
       "version": null,
@@ -85,9 +104,10 @@
   "counts": {
     "kanji": 1420,
     "vocabulary": 10181,
-    "sentences": 8532,
+    "sentences": 8534,
     "texts": 10,
-    "exercises": 74009
+    "audio": 3,
+    "exercises": 74011
   },
   "validation": {
     "errors": 0,

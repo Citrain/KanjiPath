@@ -1,6 +1,13 @@
 import type { Skill } from '@kanjipath/contracts';
 
-export const SKILLS: readonly Skill[] = ['meaning', 'reading', 'vocabulary', 'context', 'stroke'];
+export const SKILLS: readonly Skill[] = [
+  'meaning',
+  'reading',
+  'vocabulary',
+  'context',
+  'stroke',
+  'listening',
+];
 
 export const SKILL_LABELS: Record<Skill, string> = {
   meaning: 'sens',
@@ -8,4 +15,5 @@ export const SKILL_LABELS: Record<Skill, string> = {
   vocabulary: 'vocabulaire',
   context: 'contexte',
   stroke: 'composants & traits',
+  listening: 'écoute',
 };

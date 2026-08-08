@@ -6,7 +6,10 @@ import { GENERATED_DIR, NORMALIZED_DIR, REPORTS_DIR } from '../lib/paths.mjs';
 export async function stageGenerate() {
   const kanji = await readJson(path.join(NORMALIZED_DIR, 'kanji.json'));
   const vocabulary = await readJson(path.join(NORMALIZED_DIR, 'vocabulary.json'));
-  const sentences = await readJson(path.join(NORMALIZED_DIR, 'sentences.json'));
+  const [sentences, audio] = await Promise.all([
+    readJson(path.join(NORMALIZED_DIR, 'sentences.json')),
+    readJson(path.join(NORMALIZED_DIR, 'audio.json')),
+  ]);
   const curriculum = await readJson(path.join(NORMALIZED_DIR, 'curriculum.json'));
 
   const pack = { version: curriculum.version, kanji, vocabulary, sentences };
@@ -15,6 +18,32 @@ export async function stageGenerate() {
   const exercises = [];
   for (const k of kanji) {
     exercises.push(...generateForKanji(pack, ctx, k));
+  }
+  for (const resource of audio) {
+    if (!resource.targetKanji || !resource.acceptedAnswers || !resource.explanation) {
+      continue;
+    }
+    const target = kanji.find((item) => item.literal === resource.targetKanji);
+    if (!target) {
+      throw new Error(`Kanji cible audio absent: ${resource.targetKanji}`);
+    }
+    exercises.push({
+      id: `x-audio-dictation-${resource.id}`,
+      template: 'audio_dictation_kana',
+      skill: 'listening',
+      level: target.level,
+      targetKanjiId: target.id,
+      vocabularyId: resource.vocabularyId,
+      sentenceId: resource.sentenceId,
+      audioResourceId: resource.id,
+      prompt: { audioResourceId: resource.id, instruction: 'Écoutez puis écrivez la phrase entendue en kana.' },
+      acceptedAnswers: resource.acceptedAnswers,
+      distractors: [],
+      explanation: resource.explanation,
+      difficulty: 2,
+      sourceId: 'tatoeba_audio',
+      editorialStatus: 'reviewed',
+    });
   }
 
   const ids = new Set();

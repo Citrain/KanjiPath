@@ -104,6 +104,7 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     const kanjiToken = sentence.tokens.find((t: { surface: string }) => t.surface === '一');
     expect(kanjiToken?.reading).toBe('ひと');
     expect(kanjiToken?.romaji).toBe('hito');
+    expect(sentence.audio?.url).toBe('/audio/a-test-1');
   });
 
   it('retourne une 404 pour un kanji inconnu', async () => {
@@ -630,6 +631,23 @@ async function seedContent(prisma: PrismaService): Promise<void> {
   await prisma.vocabularyKanji.deleteMany({ where: { vocabularyId: 'v-test-1' } });
   await prisma.vocabularyKanji.create({
     data: { vocabularyId: 'v-test-1', kanjiId: 'k-04e00', position: 0, readingInWord: 'ひと' },
+  });
+  await prisma.audioResource.upsert({
+    where: { id: 'a-test-1' },
+    create: {
+      id: 'a-test-1',
+      vocabularyId: 'v-test-1',
+      sentenceId: 's-test-1',
+      sourceId: source.id,
+      filePath: 'audio/a-test-1.mp3',
+      mimeType: 'audio/mpeg',
+      transcript: '一つです。',
+      attributionText: 'Audio de test KanjiPath',
+      license: 'CC BY-SA 4.0',
+      checksum: 'sha256:test',
+      editorialStatus: 'published',
+    },
+    update: { editorialStatus: 'published' },
   });
 
   await prisma.miniText.upsert({

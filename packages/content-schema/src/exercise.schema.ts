@@ -19,6 +19,7 @@ export const exerciseTemplateSchema = z.enum([
   'component_search_qcm',
   'stroke_order_qcm',
   'confusion_pair_qcm',
+  'audio_dictation_kana',
 ]);
 
 export type ExerciseTemplate = z.infer<typeof exerciseTemplateSchema>;
@@ -31,6 +32,7 @@ export const exerciseContentSchema = z.object({
   targetKanjiId: z.string().min(1),
   vocabularyId: z.string().optional(),
   sentenceId: z.string().optional(),
+  audioResourceId: z.string().optional(),
   prompt: z.record(z.string(), z.unknown()),
   acceptedAnswers: z.array(z.string()).min(1),
   distractors: z.array(z.string()).default([]),

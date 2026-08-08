@@ -113,6 +113,7 @@ enum ReviewCardSkill {
   RADICAL_RECOGNITION
   STROKE_ORDER
   KANJI_CONFUSION
+  AUDIO_DICTATION
 }
 
 enum CardState {
@@ -136,6 +137,7 @@ enum Skill {
   vocabulary
   context
   stroke
+  listening
 }
 
 enum SubjectType {
@@ -187,6 +189,7 @@ model ContentSource {
   sentences        Sentence[]
   miniTexts        MiniText[]
   exercises        ExerciseItem[]
+  audioResources   AudioResource[]
 
   @@map("content_sources")
 }
@@ -357,6 +360,7 @@ model Vocabulary {
   kanjiLinks      VocabularyKanji[]
   sentenceTokens  SentenceToken[]
   exercises       ExerciseItem[]
+  audioResources  AudioResource[]
 
   @@index([reading])
   @@index([writtenForm])
@@ -389,6 +393,7 @@ model Sentence {
   source           ContentSource?  @relation(fields: [sourceId], references: [id])
   tokens           SentenceToken[]
   exercises        ExerciseItem[]
+  audioResources   AudioResource[]
 
   @@index([japanese])
   @@map("sentences")
@@ -464,6 +469,7 @@ model ExerciseItem {
   kanjiId          String?         @map("kanji_id")
   vocabularyId     String?         @map("vocabulary_id")
   sentenceId       String?         @map("sentence_id")
+  audioResourceId  String?         @map("audio_resource_id")
   promptJson       Json            @map("prompt_json")
   answerJson       Json            @map("answer_json")
   explanationJson  Json?           @map("explanation_json")
@@ -475,6 +481,7 @@ model ExerciseItem {
   kanji            Kanji?          @relation(fields: [kanjiId], references: [id], onDelete: Cascade)
   vocabulary       Vocabulary?     @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
   sentence         Sentence?       @relation(fields: [sentenceId], references: [id], onDelete: Cascade)
+  audioResource    AudioResource?  @relation(fields: [audioResourceId], references: [id], onDelete: SetNull)
   source           ContentSource?  @relation(fields: [sourceId], references: [id])
   contentVersion   ContentVersion? @relation(fields: [contentVersionId], references: [id])
   reviewLogs       ReviewLog[]
@@ -483,6 +490,28 @@ model ExerciseItem {
   @@index([level, kanjiId, skill])
   @@index([level, skill, editorialStatus])
   @@map("exercise_items")
+}
+
+model AudioResource {
+  id               String          @id
+  vocabularyId     String?         @map("vocabulary_id")
+  sentenceId       String?         @map("sentence_id")
+  sourceId         String          @map("source_id")
+  filePath         String          @unique @map("file_path")
+  mimeType         String          @map("mime_type")
+  transcript       String          @db.Text
+  attributionText  String          @map("attribution_text") @db.Text
+  license          String
+  checksum         String
+  editorialStatus  EditorialStatus @default(draft) @map("editorial_status")
+  vocabulary       Vocabulary?     @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+  sentence         Sentence?       @relation(fields: [sentenceId], references: [id], onDelete: Cascade)
+  source           ContentSource   @relation(fields: [sourceId], references: [id])
+  exercises        ExerciseItem[]
+
+  @@index([vocabularyId])
+  @@index([sentenceId])
+  @@map("audio_resources")
 }
 
 model ReviewCard {
@@ -540,6 +569,7 @@ model UserKanjiProgress {
   vocabularyScore Float             @default(0) @map("vocabulary_score")
   contextScore  Float               @default(0) @map("context_score")
   strokeScore   Float               @default(0) @map("stroke_score")
+  listeningScore Float               @default(0) @map("listening_score")
   overallScore  Float               @default(0) @map("overall_score")
   status        KanjiProgressStatus @default(new)
   firstSeenAt   DateTime?           @map("first_seen_at")

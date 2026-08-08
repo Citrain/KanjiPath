@@ -63,11 +63,18 @@ Regroupés par compétence, tous fixes et validés (aucun LLM au runtime).
 
 ---
 
-## 6.6 Exercices futurs (post-V1)
+## 6.6 Écoute et dictée (Phase 5)
+
+- `audio_dictation_kana` : prompt audio sans transcript, réponse libre normalisée NFC,
+  katakana/hiragana équivalents, espaces et ponctuation facultatifs ; variantes seulement
+  si explicitement déclarées dans le pack.
+- compétence `listening`, carte `AUDIO_DICTATION` ; les items sont matérialisés et
+  validés au build.
+
+## 6.7 Exercices futurs (post-V1)
 
 - tracé libre
 - comparaison du tracé avec KanjiVG
-- dictée audio
 - lecture chronométrée
 - mini-textes
 - mode examen blanc

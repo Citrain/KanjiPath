@@ -26,6 +26,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { JLPT_LEVELS } from '../../lib/levels';
 import { SKILL_LABELS, SKILLS } from '../../lib/skills';
 import { fetchDashboard } from '../content/api';
+import { AudioButton } from '../content/audio-button';
 import { Furigana, SentenceView, useDisplaySettings } from '../content/japanese';
 import { abandonSession, createSession, finishSession, resumeSession, sendAnswer } from './api';
 
@@ -260,7 +261,12 @@ export function SessionPage() {
         next();
         return;
       }
-      if (isTyping || result || current.template === 'reading_input_kana') {
+      if (
+        isTyping ||
+        result ||
+        current.template === 'reading_input_kana' ||
+        current.template === 'audio_dictation_kana'
+      ) {
         return;
       }
       const digit = Number(event.key);
@@ -689,6 +695,7 @@ function ExerciseView({
   const prompt = current.prompt as Record<string, unknown>;
   const instruction = typeof prompt.instruction === 'string' ? prompt.instruction : '';
   const isInputTemplate = current.template === 'reading_input_kana';
+  const isAudioDictation = current.template === 'audio_dictation_kana';
   const answeredCount = items.length - pendingCount + (result ? 1 : 0);
   const answerInputRef = useRef<HTMLInputElement>(null);
   const exerciseItemId = current.exerciseItemId;
@@ -812,11 +819,23 @@ function ExerciseView({
               {typeof prompt.component === 'string' ? (
                 <span className="font-jp text-7xl text-sky">{prompt.component}</span>
               ) : null}
+              {isAudioDictation && typeof prompt.audioResourceId === 'string' ? (
+                <AudioButton
+                  audio={{
+                    id: prompt.audioResourceId,
+                    url: `/audio/${prompt.audioResourceId}`,
+                    transcript: '',
+                    attribution: '',
+                    license: '',
+                  }}
+                  label="Écouter l'audio"
+                />
+              ) : null}
             </div>
 
             {!result ? (
               <div className="mt-8">
-                {isInputTemplate ? (
+                {isInputTemplate || isAudioDictation ? (
                   <form
                     onSubmit={(event) => {
                       event.preventDefault();

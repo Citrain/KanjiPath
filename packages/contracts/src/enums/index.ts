@@ -1,7 +1,14 @@
 export const JLPT_LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'] as const;
 export type JlptLevel = (typeof JLPT_LEVELS)[number];
 
-export const SKILLS = ['meaning', 'reading', 'vocabulary', 'context', 'stroke'] as const;
+export const SKILLS = [
+  'meaning',
+  'reading',
+  'vocabulary',
+  'context',
+  'stroke',
+  'listening',
+] as const;
 export type Skill = (typeof SKILLS)[number];
 
 export const REVIEW_CARD_SKILLS = [
@@ -16,6 +23,7 @@ export const REVIEW_CARD_SKILLS = [
   'RADICAL_RECOGNITION',
   'STROKE_ORDER',
   'KANJI_CONFUSION',
+  'AUDIO_DICTATION',
 ] as const;
 export type ReviewCardSkill = (typeof REVIEW_CARD_SKILLS)[number];
 

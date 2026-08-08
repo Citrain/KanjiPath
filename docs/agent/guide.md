@@ -429,8 +429,33 @@ ajoute-le ici.
     `cleanupOrphans` dépassait la limite de paramètres de requête de MariaDB
     (`P2029: query parameter limit exceeded`). Le nettoyage charge désormais les ids
     en base, fait la différence contre le pack **en JS**, puis requête par lots de
-    `CLEANUP_CHUNK` (4000). Ne jamais réintroduire de `notIn` sur la liste complète
-    du pack.
+     `CLEANUP_CHUNK` (4000). Ne jamais réintroduire de `notIn` sur la liste complète
+     du pack.
+
+48. **Audio Phase 5 : licence par clip, jamais par présomption de corpus.** Les clips
+    Tatoeba importés sont déclarés dans `content/curated/audio.json` et
+    `tools/content/sources.mjs`. Le téléchargement compare le SHA-256 attendu ; la
+    normalisation copie seulement les fichiers validés dans `generated/audio/`. Ne pas
+    importer les licences NC, ND, vides ou inconnues. Une dictée utilise
+    `audio_dictation_kana`, compétence `listening`, carte `AUDIO_DICTATION`, et le
+    transcript ne doit jamais apparaître dans le prompt.
+
+49. **Exception audio personnelle (ADR-002).** Pour cette instance privée uniquement,
+    les clips Tatoeba CC BY-NC 4.0 sont autorisés avec attribution complète. Ne jamais
+    publier les fichiers, le pack ou l'application tant qu'un clip CC BY-NC est chargé ;
+    une version distribuée doit revenir aux seules licences compatibles commercialement.
+
+50. **Import audio massif différé.** Le lot actuel contient 3 clips CC BY 4.0. Le
+    snapshot Tatoeba japonais du 2026-08-08 contient aussi 1 282 clips CC BY-NC 4.0,
+    éligibles seulement selon ADR-002. Cette extension est volontairement reportée à une
+    tâche dédiée : télécharger l'export
+    `jpn_sentences_with_audio.tsv.bz2`, filtrer strictement `CC BY-NC 4.0`, conserver
+    pour chaque clip l'auteur, l'id audio, l'id phrase, la licence, l'attribution, le
+    fichier brut et le SHA-256, puis ne rattacher que les phrases/transcriptions
+    pédagogiquement exploitables. Ne jamais importer les 1 282 clips aveuglément ni
+    générer une dictée sans réponse kana explicitement validée. Terminer par
+    `content:normalize`, `content:generate`, `content:validate`, `content:publish` et
+    `content:load`.
 
 ## Recettes
 

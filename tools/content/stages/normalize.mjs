@@ -4,7 +4,7 @@ import yauzl from 'yauzl';
 import { XMLParser } from 'fast-xml-parser';
 import { readJson, writeJson, writeText } from '../lib/fs-utils.mjs';
 import { GENERATED_DIR, IMPORTED_DIR, CURATED_DIR, KANJIVG_DIR, NORMALIZED_DIR, RAW_DIR } from '../lib/paths.mjs';
-import { fnv1a } from '../lib/hash.mjs';
+import { fnv1a, sha256File } from '../lib/hash.mjs';
 import { kanaToRomaji } from '../lib/romaji.mjs';
 import { annotateSentence, createTokenizer } from '../lib/tokenize.mjs';
 import { SOURCES, SOURCE_ORDER } from '../sources.mjs';
@@ -343,6 +343,7 @@ export async function stageNormalize() {
     };
   }
   const componentsFr = await readJson(path.join(CURATED_DIR, 'components-fr.json'));
+  const audioCurated = await readJson(path.join(CURATED_DIR, 'audio.json'));
   const kanjidic = await readJson(path.join(IMPORTED_DIR, 'kanjidic.json'));
   const krad = await readJson(path.join(IMPORTED_DIR, 'krad.json'));
   const jmdict = await readJson(path.join(IMPORTED_DIR, 'jmdict.json'));
@@ -520,12 +521,63 @@ export async function stageNormalize() {
     }
   }
 
+  for (const word of audioCurated.vocabulary ?? []) {
+    const kanjiLinks = word.kanji.filter((link) => allSet.has(link.literal));
+    if (kanjiLinks.length !== word.kanji.length) {
+      throw new Error(`Vocabulaire audio hors référentiel: ${word.writtenForm}`);
+    }
+    if (vocabularyOut.some((entry) => entry.writtenForm === word.writtenForm && entry.reading === word.reading)) {
+      continue;
+    }
+    vocabularyOut.push({
+      id: curatedVocabId(word.writtenForm, word.reading),
+      writtenForm: word.writtenForm,
+      reading: word.reading,
+      meaningFr: word.meaningFr,
+      partOfSpeech: word.partOfSpeech,
+      estimatedLevel: word.estimatedLevel,
+      kanji: kanjiLinks.map((link) => ({
+        kanjiId: kanjiIdOf(link.literal),
+        position: link.position,
+        readingInWord: link.readingInWord,
+      })),
+      sourceId: 'kanjipath_editorial',
+      editorialStatus: 'reviewed',
+      romaji: kanaToRomaji(word.reading),
+    });
+  }
+
   const sentencesOut = [];
-  const usedSentences = new Set();
+  const usedSentences = new Set(audioCurated.sentences.map((sentence) => sentence.japanese));
   const sentenceCountByKanji = new Map([...allSet].map((k) => [k, 0]));
   const sortedPairs = [...tatoeba].sort((a, b) => a.japanese.length - b.japanese.length || a.jpnId - b.jpnId);
   const tokenizer = await createTokenizer();
   const skippedUnreadable = [];
+  for (const sentence of audioCurated.sentences ?? []) {
+    const tokens = annotateSentence(tokenizer, sentence.japanese);
+    if (!tokens) {
+      throw new Error(`Phrase audio sans lecture complète: ${sentence.japanese}`);
+    }
+    const targetKanjiIds = kanjiLiteralsOf(sentence.japanese)
+      .filter((literal) => allSet.has(literal))
+      .map(kanjiIdOf);
+    if (targetKanjiIds.length === 0) {
+      throw new Error(`Phrase audio sans kanji publié: ${sentence.japanese}`);
+    }
+    sentencesOut.push({
+      id: sentence.id,
+      externalId: `tatoeba-${sentence.id.replace('s-tatoeba-', '')}`,
+      japanese: sentence.japanese,
+      translationFr: sentence.french,
+      difficulty: sentence.difficulty,
+      targetKanjiIds,
+      tokens,
+      sourceId: 'tatoeba_audio',
+      license: sentence.license,
+      author: sentence.author,
+      editorialStatus: 'reviewed',
+    });
+  }
   for (const level of LEVELS) {
     const levelSet = setsByLevel.get(level);
     const quota = SENTENCES_PER_KANJI[level];
@@ -667,10 +719,53 @@ export async function stageNormalize() {
     };
   });
 
+  const audioDir = path.join(GENERATED_DIR, 'audio');
+  await fs.mkdir(audioDir, { recursive: true });
+  const audioOut = [];
+  for (const resource of audioCurated.resources ?? []) {
+    const sourceFile = path.join(RAW_DIR, resource.file);
+    const filePath = `audio/${resource.id}.mp3`;
+    const destination = path.join(GENERATED_DIR, filePath);
+    const checksum = await sha256File(sourceFile);
+    const expected = SOURCES.tatoeba_audio.files.find((file) => file.file === resource.file)?.sha256;
+    if (!expected || checksum !== `sha256:${expected}`) {
+      throw new Error(`Checksum audio invalide: ${resource.file}`);
+    }
+    await fs.copyFile(sourceFile, destination);
+    const vocabulary = resource.vocabulary
+      ? vocabularyOut.find(
+          (entry) => entry.writtenForm === resource.vocabulary.writtenForm && entry.reading === resource.vocabulary.reading,
+        )
+      : undefined;
+    if (resource.vocabulary && !vocabulary) {
+      throw new Error(`Vocabulaire audio introuvable: ${resource.vocabulary.writtenForm}`);
+    }
+    if (resource.sentenceId && !sentencesOut.some((sentence) => sentence.id === resource.sentenceId)) {
+      throw new Error(`Phrase audio introuvable: ${resource.sentenceId}`);
+    }
+    audioOut.push({
+      id: resource.id,
+      vocabularyId: vocabulary?.id,
+      sentenceId: resource.sentenceId,
+      sourceId: 'tatoeba_audio',
+      filePath,
+      mimeType: 'audio/mpeg',
+      transcript: resource.transcript,
+      attribution: resource.attribution,
+      license: resource.license,
+      checksum,
+      targetKanji: resource.targetKanji,
+      acceptedAnswers: resource.acceptedAnswers,
+      explanation: resource.explanation,
+      editorialStatus: 'reviewed',
+    });
+  }
+
   await writeJson(path.join(NORMALIZED_DIR, 'kanji.json'), kanjiOut);
   await writeJson(path.join(NORMALIZED_DIR, 'vocabulary.json'), vocabularyOut);
   await writeJson(path.join(NORMALIZED_DIR, 'sentences.json'), sentencesOut);
   await writeJson(path.join(NORMALIZED_DIR, 'texts.json'), textsOut);
+  await writeJson(path.join(NORMALIZED_DIR, 'audio.json'), audioOut);
   await writeJson(path.join(NORMALIZED_DIR, 'curriculum.json'), curriculum);
   await writeJson(path.join(NORMALIZED_DIR, 'sources.json'), sources);
 

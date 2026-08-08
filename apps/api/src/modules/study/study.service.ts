@@ -381,11 +381,17 @@ export class StudyService {
       context: existing?.contextScore ?? 0,
       stroke: existing?.strokeScore ?? 0,
     };
+    let listeningScore = existing?.listeningScore ?? 0;
     const key = skill as keyof typeof scores;
     if (key in scores) {
       scores[key] = correct
         ? Math.min(1, scores[key] + 0.25 * (1 - scores[key]))
         : Math.max(0, scores[key] - 0.3);
+    }
+    if (skill === 'listening') {
+      listeningScore = correct
+        ? Math.min(1, listeningScore + 0.25 * (1 - listeningScore))
+        : Math.max(0, listeningScore - 0.3);
     }
     const overall = computeOverallScore(scores);
 
@@ -426,6 +432,7 @@ export class StudyService {
         vocabularyScore: scores.vocabulary,
         contextScore: scores.context,
         strokeScore: scores.stroke,
+        listeningScore,
         overallScore: overall,
         status: status as never,
         firstSeenAt: existing?.firstSeenAt ?? now,
@@ -437,6 +444,7 @@ export class StudyService {
         vocabularyScore: scores.vocabulary,
         contextScore: scores.context,
         strokeScore: scores.stroke,
+        listeningScore,
         overallScore: overall,
         status: status as never,
         masteredAt: mastered ? now : (existing?.masteredAt ?? now),

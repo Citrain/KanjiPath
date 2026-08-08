@@ -26,6 +26,14 @@ export class ContentController {
     return svg;
   }
 
+  @Get('audio/:id')
+  @Header('Content-Type', 'audio/mpeg')
+  @Header('X-Content-Type-Options', 'nosniff')
+  @Header('Cache-Control', 'private, max-age=86400')
+  async audio(@Param('id') id: string) {
+    return this.content.audio(id);
+  }
+
   @Get('kanji/:literal/vocabulary')
   async kanjiVocabulary(@Param('literal') literal: string) {
     return { vocabulary: await this.content.kanjiVocabulary(literal) };

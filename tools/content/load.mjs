@@ -42,6 +42,7 @@ const TEMPLATE_META = {
   component_selection_qcm: { skill: 'stroke', renderer: 'qcm', grader: 'set-match' },
   component_search_qcm: { skill: 'stroke', renderer: 'qcm', grader: 'exact-match' },
   confusion_pair_qcm: { skill: 'meaning', renderer: 'qcm', grader: 'exact-match' },
+  audio_dictation_kana: { skill: 'listening', renderer: 'audio-input', grader: 'kana-normalize' },
 };
 
 async function loadSources(prisma, sources) {
@@ -361,6 +362,39 @@ async function loadMiniTexts(prisma, texts) {
   }
 }
 
+async function loadAudio(prisma, resources) {
+  for (const resource of resources) {
+    await prisma.audioResource.upsert({
+      where: { id: resource.id },
+      create: {
+        id: resource.id,
+        vocabularyId: resource.vocabularyId ?? null,
+        sentenceId: resource.sentenceId ?? null,
+        sourceId: resource.sourceId,
+        filePath: resource.filePath,
+        mimeType: resource.mimeType,
+        transcript: resource.transcript,
+        attributionText: resource.attribution,
+        license: resource.license,
+        checksum: resource.checksum,
+        editorialStatus: resource.editorialStatus,
+      },
+      update: {
+        vocabularyId: resource.vocabularyId ?? null,
+        sentenceId: resource.sentenceId ?? null,
+        sourceId: resource.sourceId,
+        filePath: resource.filePath,
+        mimeType: resource.mimeType,
+        transcript: resource.transcript,
+        attributionText: resource.attribution,
+        license: resource.license,
+        checksum: resource.checksum,
+        editorialStatus: resource.editorialStatus,
+      },
+    });
+  }
+}
+
 async function loadExercises(prisma, exercises, versionId) {
   const templates = new Map();
   for (const exercise of exercises) {
@@ -403,6 +437,7 @@ async function loadExercises(prisma, exercises, versionId) {
         kanjiId: exercise.targetKanjiId,
         vocabularyId: exercise.vocabularyId ?? null,
         sentenceId: exercise.sentenceId ?? null,
+        audioResourceId: exercise.audioResourceId ?? null,
         promptJson: exercise.prompt,
         answerJson: { acceptedAnswers: exercise.acceptedAnswers, distractors: exercise.distractors ?? [] },
         explanationJson: { explanation: exercise.explanation },
@@ -418,6 +453,7 @@ async function loadExercises(prisma, exercises, versionId) {
         kanjiId: exercise.targetKanjiId,
         vocabularyId: exercise.vocabularyId ?? null,
         sentenceId: exercise.sentenceId ?? null,
+        audioResourceId: exercise.audioResourceId ?? null,
         promptJson: exercise.prompt,
         answerJson: { acceptedAnswers: exercise.acceptedAnswers, distractors: exercise.distractors ?? [] },
         explanationJson: { explanation: exercise.explanation },
@@ -467,6 +503,19 @@ async function cleanupOrphans(prisma, packIds) {
     `[load] nettoyage: ${deletable.length} exercices orphelins supprimés, ${referenced.size} conservés (historique utilisateur)`,
   );
 
+  const packAudioIds = new Set(packIds.audio);
+  const orphanAudioIds = (await prisma.audioResource.findMany({ select: { id: true } }))
+    .map((resource) => resource.id)
+    .filter((id) => !packAudioIds.has(id));
+  for (const chunk of chunks(orphanAudioIds, CLEANUP_CHUNK)) {
+    await prisma.exerciseItem.updateMany({
+      where: { audioResourceId: { in: chunk } },
+      data: { audioResourceId: null },
+    });
+    await prisma.audioResource.deleteMany({ where: { id: { in: chunk } } });
+  }
+  console.log(`[load] nettoyage: ${orphanAudioIds.length} audios orphelins supprimés`);
+
   const packVocabIds = new Set(packIds.vocabulary);
   const orphanVocabIds = (await prisma.vocabulary.findMany({ select: { id: true } }))
     .map((v) => v.id)
@@ -514,11 +563,12 @@ export async function stageLoad() {
   loadEnv();
   const prisma = new PrismaClient({ adapter: createDbAdapter() });
 
-  const [kanji, vocabulary, sentences, texts, exercises, curriculum, sources] = await Promise.all([
+  const [kanji, vocabulary, sentences, texts, audio, exercises, curriculum, sources] = await Promise.all([
     readJson(path.join(PACK_DIR, 'kanji.json')),
     readJson(path.join(PACK_DIR, 'vocabulary.json')),
     readJson(path.join(PACK_DIR, 'sentences.json')),
     readJson(path.join(PACK_DIR, 'texts.json')),
+    readJson(path.join(PACK_DIR, 'audio.json')),
     readJson(path.join(PACK_DIR, 'exercises.json')),
     readJson(path.join(PACK_DIR, 'curriculum.json')),
     readJson(path.join(PACK_DIR, 'sources.json')),
@@ -553,6 +603,8 @@ export async function stageLoad() {
   await loadSentences(prisma, sentences);
   console.log('[load] mini-textes...');
   await loadMiniTexts(prisma, texts);
+  console.log('[load] audio...');
+  await loadAudio(prisma, audio);
   console.log('[load] exercices...');
   await loadExercises(prisma, exercises, versionId);
   console.log('[load] nettoyage des contenus orphelins...');
@@ -560,6 +612,7 @@ export async function stageLoad() {
     vocabulary: vocabulary.map((v) => v.id),
     sentences: sentences.map((s) => s.id),
     texts: texts.map((t) => t.id),
+    audio: audio.map((resource) => resource.id),
     exercises: exercises.map((e) => e.id),
   });
 
@@ -568,6 +621,7 @@ export async function stageLoad() {
     vocabulary: await prisma.vocabulary.count(),
     sentences: await prisma.sentence.count(),
     texts: await prisma.miniText.count(),
+    audio: await prisma.audioResource.count(),
     exercises: await prisma.exerciseItem.count(),
   };
   console.log(`[load] terminé: ${JSON.stringify(counts)}`);

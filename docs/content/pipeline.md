@@ -35,10 +35,10 @@ réutilisés tant qu'ils existent.
 
 | Étape | Rôle | Sorties |
 |---|---|---|
-| `download` | télécharge KANJIDIC2, JMdict, KRADFILE (JSON), KanjiVG, Tatoeba, kanji-data ; calcule les checksums sha256 | `content/raw/*`, `content/reports/download.json` |
+| `download` | télécharge KANJIDIC2, JMdict, KRADFILE (JSON), KanjiVG, Tatoeba, kanji-data et les clips audio explicitement licenciés ; calcule les checksums sha256 et refuse un checksum audio inattendu | `content/raw/*`, `content/reports/download.json` |
 | `import` | parse les sources brutes (XML KANJIDIC2, XML JMdict en flux, TSV Tatoeba + liens, zip KanjiVG) | `content/normalized/imported/*.json` |
-| `normalize` | fusionne avec le curaté (`content/curated/`), sélectionne vocabulaire (JMdict FR) et phrases (Tatoeba), **annote les phrases et les mini-textes** (tokenisation kuromoji : lecture kana + romaji par token), calcule le **romaji** des lectures de kanji et du vocabulaire, extrait et **assainit** les SVG KanjiVG | `content/normalized/{kanji,vocabulary,sentences,texts,curriculum,sources}.json`, `content/generated/kanjivg/*.svg` |
-| `generate` | génère les exercices de façon **déterministe** (seed = gabarit + kanji + variante + version du pack) | `content/generated/exercises.json` |
+| `normalize` | fusionne avec le curaté (`content/curated/`), sélectionne vocabulaire (JMdict FR) et phrases (Tatoeba), matérialise les ressources audio validées, **annote les phrases et les mini-textes** (tokenisation kuromoji : lecture kana + romaji par token), calcule le **romaji** des lectures de kanji et du vocabulaire, extrait et **assainit** les SVG KanjiVG | `content/normalized/{kanji,vocabulary,sentences,texts,audio,curriculum,sources}.json`, `content/generated/{kanjivg,audio}/*` |
+| `generate` | génère les exercices de façon **déterministe** (seed = gabarit + kanji + variante + version du pack), dont les dictées audio | `content/generated/exercises.json` |
 | `validate` | applique les règles ADR (doublons, réponses, distracteurs, seuils de couverture **par niveau**, kanji des mini-textes bornés au niveau, licences, provenance) ; échec bloquant | `content/reports/validate.json` |
 | `report` | rapport de couverture par kanji et par niveau | `content/reports/report.json` |
 | `publish` | pack final (`editorialStatus: published`) + manifeste versionné | `content/generated/pack/*.json`, `content/manifests/<version>.json` |
@@ -175,6 +175,11 @@ cible ou sans attribution (CC BY), mini-texte dont les tokens ne couvrent pas le
 corps ou contenant un kanji hors référentiel / de niveau supérieur, seuils non
 atteints, licence manquante, contenu `draft` dans le pack, SVG manquant, référence
 vers ressource inexistante.
+
+Pour l'audio, le validateur exige aussi un fichier packagé, un SHA-256, une licence,
+une attribution, un chemin sous `generated/audio/` et des liens valides vers le mot ou
+la phrase. Une dictée doit référencer une ressource audio, avoir une correction kana
+et ne doit jamais porter le transcript dans son prompt.
 Liste complète : `adr/2-content-pipeline/README.md#tests-automatiques-de-contenu`.
 
 ## Manifeste de publication

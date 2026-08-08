@@ -112,6 +112,13 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
 - `id`, `mini_text_id`, `surface`, `reading`, `romaji`
 - `start_offset`, `end_offset`
 
+### `audio_resources` (Phase 5)
+
+- `id`, `vocabulary_id` ou `sentence_id`, `source_id`
+- `file_path`, `mime_type`, `transcript`, `checksum`
+- `attribution_text`, `license`, `editorial_status`
+- Les fichiers restent dans le pack généré ; la base ne stocke pas de binaire.
+
 ---
 
 ## 5. Exercices
@@ -126,6 +133,7 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
   `skill`, `kanji_id`, `vocabulary_id`, `sentence_id`
 - `prompt_json`, `answer_json`, `explanation_json`
 - `difficulty`, `source_id`, `content_version_id`, `editorial_status`
+- `audio_resource_id` optionnel pour une dictée ; le prompt ne contient jamais le transcript.
 
 > `external_id` permet un upsert idempotent du pack : les identifiants du pipeline
 > deviennent les identifiants en base, la progression (cartes, historiques) survit

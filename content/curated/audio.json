@@ -1,0 +1,67 @@
+{
+  "version": "2026-08-08",
+  "licenseReview": "Clips Tatoeba vérifiés individuellement : CC BY 4.0, redistribution et usage commercial autorisés avec attribution. Les enregistrements CC BY-NC, CC BY-ND, sans licence ou avec licence inconnue sont exclus.",
+  "vocabulary": [
+    {
+      "writtenForm": "十分",
+      "reading": "じゅうぶん",
+      "meaningFr": "suffisant ; assez",
+      "partOfSpeech": "adjectif en -na",
+      "estimatedLevel": "N5",
+      "kanji": [
+        { "literal": "十", "position": 0, "readingInWord": "じゅう" },
+        { "literal": "分", "position": 1, "readingInWord": "ぶん" }
+      ]
+    }
+  ],
+  "sentences": [
+    {
+      "id": "s-tatoeba-88248",
+      "japanese": "彼女は先生です。",
+      "french": "Elle est enseignante.",
+      "difficulty": "N5",
+      "author": "bunbuku",
+      "license": "CC BY 2.0 FR"
+    },
+    {
+      "id": "s-tatoeba-13563750",
+      "japanese": "十分です。",
+      "french": "C'est suffisant.",
+      "difficulty": "N5",
+      "author": "kuwasiku",
+      "license": "CC BY 2.0 FR"
+    }
+  ],
+  "resources": [
+    {
+      "id": "a-tatoeba-1283521",
+      "file": "tatoeba-audio-1283521.mp3",
+      "sentenceId": "s-tatoeba-88248",
+      "targetKanji": "先",
+      "acceptedAnswers": ["かのじょはせんせいです"],
+      "explanation": "彼女は先生です。 se lit かのじょはせんせいです。",
+      "transcript": "彼女は先生です。",
+      "attribution": "Audio : fal via Tatoeba, CC BY 4.0",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": "a-tatoeba-1283538",
+      "file": "tatoeba-audio-1283538.mp3",
+      "sentenceId": "s-tatoeba-13563750",
+      "vocabulary": { "writtenForm": "十分", "reading": "じゅうぶん" },
+      "targetKanji": "十",
+      "acceptedAnswers": ["じゅうぶんです"],
+      "explanation": "十分です。 se lit じゅうぶんです。",
+      "transcript": "十分です。",
+      "attribution": "Audio : fal via Tatoeba, CC BY 4.0",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": "a-tatoeba-1283544",
+      "file": "tatoeba-audio-1283544.mp3",
+      "transcript": "実に。",
+      "attribution": "Audio : fal via Tatoeba, CC BY 4.0",
+      "license": "CC BY 4.0"
+    }
+  ]
+}

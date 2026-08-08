@@ -38,6 +38,7 @@ GET    /kanji/:literal/sentences
 GET    /kanji/:literal/progress
 GET    /texts
 GET    /texts/:id
+GET    /audio/:id
 ```
 
 ---
@@ -86,3 +87,6 @@ GET    /sources
 ---
 
 > L'API d'administration n'est pas exposée publiquement en V1. Les corrections de contenu passent par le dépôt Git et le pipeline.
+
+`GET /audio/:id` exige une session valide, ne sert que les ressources publiées et pose
+`Content-Type: audio/mpeg`, `X-Content-Type-Options: nosniff` et un cache privé.

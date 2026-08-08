@@ -17,6 +17,7 @@ export const TEMPLATE_TO_CARD_SKILL: Record<string, ReviewCardSkill> = {
   component_search_qcm: 'RADICAL_RECOGNITION',
   stroke_count_qcm: 'STROKE_ORDER',
   component_selection_qcm: 'STROKE_ORDER',
+  audio_dictation_kana: 'AUDIO_DICTATION',
 };
 
 export const CARD_SKILL_TO_TEMPLATES: Record<ReviewCardSkill, string[]> = {
@@ -31,6 +32,7 @@ export const CARD_SKILL_TO_TEMPLATES: Record<ReviewCardSkill, string[]> = {
   CONTEXT_CLOZE: ['sentence_cloze_kanji', 'sentence_cloze_reading', 'sentence_translation_qcm'],
   RADICAL_RECOGNITION: ['radical_recognition_qcm', 'component_search_qcm'],
   STROKE_ORDER: ['stroke_count_qcm', 'component_selection_qcm'],
+  AUDIO_DICTATION: ['audio_dictation_kana'],
 };
 
 export function toHiragana(text: string): string {
@@ -53,6 +55,7 @@ export function isKanaTemplate(template: string): boolean {
     'vocab_reading_qcm',
     'vocab_reading_advanced_qcm',
     'sentence_cloze_reading',
+    'audio_dictation_kana',
   ].includes(template);
 }
 

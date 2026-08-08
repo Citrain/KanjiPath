@@ -4,6 +4,7 @@ L'ADR de référence est **ADR-001 — Plateforme web d'apprentissage progressif
 kanji**, conservée à la racine du dépôt pour rester la source de vérité unique :
 
 - **ADR complète** : [`../../ADR-001-plateforme-apprentissage-kanji.md`](../../ADR-001-plateforme-apprentissage-kanji.md)
+- **ADR-002, instance personnelle et audio CC BY-NC** : [`../../ADR-002-usage-personnel-et-audio-non-commercial.md`](../../ADR-002-usage-personnel-et-audio-non-commercial.md)
 - **Découpage opérationnel par tâche** : [`../../adr/`](../../adr/)
 
 ## Découpage (`adr/`)

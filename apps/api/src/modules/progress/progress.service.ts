@@ -93,6 +93,7 @@ export class ProgressService {
             vocabulary: progress?.vocabularyScore ?? 0,
             context: progress?.contextScore ?? 0,
             stroke: progress?.strokeScore ?? 0,
+            listening: progress?.listeningScore ?? 0,
           },
           nextDueAt: nextDue.get(entry.kanjiId)?.toISOString() ?? null,
         };
@@ -133,6 +134,7 @@ export class ProgressService {
           ['vocabulary', row.vocabularyScore],
           ['context', row.contextScore],
           ['stroke', row.strokeScore],
+          ['listening', row.listeningScore],
         ];
         const reviewedSkills = skillEntries.filter(([, score]) => score > 0);
         const pool = reviewedSkills.length > 0 ? reviewedSkills : skillEntries;

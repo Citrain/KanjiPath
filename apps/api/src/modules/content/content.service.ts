@@ -195,7 +195,7 @@ export class ContentService {
     }
     const links = await this.prisma.vocabularyKanji.findMany({
       where: { kanjiId: kanji.id },
-      include: { vocabulary: true },
+      include: { vocabulary: { include: { audioResources: { where: { editorialStatus: 'published' } } } } },
     });
     return links.map((link) => ({
       id: link.vocabulary.id,
@@ -205,6 +205,15 @@ export class ContentService {
       meaningFr: link.vocabulary.meaningFr,
       partOfSpeech: link.vocabulary.partOfSpeech,
       readingInWord: link.readingInWord,
+      audio: link.vocabulary.audioResources[0]
+        ? {
+            id: link.vocabulary.audioResources[0].id,
+            url: `/audio/${link.vocabulary.audioResources[0].id}`,
+            transcript: link.vocabulary.audioResources[0].transcript,
+            attribution: link.vocabulary.audioResources[0].attributionText,
+            license: link.vocabulary.audioResources[0].license,
+          }
+        : null,
     }));
   }
 
@@ -217,7 +226,10 @@ export class ContentService {
       where: { japanese: { contains: kanji.literal }, editorialStatus: 'published' },
       orderBy: { id: 'asc' },
       take: 20,
-      include: { tokens: { orderBy: { startOffset: 'asc' } } },
+      include: {
+        tokens: { orderBy: { startOffset: 'asc' } },
+        audioResources: { where: { editorialStatus: 'published' } },
+      },
     });
     return sentences.map((sentence) => ({
       id: sentence.id,
@@ -230,7 +242,33 @@ export class ContentService {
         reading: token.reading,
         romaji: token.romaji,
       })),
+      audio: sentence.audioResources[0]
+        ? {
+            id: sentence.audioResources[0].id,
+            url: `/audio/${sentence.audioResources[0].id}`,
+            transcript: sentence.audioResources[0].transcript,
+            attribution: sentence.audioResources[0].attributionText,
+            license: sentence.audioResources[0].license,
+          }
+        : null,
     }));
+  }
+
+  async audio(id: string): Promise<Buffer> {
+    const resource = await this.prisma.audioResource.findFirst({
+      where: { id, editorialStatus: 'published' },
+    });
+    if (!resource) {
+      throw new NotFoundException('Audio introuvable');
+    }
+    const filePath = path.resolve(contentRoot(), 'generated', resource.filePath);
+    const allowedRoot = path.resolve(contentRoot(), 'generated', 'audio');
+    if (!filePath.startsWith(allowedRoot)) {
+      throw new NotFoundException('Audio introuvable');
+    }
+    return fs.readFile(filePath).catch(() => {
+      throw new NotFoundException('Fichier audio introuvable');
+    });
   }
 
   async vocabularyLookup(surface: string): Promise<WordLookupResponse> {
@@ -355,6 +393,7 @@ export class ContentService {
         vocabulary: progress?.vocabularyScore ?? 0,
         context: progress?.contextScore ?? 0,
         stroke: progress?.strokeScore ?? 0,
+        listening: progress?.listeningScore ?? 0,
       },
       overallScore: progress?.overallScore ?? 0,
       masteredAt: progress?.masteredAt?.toISOString() ?? null,

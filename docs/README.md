@@ -22,7 +22,7 @@ Plateforme web d'apprentissage progressif des kanji — parcours **aligné sur l
 - **Règles agent** : `../AGENTS.md`.
 - **Démarrage rapide** : `../README.md`.
 
-## État actuel (Phase 4b — N1, pack initial livré)
+## État actuel (Phase 5 — audio et dictée en cours de publication)
 
 Ce qui est implémenté :
 
@@ -138,3 +138,14 @@ source japonais-français supplémentaire sous licence compatible ou une capacit
 `content/curated/n1/meanings-fr.json` (219 sens français absents de KANJIDIC2),
 `content/curated/n1/mnemonics/` (mnémotechniques par lots),
 `tools/content/check-texts.mjs` (vérification de brouillons de mini-textes).
+
+La **Phase 5** ajoute des ressources audio Tatoeba à licence individuelle explicite
+CC BY 4.0, servies uniquement aux utilisateurs authentifiés avec `nosniff` et cache
+privé. Le lot est figé par fichiers bruts et SHA-256 ; les attributions restent visibles
+dans les ressources et dans la page Sources. Les fiches proposent un bouton de lecture
+sans autoplay, et les dictées `audio_dictation_kana` sont matérialisées au build,
+normalisées en kana et suivies par la compétence `listening` / carte `AUDIO_DICTATION`.
+
+L'instance est réservée à un usage personnel privé : `ADR-002-usage-personnel-et-audio-non-commercial.md`
+autorise les clips CC BY-NC avec attribution, mais interdit toute distribution publique
+ou commerciale tant qu'ils sont présents.

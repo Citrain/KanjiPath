@@ -71,6 +71,15 @@ export interface KanjiVocabularyDto {
   meaningFr: string;
   partOfSpeech: string | null;
   readingInWord: string | null;
+  audio: AudioResourceDto | null;
+}
+
+export interface AudioResourceDto {
+  id: string;
+  url: string;
+  transcript: string;
+  attribution: string;
+  license: string;
 }
 
 export interface SentenceTokenDto {
@@ -86,6 +95,7 @@ export interface KanjiSentenceDto {
   author: string | null;
   license: string | null;
   tokens: SentenceTokenDto[];
+  audio: AudioResourceDto | null;
 }
 
 export interface KanjiProgressDto {
