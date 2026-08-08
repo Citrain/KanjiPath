@@ -1,0 +1,47 @@
+{
+  "level": "N3",
+  "notes": "Vocabulaire créé manuellement pour compléter la sélection JMdict : 忙 et 努 ont peu d'entrées JMdict avec glosses françaises.",
+  "vocabulary": [
+    {
+      "writtenForm": "忙殺",
+      "reading": "ぼうさつ",
+      "meaningFr": "débordé de travail ; submergé",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "忙", "position": 0, "readingInWord": "ぼう" },
+        { "literal": "殺", "position": 1, "readingInWord": "さつ" }
+      ]
+    },
+    {
+      "writtenForm": "忙中",
+      "reading": "ぼうちゅう",
+      "meaningFr": "au milieu de l'agitation ; en pleine activité",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "忙", "position": 0, "readingInWord": "ぼう" },
+        { "literal": "中", "position": 1, "readingInWord": "ちゅう" }
+      ]
+    },
+    {
+      "writtenForm": "繁忙期",
+      "reading": "はんぼうき",
+      "meaningFr": "période de forte activité ; haute saison",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "繁", "position": 0, "readingInWord": "はん" },
+        { "literal": "忙", "position": 1, "readingInWord": "ぼう" },
+        { "literal": "期", "position": 2, "readingInWord": "き" }
+      ]
+    },
+    {
+      "writtenForm": "努々",
+      "reading": "ゆめゆめ",
+      "meaningFr": "absolument (avec une négation) ; surtout pas",
+      "partOfSpeech": "adverbe",
+      "kanji": [
+        { "literal": "努", "position": 0, "readingInWord": "ゆめ" },
+        { "literal": "努", "position": 1, "readingInWord": "ゆめ" }
+      ]
+    }
+  ]
+}

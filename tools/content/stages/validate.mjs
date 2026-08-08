@@ -27,6 +27,7 @@ const TEMPLATE_CATEGORY = {
 const LEVEL_MINIMUMS = {
   N5: { exercises: 40, sentences: 6, words: 6, total: 3000 },
   N4: { exercises: 32, sentences: 5, words: 5, total: 5000 },
+  N3: { exercises: 32, sentences: 5, words: 5, total: 10000 },
 };
 const CATEGORY_SHARES = {
   meaning: 0.2,

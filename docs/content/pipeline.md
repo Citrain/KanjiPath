@@ -69,14 +69,15 @@ réutilisés tant qu'ils existent.
   du mot cible (masquage par position, voir `sentencePromptTokens` dans
   `tools/content/lib/generators.mjs`) pour ne pas donner la réponse.
 
-## Sources et choix des niveaux (N5, N4)
+## Sources et choix des niveaux (N5, N4, N3)
 
 Le pipeline est **multi-niveaux** : la liste des niveaux est portée par
-`LEVELS = ['N5', 'N4']` dans `tools/content/stages/normalize.mjs` et
-`IMPORT_LEVELS = [5, 4]` dans `tools/content/lib/importers.mjs`. Chaque niveau a son
-curaté (`content/curated/n5/`, `content/curated/n4/`), ses seuils (voir plus bas) et
-sa sélection propre de vocabulaire/phrases. Le vocabulaire et les phrases sont
-sélectionnés **niveau par niveau** (N5 d'abord), sans doublon entre niveaux.
+`LEVELS = ['N5', 'N4', 'N3']` dans `tools/content/stages/normalize.mjs` et
+`IMPORT_LEVELS = [5, 4, 3]` dans `tools/content/lib/importers.mjs`. Chaque niveau a
+son curaté (`content/curated/n5/`, `content/curated/n4/`, `content/curated/n3/`),
+ses seuils (voir plus bas) et sa sélection propre de vocabulaire/phrases. Le
+vocabulaire et les phrases sont sélectionnés **niveau par niveau** (N5 d'abord),
+sans doublon entre niveaux.
 
 - **Liste N5** : 79 kanji, croisement de deux jeux dérivés de kanjiapi.dev
   (`kanji-data`, MIT, et son miroir) — identiques — vérifiés contre le champ `jlpt`
@@ -88,6 +89,10 @@ sélectionnés **niveau par niveau** (N5 d'abord), sans doublon entre niveaux.
   vérifiés contre le champ `jlpt` historique de KANJIDIC2 (niveau 3 : 143 des 166 y
   figurent ; les 23 autres sont signalés comme divergence). Voir
   `content/curated/n4/kanji.json`.
+- **Liste N3** : 367 kanji, même croisement kanji-data / kanjiapi — identiques —
+  vérifiés contre le champ `jlpt` historique de KANJIDIC2 (niveau 2 : 339 des 367 y
+  figurent ; les 28 autres sont signalés comme divergence). Voir
+  `content/curated/n3/kanji.json`.
 - **Vocabulaire** : glosses françaises de JMdict, priorité aux mots courants
   (`ichi1`, `spec1`, `news1`…) composés de kanji du niveau ; complété si besoin par
   `content/curated/<niveau>/vocabulary.json`.
@@ -128,6 +133,7 @@ pipeline).
   |---|:---:|:---:|:---:|:---:|
   | N5 | 40 | 6 | 6 | ≥ 3000 |
   | N4 | 32 | 5 | 5 | ≥ 5000 |
+  | N3 | 32 | 5 | 5 | ≥ 10000 |
 
 ## Validation
 

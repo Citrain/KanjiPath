@@ -50,6 +50,12 @@ kanji, liens profonds depuis les points faibles et la fiche kanji) sont impléme
 - lecture de vocabulaire avancée
 - personnalisation de la charge
 
+**État (2026-08-08)** : phase en cours. Le pack de contenu N3 est livré
+(2026.08.3) : 367 kanji curatés (radicaux, confusions, mnémotechniques),
+vocabulaire complété (忙, 努), 18 191 exercices N3 validés (seuil fixé :
+≥ 10000), pipeline multi-niveaux N5+N4+N3. Restent : mini-textes, phrases plus
+naturelles, lecture de vocabulaire avancée, personnalisation de la charge.
+
 ### Phase 4 — N2 et N1
 
 - grands volumes de vocabulaire, nuances, mots composés

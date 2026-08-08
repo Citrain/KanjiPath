@@ -53,7 +53,7 @@ ajoute-le ici.
 | Pipeline de contenu | `tools/content/run.mjs` (stages dans `tools/content/stages/`) |
 | Gabarits d'exercices | `tools/content/lib/generators.mjs` |
 | Chargement du pack en base | `tools/content/load.mjs` (`pnpm content:load`) |
-| Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json` (`n5/`, `n4/`) + `components-fr.json` |
+| Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json` (`n5/`, `n4/`, `n3/`) + `components-fr.json` |
 
 ## Pièges connus (IMPORTANT)
 
@@ -264,14 +264,14 @@ ajoute-le ici.
      utilise les Pointer Events avec capture ; l'état du tracé en cours vit dans une
      `ref` (pas d'effet de bord dans un updater `setState` — StrictMode double-invoque).
 
-31. **Pipeline multi-niveaux (N5, N4).** La liste des niveaux vit à DEUX endroits à
+31. **Pipeline multi-niveaux (N5, N4, N3).** La liste des niveaux vit à DEUX endroits à
     garder alignés : `LEVELS` dans `tools/content/stages/normalize.mjs` et
     `IMPORT_LEVELS` dans `tools/content/lib/importers.mjs`. Chaque niveau a son curaté
     (`content/curated/<niveau>/`) et ses seuils dans `LEVEL_MINIMUMS`
     (`stages/validate.mjs`). Le vocabulaire/phrases est sélectionné niveau par niveau
     (N5 d'abord) avec un `seen` partagé pour éviter les doublons. **Piège** : les
-    seuils N4 sont plus bas que N5 (32 exercices / 5 mots / 5 phrases par kanji,
-    total ≥ 5000) — ne pas appliquer les seuils N5 à un autre niveau.
+    seuils N4/N3 sont plus bas que N5 (32 exercices / 5 mots / 5 phrases par kanji,
+    total ≥ 5000 / ≥ 10000) — ne pas appliquer les seuils N5 à un autre niveau.
 
 32. **Id curatés stables (hash, pas position).** Les mots/phrases curatés ont un id
     `curatedVocabId(writtenForm, reading)` / `curatedSentenceId(japanese)` dérivé d'un
@@ -312,6 +312,19 @@ ajoute-le ici.
     Côté web, l'onglet Statistiques de la page progression ne charge les données que
     s'il est actif (`enabled: tab === 'stats'`).
 
+36. **Ajout d'un niveau (appliqué pour N3).** (a) Le radical curaté de chaque kanji
+    doit être cohérent avec le radical classique de KANJIDIC2 : la correspondance
+    numéro → caractère se déduit empiriquement (membres du radical dans KANJIDIC2 ∩
+    décompositions krad des kanji cibles). (b) `estimatedLevel` d'un mot est le
+    niveau **le plus haut** de ses kanji publiés (`estimatedLevelOf` dans
+    `normalize.mjs`) — ne pas revenir au test binaire « tout N5 sinon N4 ».
+    (c) Le vocabulaire curaté peut référencer des kanji **non publiés** (ex. 繁 dans
+    繁忙期) : les liens kanji sont filtrés sur le référentiel publié à la
+    normalisation, le mot reste valide tant qu'un lien au moins survit.
+    (d) Un changement de version de pack modifie les seeds des distracteurs : des
+    exercices changent d'id et le nettoyage de `content:load` supprime les anciens
+    (sauf historique utilisateur) — c'est attendu.
+
 ## Recettes
 
 ### Ajouter une route API
@@ -348,28 +361,31 @@ ajoute-le ici.
    `pnpm --filter @kanjipath/web test`.
 6. `pnpm --filter @kanjipath/web typecheck`.
 
-### Modifier le contenu curaté d'un niveau (N5, N4)
+### Modifier le contenu curaté d'un niveau (N5, N4, N3)
 
 1. Éditer `content/curated/<niveau>/kanji.json` (ordre, radicaux, confusions,
    mnémotechniques) ou `vocabulary.json` / `sentences.json` (complétion).
 2. Relancer `pnpm content:normalize && pnpm content:generate && pnpm content:validate`.
 3. `pnpm content:report` pour vérifier la couverture (seuils par niveau dans
-   `LEVEL_MINIMUMS` : N5 ≥ 40 exercices / 6 mots / 6 phrases, N4 ≥ 32 / 5 / 5).
+   `LEVEL_MINIMUMS` : N5 ≥ 40 exercices / 6 mots / 6 phrases, N4 et N3 ≥ 32 / 5 / 5).
 4. `pnpm content:publish && pnpm content:load` pour publier et recharger en base.
 
-### Ajouter un nouveau niveau (ex. N3)
+### Ajouter un nouveau niveau (ex. N2 — recette appliquée pour N3, voir piège 36)
 
-1. Croiser deux listes reconnues (kanji-data `jlpt_new=3` + miroir kanjiapi) et
+1. Croiser deux listes reconnues (kanji-data `jlpt_new=<n>` + miroir kanjiapi) et
    vérifier contre le champ `jlpt` historique de KANJIDIC2 ; consigner les divergences.
 2. Ajouter le niveau à `IMPORT_LEVELS` (`lib/importers.mjs`) et `LEVELS`
    (`stages/normalize.mjs`) ; définir ses seuils dans `LEVEL_MINIMUMS`
-   (`stages/validate.mjs`).
-3. Créer `content/curated/<niveau>/kanji.json` (ordre pédagogique, radical +
+   (`stages/validate.mjs`) et les quotas (`SENTENCES_PER_KANJI`, `MIN_WORDS`,
+   `MIN_SENTENCES` dans `normalize.mjs`).
+3. Incrémenter la version du curriculum dans `stages/normalize.mjs`
+   (ex. `2026.08.3` → `2026.08.4`) : elle nomme le manifeste et seede les exercices.
+4. Créer `content/curated/<niveau>/kanji.json` (ordre pédagogique, radical +
    `nameFr`/`meaningFr`, confusions, mnémotechniques) et `vocabulary.json` /
    `sentences.json` (vides au départ, à compléter selon `content:report`).
-4. Compléter `content/curated/components-fr.json` pour tout nouveau composant krad
+5. Compléter `content/curated/components-fr.json` pour tout nouveau composant krad
    (sinon affiché sans nom sur la fiche).
-5. `node tools/content/run.mjs import --force` (le jeu de kanji cibles change), puis
+6. `node tools/content/run.mjs import --force` (le jeu de kanji cibles change), puis
    `pnpm content:build && pnpm content:load`.
 
 ### Régénérer le contenu depuis zéro

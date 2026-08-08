@@ -284,9 +284,10 @@ export async function extractKanjivg(literals) {
   return written;
 }
 
-export const LEVELS = ['N5', 'N4'];
+export const LEVELS = ['N5', 'N4', 'N3'];
 
-const SENTENCES_PER_KANJI = { N5: 6, N4: 6 };
+const SENTENCES_PER_KANJI = { N5: 6, N4: 6, N3: 6 };
+const LEVEL_RANK = Object.fromEntries(LEVELS.map((level, index) => [level, index]));
 const CURRICULUM_SOURCES = ['kanji-data (MIT)', 'kanjiapi.dev (miroir)', 'KANJIDIC2 jlpt historique'];
 
 export async function stageNormalize() {
@@ -311,7 +312,19 @@ export async function stageNormalize() {
     LEVELS.map((level) => [level, new Set(curatedByLevel[level].kanji.kanji.map((k) => k.literal))]),
   );
   const allSet = new Set(LEVELS.flatMap((level) => [...setsByLevel.get(level)]));
-  const n5Set = setsByLevel.get('N5');
+  const levelOfLiteral = new Map(
+    LEVELS.flatMap((level) => [...setsByLevel.get(level)].map((literal) => [literal, level])),
+  );
+  const estimatedLevelOf = (text) => {
+    let best = null;
+    for (const ch of kanjiLiteralsOf(text)) {
+      const level = levelOfLiteral.get(ch);
+      if (level !== undefined && (best === null || LEVEL_RANK[level] > LEVEL_RANK[best])) {
+        best = level;
+      }
+    }
+    return best ?? LEVELS[LEVELS.length - 1];
+  };
   const kanjivgSet = new Set(kanjivgIndex);
 
   const kanjiOut = [];
@@ -399,7 +412,7 @@ export async function stageNormalize() {
         meaningFr: entry.glossFr.slice(0, 3).join(' ; '),
         partOfSpeech: entry.pos[0],
         frequencyRank: undefined,
-        estimatedLevel: [...kanjiLiteralsOf(keb)].every((ch) => n5Set.has(ch)) ? 'N5' : 'N4',
+        estimatedLevel: estimatedLevelOf(keb),
         kanji: kanjiPositions.map(({ ch, position }) => {
           const alignedEntry = aligned?.find((a) => a.position === position && a.kanji === ch);
           return {
@@ -531,7 +544,7 @@ export async function stageNormalize() {
   const curriculum = {
     code: 'JLPT_ALIGNED',
     name: 'Parcours aligné sur le JLPT',
-    version: '2026.08.2',
+    version: '2026.08.3',
     status: 'published',
     notes: LEVELS.map((level) => `${level} : ${curatedByLevel[level].kanji.notes}`).join('\n'),
     levels,
@@ -560,8 +573,8 @@ export async function stageNormalize() {
   const extracted = await extractKanjivg([...allSet]);
   console.log(`[normalize] KanjiVG: ${extracted.length} SVG extraits et assainis`);
 
-  const MIN_WORDS = { N5: 6, N4: 6 };
-  const MIN_SENTENCES = { N5: 6, N4: 6 };
+  const MIN_WORDS = { N5: 6, N4: 6, N3: 6 };
+  const MIN_SENTENCES = { N5: 6, N4: 6, N3: 6 };
   for (const level of LEVELS) {
     const literals = curatedByLevel[level].kanji.kanji.map((k) => k.literal);
     const missingVocab = literals.filter((k) => (allPerKanji.get(k)?.length ?? 0) < MIN_WORDS[level]);

@@ -22,7 +22,7 @@ Plateforme web d'apprentissage progressif des kanji — parcours **aligné sur l
 - **Règles agent** : `../AGENTS.md`.
 - **Démarrage rapide** : `../README.md`.
 
-## État actuel (Phase 2 — N4)
+## État actuel (Phase 3 — N3, contenu livré)
 
 Ce qui est implémenté :
 
@@ -38,10 +38,11 @@ Ce qui est implémenté :
 - Domaine : moteur FSRS (`ts-fsrs`) encapsulé, calcul de maîtrise pondéré.
 - Pipeline de contenu complet **multi-niveaux** : download → import → normalize →
   generate → validate → report → publish → load. Référentiels curatés **N5**
-  (79 kanji croisés) et **N4** (166 kanji croisés), ordre pédagogique, radicaux,
-  confusions, mnémotechniques. Pack publié 2026.08.2 : 245 kanji, 1664 mots
-  (JMdict FR + vocabulaire curaté), 1300 phrases (Tatoeba CC BY 2.0 FR),
-  12110 exercices déterministes (3915 N5, 8195 N4), SVG KanjiVG assainis.
+  (79 kanji croisés), **N4** (166 kanji croisés) et **N3** (367 kanji croisés),
+  ordre pédagogique, radicaux, confusions, mnémotechniques. Pack publié 2026.08.3 :
+  612 kanji, 4197 mots (JMdict FR + vocabulaire curaté), 3180 phrases (Tatoeba
+  CC BY 2.0 FR), 30289 exercices déterministes (3922 N5, 8176 N4, 18191 N3),
+  SVG KanjiVG assainis.
 - API : curricula, kanji (liste, fiche, SVG, vocabulaire, phrases, progression),
   étude (sessions, réponses FSRS, reprise, abandon, **révision ciblée** par niveau/
   compétence/kanji), progression (tableau de bord, niveaux, points faibles,
@@ -76,6 +77,11 @@ visuelles, mnémotechniques), vocabulaire/phrases complétés (以, 勉, 堂),
 8195 exercices N4 validés — et fonctionnalités applicatives complétées :
 **statistiques détaillées** (`GET /progress/stats`, onglet Statistiques) et
 **mode révision ciblée** (sessions `targeted` filtrées par niveau, compétence ou
-kanji ; liens profonds depuis les points faibles et la fiche kanji). L'introduction
-de nouveaux kanji en session suit l'ordre N5 → N4 → … Prochaine étape contenu :
-Phase 3 (N3).
+kanji ; liens profonds depuis les points faibles et la fiche kanji).
+
+La **Phase 3 (N3)** est en cours : le **pack de contenu N3** est livré —
+367 kanji N3 curatés (radicaux, confusions visuelles, mnémotechniques),
+vocabulaire complété (忙, 努), 18191 exercices N3 validés (seuil : 10000),
+pack 2026.08.3 (612 kanji au total). L'introduction de nouveaux kanji en session
+suit l'ordre N5 → N4 → N3. Restent à venir dans la phase : mini-textes, phrases
+plus naturelles, lecture de vocabulaire avancée, personnalisation de la charge.

@@ -367,7 +367,7 @@ export async function listKanjivgSvgs() {
   return codepoints;
 }
 
-export const IMPORT_LEVELS = [5, 4];
+export const IMPORT_LEVELS = [5, 4, 3];
 
 const LEGACY_TO_NEW = { 4: 5, 3: 4 };
 
