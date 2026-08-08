@@ -25,7 +25,7 @@ export async function stageGenerate() {
     ids.add(exercise.id);
   }
 
-  await writeJson(path.join(GENERATED_DIR, 'exercises-n5.json'), exercises);
+  await writeJson(path.join(GENERATED_DIR, 'exercises.json'), exercises);
 
   const bySkill = {};
   for (const exercise of exercises) {

@@ -1,0 +1,95 @@
+{
+  "version": "2026.08.2",
+  "createdAt": "2026-08-08T08:09:12.824Z",
+  "gitCommit": "1c34b919b896c6caba4a7c4792877f18edc00a15",
+  "sources": [
+    {
+      "name": "KANJIDIC2",
+      "license": "CC BY-SA 4.0 (licence EDRDG)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "kanjidic2.xml.gz",
+          "sha256": "sha256:22ef6038f6c64ea32a0b5f229005384b94b45ad3cb4747f8e6dc99c6a7aaffa1"
+        }
+      ]
+    },
+    {
+      "name": "JMdict (multilingue, glosses françaises)",
+      "license": "CC BY-SA 4.0 (licence EDRDG)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "JMdict.gz",
+          "sha256": "sha256:62f5fd402cfbff619e592e11b16276fa8cdb7c7524126194e9000af6019dfcf5"
+        }
+      ]
+    },
+    {
+      "name": "KRADFILE (EDRDG), conversion Unicode/JSON",
+      "license": "CC BY-SA 3.0 (licence EDRDG)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "krad.json",
+          "sha256": "sha256:3db9b3415c4d97ee9b4bfe911c9d3f65927a75b1abdc50280eabad56ab8e8186"
+        },
+        {
+          "file": "krad_components.json",
+          "sha256": "sha256:d5d3d11153492a9aeff4c1526770929db14fa80360e3685927dd5cfc357b6caa"
+        }
+      ]
+    },
+    {
+      "name": "KanjiVG",
+      "license": "CC BY-SA 3.0",
+      "version": "r20250816",
+      "checksums": [
+        {
+          "file": "kanjivg-main.zip",
+          "sha256": "sha256:69a2944ec1183086fdee5ba9c1f48bc306b867480a95b2f337f3203bf50689a3"
+        }
+      ]
+    },
+    {
+      "name": "Tatoeba",
+      "license": "CC BY 2.0 FR (licences par défaut Tatoeba, attribution par auteur)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "jpn_sentences_detailed.tsv.bz2",
+          "sha256": "sha256:3fc4e9d9967cb627b0f38daff794129142237c29e1fada6698caccf249d564ec"
+        },
+        {
+          "file": "fra_sentences_detailed.tsv.bz2",
+          "sha256": "sha256:47718a8bcc46bac51835f8d5ba30c5ef67efb32e59904bd70fb88af0ca926c0b"
+        },
+        {
+          "file": "links.tar.bz2",
+          "sha256": "sha256:1ab92a74b2af893d67adbb0863b6cccc0312e4b4c95a5d53b1054a023319bba1"
+        }
+      ]
+    },
+    {
+      "name": "kanji-data (David Gouveia)",
+      "license": "MIT",
+      "version": null,
+      "checksums": [
+        {
+          "file": "kanji-data.json",
+          "sha256": "sha256:561b72ea9df703c58fae0c68585812e172aaa7611d2fcee6719d55fd2dfd4fa4"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "kanji": 245,
+    "vocabulary": 1664,
+    "sentences": 1300,
+    "exercises": 12110
+  },
+  "validation": {
+    "errors": 0,
+    "warnings": 0
+  }
+}

@@ -101,6 +101,20 @@ export class ContentService {
       orderBy: { dueAt: 'asc' },
     });
 
+    const rawConfusions = Array.isArray(kanji.notes?.confusions)
+      ? (kanji.notes?.confusions as string[])
+      : [];
+    const publishedConfusions =
+      rawConfusions.length > 0
+        ? await this.prisma.kanji.findMany({
+            where: { literal: { in: rawConfusions } },
+            select: { literal: true },
+          })
+        : [];
+    const confusions = rawConfusions.filter((literal) =>
+      publishedConfusions.some((k) => k.literal === literal),
+    );
+
     const base: KanjiSummary = {
       id: kanji.id,
       literal: kanji.literal,
@@ -145,9 +159,7 @@ export class ContentService {
             mnemonicFr: kanji.notes.mnemonicFr,
             etymologyFr: kanji.notes.etymologyFr,
             etymologySource: kanji.notes.etymologySource,
-            confusions: Array.isArray(kanji.notes.confusions)
-              ? (kanji.notes.confusions as string[])
-              : [],
+            confusions,
           }
         : null,
       kanjivgUrl: kanji.kanjivgPath ? `/kanji/${encodeURIComponent(literal)}/svg` : null,
@@ -241,21 +253,25 @@ export class ContentService {
     }
     const related = await this.prisma.kanji.findMany({
       where: { literal: { in: [...relatedLiterals] } },
+      include: { curriculumLinks: { orderBy: { order: 'asc' }, take: 1 } },
     });
-    return related.map((k) => ({
-      id: k.id,
-      literal: k.literal,
-      unicodeCodepoint: k.unicodeCodepoint,
-      strokeCount: k.strokeCount,
-      frequencyRank: k.frequencyRank,
-      schoolGrade: k.schoolGrade,
-      level: 'N5',
-      order: 0,
-      primaryMeaning: null,
-      status: 'new',
-      overallScore: 0,
-      nextDueAt: null,
-    }));
+    return related.map((k) => {
+      const link = k.curriculumLinks[0];
+      return {
+        id: k.id,
+        literal: k.literal,
+        unicodeCodepoint: k.unicodeCodepoint,
+        strokeCount: k.strokeCount,
+        frequencyRank: k.frequencyRank,
+        schoolGrade: k.schoolGrade,
+        level: (link?.level ?? 'N5') as KanjiSummary['level'],
+        order: link?.order ?? 0,
+        primaryMeaning: null,
+        status: 'new' as const,
+        overallScore: 0,
+        nextDueAt: null,
+      };
+    });
   }
 
   async kanjiProgress(userId: string, literal: string): Promise<KanjiProgressDto> {

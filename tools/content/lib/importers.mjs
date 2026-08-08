@@ -367,6 +367,10 @@ export async function listKanjivgSvgs() {
   return codepoints;
 }
 
+export const IMPORT_LEVELS = [5, 4];
+
+const LEGACY_TO_NEW = { 4: 5, 3: 4 };
+
 export async function runImport({ force = false } = {}) {
   const kanjiData = await readJson(path.join(RAW_DIR, 'kanji-data.json'));
   const kanjiApiCross = await readJson(path.join(RAW_DIR, 'kanjiapi-jlpt.json'));
@@ -383,25 +387,35 @@ export async function runImport({ force = false } = {}) {
     }
   }
 
-  const n5KanjiData = new Set(Object.keys(kanjiData).filter((k) => kanjiData[k].jlpt_new === 5));
-  const n5KanjiApi = new Set(Object.keys(kanjiApiCross).filter((k) => kanjiApiCross[k].jlpt === 5));
-  const divergences = [...n5KanjiApi].filter((k) => !n5KanjiData.has(k));
-
-  console.log(`[import] N5 kanji-data: ${n5KanjiData.size}, N5 kanjiapi (miroir): ${n5KanjiApi.size}`);
+  const levelSets = {};
+  const divergences = {};
+  const targetKanji = new Set();
+  for (const level of IMPORT_LEVELS) {
+    const kanjiDataSet = new Set(Object.keys(kanjiData).filter((k) => kanjiData[k].jlpt_new === level));
+    const kanjiApiSet = new Set(Object.keys(kanjiApiCross).filter((k) => kanjiApiCross[k].jlpt === level));
+    levelSets[level] = kanjiDataSet;
+    divergences[`N${level}`] = [...kanjiApiSet].filter((k) => !kanjiDataSet.has(k));
+    for (const literal of kanjiDataSet) {
+      targetKanji.add(literal);
+    }
+    console.log(
+      `[import] N${level} kanji-data: ${kanjiDataSet.size}, N${level} kanjiapi (miroir): ${kanjiApiSet.size}`,
+    );
+  }
 
   let kanjidicRecords = await readJsonIfExists(path.join(IMPORTED_DIR, 'kanjidic.json'));
-  if (force || !kanjidicRecords) {
-    kanjidicRecords = await parseKanjidic([...new Set([...n5KanjiData])]);
+  if (force || !kanjidicRecords || [...targetKanji].some((k) => !kanjidicRecords[k])) {
+    kanjidicRecords = await parseKanjidic([...targetKanji]);
     await writeJson(path.join(IMPORTED_DIR, 'kanjidic.json'), kanjidicRecords);
   } else {
     console.log('[import] kanjidic.json déjà présent (réutilisé)');
   }
-  const legacyN5 = Object.values(kanjidicRecords)
-    .filter((r) => r.jlptLegacy === 4)
+  const legacyLiterals = Object.values(kanjidicRecords)
+    .filter((r) => r.jlptLegacy !== null && LEGACY_TO_NEW[r.jlptLegacy] !== undefined)
     .map((r) => r.literal);
 
   const jlptCross = {};
-  for (const literal of [...n5KanjiData, ...legacyN5]) {
+  for (const literal of [...targetKanji, ...legacyLiterals]) {
     jlptCross[literal] = {
       kanjiDataLevel: kanjiDataLevels[literal] ?? null,
       kanjiApiLevel: kanjiApiLevels[literal] ?? null,

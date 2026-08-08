@@ -48,7 +48,7 @@ ajoute-le ici.
 | Pipeline de contenu | `tools/content/run.mjs` (stages dans `tools/content/stages/`) |
 | Gabarits d'exercices | `tools/content/lib/generators.mjs` |
 | Chargement du pack en base | `tools/content/load.mjs` (`pnpm content:load`) |
-| Données curatées N5 | `content/curated/n5/kanji.json`, `vocabulary.json`, `sentences.json` |
+| Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json` (`n5/`, `n4/`) + `components-fr.json` |
 
 ## Pièges connus (IMPORTANT)
 
@@ -227,6 +227,30 @@ ajoute-le ici.
      utilise les Pointer Events avec capture ; l'état du tracé en cours vit dans une
      `ref` (pas d'effet de bord dans un updater `setState` — StrictMode double-invoque).
 
+31. **Pipeline multi-niveaux (N5, N4).** La liste des niveaux vit à DEUX endroits à
+    garder alignés : `LEVELS` dans `tools/content/stages/normalize.mjs` et
+    `IMPORT_LEVELS` dans `tools/content/lib/importers.mjs`. Chaque niveau a son curaté
+    (`content/curated/<niveau>/`) et ses seuils dans `LEVEL_MINIMUMS`
+    (`stages/validate.mjs`). Le vocabulaire/phrases est sélectionné niveau par niveau
+    (N5 d'abord) avec un `seen` partagé pour éviter les doublons. **Piège** : les
+    seuils N4 sont plus bas que N5 (32 exercices / 5 mots / 5 phrases par kanji,
+    total ≥ 5000) — ne pas appliquer les seuils N5 à un autre niveau.
+
+32. **Id curatés stables (hash, pas position).** Les mots/phrases curatés ont un id
+    `curatedVocabId(writtenForm, reading)` / `curatedSentenceId(japanese)` dérivé d'un
+    hash FNV-1a — pas `v-curated-${index}`. Un id par position décalerait tous les
+    suivants à chaque ajout et laisserait des orphelins en base au rechargement.
+    `content:load` nettoie les orphelins (exercices/mots/phrases absents du pack),
+    mais **conserve** les exercices référencés par une session ou un historique de
+    révision, et met à `null` les références vers mots/phrases supprimés.
+
+33. **Confusions kanji : filtrées côté API.** Le web rend chaque confusion comme un
+    lien `/kanji/<literal>` ; l'API (`content.service.ts#kanjiDetail`) ne renvoie que
+    les confusions correspondant à un kanji **publié**. On peut donc laisser dans le
+    curaté des confusions vers des kanji d'un niveau pas encore publié (elles
+    apparaîtront automatiquement à la publication du niveau). Ne pas créer de lien
+    côté web sans cette garantie.
+
 ## Recettes
 
 ### Ajouter une route API
@@ -262,14 +286,29 @@ ajoute-le ici.
    `pnpm --filter @kanjipath/web test`.
 6. `pnpm --filter @kanjipath/web typecheck`.
 
-### Modifier le contenu N5 (curaté)
+### Modifier le contenu curaté d'un niveau (N5, N4)
 
-1. Éditer `content/curated/n5/kanji.json` (ordre, radicaux, confusions,
+1. Éditer `content/curated/<niveau>/kanji.json` (ordre, radicaux, confusions,
    mnémotechniques) ou `vocabulary.json` / `sentences.json` (complétion).
 2. Relancer `pnpm content:normalize && pnpm content:generate && pnpm content:validate`.
-3. `pnpm content:report` pour vérifier la couverture (≥ 40 exercices, ≥ 6 mots,
-   ≥ 6 phrases par kanji).
+3. `pnpm content:report` pour vérifier la couverture (seuils par niveau dans
+   `LEVEL_MINIMUMS` : N5 ≥ 40 exercices / 6 mots / 6 phrases, N4 ≥ 32 / 5 / 5).
 4. `pnpm content:publish && pnpm content:load` pour publier et recharger en base.
+
+### Ajouter un nouveau niveau (ex. N3)
+
+1. Croiser deux listes reconnues (kanji-data `jlpt_new=3` + miroir kanjiapi) et
+   vérifier contre le champ `jlpt` historique de KANJIDIC2 ; consigner les divergences.
+2. Ajouter le niveau à `IMPORT_LEVELS` (`lib/importers.mjs`) et `LEVELS`
+   (`stages/normalize.mjs`) ; définir ses seuils dans `LEVEL_MINIMUMS`
+   (`stages/validate.mjs`).
+3. Créer `content/curated/<niveau>/kanji.json` (ordre pédagogique, radical +
+   `nameFr`/`meaningFr`, confusions, mnémotechniques) et `vocabulary.json` /
+   `sentences.json` (vides au départ, à compléter selon `content:report`).
+4. Compléter `content/curated/components-fr.json` pour tout nouveau composant krad
+   (sinon affiché sans nom sur la fiche).
+5. `node tools/content/run.mjs import --force` (le jeu de kanji cibles change), puis
+   `pnpm content:build && pnpm content:load`.
 
 ### Régénérer le contenu depuis zéro
 

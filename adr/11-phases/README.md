@@ -35,6 +35,12 @@ Phases de livraison, critères d'acceptation et décisions refusées.
 
 **Critère de sortie** : au moins 5 000 exercices N4 validés
 
+**État (2026-08-08)** : critère de sortie atteint — pack N4 publié (2026.08.2) :
+166 kanji curatés, 8 195 exercices N4 validés, pipeline multi-niveaux, nettoyage
+des contenus orphelins au chargement. Les confusions visuelles sont portées par le
+curaté (paires par kanji) et les gabarits existants. Restent : statistiques
+détaillées et mode révision ciblée (application).
+
 ### Phase 3 — N3
 
 - mini-textes, phrases plus naturelles

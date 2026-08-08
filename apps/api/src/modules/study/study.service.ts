@@ -496,11 +496,19 @@ export class StudyService {
     const discoveredIds = new Set(discovered.map((card) => card.subjectId));
     const curriculum = await this.prisma.curriculum.findFirst({ where: { status: 'published' } });
     if (curriculum) {
-      const newKanji = await this.prisma.curriculumKanji.findMany({
-        where: { curriculumId: curriculum.id, level: 'N5', kanjiId: { notIn: [...discoveredIds] } },
-        orderBy: { order: 'asc' },
-        take: mode === 'free' ? dailyNewLimit : Math.min(dailyNewLimit, 5),
-      });
+      const takeNew = mode === 'free' ? dailyNewLimit : Math.min(dailyNewLimit, 5);
+      const newKanji: { kanjiId: string }[] = [];
+      for (const level of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
+        if (newKanji.length >= takeNew) {
+          break;
+        }
+        const entries = await this.prisma.curriculumKanji.findMany({
+          where: { curriculumId: curriculum.id, level, kanjiId: { notIn: [...discoveredIds] } },
+          orderBy: { order: 'asc' },
+          take: takeNew - newKanji.length,
+        });
+        newKanji.push(...entries);
+      }
       for (const entry of newKanji) {
         const intro = this.pickExercise(exercises, 'kanji_to_meaning_qcm', entry.kanjiId, used);
         if (intro) {

@@ -219,12 +219,15 @@ async function loadCurriculum(prisma, curriculum) {
     },
   });
   await prisma.curriculumKanji.deleteMany({ where: { curriculumId } });
-  if (curriculum.levels.N5.length > 0) {
+  for (const [level, entries] of Object.entries(curriculum.levels)) {
+    if (entries.length === 0) {
+      continue;
+    }
     await prisma.curriculumKanji.createMany({
-      data: curriculum.levels.N5.map((entry) => ({
+      data: entries.map((entry) => ({
         curriculumId,
         kanjiId: entry.kanjiId,
-        level: 'N5',
+        level,
         order: entry.order,
         confidence: entry.confidence,
         reviewedAt: new Date(),
@@ -366,14 +369,81 @@ async function loadExercises(prisma, exercises, versionId) {
         editorialStatus: exercise.editorialStatus,
       },
       update: {
+        templateId: `tpl-${exercise.template}`,
+        level: exercise.level,
+        skill: exercise.skill,
+        kanjiId: exercise.targetKanjiId,
+        vocabularyId: exercise.vocabularyId ?? null,
+        sentenceId: exercise.sentenceId ?? null,
         promptJson: exercise.prompt,
         answerJson: { acceptedAnswers: exercise.acceptedAnswers, distractors: exercise.distractors ?? [] },
         explanationJson: { explanation: exercise.explanation },
         difficulty: exercise.difficulty,
+        sourceId: exercise.sourceId,
+        contentVersionId: versionId,
         editorialStatus: exercise.editorialStatus,
       },
     });
   }
+}
+
+async function cleanupOrphans(prisma, packIds) {
+  const orphanExercises = await prisma.exerciseItem.findMany({
+    where: { externalId: { notIn: packIds.exercises } },
+    select: { id: true },
+  });
+  const orphanExerciseIds = orphanExercises.map((e) => e.id);
+  const referenced = new Set([
+    ...(await prisma.studySessionItem.findMany({
+      where: { exerciseItemId: { in: orphanExerciseIds } },
+      select: { exerciseItemId: true },
+    })).map((row) => row.exerciseItemId),
+    ...(await prisma.reviewLog.findMany({
+      where: { exerciseItemId: { in: orphanExerciseIds } },
+      select: { exerciseItemId: true },
+    })).map((row) => row.exerciseItemId),
+  ]);
+  const deletable = orphanExerciseIds.filter((id) => !referenced.has(id));
+  if (deletable.length > 0) {
+    await prisma.exerciseItem.deleteMany({ where: { id: { in: deletable } } });
+  }
+  console.log(
+    `[load] nettoyage: ${deletable.length} exercices orphelins supprimés, ${referenced.size} conservés (historique utilisateur)`,
+  );
+
+  const orphanVocab = await prisma.vocabulary.findMany({
+    where: { id: { notIn: packIds.vocabulary } },
+    select: { id: true },
+  });
+  const orphanVocabIds = orphanVocab.map((v) => v.id);
+  if (orphanVocabIds.length > 0) {
+    await prisma.sentenceToken.updateMany({
+      where: { vocabularyId: { in: orphanVocabIds } },
+      data: { vocabularyId: null },
+    });
+    await prisma.exerciseItem.updateMany({
+      where: { vocabularyId: { in: orphanVocabIds } },
+      data: { vocabularyId: null },
+    });
+    await prisma.vocabularyKanji.deleteMany({ where: { vocabularyId: { in: orphanVocabIds } } });
+    await prisma.vocabulary.deleteMany({ where: { id: { in: orphanVocabIds } } });
+  }
+  console.log(`[load] nettoyage: ${orphanVocabIds.length} mots orphelins supprimés`);
+
+  const orphanSentences = await prisma.sentence.findMany({
+    where: { id: { notIn: packIds.sentences } },
+    select: { id: true },
+  });
+  const orphanSentenceIds = orphanSentences.map((s) => s.id);
+  if (orphanSentenceIds.length > 0) {
+    await prisma.exerciseItem.updateMany({
+      where: { sentenceId: { in: orphanSentenceIds } },
+      data: { sentenceId: null },
+    });
+    await prisma.sentenceToken.deleteMany({ where: { sentenceId: { in: orphanSentenceIds } } });
+    await prisma.sentence.deleteMany({ where: { id: { in: orphanSentenceIds } } });
+  }
+  console.log(`[load] nettoyage: ${orphanSentenceIds.length} phrases orphelines supprimées`);
 }
 
 export async function stageLoad() {
@@ -391,13 +461,17 @@ export async function stageLoad() {
   const manifest = await readJson(path.join(MANIFESTS_DIR, `${curriculum.version}.json`));
 
   const versionId = `ver-${curriculum.version}`;
+  const levelList = Object.entries(curriculum.levels)
+    .filter(([, entries]) => entries.length > 0)
+    .map(([level]) => level)
+    .join('+');
   await prisma.contentVersion.upsert({
     where: { id: versionId },
     create: {
       id: versionId,
       version: curriculum.version,
       gitCommit: manifest.gitCommit,
-      notes: 'Pack N5 publié par le pipeline de contenu',
+      notes: `Pack ${levelList} publié par le pipeline de contenu`,
     },
     update: { gitCommit: manifest.gitCommit },
   });
@@ -414,6 +488,12 @@ export async function stageLoad() {
   await loadSentences(prisma, sentences);
   console.log('[load] exercices...');
   await loadExercises(prisma, exercises, versionId);
+  console.log('[load] nettoyage des contenus orphelins...');
+  await cleanupOrphans(prisma, {
+    vocabulary: vocabulary.map((v) => v.id),
+    sentences: sentences.map((s) => s.id),
+    exercises: exercises.map((e) => e.id),
+  });
 
   const counts = {
     kanji: await prisma.kanji.count(),

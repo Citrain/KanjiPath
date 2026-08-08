@@ -1,0 +1,12 @@
+{
+  "level": "N4",
+  "notes": "Phrases créées manuellement : Tatoeba manque de phrases courtes avec 堂.",
+  "sentences": [
+    { "japanese": "食堂で昼ご飯を食べる。", "french": "Je mange le déjeuner à la cantine." },
+    { "japanese": "古いお堂に参った。", "french": "J'ai visité un vieux sanctuaire." },
+    { "japanese": "堂々とした声で発表した。", "french": "Il a présenté son exposé d'une voix assurée." },
+    { "japanese": "議事堂の前で写真を撮った。", "french": "J'ai pris une photo devant le parlement." },
+    { "japanese": "大聖堂の鐘が鳴っている。", "french": "Les cloches de la cathédrale sonnent." },
+    { "japanese": "講堂に学生が集まった。", "french": "Les étudiants se sont rassemblés dans l'auditorium." }
+  ]
+}

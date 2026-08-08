@@ -10,7 +10,7 @@ export async function stagePublish() {
     readJson(path.join(NORMALIZED_DIR, 'sentences.json')),
     readJson(path.join(NORMALIZED_DIR, 'curriculum.json')),
     readJson(path.join(NORMALIZED_DIR, 'sources.json')),
-    readJson(path.join(GENERATED_DIR, 'exercises-n5.json')),
+    readJson(path.join(GENERATED_DIR, 'exercises.json')),
     readJson(path.join(REPORTS_DIR, 'validate.json')),
   ]);
 

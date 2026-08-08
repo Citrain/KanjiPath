@@ -38,11 +38,11 @@ réutilisés tant qu'ils existent.
 | `download` | télécharge KANJIDIC2, JMdict, KRADFILE (JSON), KanjiVG, Tatoeba, kanji-data ; calcule les checksums sha256 | `content/raw/*`, `content/reports/download.json` |
 | `import` | parse les sources brutes (XML KANJIDIC2, XML JMdict en flux, TSV Tatoeba + liens, zip KanjiVG) | `content/normalized/imported/*.json` |
 | `normalize` | fusionne avec le curaté (`content/curated/`), sélectionne vocabulaire (JMdict FR) et phrases (Tatoeba), **annote les phrases** (tokenisation kuromoji : lecture kana + romaji par token), calcule le **romaji** des lectures de kanji et du vocabulaire, extrait et **assainit** les SVG KanjiVG | `content/normalized/{kanji,vocabulary,sentences,curriculum,sources}.json`, `content/generated/kanjivg/*.svg` |
-| `generate` | génère les exercices de façon **déterministe** (seed = gabarit + kanji + variante + version du pack) | `content/generated/exercises-n5.json` |
-| `validate` | applique les règles ADR (doublons, réponses, distracteurs, seuils de couverture, licences, provenance) ; échec bloquant | `content/reports/validate.json` |
-| `report` | rapport de couverture par kanji | `content/reports/report.json` |
+| `generate` | génère les exercices de façon **déterministe** (seed = gabarit + kanji + variante + version du pack) | `content/generated/exercises.json` |
+| `validate` | applique les règles ADR (doublons, réponses, distracteurs, seuils de couverture **par niveau**, licences, provenance) ; échec bloquant | `content/reports/validate.json` |
+| `report` | rapport de couverture par kanji et par niveau | `content/reports/report.json` |
 | `publish` | pack final (`editorialStatus: published`) + manifeste versionné | `content/generated/pack/*.json`, `content/manifests/<version>.json` |
-| `load` | upsert idempotent du pack dans MariaDB via Prisma (les id pack deviennent les id DB) | base `kanjipath` |
+| `load` | upsert idempotent du pack dans MariaDB via Prisma (les id pack deviennent les id DB) + **nettoyage des contenus orphelins** (sans écraser l'historique utilisateur) | base `kanjipath` |
 
 ### Dépendances du pipeline
 
@@ -65,7 +65,14 @@ réutilisés tant qu'ils existent.
   du mot cible (masquage par position, voir `sentencePromptTokens` dans
   `tools/content/lib/generators.mjs`) pour ne pas donner la réponse.
 
-## Sources et choix N5
+## Sources et choix des niveaux (N5, N4)
+
+Le pipeline est **multi-niveaux** : la liste des niveaux est portée par
+`LEVELS = ['N5', 'N4']` dans `tools/content/stages/normalize.mjs` et
+`IMPORT_LEVELS = [5, 4]` dans `tools/content/lib/importers.mjs`. Chaque niveau a son
+curaté (`content/curated/n5/`, `content/curated/n4/`), ses seuils (voir plus bas) et
+sa sélection propre de vocabulaire/phrases. Le vocabulaire et les phrases sont
+sélectionnés **niveau par niveau** (N5 d'abord), sans doublon entre niveaux.
 
 - **Liste N5** : 79 kanji, croisement de deux jeux dérivés de kanjiapi.dev
   (`kanji-data`, MIT, et son miroir) — identiques — vérifiés contre le champ `jlpt`
@@ -73,9 +80,13 @@ réutilisés tant qu'ils existent.
   signalés comme divergence et classés N4). Voir
   `content/curated/n5/kanji.json` (ordre pédagogique, radical, confusions,
   mnémotechniques) et `content/normalized/imported/jlpt_cross.json`.
+- **Liste N4** : 166 kanji, même croisement kanji-data / kanjiapi — identiques —
+  vérifiés contre le champ `jlpt` historique de KANJIDIC2 (niveau 3 : 143 des 166 y
+  figurent ; les 23 autres sont signalés comme divergence). Voir
+  `content/curated/n4/kanji.json`.
 - **Vocabulaire** : glosses françaises de JMdict, priorité aux mots courants
-  (`ichi1`, `spec1`, `news1`…) composés de kanji N5 ; complété si besoin par
-  `content/curated/n5/vocabulary.json`.
+  (`ichi1`, `spec1`, `news1`…) composés de kanji du niveau ; complété si besoin par
+  `content/curated/<niveau>/vocabulary.json`.
 - **Phrases** : paires japonais→français de Tatoeba (export détaillé + `links`),
   licence **CC BY 2.0 FR** (l'export CC0 ne contient quasiment aucune phrase
   japonaise). Auteur conservé ; si le compte a disparu, attribution « Tatoeba ».
@@ -106,8 +117,13 @@ pipeline).
   le même pack produit exactement les mêmes exercices (seed stable).
 - Interdit : générer une réponse aléatoire non validée pendant une session utilisateur.
 - Répartition par kanji : sens, lecture, vocabulaire, contexte, composants/traits,
-  confusion (voir `tools/content/lib/generators.mjs`). Minimum validé : 40 exercices,
-  6 mots et 6 phrases par kanji N5.
+  confusion (voir `tools/content/lib/generators.mjs`).
+- **Seuils validés par niveau** (`LEVEL_MINIMUMS` dans
+  `tools/content/stages/validate.mjs`) :
+  | Niveau | Exercices/kanji | Mots/kanji | Phrases/kanji | Total exercices |
+  |---|:---:|:---:|:---:|:---:|
+  | N5 | 40 | 6 | 6 | ≥ 3000 |
+  | N4 | 32 | 5 | 5 | ≥ 5000 |
 
 ## Validation
 
@@ -127,8 +143,17 @@ résultat de validation, commit git). Exemple : `content/manifests/2026.08.1.jso
 
 - Idempotent : upsert par id stables (les id du pack deviennent les id DB), donc la
   progression des utilisateurs (cartes FSRS, historiques) survive aux rechargements.
+  Les `exercise_items` existants sont mis à jour sur **toutes** leurs colonnes
+  (références vocabulaire/phrase/kanji incluses), pas seulement le contenu.
 - Les enfants éditoriaux (sens, lectures, composants, liens curriculum/vocabulaire)
   sont remplacés ; les `review_logs` conservent l'historique (`exercise_items`
   référencés par `external_id`).
+- **Nettoyage des orphelins** : après chargement, tout exercice / mot / phrase absent
+  du pack publié est supprimé, **sauf** les exercices référencés par une session ou
+  un historique de révision (conservés pour ne pas casser la progression). Les
+  références d'exercices vers des mots/phrases supprimés sont mises à `null`.
+- **Id curatés stables** : les mots et phrases curatés ont un id dérivé d'un hash de
+  leur contenu (`curatedVocabId`, `curatedSentenceId`), pas de leur position — un
+  ajout ne décale plus les id des suivants (pas d'orphelins au rechargement).
 - Ordre : sources → version → radicaux → kanji → curriculum → vocabulaire →
-  phrases → gabarits → exercices.
+  phrases → gabarits → exercices → nettoyage.

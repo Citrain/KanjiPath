@@ -24,9 +24,10 @@ const TEMPLATE_CATEGORY = {
   confusion_pair_qcm: 'confusion',
 };
 
-const MIN_EXERCISES_PER_KANJI = 40;
-const MIN_SENTENCES_PER_KANJI = 6;
-const MIN_WORDS_PER_KANJI = 6;
+const LEVEL_MINIMUMS = {
+  N5: { exercises: 40, sentences: 6, words: 6, total: 3000 },
+  N4: { exercises: 32, sentences: 5, words: 5, total: 5000 },
+};
 const CATEGORY_SHARES = {
   meaning: 0.2,
   reading: 0.2,
@@ -48,7 +49,7 @@ export async function stageValidate() {
     readJson(path.join(NORMALIZED_DIR, 'sentences.json')),
     readJson(path.join(NORMALIZED_DIR, 'curriculum.json')),
     readJson(path.join(NORMALIZED_DIR, 'sources.json')),
-    readJson(path.join(GENERATED_DIR, 'exercises-n5.json')),
+    readJson(path.join(GENERATED_DIR, 'exercises.json')),
   ]);
 
   const errors = [];
@@ -77,6 +78,9 @@ export async function stageValidate() {
     }
     if (k.editorialStatus === 'draft') {
       errors.push(`Kanji ${k.literal} en état draft dans le pack`);
+    }
+    if ((k.confusions ?? []).includes(k.literal)) {
+      errors.push(`Kanji ${k.literal} listé dans ses propres confusions`);
     }
     for (const reading of k.readings) {
       if (reading.type === 'onyomi' && !KATAKANA_RE.test(reading.reading)) {
@@ -159,6 +163,7 @@ export async function stageValidate() {
   const countByKanji = new Map(kanji.map((k) => [k.id, 0]));
   const wordsByKanji = new Map(kanji.map((k) => [k.id, 0]));
   const sentencesByKanji = new Map(kanji.map((k) => [k.id, 0]));
+  const levelById = new Map(kanji.map((k) => [k.id, k.level]));
   for (const vocab of vocabulary) {
     for (const link of vocab.kanji) {
       if (wordsByKanji.has(link.kanjiId)) {
@@ -174,13 +179,15 @@ export async function stageValidate() {
     }
   }
   for (const [id, count] of wordsByKanji) {
-    if (count < MIN_WORDS_PER_KANJI) {
-      errors.push(`Kanji ${id}: ${count} mots (< ${MIN_WORDS_PER_KANJI})`);
+    const minimum = LEVEL_MINIMUMS[levelById.get(id)]?.words;
+    if (minimum !== undefined && count < minimum) {
+      errors.push(`Kanji ${id}: ${count} mots (< ${minimum})`);
     }
   }
   for (const [id, count] of sentencesByKanji) {
-    if (count < MIN_SENTENCES_PER_KANJI) {
-      errors.push(`Kanji ${id}: ${count} phrases (< ${MIN_SENTENCES_PER_KANJI})`);
+    const minimum = LEVEL_MINIMUMS[levelById.get(id)]?.sentences;
+    if (minimum !== undefined && count < minimum) {
+      errors.push(`Kanji ${id}: ${count} phrases (< ${minimum})`);
     }
   }
 
@@ -229,14 +236,22 @@ export async function stageValidate() {
   }
 
   for (const [id, count] of countByKanji) {
-    if (count < MIN_EXERCISES_PER_KANJI) {
-      errors.push(`Kanji ${id}: ${count} exercices (< ${MIN_EXERCISES_PER_KANJI})`);
+    const minimum = LEVEL_MINIMUMS[levelById.get(id)]?.exercises;
+    if (minimum !== undefined && count < minimum) {
+      errors.push(`Kanji ${id}: ${count} exercices (< ${minimum})`);
     }
   }
 
   const total = exercises.length;
-  if (total < 3000) {
-    errors.push(`Nombre total d'exercices insuffisant: ${total} (< 3000)`);
+  const exercisesByLevel = {};
+  for (const exercise of exercises) {
+    exercisesByLevel[exercise.level] = (exercisesByLevel[exercise.level] ?? 0) + 1;
+  }
+  for (const [level, minimums] of Object.entries(LEVEL_MINIMUMS)) {
+    const levelCount = exercisesByLevel[level] ?? 0;
+    if (levelCount < minimums.total) {
+      errors.push(`Exercices ${level} insuffisants: ${levelCount} (< ${minimums.total})`);
+    }
   }
   for (const [category, share] of Object.entries(CATEGORY_SHARES)) {
     const actual = (categoryCounts[category] ?? 0) / total;
@@ -245,10 +260,12 @@ export async function stageValidate() {
     }
   }
 
-  const levelKanji = new Set(curriculum.levels.N5.map((entry) => entry.kanjiId));
-  for (const k of kanji) {
-    if (!levelKanji.has(k.id)) {
-      errors.push(`Kanji ${k.literal} publié mais absent du curriculum`);
+  for (const [level, entries] of Object.entries(curriculum.levels)) {
+    const levelKanji = new Set(entries.map((entry) => entry.kanjiId));
+    for (const k of kanji.filter((item) => item.level === level)) {
+      if (!levelKanji.has(k.id)) {
+        errors.push(`Kanji ${k.literal} publié mais absent du curriculum ${level}`);
+      }
     }
   }
 

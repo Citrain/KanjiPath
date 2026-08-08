@@ -8,7 +8,7 @@ export async function stageReport() {
     readJson(path.join(NORMALIZED_DIR, 'vocabulary.json')),
     readJson(path.join(NORMALIZED_DIR, 'sentences.json')),
     readJson(path.join(NORMALIZED_DIR, 'curriculum.json')),
-    readJson(path.join(GENERATED_DIR, 'exercises-n5.json')),
+    readJson(path.join(GENERATED_DIR, 'exercises.json')),
     readJson(path.join(REPORTS_DIR, 'validate.json')).catch(() => null),
   ]);
 
@@ -35,14 +35,17 @@ export async function stageReport() {
     }
   }
 
-  const coverage = curriculum.levels.N5.map((entry) => ({
-    kanjiId: entry.kanjiId,
-    literal: entry.literal,
-    order: entry.order,
-    words: wordsByKanji.get(entry.kanjiId) ?? 0,
-    sentences: sentencesByKanji.get(entry.kanjiId) ?? 0,
-    exercises: exercisesByKanji.get(entry.kanjiId) ?? 0,
-  }));
+  const coverage = Object.entries(curriculum.levels).flatMap(([level, entries]) =>
+    entries.map((entry) => ({
+      level,
+      kanjiId: entry.kanjiId,
+      literal: entry.literal,
+      order: entry.order,
+      words: wordsByKanji.get(entry.kanjiId) ?? 0,
+      sentences: sentencesByKanji.get(entry.kanjiId) ?? 0,
+      exercises: exercisesByKanji.get(entry.kanjiId) ?? 0,
+    })),
+  );
 
   const min = (map) => Math.min(...map.values());
 

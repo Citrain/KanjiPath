@@ -22,7 +22,7 @@ Plateforme web d'apprentissage progressif des kanji — parcours **aligné sur l
 - **Règles agent** : `../AGENTS.md`.
 - **Démarrage rapide** : `../README.md`.
 
-## État actuel (Phase 1 — MVP N5)
+## État actuel (Phase 2 — N4)
 
 Ce qui est implémenté :
 
@@ -36,11 +36,12 @@ Ce qui est implémenté :
 - Authentification : inscription, connexion, déconnexion, `me`, changement de mot de
   passe. Argon2id, cookie de session `HttpOnly`, CSRF double-submit, rate-limiting.
 - Domaine : moteur FSRS (`ts-fsrs`) encapsulé, calcul de maîtrise pondéré.
-- Pipeline de contenu complet : download → import → normalize → generate → validate →
-  report → publish → load. Référentiel N5 curaté (79 kanji croisés, ordre
-  pédagogique, mnémotechniques), 521 mots (JMdict FR + vocabulaire curaté : mois,
-  heures, compteurs), 418 phrases (Tatoeba
-  CC BY 2.0 FR), 3904 exercices déterministes, SVG KanjiVG assainis.
+- Pipeline de contenu complet **multi-niveaux** : download → import → normalize →
+  generate → validate → report → publish → load. Référentiels curatés **N5**
+  (79 kanji croisés) et **N4** (166 kanji croisés), ordre pédagogique, radicaux,
+  confusions, mnémotechniques. Pack publié 2026.08.2 : 245 kanji, 1664 mots
+  (JMdict FR + vocabulaire curaté), 1300 phrases (Tatoeba CC BY 2.0 FR),
+  12110 exercices déterministes (3915 N5, 8195 N4), SVG KanjiVG assainis.
 - API : curricula, kanji (liste, fiche, SVG, vocabulaire, phrases, progression),
   étude (sessions, réponses FSRS, reprise), progression (tableau de bord, niveaux,
   points faibles), sources, préférences, signalements.
@@ -62,7 +63,13 @@ Ce qui est implémenté :
   system « encre & washi » (voir `docs/architecture/overview.md#design-system-web`).
 - Qualité : Vitest (unitaires + intégration MariaDB), Biome.
 
-La Phase 1 a fait l'objet d'une relecture éditoriale (mnémotechniques, étymologies,
-rôles de composants) et d'une complétion du vocabulaire curaté (mois, heures,
-compteurs de personnes absents du sous-ensemble FR de JMdict). Prochaine étape :
-Phase 2 (N4).
+La Phase 1 (N5) a fait l'objet d'une relecture éditoriale (mnémotechniques,
+étymologies, rôles de composants) et d'une complétion du vocabulaire curaté (mois,
+heures, compteurs de personnes absents du sous-ensemble FR de JMdict).
+
+La **Phase 2 (N4)** est livrée pour son critère de sortie (≥ 5000 exercices N4
+validés) : pipeline multi-niveaux, 166 kanji N4 curatés (radicaux, confusions
+visuelles, mnémotechniques), vocabulaire/phrases complétés (以, 勉, 堂),
+8195 exercices N4 validés. L'introduction de nouveaux kanji en session suit l'ordre
+N5 → N4 → … Restent à faire (ADR 11, Phase 2) : statistiques détaillées et mode
+révision ciblée côté application. Prochaine étape contenu : Phase 3 (N3).
