@@ -1,0 +1,100 @@
+{
+  "level": "N1",
+  "notes": "Vocabulaire créé manuellement pour compléter la sélection JMdict (kanji N1 peu couverts par les glosses françaises).",
+  "vocabulary": [
+    {
+      "writtenForm": "又聞き",
+      "reading": "またぎき",
+      "meaningFr": "ouï-dire ; information de seconde main",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "又", "position": 0, "readingInWord": "また" }]
+    },
+    {
+      "writtenForm": "井水",
+      "reading": "せいすい",
+      "meaningFr": "eau de puits",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "井", "position": 0, "readingInWord": "せい" }]
+    },
+    {
+      "writtenForm": "丘陵地",
+      "reading": "きゅうりょうち",
+      "meaningFr": "terrain vallonné ; région de collines",
+      "partOfSpeech": "nom",
+      "kanji": [
+        { "literal": "丘", "position": 0, "readingInWord": "きゅう" },
+        { "literal": "陵", "position": 1, "readingInWord": "りょう" }
+      ]
+    },
+    {
+      "writtenForm": "克己",
+      "reading": "こっき",
+      "meaningFr": "maîtrise de soi ; abnégation",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "克", "position": 0, "readingInWord": "こっ" }]
+    },
+    {
+      "writtenForm": "克己心",
+      "reading": "こっきしん",
+      "meaningFr": "esprit de maîtrise de soi",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "克", "position": 0, "readingInWord": "こっ" }]
+    },
+    {
+      "writtenForm": "佐幕派",
+      "reading": "さばくは",
+      "meaningFr": "partisan du shogunat",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "佐", "position": 0, "readingInWord": "さ" }]
+    },
+    {
+      "writtenForm": "妥結",
+      "reading": "だけつ",
+      "meaningFr": "conclusion d'un accord ; règlement",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "妥", "position": 0, "readingInWord": "だ" }]
+    },
+    {
+      "writtenForm": "汽艇",
+      "reading": "きてい",
+      "meaningFr": "canot à vapeur",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "汽", "position": 0, "readingInWord": "き" }]
+    },
+    {
+      "writtenForm": "汽力",
+      "reading": "きりょく",
+      "meaningFr": "force de la vapeur",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "汽", "position": 0, "readingInWord": "き" }]
+    },
+    {
+      "writtenForm": "拒否反応",
+      "reading": "きょひはんのう",
+      "meaningFr": "réaction de rejet",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "拒", "position": 0, "readingInWord": "きょ" }]
+    },
+    {
+      "writtenForm": "析出",
+      "reading": "せきしゅつ",
+      "meaningFr": "précipitation ; séparation d'une substance",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "析", "position": 0, "readingInWord": "せき" }]
+    },
+    {
+      "writtenForm": "抵抗力",
+      "reading": "ていこうりょく",
+      "meaningFr": "résistance ; immunité",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "抵", "position": 0, "readingInWord": "てい" }]
+    },
+    {
+      "writtenForm": "帝王",
+      "reading": "ていおう",
+      "meaningFr": "empereur ; souverain",
+      "partOfSpeech": "nom",
+      "kanji": [{ "literal": "帝", "position": 0, "readingInWord": "てい" }]
+    }
+  ]
+}

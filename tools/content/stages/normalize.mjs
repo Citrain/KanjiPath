@@ -323,11 +323,11 @@ export async function extractKanjivg(literals) {
   return written;
 }
 
-export const LEVELS = ['N5', 'N4', 'N3', 'N2'];
+export const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'];
 
-const SENTENCES_PER_KANJI = { N5: 6, N4: 6, N3: 6, N2: 6 };
-const VOCAB_QUOTA = { N5: 8, N4: 8, N3: 8, N2: 10 };
-const VOCAB_BONUS = { N5: 60, N4: 60, N3: 60, N2: 60 };
+const SENTENCES_PER_KANJI = { N5: 6, N4: 6, N3: 6, N2: 6, N1: 10 };
+const VOCAB_QUOTA = { N5: 8, N4: 8, N3: 8, N2: 10, N1: 15 };
+const VOCAB_BONUS = { N5: 60, N4: 60, N3: 60, N2: 60, N1: 100 };
 const LEVEL_RANK = Object.fromEntries(LEVELS.map((level, index) => [level, index]));
 const CURRICULUM_SOURCES = ['kanji-data (MIT)', 'kanjiapi.dev (miroir)', 'KANJIDIC2 jlpt historique'];
 
@@ -376,7 +376,10 @@ export async function stageNormalize() {
       if (!dic) {
         throw new Error(`Kanji ${curated.literal} absent de KANJIDIC2`);
       }
-      const meaningsFr = dic.meaningsFr.filter((m) => !/^radical/i.test(m));
+      let meaningsFr = dic.meaningsFr.filter((m) => !/^radical/i.test(m));
+      if (meaningsFr.length === 0) {
+        meaningsFr = curated.meaningsFr ?? [];
+      }
       if (meaningsFr.length === 0) {
         throw new Error(`Kanji ${curated.literal} sans sens français`);
       }
@@ -644,7 +647,7 @@ export async function stageNormalize() {
   const curriculum = {
     code: 'JLPT_ALIGNED',
     name: 'Parcours aligné sur le JLPT',
-    version: '2026.08.5',
+    version: '2026.08.7',
     status: 'published',
     notes: LEVELS.map((level) => `${level} : ${curatedByLevel[level].kanji.notes}`).join('\n'),
     levels,
@@ -674,8 +677,8 @@ export async function stageNormalize() {
   const extracted = await extractKanjivg([...allSet]);
   console.log(`[normalize] KanjiVG: ${extracted.length} SVG extraits et assainis`);
 
-  const MIN_WORDS = { N5: 6, N4: 6, N3: 6, N2: 6 };
-  const MIN_SENTENCES = { N5: 6, N4: 6, N3: 6, N2: 6 };
+  const MIN_WORDS = { N5: 6, N4: 6, N3: 6, N2: 6, N1: 5 };
+  const MIN_SENTENCES = { N5: 6, N4: 6, N3: 6, N2: 6, N1: 5 };
   for (const level of LEVELS) {
     const literals = curatedByLevel[level].kanji.kanji.map((k) => k.literal);
     const missingVocab = literals.filter((k) => (allPerKanji.get(k)?.length ?? 0) < MIN_WORDS[level]);

@@ -1,0 +1,34 @@
+{
+  "level": "N1",
+  "notes": "Phrases naturelles rédigées par KanjiPath, prioritaires sur la sélection Tatoeba dans les exercices. Schéma : { japanese, french }.",
+  "sentences": [
+    {
+      "japanese": "玄関の前で友人を待っていた。",
+      "french": "J'attendais mon ami devant l'entrée."
+    },
+    {
+      "japanese": "松の生えた丘を越えると、海が見えた。",
+      "french": "Après avoir franchi la colline où poussaient des pins, nous avons vu la mer."
+    },
+    {
+      "japanese": "二つの資料を併せて分析した。",
+      "french": "Nous avons analysé les deux documents ensemble."
+    },
+    {
+      "japanese": "困難を克服した彼の成果は卓越している。",
+      "french": "Après avoir surmonté les difficultés, ses résultats sont remarquables."
+    },
+    {
+      "japanese": "井戸の水で苗に水をやった。",
+      "french": "J'ai arrosé les jeunes plants avec l'eau du puits."
+    },
+    {
+      "japanese": "盲導犬が利用者を駅まで案内した。",
+      "french": "Le chien-guide a accompagné son utilisateur jusqu'à la gare."
+    },
+    {
+      "japanese": "伯父は地方で小さな店を営んでいる。",
+      "french": "Mon oncle tient un petit commerce en province."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+ "level": "N1",
+ "notes": "Textes de lecture graduée (Phase 4b) : kanji de niveau N1 publié ou inférieur uniquement. Le pack N1 initial étant limité aux kanji couverts par JMdict FR et Tatoeba FR, ces textes n'utilisent que des kanji du référentiel publié.",
+ "texts": [
+  {
+   "title": "春の山",
+   "body": "四月になると、山の村にも春が来る。梅の花が咲き、やがて桜の季節がやってくる。朝、薄い霧が谷を覆い、鳥の声が静かに響く。村人は田んぼの準備を始め、子供たちは野原を走り回る。祭りの日には、太鼓の音が夜まで続き、神社には多くの人が集まる。桜の木の下で、人々は弁当を広げ、歌を歌い、太鼓を打つ。老人たちは昔の話を語り、子供たちは目を輝かせて聞く。春の山は、命にあふれている。道ばたには小さな花が咲き、小さな虫が動いている。今年もやって来た美しい季節は、自然の恵みである。",
+   "french": "En avril, le printemps arrive aussi dans le village de montagne. Les fleurs de prunier s'ouvrent, puis la saison des cerisiers approche. Le matin, une brume légère enveloppe la vallée et les chants d'oiseaux résonnent doucement. Les villageois commencent à préparer les rizières, et les enfants courent dans les champs. Le jour de la fête, le son des tambours dure jusqu'à la nuit et beaucoup de monde se rassemble au sanctuaire. Sous les cerisiers, les gens déploient leurs repas, chantent et frappent les tambours. Les anciens racontent des histoires d'autrefois, et les enfants écoutent, les yeux brillants. La montagne au printemps déborde de vie. Au bord du chemin, de petites fleurs s'ouvrent et de petits insectes s'activent. La belle saison revenue cette année encore est une grâce de la nature."
+  },
+  {
+   "title": "夜の森",
+   "body": "深い森の夜は、暗さに包まれる。星の光が、木々の間から見える。月の光が木々の間から差し込み、地面に白い影を作る。ふくろうの声が遠くで響き、風の音が葉を揺らす。雷が鳴り、雨が降り出すと、動物たちは木の陰に身を隠す。水滴が葉に落ち、川の水が増えていく。やがて雨は上がり、森には静けさが戻る。朝になれば、鳥たちが歌い、新しい一日が始まる。森の命は終わりなく、永遠に続いていくのだ。",
+   "french": "La nuit, la forêt profonde est enveloppée d'obscurité. La lumière des étoiles se devine entre les arbres. Le clair de lune filtre à travers les branches et dessine des ombres blanches sur le sol. Le cri d'une chouette résonne au loin, et le vent fait trembler les feuilles. Quand le tonnerre gronde et que la pluie se met à tomber, les animaux se réfugient à l'ombre des arbres. Les gouttes tombent sur les feuilles et l'eau de la rivière grossit. Bientôt la pluie cesse, et le calme revient dans la forêt. Au matin, les oiseaux chantent et une nouvelle journée commence. La vie de la forêt, sans fin, se poursuit éternellement."
+  }
+ ]
+}

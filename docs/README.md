@@ -22,7 +22,7 @@ Plateforme web d'apprentissage progressif des kanji — parcours **aligné sur l
 - **Règles agent** : `../AGENTS.md`.
 - **Démarrage rapide** : `../README.md`.
 
-## État actuel (Phase 4a — N2, livrée)
+## État actuel (Phase 4b — N1, pack initial livré)
 
 Ce qui est implémenté :
 
@@ -38,14 +38,15 @@ Ce qui est implémenté :
 - Domaine : moteur FSRS (`ts-fsrs`) encapsulé, calcul de maîtrise pondéré.
 - Pipeline de contenu complet **multi-niveaux** : download → import → normalize →
   generate → validate → report → publish → load. Référentiels curatés **N5**
-  (80 kanji), **N4** (166 kanji), **N3** (373 kanji) et **N2** (368 kanji) — listes
+  (80 kanji), **N4** (166 kanji), **N3** (373 kanji), **N2** (368 kanji) et **N1**
+  (415 kanji publiés dans le pack initial, 817 en cours de curation) — listes
   croisées kanji-data / kanjiapi + 8 kanji de l'école primaire absents des listes
   `jlpt_new` (分 里 身 畑 的 無 可 孝) ajoutés éditorialement. Ordre pédagogique,
-  radicaux, confusions, mnémotechniques. Pack publié 2026.08.5 : 987 kanji,
-  7161 mots (JMdict FR + vocabulaire curaté, sélection par fréquence `nfXX`),
-  5116 phrases (Tatoeba CC BY 2.0 FR + phrases curatées prioritaires),
-  **8 mini-textes** de lecture graduée (KanjiPath, CC BY-SA 4.0, dont deux textes
-  longs N2), 51377 exercices déterministes, SVG KanjiVG assainis.
+  radicaux, confusions, mnémotechniques. Pack publié 2026.08.6 : 1402 kanji,
+  10098 mots (JMdict FR + vocabulaire curaté, sélection par fréquence `nfXX`),
+  8429 phrases (Tatoeba CC BY 2.0 FR + phrases curatées prioritaires),
+  **10 mini-textes** de lecture graduée (KanjiPath, CC BY-SA 4.0, dont deux textes
+  longs N2 et deux N1), 73094 exercices déterministes, SVG KanjiVG assainis.
 - API : curricula, kanji (liste, fiche, SVG, vocabulaire, phrases, progression),
   **mini-textes** (`GET /texts`, `GET /texts/:id`), **lookup vocabulaire**
   (`GET /words/:surface` pour la lecture en contexte), étude (sessions, réponses
@@ -121,5 +122,18 @@ La **Phase 4a (N2)** est livrée. Outre le pack de contenu N2 (368 kanji curaté
   (分 里 身 畑 的 無 可 孝), débloquant les mots très courants (今日, 日本, 自分,
   無料, 目的…).
 
-Le pack N1 (1232 kanji) constitue la Phase 4b ; les listes sont déjà croisées à
-l'import (kanji-data / kanjiapi identiques).
+La **Phase 4b (N1)** est livrée en publication progressive. Pipeline étendu N5→N1 ;
+listes N1 croisées (kanji-data / kanjiapi : 1232 kanji identiques, 0 divergence).
+Les données FR disponibles ne couvrant pas tout le niveau (227 kanji sans aucune
+glose française JMdict — surtout des kanji de prénoms — et 401 sans phrase Tatoeba
+FR liée), le pack 2026.08.7 publie **433 kanji N1** couverts (≥ 5 mots et
+≥ 5 phrases chacun) : 1420 kanji au total, 10181 mots, 8532 phrases, 10 mini-textes
+(dont 2 N1), 74009 exercices validés. Les 799 kanji restants sont suivis dans
+`content/curated/n1/kanji-pending.json` et seront ajoutés au fil de la curation
+(vocabulaire + phrases) — voir `docs/agent/suivi-phase-4b.md`. Outils ajoutés :
+`tools/content/n1-scaffold.mjs` (squelette curaté N1 rejouable),
+`content/curated/radicals-fr.json` (radicaux manquants),
+`content/curated/confusions-fr.json` (paires transverses),
+`content/curated/n1/meanings-fr.json` (219 sens français absents de KANJIDIC2),
+`content/curated/n1/mnemonics/` (mnémotechniques par lots),
+`tools/content/check-texts.mjs` (vérification de brouillons de mini-textes).

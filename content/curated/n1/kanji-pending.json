@@ -1,0 +1,4800 @@
+{
+  "level": "N1",
+  "notes": "Kanji N1 non encore publiés (couverture insuffisante : < 5 mots ou < 5 phrases). Pour les publier : curater vocabulaire (vocabulary.json) et phrases (sentences.json) jusqu'à couverture, puis relancer normalize + n1-scaffold + validate. Radicaux et confusions sont recalculés automatiquement par le squelette ; les mnémotechniques déjà écrites sont conservées ci-dessous.",
+  "kanji": [
+    {
+      "literal": "乙",
+      "words": 3,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "乃",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "之",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "也",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "刃",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "弓",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "巳",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "勺",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "仁",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "丹",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "幻",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "凶",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "弔",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "斗",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "尺",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "屯",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "孔",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "升",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "巴",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "厄",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "丑",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "允",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "匁",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "斤",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "弘",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "仙",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "矛",
+      "words": 3,
+      "sentences": 5,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "汁",
+      "words": 7,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "尼",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "凸",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "凹",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "斥",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "只",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "叶",
+      "words": 2,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "卯",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "且",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "丙",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "旦",
+      "words": 3,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "伊",
+      "words": 2,
+      "sentences": 6,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "江",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "旬",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "旨",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "巡",
+      "words": 9,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "旭",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "后",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "朴",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "壮",
+      "words": 7,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "吐",
+      "words": 7,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "庄",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "如",
+      "words": 11,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "匠",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "亘",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "妃",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "朱",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "伐",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "圭",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "伍",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "迅",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "朽",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "帆",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "匡",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "妄",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "汐",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "芋",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "丞",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "亥",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "亦",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "伎",
+      "words": 1,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "凪",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "吏",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "弐",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "秀",
+      "words": 6,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "沖",
+      "words": 4,
+      "sentences": 11,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "戒",
+      "words": 10,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "杉",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "肝",
+      "words": 8,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "李",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "即",
+      "words": 8,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "宏",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "芳",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "岐",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "廷",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "妨",
+      "words": 2,
+      "sentences": 5,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "亜",
+      "words": 9,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "把",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "呈",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "辰",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "那",
+      "words": 1,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "呉",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "扶",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "肖",
+      "words": 2,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "沙",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "亨",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "吟",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "坑",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "杜",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "芹",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "杏",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "芙",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "佑",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "甫",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "伽",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "抄",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "冴",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "壱",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "但",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "邑",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "酉",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "伶",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "冶",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "汰",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "玖",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "拡",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "奈",
+      "words": 0,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "邸",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "枠",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "祉",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "阿",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "茂",
+      "words": 2,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "斉",
+      "words": 2,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "阻",
+      "words": 4,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "岳",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "拘",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "炉",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "昌",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "径",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "披",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "沼",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "拐",
+      "words": 2,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "拓",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "尚",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "奉",
+      "words": 8,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "佳",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "虎",
+      "words": 2,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "弥",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "芽",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "垂",
+      "words": 9,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "宜",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "弦",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "炊",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "枢",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "坪",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "肪",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "奔",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "享",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "茅",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "迭",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "拙",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "侍",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "叔",
+      "words": 2,
+      "sentences": 11,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "岬",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "抹",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "茎",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "朋",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "苑",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "欣",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "劾",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "泌",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "於",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "孟",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "尭",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "肢",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "旺",
+      "words": 0,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "附",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "怜",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "侃",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "侑",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "昂",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "茄",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "茉",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "迪",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "采",
+      "words": 0,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "施",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "郎",
+      "words": 3,
+      "sentences": 11,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "昭",
+      "words": 1,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "契",
+      "words": 3,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "挑",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "俊",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "括",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "津",
+      "words": 1,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "彦",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "柳",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "牲",
+      "words": 2,
+      "sentences": 12,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "恒",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "胞",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "浄",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "貞",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "胆",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "虐",
+      "words": 7,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "盾",
+      "words": 3,
+      "sentences": 5,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "軌",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "荘",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "冠",
+      "words": 7,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "卸",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "垣",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "砕",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "俗",
+      "words": 8,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "洞",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "亭",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "赴",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "盆",
+      "words": 7,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "疫",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "祐",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "哀",
+      "words": 9,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "洪",
+      "words": 2,
+      "sentences": 6,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "糾",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "亮",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "峡",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "厘",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "胎",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "窃",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "恨",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "郁",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "玲",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "峠",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "叙",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "甚",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "洲",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "姻",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "胡",
+      "words": 3,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "卑",
+      "words": 10,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "帥",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "拷",
+      "words": 2,
+      "sentences": 6,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "某",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "虹",
+      "words": 1,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "勅",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "眉",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "衷",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "侯",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "弧",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "茜",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "洸",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "柚",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "勁",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "哉",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "奎",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "宥",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "昴",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "柊",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "柾",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "洵",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "耶",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "胤",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "衿",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "浜",
+      "words": 4,
+      "sentences": 11,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "陣",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "郡",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "浦",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "称",
+      "words": 8,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "託",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "透",
+      "words": 8,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "倉",
+      "words": 3,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "俳",
+      "words": 3,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "浩",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "兼",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "砲",
+      "words": 7,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "祥",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "秩",
+      "words": 3,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "唆",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "泰",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "倫",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "殊",
+      "words": 7,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "朗",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "烈",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "悟",
+      "words": 4,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "陛",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "准",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "浸",
+      "words": 9,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "徐",
+      "words": 2,
+      "sentences": 8,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "俵",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "栽",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "紋",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "栗",
+      "words": 1,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "姫",
+      "words": 4,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "剛",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "疾",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "班",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "宰",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "娠",
+      "words": 2,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "桑",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "桂",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "晋",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "飢",
+      "words": 4,
+      "sentences": 8,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "晃",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "桐",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "宴",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "紘",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "恭",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "悦",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "粋",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "扇",
+      "words": 9,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "娯",
+      "words": 2,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "俸",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "峰",
+      "words": 4,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "紡",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "秦",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "胴",
+      "words": 4,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "挿",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "剖",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "拳",
+      "words": 2,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "逓",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "唇",
+      "words": 6,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "峻",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "逝",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "匿",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "畔",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "唄",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "翁",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "殉",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "租",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "桟",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "倭",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "赳",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蚊",
+      "words": 4,
+      "sentences": 7,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "栓",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "隼",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "逐",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "宵",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "酌",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蚕",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "朔",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "畝",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "凌",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "倣",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "啄",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "悌",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "倹",
+      "words": 3,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "倖",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "恕",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "晏",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "晟",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "朕",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "栞",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "紗",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "耗",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "莉",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "莞",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "渉",
+      "words": 3,
+      "sentences": 7,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "崎",
+      "words": 1,
+      "sentences": 6,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "康",
+      "words": 3,
+      "sentences": 25,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "逮",
+      "words": 2,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "措",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鹿",
+      "words": 4,
+      "sentences": 16,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "排",
+      "words": 10,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "訟",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "隆",
+      "words": 3,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "唱",
+      "words": 6,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "斎",
+      "words": 3,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "貫",
+      "words": 9,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "堀",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "菊",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "陳",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "梨",
+      "words": 0,
+      "sentences": 5,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "亀",
+      "words": 1,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "啓",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "粘",
+      "words": 8,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "培",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "淡",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "惨",
+      "words": 6,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "据",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "斜",
+      "words": 8,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "逸",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "涯",
+      "words": 4,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "彫",
+      "words": 8,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "粛",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "庶",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "菌",
+      "words": 7,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "巣",
+      "words": 7,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "淳",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "惜",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "悼",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "累",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "郭",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "陶",
+      "words": 7,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "猪",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "粗",
+      "words": 10,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "眺",
+      "words": 3,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "笹",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "陵",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "舶",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "窒",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "紳",
+      "words": 4,
+      "sentences": 11,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "旋",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "紺",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "偵",
+      "words": 4,
+      "sentences": 5,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "喝",
+      "words": 2,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "豚",
+      "words": 4,
+      "sentences": 8,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "赦",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "殻",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "陪",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "悠",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "淑",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "崇",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "寅",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "曹",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "尉",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "琢",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蛍",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "琉",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "庸",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "渓",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "彬",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "渚",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "皐",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "惟",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "惇",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "脩",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "彗",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "梓",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "爽",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "萌",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "偲",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "彪",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "毬",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "崚",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "捷",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "捺",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "晨",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "梢",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "梧",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "眸",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "笙",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "紬",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "絃",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "菖",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "菫",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "袈",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "塁",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "葬",
+      "words": 10,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "塚",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "項",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "喪",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "揮",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "智",
+      "words": 0,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "裕",
+      "words": 3,
+      "sentences": 13,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "賀",
+      "words": 10,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "喚",
+      "words": 7,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "圏",
+      "words": 7,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "軸",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "絞",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "棋",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "須",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "雰",
+      "words": 1,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "遇",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "殖",
+      "words": 7,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "尋",
+      "words": 4,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "棟",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "搭",
+      "words": 3,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "詐",
+      "words": 4,
+      "sentences": 5,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "紫",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "欺",
+      "words": 3,
+      "sentences": 8,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "萩",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "滋",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "煮",
+      "words": 9,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "疎",
+      "words": 11,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "琴",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "廊",
+      "words": 3,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "晶",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "堤",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "傍",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "敦",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "循",
+      "words": 3,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "媛",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "掌",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "渦",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "猶",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "遍",
+      "words": 8,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "款",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "扉",
+      "words": 3,
+      "sentences": 6,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "硫",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "媒",
+      "words": 8,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嵐",
+      "words": 1,
+      "sentences": 12,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "椎",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "暁",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "翔",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "堪",
+      "words": 2,
+      "sentences": 7,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "酢",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "喬",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "愉",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "塀",
+      "words": 4,
+      "sentences": 6,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "閑",
+      "words": 8,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "詠",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "痢",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "巽",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "湧",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "堕",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "婿",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "斐",
+      "words": 0,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "葵",
+      "words": 1,
+      "sentences": 5,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "禄",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "硝",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "棺",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "欽",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "惣",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "稀",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "詔",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "渥",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "凱",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "絢",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "惰",
+      "words": 4,
+      "sentences": 7,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蛮",
+      "words": 7,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "遥",
+      "words": 1,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "瑛",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "皓",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "椋",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "琳",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "痘",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "竣",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "脹",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "幹",
+      "words": 7,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "督",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "盟",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "債",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "慎",
+      "words": 4,
+      "sentences": 6,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "雅",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "賄",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "墓",
+      "words": 8,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "寛",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "靖",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "艇",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "滝",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "酬",
+      "words": 3,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "稚",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "践",
+      "words": 2,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "碁",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "漠",
+      "words": 3,
+      "sentences": 6,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鳩",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "該",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "搬",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "虜",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "僧",
+      "words": 9,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "溝",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "稔",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "塊",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "腸",
+      "words": 7,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "慈",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "楊",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "椿",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蓮",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "瑞",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "慨",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鉢",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "禅",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "絹",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "傑",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "楠",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "睦",
+      "words": 1,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "禍",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "酪",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "賊",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "搾",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "廉",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "煩",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "禎",
+      "words": 0,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "稜",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "愁",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "楼",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "褐",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嵯",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蒼",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "暉",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "頒",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嗣",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蒔",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "舜",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "塑",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嵩",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "椰",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "楓",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "滉",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "瑚",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "瑶",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蓉",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "虞",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "裟",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "詢",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "頌",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "閣",
+      "words": 7,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "維",
+      "words": 7,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "綱",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "閥",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "豪",
+      "words": 7,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "熊",
+      "words": 1,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "僕",
+      "words": 4,
+      "sentences": 59,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "塾",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "彰",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "漂",
+      "words": 5,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "聡",
+      "words": 0,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嘉",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "墨",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "寧",
+      "words": 4,
+      "sentences": 6,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "穀",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "綾",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "暦",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "碑",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "膜",
+      "words": 9,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "漬",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "酵",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "遮",
+      "words": 3,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "輔",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "肇",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "雌",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "漆",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "樺",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "槙",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "寡",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "漱",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "慕",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "魁",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "漸",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嫡",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "暢",
+      "words": 1,
+      "sentences": 9,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鳳",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "綜",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "翠",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "榛",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蔦",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "瑠",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "綺",
+      "words": 1,
+      "sentences": 11,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "緋",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "碧",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "爾",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "瑳",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "碩",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "箇",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "綸",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "銑",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "颯",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "審",
+      "words": 7,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "撤",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "盤",
+      "words": 12,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "緩",
+      "words": 8,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "範",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "暫",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "潟",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "魅",
+      "words": 4,
+      "sentences": 11,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "潮",
+      "words": 10,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "賠",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "摩",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "噴",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "撲",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "慶",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "潜",
+      "words": 9,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "輩",
+      "words": 3,
+      "sentences": 8,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "舗",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "駒",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "墜",
+      "words": 4,
+      "sentences": 7,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "諾",
+      "words": 5,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "勲",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "潤",
+      "words": 8,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "穂",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "賓",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "寮",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "弊",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "餓",
+      "words": 3,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "窮",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "毅",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "幣",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "槽",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "墳",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "閲",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "憤",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "戯",
+      "words": 8,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嘱",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "遷",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鋳",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "槻",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蝶",
+      "words": 1,
+      "sentences": 8,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蕉",
+      "words": 0,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "遼",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "窯",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "罷",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "慧",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "賜",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "憧",
+      "words": 2,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嬉",
+      "words": 1,
+      "sentences": 12,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "黎",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "凜",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "熙",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "璃",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "誼",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "諄",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "諒",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "謁",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "賦",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "遵",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "融",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "憲",
+      "words": 8,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "還",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "薦",
+      "words": 4,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "擁",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鋼",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "憶",
+      "words": 1,
+      "sentences": 13,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "諮",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "壌",
+      "words": 1,
+      "sentences": 7,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "緯",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "錦",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "諭",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "懐",
+      "words": 9,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "壇",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "謡",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "憾",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "縫",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "錯",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "縛",
+      "words": 7,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "衡",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "薫",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "濁",
+      "words": 7,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "篤",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "隷",
+      "words": 4,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "橘",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嬢",
+      "words": 4,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "儒",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "薪",
+      "words": 3,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鮎",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "錬",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "黛",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "叡",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "墾",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "澪",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "燎",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蕗",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "錘",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "償",
+      "words": 9,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "縮",
+      "words": 17,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "懇",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "犠",
+      "words": 2,
+      "sentences": 12,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "磯",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "繊",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "擦",
+      "words": 9,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "曙",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "謙",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "頻",
+      "words": 4,
+      "sentences": 9,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "霞",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "轄",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鍛",
+      "words": 4,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "駿",
+      "words": 0,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嶺",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "礁",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "擬",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "謹",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "瞳",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "矯",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鴻",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "嚇",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "霜",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "檀",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "謄",
+      "words": 4,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "燦",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "爵",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "瞭",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鞠",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "藤",
+      "words": 0,
+      "sentences": 12,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "臨",
+      "words": 6,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "懲",
+      "words": 7,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "糧",
+      "words": 4,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "顕",
+      "words": 4,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鎌",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鎮",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "穫",
+      "words": 3,
+      "sentences": 10,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "癒",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "騎",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "藩",
+      "words": 4,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "襟",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "藍",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "繕",
+      "words": 3,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "雛",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鯉",
+      "words": 1,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "穣",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "繭",
+      "words": 2,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "濫",
+      "words": 1,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "燿",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "麿",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "瀬",
+      "words": 6,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "覇",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "簿",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鯨",
+      "words": 7,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "髄",
+      "words": 5,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鵬",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "羅",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "蘭",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "譜",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "藻",
+      "words": 5,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "韻",
+      "words": 7,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "艶",
+      "words": 1,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鯛",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "欄",
+      "words": 6,
+      "sentences": 1,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鐘",
+      "words": 5,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "醸",
+      "words": 3,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "巌",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "馨",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "耀",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "躍",
+      "words": 8,
+      "sentences": 3,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "露",
+      "words": 13,
+      "sentences": 4,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "艦",
+      "words": 6,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鶴",
+      "words": 1,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鑑",
+      "words": 6,
+      "sentences": 2,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "鷹",
+      "words": 0,
+      "sentences": 0,
+      "mnemonicFr": null
+    },
+    {
+      "literal": "麟",
+      "words": 1,
+      "sentences": 0,
+      "mnemonicFr": null
+    }
+  ]
+}

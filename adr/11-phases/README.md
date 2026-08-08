@@ -87,8 +87,23 @@ phrases, 8 mini-textes). Fonctionnalités livrées :
 - **textes plus longs** : deux textes N2 de lecture graduée (~300 caractères),
   57 phrases curatées N2 prioritaires.
 
-**Phase 4b (à venir)** : pack N1 (1232 kanji, listes kanji-data / kanjiapi déjà
-croisées et identiques à l'import).
+**Phase 4b (livrée en publication progressive, 2026-08-08)** : pack N1 initial.
+Listes croisées : 1232 kanji kanji-data / kanjiapi identiques, 0 divergence.
+Constat : les données FR disponibles ne couvrent pas tout le niveau — 227 kanji
+(surtout des kanji de prénoms) n'ont aucune entrée JMdict à glose française et
+401 aucune phrase Tatoeba FR liée ; monter les quotas n'y change rien (absence de
+candidats, pas de sélection). Décision : **publication progressive** — le pack
+2026.08.7 publie les 433 kanji N1 couverts (≥ 5 mots ET ≥ 5 phrases) ; les 799
+autres sont suivis dans `content/curated/n1/kanji-pending.json` et entreront au
+fil de la curation (vocabulaire/phrases curatés), sans nouvelle décision
+d'architecture : le curriculum est versionné et le squelette
+(`tools/content/n1-scaffold.mjs`) élargit le pack mécaniquement à chaque lot.
+Outils : squelette N1 rejouable, `content/curated/radicals-fr.json` (22 radicaux
+manquants), `content/curated/confusions-fr.json` (paires transverses),
+`content/curated/n1/meanings-fr.json` (219 sens FR absents de KANJIDIC2),
+mnémotechniques par lots dans `content/curated/n1/mnemonics/`, 2 mini-textes N1.
+État : pipeline N5→N1, pack validé (1420 kanji, 74009 exercices, 0 erreur),
+curation des kanji pending à poursuivre (voir `docs/agent/suivi-phase-4b.md`).
 
 ### Phase 5 — Écriture et audio
 

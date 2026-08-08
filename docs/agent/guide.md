@@ -56,7 +56,8 @@ ajoute-le ici.
 | Ajouts éditoriaux de kanji (hors listes jlpt_new) | `IMPORT_EXTRA` dans `tools/content/lib/importers.mjs` |
 | Gabarits d'exercices | `tools/content/lib/generators.mjs` |
 | Chargement du pack en base | `tools/content/load.mjs` (`pnpm content:load`) |
-| Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json`, `texts.json` (`n5/`, `n4/`, `n3/`, `n2/`) + `components-fr.json` |
+| Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json`, `texts.json` (`n5/`→`n1/`) + `components-fr.json`, `radicals-fr.json`, `confusions-fr.json` |
+| Squelette curaté N1 (généré) | `tools/content/n1-scaffold.mjs` (reconstruit `content/curated/n1/kanji.json` ; mnémotechniques dans `content/curated/n1/mnemonics/*.json`) |
 
 ## Pièges connus (IMPORTANT)
 
@@ -267,16 +268,16 @@ ajoute-le ici.
      utilise les Pointer Events avec capture ; l'état du tracé en cours vit dans une
      `ref` (pas d'effet de bord dans un updater `setState` — StrictMode double-invoque).
 
-31. **Pipeline multi-niveaux (N5, N4, N3, N2).** La liste des niveaux vit à DEUX endroits à
+31. **Pipeline multi-niveaux (N5, N4, N3, N2, N1).** La liste des niveaux vit à DEUX endroits à
     garder alignés : `LEVELS` dans `tools/content/stages/normalize.mjs` et
     `IMPORT_LEVELS` dans `tools/content/lib/importers.mjs`. Chaque niveau a son curaté
     (`content/curated/<niveau>/`) et ses seuils dans `LEVEL_MINIMUMS`
     (`stages/validate.mjs`). Le vocabulaire/phrases est sélectionné niveau par niveau
     (N5 d'abord) avec un `seen` partagé pour éviter les doublons. Le quota de
     vocabulaire JMdict par kanji est dans `VOCAB_QUOTA` (`normalize.mjs`) : 8 mots
-    (N5→N3), 10 mots (N2). **Piège** : les seuils N4/N3/N2 sont plus bas que N5
-    (32 exercices / 5 mots / 5 phrases par kanji, total ≥ 5000 / ≥ 10000) — ne pas
-    appliquer les seuils N5 à un autre niveau.
+    (N5→N3), 10 mots (N2), 15 mots (N1). **Piège** : les seuils N4/N3/N2/N1 sont plus
+    bas que N5 (32 exercices / 5 mots / 5 phrases par kanji, total ≥ 5000 / ≥ 10000) —
+    ne pas appliquer les seuils N5 à un autre niveau.
 
 32. **Id curatés stables (hash, pas position).** Les mots/phrases curatés ont un id
     `curatedVocabId(writtenForm, reading)` / `curatedSentenceId(japanese)` dérivé d'un
@@ -400,9 +401,36 @@ ajoute-le ici.
     `IMPORT_EXTRA` (`lib/importers.mjs`) et DOIVENT figurer dans le
     `content/curated/<niveau>/kanji.json` correspondant (radical, confusions,
     mnémotechnique) avec une note « ajout éditorial ». Tout nouvel ajout impose
-    `import --force` (le jeu de kanji cibles change) puis le cycle complet
-    normalize → publish ; vérifier les phrases (un kanji rare comme 孝 n'a presque
-    rien dans Tatoeba → phrases curatées obligatoires).
+     `import --force` (le jeu de kanji cibles change) puis le cycle complet
+     normalize → publish ; vérifier les phrases (un kanji rare comme 孝 n'a presque
+     rien dans Tatoeba → phrases curatées obligatoires).
+
+46. **N1 : publication progressive + squelette généré.** Les données FR ne couvrent
+    pas tout le N1 : 227 kanji (surtout des kanji de prénoms : 翔 蓮 綾 駿 葵…) n'ont
+    **aucune** entrée JMdict à glose française, 401 aucune phrase Tatoeba FR liée.
+    Le pack N1 ne publie donc que les kanji couverts (≥ 5 mots ET ≥ 5 phrases,
+    mesurés dans `content/normalized/`) : `tools/content/n1-scaffold.mjs` reconstruit
+    `content/curated/n1/kanji.json` (ordre traits/fréquence, radicaux par numéro
+    classique KANJIDIC2, confusions depuis `content/curated/confusions-fr.json`) et
+    écrit `kanji-pending.json` (le reste, avec comptes mots/phrases). **Ne pas éditer
+    `content/curated/n1/kanji.json` à la main** : mettre les mnémotechniques dans
+    `content/curated/n1/mnemonics/*.json` (`{ littéral: texte }`) puis relancer le
+    squelette. Pour mesurer un kanji pending, il doit être temporairement dans le
+    référentiel : après sa curation, lancer `n1-scaffold.mjs --all` → normalize →
+    `n1-scaffold.mjs` (le pack filtré s'élargit) → normalize une seconde fois avant
+    generate → validate. Sans ce second `normalize`, `generate` traite les 1232 kanji
+    N1 amorcés au lieu du pack filtré. 219 kanji N1 sans
+    sens FR dans KANJIDIC2 : sens curatés dans `content/curated/n1/meanings-fr.json`
+    (repli si KANJIDIC2 n'a rien, `stages/normalize.mjs`). Pour vérifier un brouillon
+     de mini-texte avant de l'écrire : `node tools/content/check-texts.mjs`
+     (référentiel + lecture kuromoji complète).
+
+47. **`content:load` : pas de `notIn`/`in` massif (P2029).** Avec 73k exercices,
+    `cleanupOrphans` dépassait la limite de paramètres de requête de MariaDB
+    (`P2029: query parameter limit exceeded`). Le nettoyage charge désormais les ids
+    en base, fait la différence contre le pack **en JS**, puis requête par lots de
+    `CLEANUP_CHUNK` (4000). Ne jamais réintroduire de `notIn` sur la liste complète
+    du pack.
 
 ## Recettes
 
@@ -445,8 +473,12 @@ ajoute-le ici.
 1. Éditer `content/curated/<niveau>/kanji.json` (ordre, radicaux, confusions,
    mnémotechniques) ou `vocabulary.json` / `sentences.json` / `texts.json`
    (complétion). Les mini-textes ne doivent employer que des kanji du niveau ou
-   inférieurs (piège 37).
+   inférieurs (piège 37). **Exception N1** : le kanji.json est généré par
+   `tools/content/n1-scaffold.mjs` (piège 46) — éditer `mnemonics/*.json`,
+   `meanings-fr.json`, `vocabulary.json`, `sentences.json`, `texts.json` puis
+   relancer le squelette.
 2. Relancer `pnpm content:normalize && pnpm content:generate && pnpm content:validate`.
+   Pour N1, suivre la séquence d'amorçage complète du piège 46.
 3. `pnpm content:report` pour vérifier la couverture (seuils par niveau dans
    `LEVEL_MINIMUMS` : N5 ≥ 40 exercices / 6 mots / 6 phrases, N4 et N3 ≥ 32 / 5 / 5).
 4. `pnpm content:publish && pnpm content:load` pour publier et recharger en base.

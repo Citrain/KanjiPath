@@ -367,7 +367,7 @@ export async function listKanjivgSvgs() {
   return codepoints;
 }
 
-export const IMPORT_LEVELS = [5, 4, 3, 2];
+export const IMPORT_LEVELS = [5, 4, 3, 2, 1];
 
 export const IMPORT_EXTRA = {
   5: ['分'],

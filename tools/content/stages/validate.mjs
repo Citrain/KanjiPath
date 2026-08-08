@@ -30,6 +30,7 @@ const LEVEL_MINIMUMS = {
   N4: { exercises: 32, sentences: 5, words: 5, texts: 2, total: 5000 },
   N3: { exercises: 32, sentences: 5, words: 5, texts: 2, total: 10000 },
   N2: { exercises: 32, sentences: 5, words: 5, texts: 2, total: 10000 },
+  N1: { exercises: 32, sentences: 5, words: 5, texts: 2, total: 10000 },
 };
 const CATEGORY_SHARES = {
   meaning: 0.2,

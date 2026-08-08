@@ -430,72 +430,82 @@ async function loadExercises(prisma, exercises, versionId) {
   }
 }
 
+const CLEANUP_CHUNK = 4000;
+
+function chunks(list, size) {
+  const out = [];
+  for (let i = 0; i < list.length; i += size) {
+    out.push(list.slice(i, i + size));
+  }
+  return out;
+}
+
 async function cleanupOrphans(prisma, packIds) {
-  const orphanExercises = await prisma.exerciseItem.findMany({
-    where: { externalId: { notIn: packIds.exercises } },
-    select: { id: true },
-  });
-  const orphanExerciseIds = orphanExercises.map((e) => e.id);
-  const referenced = new Set([
-    ...(await prisma.studySessionItem.findMany({
-      where: { exerciseItemId: { in: orphanExerciseIds } },
+  const packExerciseIds = new Set(packIds.exercises);
+  const allExercises = await prisma.exerciseItem.findMany({ select: { id: true, externalId: true } });
+  const orphanExerciseIds = allExercises.filter((e) => !packExerciseIds.has(e.externalId)).map((e) => e.id);
+  const referenced = new Set();
+  for (const chunk of chunks(orphanExerciseIds, CLEANUP_CHUNK)) {
+    for (const row of await prisma.studySessionItem.findMany({
+      where: { exerciseItemId: { in: chunk } },
       select: { exerciseItemId: true },
-    })).map((row) => row.exerciseItemId),
-    ...(await prisma.reviewLog.findMany({
-      where: { exerciseItemId: { in: orphanExerciseIds } },
+    })) {
+      referenced.add(row.exerciseItemId);
+    }
+    for (const row of await prisma.reviewLog.findMany({
+      where: { exerciseItemId: { in: chunk } },
       select: { exerciseItemId: true },
-    })).map((row) => row.exerciseItemId),
-  ]);
+    })) {
+      referenced.add(row.exerciseItemId);
+    }
+  }
   const deletable = orphanExerciseIds.filter((id) => !referenced.has(id));
-  if (deletable.length > 0) {
-    await prisma.exerciseItem.deleteMany({ where: { id: { in: deletable } } });
+  for (const chunk of chunks(deletable, CLEANUP_CHUNK)) {
+    await prisma.exerciseItem.deleteMany({ where: { id: { in: chunk } } });
   }
   console.log(
     `[load] nettoyage: ${deletable.length} exercices orphelins supprimés, ${referenced.size} conservés (historique utilisateur)`,
   );
 
-  const orphanVocab = await prisma.vocabulary.findMany({
-    where: { id: { notIn: packIds.vocabulary } },
-    select: { id: true },
-  });
-  const orphanVocabIds = orphanVocab.map((v) => v.id);
-  if (orphanVocabIds.length > 0) {
+  const packVocabIds = new Set(packIds.vocabulary);
+  const orphanVocabIds = (await prisma.vocabulary.findMany({ select: { id: true } }))
+    .map((v) => v.id)
+    .filter((id) => !packVocabIds.has(id));
+  for (const chunk of chunks(orphanVocabIds, CLEANUP_CHUNK)) {
     await prisma.sentenceToken.updateMany({
-      where: { vocabularyId: { in: orphanVocabIds } },
+      where: { vocabularyId: { in: chunk } },
       data: { vocabularyId: null },
     });
     await prisma.exerciseItem.updateMany({
-      where: { vocabularyId: { in: orphanVocabIds } },
+      where: { vocabularyId: { in: chunk } },
       data: { vocabularyId: null },
     });
-    await prisma.vocabularyKanji.deleteMany({ where: { vocabularyId: { in: orphanVocabIds } } });
-    await prisma.vocabulary.deleteMany({ where: { id: { in: orphanVocabIds } } });
+    await prisma.vocabularyKanji.deleteMany({ where: { vocabularyId: { in: chunk } } });
+    await prisma.vocabulary.deleteMany({ where: { id: { in: chunk } } });
   }
   console.log(`[load] nettoyage: ${orphanVocabIds.length} mots orphelins supprimés`);
 
-  const orphanSentences = await prisma.sentence.findMany({
-    where: { id: { notIn: packIds.sentences } },
-    select: { id: true },
-  });
-  const orphanSentenceIds = orphanSentences.map((s) => s.id);
-  if (orphanSentenceIds.length > 0) {
+  const packSentenceIds = new Set(packIds.sentences);
+  const orphanSentenceIds = (await prisma.sentence.findMany({ select: { id: true } }))
+    .map((s) => s.id)
+    .filter((id) => !packSentenceIds.has(id));
+  for (const chunk of chunks(orphanSentenceIds, CLEANUP_CHUNK)) {
     await prisma.exerciseItem.updateMany({
-      where: { sentenceId: { in: orphanSentenceIds } },
+      where: { sentenceId: { in: chunk } },
       data: { sentenceId: null },
     });
-    await prisma.sentenceToken.deleteMany({ where: { sentenceId: { in: orphanSentenceIds } } });
-    await prisma.sentence.deleteMany({ where: { id: { in: orphanSentenceIds } } });
+    await prisma.sentenceToken.deleteMany({ where: { sentenceId: { in: chunk } } });
+    await prisma.sentence.deleteMany({ where: { id: { in: chunk } } });
   }
   console.log(`[load] nettoyage: ${orphanSentenceIds.length} phrases orphelines supprimées`);
 
-  const orphanTexts = await prisma.miniText.findMany({
-    where: { id: { notIn: packIds.texts } },
-    select: { id: true },
-  });
-  const orphanTextIds = orphanTexts.map((t) => t.id);
-  if (orphanTextIds.length > 0) {
-    await prisma.miniTextToken.deleteMany({ where: { miniTextId: { in: orphanTextIds } } });
-    await prisma.miniText.deleteMany({ where: { id: { in: orphanTextIds } } });
+  const packTextIds = new Set(packIds.texts);
+  const orphanTextIds = (await prisma.miniText.findMany({ select: { id: true } }))
+    .map((t) => t.id)
+    .filter((id) => !packTextIds.has(id));
+  for (const chunk of chunks(orphanTextIds, CLEANUP_CHUNK)) {
+    await prisma.miniTextToken.deleteMany({ where: { miniTextId: { in: chunk } } });
+    await prisma.miniText.deleteMany({ where: { id: { in: chunk } } });
   }
   console.log(`[load] nettoyage: ${orphanTextIds.length} mini-textes orphelins supprimés`);
 }
