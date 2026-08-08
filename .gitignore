@@ -5,6 +5,7 @@ coverage/
 .env
 .env.local
 *.tsbuildinfo
+apps/api/src/generated/
 content/raw/
 content/normalized/
 content/generated/

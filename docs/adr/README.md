@@ -25,6 +25,11 @@ kanji**, conservée à la racine du dépôt pour rester la source de vérité un
 
 ## Historique des versions de l'ADR
 
+- **1.2** — Montée de Prisma ORM **v6 → v7** : client généré dans
+  `apps/api/src/generated/prisma` (provider `prisma-client`, `output` requis),
+  moteur « Rust-free », driver adapter `@prisma/adapter-mariadb` obligatoire,
+  configuration CLI dans `apps/api/prisma.config.ts`. Provider de schéma
+  inchangé (`mysql`).
 - **1.1** — PostgreSQL 18 remplacé par **MariaDB 11.4 LTS+** (local, sans Docker,
   Prisma provider `mysql`) ; suppression de Docker Compose pour le développement local.
 - **1.0** — version initiale.

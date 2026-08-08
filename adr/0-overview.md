@@ -36,7 +36,7 @@ Application web moderne pour apprendre les kanji du débutant au avancé, align�
 1. Monorepo TypeScript (pnpm workspaces)
 2. Frontend React 19.2 + Vite 8.1 (séparé du backend)
 3. Backend NestJS 11 + Fastify + API REST
-4. MariaDB 11.4 LTS+ (local, sans Docker ; testée en 12.x) + Prisma v6 (provider `mysql`)
+4. MariaDB 11.4 LTS+ (local, sans Docker ; testée en 12.x) + Prisma v7 (provider `mysql`, adapter `@prisma/adapter-mariadb`)
 5. ts-fsrs pour la répétition espacée
 6. Node.js 24 LTS (pas de version Current)
 7. Pas de microservices

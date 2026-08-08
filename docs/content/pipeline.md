@@ -49,7 +49,11 @@ réutilisés tant qu'ils existent.
 - Node natif : `fetch`, `zlib`, `node:crypto`.
 - Paquets racine : `fast-xml-parser` (XML), `unbzip2-stream` (bz2), `tar` (archives),
   `yauzl` (zip KanjiVG), `kuromoji` (tokenisation japonaise, dictionnaire IPAdic
-  embarqué), `@prisma/client` (étape `load`).
+  embarqué).
+- Étape `load` : réutilise le **client Prisma généré** de l'API
+  (`apps/api/src/generated/prisma/client.ts`) et `createDbAdapter`
+  (`@prisma/adapter-mariadb`), importés en direct par Node 24 (type stripping).
+  Lancer `pnpm db:generate` avant si le client n'existe pas.
 - `pnpm build` doit avoir été lancé au moins une fois si vous validez contre les
   schémas Zod de `@kanjipath/content-schema` (le pipeline lui-même n'en dépend pas).
 

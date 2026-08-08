@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { PrismaClient } from '@prisma/client';
+import { createDbAdapter } from '../../apps/api/src/infrastructure/database/prisma.adapter.ts';
+import { PrismaClient } from '../../apps/api/src/generated/prisma/client.ts';
 import { readJson } from './lib/fs-utils.mjs';
 import { PACK_DIR, MANIFESTS_DIR, ROOT } from './lib/paths.mjs';
 
@@ -448,7 +449,7 @@ async function cleanupOrphans(prisma, packIds) {
 
 export async function stageLoad() {
   loadEnv();
-  const prisma = new PrismaClient();
+  const prisma = new PrismaClient({ adapter: createDbAdapter() });
 
   const [kanji, vocabulary, sentences, exercises, curriculum, sources] = await Promise.all([
     readJson(path.join(PACK_DIR, 'kanji.json')),

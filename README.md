@@ -17,7 +17,7 @@ Architecture et règles produit complètes : [`ADR-001-plateforme-apprentissage-
 - Node.js 24 LTS, TypeScript strict, pnpm workspaces
 - React 19 + Vite 8 + Tailwind CSS 4 (apps/web)
 - NestJS 11 + Fastify (apps/api)
-- MariaDB 11.4 LTS+ + Prisma ORM 6 (provider `mysql`) — testée avec MariaDB 12.x
+- MariaDB 11.4 LTS+ + Prisma ORM 7 (provider `mysql`) — testée avec MariaDB 12.x
 - **Sans Docker** : MariaDB est installé en local
 
 ## Structure

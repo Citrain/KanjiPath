@@ -71,6 +71,23 @@ pnpm content:load   # charge le pack publié dans la base de développement
 - Après modification du schéma : `pnpm db:migrate` (dev), puis committer la migration.
 - Ne jamais écraser silencieusement une migration existante.
 
+### Spécificités Prisma ORM 7
+
+- **Client généré hors de `node_modules`** : le générateur `prisma-client` écrit le
+  client dans `apps/api/src/generated/prisma/` (gitignoré). Il est régénéré par
+  `pnpm db:generate` (étape incluse dans `dev.ps1`). Le code source importe depuis ce
+  chemin (`../generated/prisma/client`), plus depuis `@prisma/client`.
+- **Driver adapter obligatoire** : Prisma 7 n'embarque plus de moteur Rust ; la
+  connexion passe par `@prisma/adapter-mariadb` (driver `mariadb`). L'adaptateur est
+  créé dans `apps/api/src/infrastructure/database/prisma.adapter.ts` et injecté dans
+  `PrismaService`. `tools/content/load.mjs` l'utilise aussi.
+- **Config CLI dans `prisma.config.ts`** : `apps/api/prisma.config.ts` déclare le
+  schéma, le dossier de migrations et la `datasource.url` (`env("DATABASE_URL")`).
+  Prisma 7 ne lit plus `.env` automatiquement : les scripts API passent par
+  `dotenv-cli` (`dotenv -e ../../.env -- prisma ...`).
+- **`prisma migrate dev` ne régénère plus le client** : lancer `pnpm db:generate`
+  explicitement après une migration qui change le schéma.
+
 ## Tests d'intégration
 
 Les tests d'intégration (`apps/api/test/*.e2e-spec.ts`) nécessitent la base

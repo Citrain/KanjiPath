@@ -2,13 +2,17 @@
 
 - **Statut** : Accepté
 - **Date** : 2026-08-06
-- **Version** : 1.1
+- **Version** : 1.2
 - **Décisionnaires** : propriétaire du projet
 - **Portée** : architecture produit, technique, données pédagogiques et progression
 - **Nom de travail** : `KanjiPath`
 
 ### Historique des versions
 
+- **1.2** (2026-08-08) : montée de Prisma ORM **v6 → v7** (client généré dans
+  `apps/api/src/generated/prisma`, moteur « Rust-free », driver adapter
+  `@prisma/adapter-mariadb` obligatoire, configuration CLI dans
+  `apps/api/prisma.config.ts`). Le provider de schéma reste `mysql`.
 - **1.1** (2026-08-06) : PostgreSQL 18 remplacé par **MariaDB 11.4 LTS**
   (déjà installé en local, Prisma provider `mysql`) ; suppression de Docker
   Compose pour le développement local.
@@ -95,13 +99,15 @@ Construire une application web en monorepo TypeScript, séparant clairement :
 #### Données
 
 - **MariaDB 11.4 LTS ou supérieure** (installée en local, sans Docker ; testée en 12.x)
-- **Prisma ORM v6 stable** avec le provider `mysql` (compatible MariaDB)
+- **Prisma ORM v7** avec le provider `mysql` (compatible MariaDB) ; au runtime,
+  la connexion passe par le driver adapter `@prisma/adapter-mariadb`
 - migrations SQL versionnées
 - Redis non obligatoire en V1
 - stockage objet facultatif pour de futurs fichiers audio
 
-Note : Prisma ne fournit pas de connector MariaDB dédié ; le provider `mysql`
-est utilisé. Les fonctionnalités MySQL 8+ non supportées par MariaDB (CTE récursives,
+Note : le provider de schéma Prisma est `mysql` ; depuis Prisma 7, l’adaptateur
+de driver `@prisma/adapter-mariadb` (driver `mariadb`) assure la connexion.
+Les fonctionnalités MySQL 8+ non supportées par MariaDB (CTE récursives,
 JSON avancé) doivent être évitées dans les requêtes applicatives.
 
 #### Qualité

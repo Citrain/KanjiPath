@@ -17,6 +17,7 @@ donnée.
 Pas de CI configurée. Avant tout déploiement, lancer localement :
 
 ```bash
+pnpm db:generate   # client Prisma généré (requis avant le build sur un clone frais)
 pnpm lint
 pnpm typecheck
 pnpm test
@@ -29,7 +30,9 @@ pnpm content:build
 - **API** : Node dans un conteneur ou process managé par systemd.
 - **Base** : MariaDB managé ou installé sur serveur avec sauvegardes régulières.
 - **TLS** : reverse proxy (terminaison TLS) devant l'API.
-- Migrations exécutées **avant** bascule (`prisma migrate deploy`).
+- Migrations exécutées **avant** bascule (`prisma migrate deploy` ; depuis Prisma 7,
+  la connexion CLI vient de `apps/api/prisma.config.ts`, qui lit `DATABASE_URL` dans
+  l'environnement du processus).
 - Sauvegarde quotidienne de la base.
 - `COOKIE_SECURE=true` (cookies `Secure`), `CORS_ORIGIN` restreint au domaine du site.
 

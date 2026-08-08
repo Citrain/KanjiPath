@@ -36,12 +36,14 @@ Stack, architecture et configuration du projet KanjiPath.
 ### Données
 
 - **MariaDB 11.4 LTS ou supérieure** (installée en local, sans Docker ; testée en 12.x)
-- **Prisma ORM v6 stable**, provider `mysql` (compatible MariaDB)
+- **Prisma ORM v7**, provider `mysql` (compatible MariaDB) ; au runtime la connexion
+  passe par le driver adapter `@prisma/adapter-mariadb`
 - migrations SQL versionnées
 - Redis non obligatoire en V1
 - stockage objet facultatif pour de futurs fichiers audio
 
-> Prisma n'a pas de connector MariaDB dédié : on utilise le provider `mysql`.
+> Le provider de schéma reste `mysql` ; depuis Prisma 7 c'est l'adapter
+> `@prisma/adapter-mariadb` (driver `mariadb`) qui porte la connexion.
 > Éviter les fonctionnalités MySQL 8+ non supportées par MariaDB
 > (CTE récursives, JSON avancé).
 

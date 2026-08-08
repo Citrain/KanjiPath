@@ -11,7 +11,7 @@ de contenu propre. Pas de microservices : une seule API modulaire.
 | Runtime | Node.js 24 LTS, TypeScript strict, pnpm workspaces |
 | Frontend | React 19, Vite 8, React Router 7, TanStack Query 5, Tailwind CSS 4, Radix UI (slot, dialog, dropdown-menu, tooltip), lucide-react, Motion, canvas-confetti |
 | Backend | NestJS 11 + adaptateur Fastify, API REST `/api/v1` |
-| Données | MariaDB 11.4+ (testée 12.x), Prisma ORM 6 (provider `mysql`) |
+| Données | MariaDB 11.4+ (testée 12.x), Prisma ORM 7 (provider `mysql`, driver adapter `@prisma/adapter-mariadb`) |
 | Répétition espacée | `ts-fsrs` derrière une interface du domaine |
 | Contenu | pipeline déterministe `tools/content/` (voir `docs/content/pipeline.md`) |
 | Qualité | Vitest, Biome |
@@ -42,12 +42,14 @@ apps/
       styles/          # design system Tailwind 4 (tokens, animations, reduced-motion)
   api/                 # API NestJS + Fastify (port 3001 en dev)
     prisma/            # schema.prisma + migrations
+    prisma.config.ts   # config CLI Prisma v7 (schema, datasource, migrations)
     src/
       app.module.ts
       app.controller.ts        # GET /health
       main.ts                  # bootstrap, cookies, CORS, préfixe /api/v1
+      generated/prisma/        # client Prisma GÉNÉRÉ (gitignoré, `pnpm db:generate`)
       infrastructure/
-        database/      # PrismaModule, PrismaService
+        database/      # PrismaModule, PrismaService, prisma.adapter (driver MariaDB)
         security/      # csrf-cookie.plugin, csrf.guard, skip-csrf.decorator
       modules/
         auth/          # controller, service, session, guards, décorateurs

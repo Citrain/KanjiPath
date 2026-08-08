@@ -11,7 +11,7 @@ import {
   type ReviewCard,
 } from '@kanjipath/domain';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '../../generated/prisma/client';
 import { PrismaService } from '../../infrastructure/database/prisma.service';
 import { CARD_SKILL_TO_TEMPLATES, gradeAnswer, TEMPLATE_TO_CARD_SKILL } from './grader';
 

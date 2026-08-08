@@ -35,6 +35,8 @@ ajoute-le ici.
 |---|---|
 | Une route API | `apps/api/src/modules/<domaine>/` |
 | Schéma / tables | `apps/api/prisma/schema.prisma` |
+| Config CLI Prisma (v7) | `apps/api/prisma.config.ts` |
+| Client Prisma généré | `apps/api/src/generated/prisma/` (gitignoré, `pnpm db:generate`) |
 | Types/schémas partagés | `packages/contracts/src/` |
 | Règles métier (FSRS, maîtrise) | `packages/domain/src/` |
 | Schémas de contenu | `packages/content-schema/src/` |
@@ -86,6 +88,9 @@ ajoute-le ici.
 7. **Prisma lit `.env` via `dotenv-cli`** dans les scripts `apps/api`
    (`dotenv -e ../../.env -- prisma ...`). Lancer `prisma` directement depuis la
    racine sans charger l'env échoue (`Environment variable not found: DATABASE_URL`).
+   Depuis Prisma 7, le CLI ne lit **plus** `.env` tout seul : la `datasource.url`
+   vient de `apps/api/prisma.config.ts` (`env("DATABASE_URL")`), alimentée par
+   `dotenv-cli`. Ne pas supprimer `dotenv-cli` des scripts.
 
 8. **MariaDB, pas PostgreSQL.** Provider Prisma `mysql`. Pas de fonctionnalités
    MySQL 8+ non supportées par MariaDB (CTE récursives, JSON avancé).
@@ -105,15 +110,44 @@ ajoute-le ici.
 
 12. **`prisma migrate dev` est interactif** : dans un shell non interactif il demande
     le nom de migration même avec `--name` si le flag s'est perdu, ou échoue
-    (« non-interactive environment »). Recette fiable : `prisma migrate diff
-    --from-url <DATABASE_URL> --to-schema-datamodel prisma/schema.prisma --script`
-    écrit dans un dossier `migrations/<ts>_nom/migration.sql`, puis `prisma migrate
-    deploy` (dev + test). Penser à retirer le BOM si le fichier est écrit par
-    PowerShell (`Set-Content -Encoding UTF8` ajoute un BOM).
+    (« non-interactive environment »). Recette fiable (Prisma 7 : `--from-url` et
+    `--to-schema-datamodel` n'existent plus) : `prisma migrate diff
+    --from-config-datasource --to-schema prisma/schema.prisma --script` (url lue
+    depuis `prisma.config.ts`, donc via `dotenv -e ../../.env`) écrit dans un dossier
+    `migrations/<ts>_nom/migration.sql`, puis `prisma migrate deploy` (dev + test).
+    Penser à retirer le BOM si le fichier est écrit par PowerShell
+    (`Set-Content -Encoding UTF8` ajoute un BOM).
 
-13. **`prisma generate` peut échouer en EPERM** (rename de
-    `query_engine-windows.dll.node`) si un serveur dev/watcher tient la DLL :
-    arrêter les processus `node` (`Get-Process node | Stop-Process`) puis régénérer.
+13. **`prisma generate` n'écrit plus de DLL moteur** (Prisma 7 « Rust-free ») : le
+    piège EPERM sur `query_engine-windows.dll.node` n'existe plus. Le client est
+    généré en TypeScript dans `apps/api/src/generated/prisma/` (gitignoré). Si un
+    outil tient des fichiers verrouillés sous Windows, arrêter les processus `node`
+    puis régénérer.
+
+13a. **Prisma 7 : client généré + driver adapter.** Le générateur est `prisma-client`
+    (pas `prisma-client-js`) avec `output = "../src/generated/prisma"`,
+    `moduleFormat = "cjs"` (l'API compile en CommonJS ; `esm` émettrait
+    `import.meta`, incompatible avec `tsc` ici) et `importFileExtension = "ts"`.
+    Tout import du client se fait depuis `src/generated/prisma/client` (jamais
+    `@prisma/client`, qui n'est plus qu'un runtime). La connexion exige un driver
+    adapter : `createDbAdapter()` (`infrastructure/database/prisma.adapter.ts`,
+    `@prisma/adapter-mariadb` qui accepte directement l'URL `mysql://`) est passé au
+    constructeur de `PrismaClient` dans `PrismaService`. Les tsconfig de `apps/api`
+    portent `allowImportingTsExtensions` + `rewriteRelativeImportExtensions`
+    (imports générés en `.ts`, réécrits `.js` à l'émission) : ne pas les retirer.
+
+13b. **`tools/content/load.mjs` importe le client généré en TypeScript directement**
+    (`../../apps/api/src/generated/prisma/client.ts` + `prisma.adapter.ts`) via le
+    type stripping natif de Node 24 — pas de build nécessaire. Le warning
+    `MODULE_TYPELESS_PACKAGE_JSON` à l'exécution est bénin (Node repasse le fichier
+    en ESM par détection de syntaxe). Ne pas remettre d'import `@prisma/client` dans
+    les outils.
+
+13c. **`pnpm migrate deploy` sur la base de test** : `dev.ps1` injecte
+    `$env:DATABASE_URL = <url kanjipath_test>` puis lance `prisma migrate deploy`
+    (sans `dotenv-cli`). Avec Prisma 7 cela fonctionne car `prisma.config.ts` lit
+    `env("DATABASE_URL")` du processus. Conserver cet ordre (generate → deploy dev →
+    deploy test).
 
 14. **`unbzip2-stream` n'est pas async-itérable** (`stream is not async iterable`) :
     consommer via événements `data/end/error` avec une file (voir `bz2Lines` et
@@ -265,7 +299,8 @@ ajoute-le ici.
 ### Ajouter une table
 
 1. Modifier `apps/api/prisma/schema.prisma`.
-2. `pnpm db:migrate` (interactif) ou la recette `migrate diff` + `deploy` (piège 12).
+2. `pnpm db:migrate` (interactif) ou la recette `migrate diff` + `deploy` (piège 12),
+   puis `pnpm db:generate` (Prisma 7 ne régénère plus le client automatiquement).
 3. Committer la migration.
 4. Si la table reflète un concept du modèle ADR, mettre à jour
    `adr/3-data-model/README.md` et `docs/architecture/overview.md`.
