@@ -129,8 +129,9 @@ glose française JMdict — surtout des kanji de prénoms — et 401 sans phrase
 FR liée), le pack 2026.08.7 publie **433 kanji N1** couverts (≥ 5 mots et
 ≥ 5 phrases chacun) : 1420 kanji au total, 10181 mots, 8532 phrases, 10 mini-textes
 (dont 2 N1), 74009 exercices validés. Les 799 kanji restants sont suivis dans
-`content/curated/n1/kanji-pending.json` et seront ajoutés au fil de la curation
-(vocabulaire + phrases) — voir `docs/agent/suivi-phase-4b.md`. Outils ajoutés :
+`content/curated/n1/kanji-pending.json`. Leur curation est reportée jusqu'à une
+source japonais-français supplémentaire sous licence compatible ou une capacité
+éditoriale dédiée — voir `docs/agent/suivi-phase-4b.md`. Outils ajoutés :
 `tools/content/n1-scaffold.mjs` (squelette curaté N1 rejouable),
 `content/curated/radicals-fr.json` (radicaux manquants),
 `content/curated/confusions-fr.json` (paires transverses),

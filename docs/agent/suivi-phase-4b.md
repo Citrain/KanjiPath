@@ -18,7 +18,8 @@ autre agent puisse reprendre exactement là où le travail s'est arrêté.
 - [x] 2 mini-textes N1 (`content/curated/n1/texts.json` : 春の山, 夜の森)
 - [x] `pnpm content:validate` vert (1420 kanji, 74009 exercices, 0 erreur, 0 avertissement)
 - [x] Docs à jour : `docs/README.md`, `adr/11-phases/README.md`, `docs/agent/guide.md` (piège 46)
-- [ ] **Curation des 799 kanji pending** (lots successifs) — voir tableau ci-dessous
+- [ ] **Curation des 799 kanji pending** (lots successifs) — reportée ; ne bloque pas
+      le pack N1 progressif publié
 - [x] `content:publish` (pack 2026.08.7) + `content:load` en base dev
       (1420 kanji, 10181 mots, 8532 phrases, 10 textes, 74009 exercices chargés)
 
@@ -58,7 +59,12 @@ autre agent puisse reprendre exactement là où le travail s'est arrêté.
   comptes mots/phrases et mnémotechniques déjà écrites). À chaque lot de
   curation (vocabulaire + phrases), relancer normalize + squelette : le pack
   s'élargit mécaniquement. Le squelette filtre d'après la couverture mesurée
-  dans `content/normalized/` (option `--all` pour désactiver le filtre).
+   dans `content/normalized/` (option `--all` pour désactiver le filtre).
+- **Report de la curation longue (2026-08-08)** : les 799 kanji pending sont laissés
+  de côté jusqu'à la disponibilité d'une source japonais-français supplémentaire sous
+  licence compatible ou d'une capacité de curation éditoriale dédiée. Le pack
+  `2026.08.7` à 433 kanji N1 reste la version publiée ; aucun contenu de remplissage
+  ne doit être ajouté pour satisfaire les seuils.
 - 219 kanji N1 sans sens français dans KANJIDIC2 : sens curatés dans
   `content/curated/n1/meanings-fr.json` (repli utilisé uniquement quand
   KANJIDIC2 n'a rien, voir `stages/normalize.mjs`). Provenance : éditorial
@@ -80,7 +86,7 @@ autre agent puisse reprendre exactement là où le travail s'est arrêté.
 | mnemonics/batch-03.json | kanji d'ordre 281–415 (嫁…驚) | fait |
 | mnemonics/batch-04.json | 又, 井, 丘, 玄, 克, 佐, 妥, 汽, 拒, 析, 抵, 帝, 松, 併, 卓, 苗, 盲, 伯 | fait |
 | lot 01 | 13 mots et 7 phrases curatés ; 18 kanji publiés (415 → 433) | fait |
-| kanji-pending.json | 799 kanji sans couverture suffisante | à curater (vocab + phrases) |
+| kanji-pending.json | 799 kanji sans couverture suffisante | reporté |
 
 ### Procédure pour publier des kanji pending (lot suivant)
 
@@ -101,10 +107,10 @@ autre agent puisse reprendre exactement là où le travail s'est arrêté.
 ## Prochaine action
 
 1. Lire ce fichier + `AGENTS.md` + `docs/agent/guide.md` (pièges 46, 47).
-2. Reprendre la curation des kanji pending (procédure ci-dessous). Le lot 01 s'arrête
-   après `伯` ; reprendre avec les kanji à 3-4 mots / 3-4 phrases du fichier pending.
-   Après chaque lot : amorçage `--all` → normalize → squelette → normalize → generate
-   → validate → publish → load.
+2. Aucune curation N1 active : le lot 01 s'arrête après `伯`. Avant de reprendre,
+   valider une nouvelle source japonais-français ou allouer une capacité de curation
+   éditoriale, puis repartir des kanji à 3-4 mots / 3-4 phrases avec la procédure
+   ci-dessous.
 3. Après toute modification : `pnpm content:validate` et mettre à jour ce fichier.
 4. Le commit de la Phase 4b n'a pas été fait (à la demande implicite de workflow) :
    tout est sur le disque, prêt à committer.

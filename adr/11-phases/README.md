@@ -94,8 +94,9 @@ Constat : les données FR disponibles ne couvrent pas tout le niveau — 227 kan
 401 aucune phrase Tatoeba FR liée ; monter les quotas n'y change rien (absence de
 candidats, pas de sélection). Décision : **publication progressive** — le pack
 2026.08.7 publie les 433 kanji N1 couverts (≥ 5 mots ET ≥ 5 phrases) ; les 799
-autres sont suivis dans `content/curated/n1/kanji-pending.json` et entreront au
-fil de la curation (vocabulaire/phrases curatés), sans nouvelle décision
+autres sont suivis dans `content/curated/n1/kanji-pending.json`. Leur curation est
+reportée jusqu'à la disponibilité d'une source japonais-français sous licence
+compatible ou d'une capacité éditoriale dédiée, sans nouvelle décision
 d'architecture : le curriculum est versionné et le squelette
 (`tools/content/n1-scaffold.mjs`) élargit le pack mécaniquement à chaque lot.
 Outils : squelette N1 rejouable, `content/curated/radicals-fr.json` (22 radicaux
@@ -103,7 +104,7 @@ manquants), `content/curated/confusions-fr.json` (paires transverses),
 `content/curated/n1/meanings-fr.json` (219 sens FR absents de KANJIDIC2),
 mnémotechniques par lots dans `content/curated/n1/mnemonics/`, 2 mini-textes N1.
 État : pipeline N5→N1, pack validé (1420 kanji, 74009 exercices, 0 erreur),
-curation des kanji pending à poursuivre (voir `docs/agent/suivi-phase-4b.md`).
+curation des kanji pending reportée (voir `docs/agent/suivi-phase-4b.md`).
 
 ### Phase 5 — Écriture et audio
 
