@@ -1,0 +1,16 @@
+{
+  "level": "N3",
+  "notes": "Mini-textes de lecture graduée rédigés par KanjiPath : uniquement des kanji N5-N4-N3 (les autres mots sont en kana). Schéma : { title, body, french }.",
+  "texts": [
+    {
+      "title": "友だちからの手紙",
+      "body": "昨日、友だちから手紙がとどきました。手紙には、写真が入っていました。友だちは今、北海道に住んでいます。夏は花がきれいで、冬は雪が多いそうです。来年、わたしも遊びに行きたいです。友だちに会えるのが、今から楽しみです。",
+      "french": "Hier, j'ai reçu une lettre d'un ami. Il y avait une photo dans la lettre. Mon ami habite maintenant à Hokkaidō. En été les fleurs sont belles, et en hiver il y a beaucoup de neige, paraît-il. L'année prochaine, j'aimerais y aller moi aussi. J'ai déjà hâte de le voir."
+    },
+    {
+      "title": "図書館",
+      "body": "駅の前に、大きな図書館があります。毎週、土曜日に行って、本を借ります。静かな部屋で、ゆっくり読めます。宿題が終わったあと、好きな小説も読みます。図書館は、だれでも自由に使える場所です。わたしは、この静かな場所が大好きです。",
+      "french": "Devant la gare, il y a une grande bibliothèque. Chaque samedi, j'y vais et j'emprunte des livres. Dans une salle calme, on peut lire tranquillement. Après les devoirs, je lis aussi des romans que j'aime. La bibliothèque est un lieu que tout le monde peut utiliser librement. J'adore cet endroit paisible."
+    }
+  ]
+}

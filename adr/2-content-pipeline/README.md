@@ -146,6 +146,9 @@ pnpm content:build   # commande complète
 | N2 | 20 | 3 | 3 |
 | N1 | 18 | 3 | 3 |
 
+Depuis la Phase 3, chaque niveau doit aussi fournir au moins **2 mini-textes** de
+lecture graduée (`content/curated/<niveau>/texts.json`).
+
 ### Répartition obligatoire
 
 - 20 % sens
@@ -220,6 +223,8 @@ Le pipeline doit refuser le build en cas de :
 - plusieurs réponses identiques après normalisation
 - phrase sans kanji cible
 - phrase sans attribution (si nécessaire)
+- mini-texte contenant un kanji hors référentiel ou de niveau supérieur au texte
+- mini-texte dont les tokens ne couvrent pas le corps
 - nombre minimum non atteint
 - référence vers ressource inexistante
 - fichier SVG absent

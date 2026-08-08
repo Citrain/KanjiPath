@@ -17,6 +17,10 @@ export function curatedSentenceId(japanese) {
   return `s-curated-${fnv1a(japanese).toString(36)}`;
 }
 
+export function curatedTextId(title, body) {
+  return `t-curated-${fnv1a(`${title}|${body}`).toString(36)}`;
+}
+
 export function cleanReading(reading) {
   return reading.replace(/^-+/, '').replace(/-+$/, '');
 }
@@ -298,6 +302,7 @@ export async function stageNormalize() {
       kanji: await readJson(path.join(dir, 'kanji.json')),
       sentences: await readJson(path.join(dir, 'sentences.json')),
       vocabulary: await readJson(path.join(dir, 'vocabulary.json')),
+      texts: await readJson(path.join(dir, 'texts.json')),
     };
   }
   const componentsFr = await readJson(path.join(CURATED_DIR, 'components-fr.json'));
@@ -471,6 +476,33 @@ export async function stageNormalize() {
   for (const level of LEVELS) {
     const levelSet = setsByLevel.get(level);
     const quota = SENTENCES_PER_KANJI[level];
+
+    for (const curatedSentence of curatedByLevel[level].sentences.sentences ?? []) {
+      const kanjiInSentence = [...levelSet].filter((k) => curatedSentence.japanese.includes(k));
+      if (kanjiInSentence.length === 0) {
+        throw new Error(`Phrase curatée ${level} sans kanji du niveau: ${curatedSentence.japanese}`);
+      }
+      if (usedSentences.has(curatedSentence.japanese)) {
+        continue;
+      }
+      usedSentences.add(curatedSentence.japanese);
+      sentencesOut.push({
+        id: curatedSentenceId(curatedSentence.japanese),
+        japanese: curatedSentence.japanese,
+        translationFr: curatedSentence.french,
+        difficulty: level,
+        targetKanjiIds: kanjiInSentence.map(kanjiIdOf),
+        tokens: [],
+        sourceId: 'kanjipath_editorial',
+        license: 'CC BY-SA 4.0',
+        author: 'KanjiPath',
+        editorialStatus: 'reviewed',
+      });
+      for (const k of kanjiInSentence) {
+        sentenceCountByKanji.set(k, sentenceCountByKanji.get(k) + 1);
+      }
+    }
+
     for (const pair of sortedPairs) {
       if (usedSentences.has(pair.japanese)) {
         continue;
@@ -501,24 +533,23 @@ export async function stageNormalize() {
         sentenceCountByKanji.set(k, sentenceCountByKanji.get(k) + 1);
       }
     }
+  }
 
-    for (const curatedSentence of curatedByLevel[level].sentences.sentences ?? []) {
-      const kanjiInSentence = [...levelSet].filter((k) => curatedSentence.japanese.includes(k));
-      sentencesOut.push({
-        id: curatedSentenceId(curatedSentence.japanese),
-        japanese: curatedSentence.japanese,
-        translationFr: curatedSentence.french,
-        difficulty: level,
-        targetKanjiIds: kanjiInSentence.map(kanjiIdOf),
+  const textsOut = [];
+  for (const level of LEVELS) {
+    for (const text of curatedByLevel[level].texts.texts ?? []) {
+      textsOut.push({
+        id: curatedTextId(text.title, text.body),
+        title: text.title,
+        body: text.body,
+        translationFr: text.french,
+        level,
         tokens: [],
         sourceId: 'kanjipath_editorial',
         license: 'CC BY-SA 4.0',
         author: 'KanjiPath',
         editorialStatus: 'reviewed',
       });
-      for (const k of kanjiInSentence) {
-        sentenceCountByKanji.set(k, sentenceCountByKanji.get(k) + 1);
-      }
     }
   }
 
@@ -529,6 +560,13 @@ export async function stageNormalize() {
       throw new Error(`Phrase sans lecture complète: ${sentence.japanese}`);
     }
     sentence.tokens = tokens;
+  }
+  for (const text of textsOut) {
+    const tokens = annotateSentence(tokenizer, text.body);
+    if (!tokens) {
+      throw new Error(`Mini-texte sans lecture complète: ${text.title}`);
+    }
+    text.tokens = tokens;
   }
 
   const levels = {};
@@ -544,7 +582,7 @@ export async function stageNormalize() {
   const curriculum = {
     code: 'JLPT_ALIGNED',
     name: 'Parcours aligné sur le JLPT',
-    version: '2026.08.3',
+    version: '2026.08.4',
     status: 'published',
     notes: LEVELS.map((level) => `${level} : ${curatedByLevel[level].kanji.notes}`).join('\n'),
     levels,
@@ -567,6 +605,7 @@ export async function stageNormalize() {
   await writeJson(path.join(NORMALIZED_DIR, 'kanji.json'), kanjiOut);
   await writeJson(path.join(NORMALIZED_DIR, 'vocabulary.json'), vocabularyOut);
   await writeJson(path.join(NORMALIZED_DIR, 'sentences.json'), sentencesOut);
+  await writeJson(path.join(NORMALIZED_DIR, 'texts.json'), textsOut);
   await writeJson(path.join(NORMALIZED_DIR, 'curriculum.json'), curriculum);
   await writeJson(path.join(NORMALIZED_DIR, 'sources.json'), sources);
 
@@ -589,6 +628,6 @@ export async function stageNormalize() {
     );
   }
   console.log(
-    `[normalize] vocabulaire: ${vocabularyOut.length} mots; phrases: ${sentencesOut.length}`,
+    `[normalize] vocabulaire: ${vocabularyOut.length} mots; phrases: ${sentencesOut.length}; mini-textes: ${textsOut.length}`,
   );
 }

@@ -93,6 +93,43 @@ export function hideSpanFor(japanese, word) {
   return { start: index, end: index + [...word].length };
 }
 
+const UNVOICED_MAP = {
+  が: 'か', ぎ: 'き', ぐ: 'く', げ: 'け', ご: 'こ',
+  ざ: 'さ', じ: 'し', ず: 'す', ぜ: 'せ', ぞ: 'そ',
+  だ: 'た', ぢ: 'ち', づ: 'つ', で: 'て', ど: 'と',
+  ば: 'は', び: 'ひ', ぶ: 'ふ', べ: 'へ', ぼ: 'ほ',
+  ぱ: 'は', ぴ: 'ひ', ぷ: 'ふ', ぺ: 'へ', ぽ: 'ほ',
+};
+
+export function regularizedReadingVariants(reading) {
+  const variants = new Set();
+  const chars = [...reading];
+  const devoiced = chars
+    .map((ch, i) => (i > 0 && UNVOICED_MAP[ch] ? UNVOICED_MAP[ch] : ch))
+    .join('');
+  if (devoiced !== reading) {
+    variants.add(devoiced);
+  }
+  const noSokuon = reading.replace(/っ(?=[^ぁぃぅぇぉゃゅょ])/g, '');
+  if (noSokuon !== reading && noSokuon.length > 0) {
+    variants.add(noSokuon);
+  }
+  return [...variants];
+}
+
+export function isAdvancedReadingWord(vocab) {
+  if ((vocab.kanji?.length ?? 0) < 2) {
+    return false;
+  }
+  const chars = [...vocab.reading];
+  if (chars.length < 3) {
+    return false;
+  }
+  const hasRendaku = chars.some((ch, i) => i > 0 && UNVOICED_MAP[ch] !== undefined);
+  const hasSokuon = vocab.reading.includes('っ');
+  return hasRendaku || hasSokuon;
+}
+
 export function generateMeaningExercises(pack, ctx, kanji) {
   const exercises = [];
   const meaning = primaryMeaning(kanji);
@@ -302,6 +339,44 @@ export function generateVocabularyExercises(pack, ctx, kanji) {
     );
   }
 
+  return exercises;
+}
+
+export function generateAdvancedReadingExercises(pack, ctx, kanji) {
+  const exercises = [];
+  const words = (ctx.vocabByKanji.get(kanji.id) ?? []).filter(({ vocab }) => isAdvancedReadingWord(vocab));
+  if (words.length === 0) {
+    return exercises;
+  }
+  const readingsPool = uniqueByNorm(pack.vocabulary.map((v) => v.reading));
+
+  for (let variant = 0; variant < 3; variant += 1) {
+    const { vocab } = words[variant % words.length];
+    const rng = seededRng(`vocab_reading_advanced_qcm:${kanji.id}:${variant}:${pack.version}`);
+    const regularized = regularizedReadingVariants(vocab.reading);
+    const pool = uniqueByNorm([...regularized, ...readingsPool]);
+    const distractors = pickSeeded(
+      rng,
+      pool.filter((r) => normalizeAnswer(r) !== normalizeAnswer(vocab.reading)),
+      3,
+    );
+    exercises.push(
+      makeExercise({
+        template: 'vocab_reading_advanced_qcm',
+        skill: 'reading',
+        level: kanji.level,
+        targetKanjiId: kanji.id,
+        vocabularyId: vocab.id,
+        prompt: { word: vocab.writtenForm, instruction: 'Quelle est la lecture réelle de ce mot composé ?' },
+        acceptedAnswers: [vocab.reading],
+        distractors,
+        explanation: `${vocab.writtenForm} se lit ${vocab.reading} — lecture irrégulière : elle ne se déduit pas directement des lectures isolées des kanji.`,
+        difficulty: 3,
+        variantKey: String(variant),
+        sourceId: vocab.sourceId ?? 'jmdict',
+      }),
+    );
+  }
   return exercises;
 }
 
@@ -608,6 +683,7 @@ export function generateForKanji(pack, ctx, kanji) {
     ...generateMeaningExercises(pack, ctx, kanji),
     ...generateReadingExercises(pack, ctx, kanji),
     ...generateVocabularyExercises(pack, ctx, kanji),
+    ...generateAdvancedReadingExercises(pack, ctx, kanji),
     ...generateContextExercises(pack, ctx, kanji),
     ...generateStrokeExercises(pack, ctx, kanji),
     ...generateConfusionExercises(pack, ctx, kanji),

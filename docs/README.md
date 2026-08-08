@@ -22,7 +22,7 @@ Plateforme web d'apprentissage progressif des kanji — parcours **aligné sur l
 - **Règles agent** : `../AGENTS.md`.
 - **Démarrage rapide** : `../README.md`.
 
-## État actuel (Phase 3 — N3, contenu livré)
+## État actuel (Phase 3 — N3, finalisée)
 
 Ce qui est implémenté :
 
@@ -39,14 +39,16 @@ Ce qui est implémenté :
 - Pipeline de contenu complet **multi-niveaux** : download → import → normalize →
   generate → validate → report → publish → load. Référentiels curatés **N5**
   (79 kanji croisés), **N4** (166 kanji croisés) et **N3** (367 kanji croisés),
-  ordre pédagogique, radicaux, confusions, mnémotechniques. Pack publié 2026.08.3 :
-  612 kanji, 4197 mots (JMdict FR + vocabulaire curaté), 3180 phrases (Tatoeba
-  CC BY 2.0 FR), 30289 exercices déterministes (3922 N5, 8176 N4, 18191 N3),
-  SVG KanjiVG assainis.
+  ordre pédagogique, radicaux, confusions, mnémotechniques. Pack publié 2026.08.4 :
+  612 kanji, 4197 mots (JMdict FR + vocabulaire curaté), 3152 phrases (Tatoeba
+  CC BY 2.0 FR + phrases curatées prioritaires), **6 mini-textes** de lecture graduée
+  (KanjiPath, CC BY-SA 4.0), 31878 exercices déterministes, SVG KanjiVG assainis.
 - API : curricula, kanji (liste, fiche, SVG, vocabulaire, phrases, progression),
-  étude (sessions, réponses FSRS, reprise, abandon, **révision ciblée** par niveau/
-  compétence/kanji), progression (tableau de bord, niveaux, points faibles,
-  **statistiques détaillées**), sources, préférences, signalements.
+  **mini-textes** (`GET /texts`, `GET /texts/:id`), étude (sessions, réponses FSRS,
+  reprise, abandon, **révision ciblée** par niveau/compétence/kanji), progression
+  (tableau de bord, niveaux, points faibles, **statistiques détaillées**), sources,
+  préférences (**limite de révisions + équilibrage automatique de la charge**),
+  signalements.
 - Web : tableau de bord (CTA « Continuer l'apprentissage », stats du jour, série,
   kanji à réviser, activité 30 j, points faibles, parcours N5→N1), liste + recherche
    des kanji avec sélecteur de niveau et filtres de statut, fiche kanji complète
@@ -57,10 +59,13 @@ Ce qui est implémenté :
    forme — aide fantôme réglable, trait passé/effacé, signalement de tracé),
   session d'étude (choix du mode — jour/points faibles/libre/**ciblée** par niveau/
   compétence/kanji, quiz avec raccourcis clavier 1-4 et Entrée, feedback animé,
-  résultats + confettis), **page progression** (onglets vue d'ensemble/activité/points
-  faibles/**statistiques détaillées** : précision 7/30/90 j, par compétence et niveau,
-  rétention estimée FSRS, charge de révision à 7 jours), page sources, page préférences
-  (niveau actif, limite quotidienne, rétention, furigana, romaji, thème encre/washi).
+  résultats + confettis), **lecture graduée** (`/lecture` : liste des mini-textes ;
+  `/lecture/:id` : texte annoté furigana/romaji + traduction), **page progression**
+  (onglets vue d'ensemble/activité/points faibles/**statistiques détaillées** :
+  précision 7/30/90 j, par compétence et niveau, rétention estimée FSRS, charge de
+  révision à 7 jours), page sources, page préférences
+  (niveau actif, limite quotidienne, **révisions par session**, **équilibrage
+  automatique**, rétention, furigana, romaji, thème encre/washi).
   Navigation : sidebar desktop + barre inférieure mobile, menu utilisateur, toasts.
   Toutes les phrases d'exemple sont annotées au build (furigana par token + romaji,
   tokenisation kuromoji), affichées selon les préférences furigana/romaji. Design
@@ -79,9 +84,15 @@ visuelles, mnémotechniques), vocabulaire/phrases complétés (以, 勉, 堂),
 **mode révision ciblée** (sessions `targeted` filtrées par niveau, compétence ou
 kanji ; liens profonds depuis les points faibles et la fiche kanji).
 
-La **Phase 3 (N3)** est en cours : le **pack de contenu N3** est livré —
-367 kanji N3 curatés (radicaux, confusions visuelles, mnémotechniques),
-vocabulaire complété (忙, 努), 18191 exercices N3 validés (seuil : 10000),
-pack 2026.08.3 (612 kanji au total). L'introduction de nouveaux kanji en session
-suit l'ordre N5 → N4 → N3. Restent à venir dans la phase : mini-textes, phrases
-plus naturelles, lecture de vocabulaire avancée, personnalisation de la charge.
+La **Phase 3 (N3)** est finalisée. Outre le pack de contenu N3 (367 kanji curatés,
+vocabulaire complété, 18191 exercices N3), elle a livré les quatre fonctionnalités
+restantes :
+- **mini-textes** : lecture graduée N5/N4/N3 (2 textes par niveau), rendus avec
+  furigana/romaji et traduction ;
+- **phrases plus naturelles** : phrases curatées KanjiPath par niveau, injectées en
+  priorité devant la sélection Tatoeba dans les exercices de contexte ;
+- **lecture de vocabulaire avancée** : gabarit `vocab_reading_advanced_qcm` ciblant
+  les mots à lecture irrégulière (rendaku, sokuon), distracteur « régularisé » ;
+- **personnalisation de la charge** : préférences `reviewLimit` (révisions par
+  session) et `autoBalance` (réduction des nouveaux kanji quand la charge due est
+  haute), appliquées par `buildQueue`.

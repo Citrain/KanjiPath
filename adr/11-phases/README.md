@@ -50,11 +50,18 @@ kanji, liens profonds depuis les points faibles et la fiche kanji) sont impléme
 - lecture de vocabulaire avancée
 - personnalisation de la charge
 
-**État (2026-08-08)** : phase en cours. Le pack de contenu N3 est livré
-(2026.08.3) : 367 kanji curatés (radicaux, confusions, mnémotechniques),
-vocabulaire complété (忙, 努), 18 191 exercices N3 validés (seuil fixé :
-≥ 10000), pipeline multi-niveaux N5+N4+N3. Restent : mini-textes, phrases plus
-naturelles, lecture de vocabulaire avancée, personnalisation de la charge.
+**État (2026-08-08)** : phase finalisée. Pack N3 livré puis complété par les quatre
+fonctionnalités de la phase, livrées avec le pack 2026.08.4 :
+- **mini-textes** : 6 textes de lecture graduée (2 par niveau), tables
+  `mini_texts`/`mini_text_tokens`, routes `GET /texts` / `GET /texts/:id`, pages
+  web `/lecture` et `/lecture/:id` ;
+- **phrases plus naturelles** : phrases curatées KanjiPath par niveau, prioritaires
+  sur la sélection Tatoeba dans les exercices de contexte ;
+- **lecture de vocabulaire avancée** : gabarit `vocab_reading_advanced_qcm`
+  (rendaku/sokuon, distracteur régularisé), compétence `reading`, carte
+  `VOCAB_READING` ;
+- **personnalisation de la charge** : préférences `review_limit` / `auto_balance`
+  appliquées par `buildQueue` (`computeNewKanjiCount`).
 
 ### Phase 4 — N2 et N1
 

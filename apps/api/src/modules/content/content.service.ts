@@ -2,14 +2,18 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import type {
+  JlptLevel,
   KanjiDetail,
   KanjiListResponse,
   KanjiProgressDto,
   KanjiSentenceDto,
   KanjiSummary,
   KanjiVocabularyDto,
+  MiniTextDetailDto,
+  MiniTextListResponse,
   SourcesResponse,
 } from '@kanjipath/contracts';
+import { JLPT_LEVELS } from '@kanjipath/contracts';
 import { PrismaService } from '../../infrastructure/database/prisma.service';
 
 export function contentRoot(): string {
@@ -324,6 +328,53 @@ export class ContentService {
       contentVersion: version
         ? { version: version.version, publishedAt: version.publishedAt.toISOString(), notes: version.notes }
         : null,
+    };
+  }
+
+  async textList(level?: string): Promise<MiniTextListResponse> {
+    let filter: JlptLevel | null = null;
+    if (level !== undefined && level !== null && level !== '') {
+      if (!JLPT_LEVELS.includes(level as JlptLevel)) {
+        throw new BadRequestException('Niveau invalide');
+      }
+      filter = level as JlptLevel;
+    }
+    const texts = await this.prisma.miniText.findMany({
+      where: { editorialStatus: 'published', ...(filter ? { level: filter } : {}) },
+      orderBy: [{ level: 'asc' }, { title: 'asc' }],
+    });
+    return {
+      level: filter,
+      texts: texts.map((text) => ({
+        id: text.id,
+        title: text.title,
+        level: text.level,
+        excerpt: `${Array.from(text.body).slice(0, 32).join('')}…`,
+      })),
+    };
+  }
+
+  async textDetail(id: string): Promise<MiniTextDetailDto> {
+    const text = await this.prisma.miniText.findFirst({
+      where: { id, editorialStatus: 'published' },
+      include: { tokens: { orderBy: { startOffset: 'asc' } } },
+    });
+    if (!text) {
+      throw new NotFoundException('Mini-texte introuvable');
+    }
+    return {
+      id: text.id,
+      title: text.title,
+      body: text.body,
+      translationFr: text.translationFr,
+      level: text.level,
+      author: text.author,
+      license: text.license,
+      tokens: text.tokens.map((token) => ({
+        surface: token.surface,
+        reading: token.reading,
+        romaji: token.romaji,
+      })),
     };
   }
 

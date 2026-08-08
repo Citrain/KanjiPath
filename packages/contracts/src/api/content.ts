@@ -45,11 +45,42 @@ export interface SourcesResponse {
 export interface SettingsDto {
   activeLevel: JlptLevel;
   dailyNewLimit: number;
+  reviewLimit: number;
+  autoBalance: boolean;
   desiredRetention: number;
   furiganaMode: 'always' | 'hover' | 'never';
   romajiEnabled: boolean;
   timezone: string;
   theme: string;
+}
+
+export interface MiniTextTokenDto {
+  surface: string;
+  reading: string | null;
+  romaji: string | null;
+}
+
+export interface MiniTextSummaryDto {
+  id: string;
+  title: string;
+  level: JlptLevel;
+  excerpt: string;
+}
+
+export interface MiniTextListResponse {
+  level: JlptLevel | null;
+  texts: MiniTextSummaryDto[];
+}
+
+export interface MiniTextDetailDto {
+  id: string;
+  title: string;
+  body: string;
+  translationFr: string;
+  level: JlptLevel;
+  author: string | null;
+  license: string | null;
+  tokens: MiniTextTokenDto[];
 }
 
 export interface CreateIssueRequest {

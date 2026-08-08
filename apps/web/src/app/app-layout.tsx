@@ -10,6 +10,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import {
   BookMarked,
+  BookOpen,
   ChevronsUpDown,
   Flame,
   LayoutDashboard,
@@ -31,8 +32,9 @@ import { computeStreak } from '../lib/progress';
 import { getStoredTheme, toggleTheme } from '../lib/theme';
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Tableau de bord', icon: LayoutDashboard },
+  { to: '/', label: 'Tableau de bord', short: 'Accueil', icon: LayoutDashboard },
   { to: '/etude', label: 'Étudier', icon: NotebookPen },
+  { to: '/lecture', label: 'Lecture', icon: BookOpen },
   { to: '/kanji', label: 'Kanji', icon: Shapes },
   { to: '/progression', label: 'Progression', icon: TrendingUp },
 ] as const;
@@ -276,7 +278,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             aria-label="Navigation principale mobile"
             className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-lg lg:hidden"
           >
-            <div className="grid grid-cols-4">
+            <div className="grid grid-cols-5">
               {NAV_ITEMS.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -303,7 +305,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
                             </span>
                           ) : null}
                         </span>
-                        {item.label}
+                        {'short' in item ? item.short : item.label}
                         <span
                           aria-hidden
                           className={`h-1 w-1 rounded-full transition-opacity ${

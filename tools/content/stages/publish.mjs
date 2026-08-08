@@ -4,10 +4,11 @@ import { readJson, writeJson } from '../lib/fs-utils.mjs';
 import { GENERATED_DIR, MANIFESTS_DIR, NORMALIZED_DIR, PACK_DIR, REPORTS_DIR } from '../lib/paths.mjs';
 
 export async function stagePublish() {
-  const [kanji, vocabulary, sentences, curriculum, sources, exercises, validateReport] = await Promise.all([
+  const [kanji, vocabulary, sentences, texts, curriculum, sources, exercises, validateReport] = await Promise.all([
     readJson(path.join(NORMALIZED_DIR, 'kanji.json')),
     readJson(path.join(NORMALIZED_DIR, 'vocabulary.json')),
     readJson(path.join(NORMALIZED_DIR, 'sentences.json')),
+    readJson(path.join(NORMALIZED_DIR, 'texts.json')),
     readJson(path.join(NORMALIZED_DIR, 'curriculum.json')),
     readJson(path.join(NORMALIZED_DIR, 'sources.json')),
     readJson(path.join(GENERATED_DIR, 'exercises.json')),
@@ -21,12 +22,14 @@ export async function stagePublish() {
   const publishedKanji = kanji.map((k) => ({ ...k, editorialStatus: 'published' }));
   const publishedVocabulary = vocabulary.map((v) => ({ ...v, editorialStatus: 'published' }));
   const publishedSentences = sentences.map((s) => ({ ...s, editorialStatus: 'published' }));
+  const publishedTexts = texts.map((t) => ({ ...t, editorialStatus: 'published' }));
   const publishedExercises = exercises.map((e) => ({ ...e, editorialStatus: 'published' }));
   const publishedCurriculum = { ...curriculum, status: 'published', publishedAt: new Date().toISOString() };
 
   await writeJson(path.join(PACK_DIR, 'kanji.json'), publishedKanji);
   await writeJson(path.join(PACK_DIR, 'vocabulary.json'), publishedVocabulary);
   await writeJson(path.join(PACK_DIR, 'sentences.json'), publishedSentences);
+  await writeJson(path.join(PACK_DIR, 'texts.json'), publishedTexts);
   await writeJson(path.join(PACK_DIR, 'exercises.json'), publishedExercises);
   await writeJson(path.join(PACK_DIR, 'curriculum.json'), publishedCurriculum);
   await writeJson(path.join(PACK_DIR, 'sources.json'), sources);
@@ -54,6 +57,7 @@ export async function stagePublish() {
       kanji: publishedKanji.length,
       vocabulary: publishedVocabulary.length,
       sentences: publishedSentences.length,
+      texts: publishedTexts.length,
       exercises: publishedExercises.length,
     },
     validation: {

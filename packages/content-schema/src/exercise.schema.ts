@@ -9,6 +9,7 @@ export const exerciseTemplateSchema = z.enum([
   'reading_type_qcm',
   'vocab_reading_qcm',
   'vocab_meaning_qcm',
+  'vocab_reading_advanced_qcm',
   'sentence_cloze_kanji',
   'sentence_cloze_reading',
   'sentence_translation_qcm',

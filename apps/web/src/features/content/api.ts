@@ -10,6 +10,8 @@ import type {
   KanjiSentenceDto,
   KanjiVocabularyDto,
   LevelProgressResponse,
+  MiniTextDetailDto,
+  MiniTextListResponse,
   SettingsDto,
   SourcesResponse,
   StatsResponse,
@@ -43,6 +45,15 @@ export function kanjiSvgUrl(literal: string): string {
 
 export function fetchSources(): Promise<SourcesResponse> {
   return apiFetch<SourcesResponse>('/sources');
+}
+
+export function fetchTexts(level?: string): Promise<MiniTextListResponse> {
+  const query = level ? `?level=${level}` : '';
+  return apiFetch<MiniTextListResponse>(`/texts${query}`);
+}
+
+export function fetchTextDetail(id: string): Promise<MiniTextDetailDto> {
+  return apiFetch<MiniTextDetailDto>(`/texts/${encodeURIComponent(id)}`);
 }
 
 export function fetchCurricula(): Promise<CurriculaResponse> {

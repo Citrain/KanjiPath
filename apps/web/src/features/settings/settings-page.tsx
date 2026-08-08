@@ -31,6 +31,8 @@ export function SettingsPage() {
 
   const [activeLevel, setActiveLevel] = useState<JlptLevel>('N5');
   const [dailyNewLimit, setDailyNewLimit] = useState(10);
+  const [reviewLimit, setReviewLimit] = useState(40);
+  const [autoBalance, setAutoBalance] = useState(true);
   const [desiredRetention, setDesiredRetention] = useState(0.9);
   const [furiganaMode, setFuriganaMode] = useState<FuriganaMode>('always');
   const [romajiEnabled, setRomajiEnabled] = useState(true);
@@ -40,6 +42,8 @@ export function SettingsPage() {
     if (settings.data) {
       setActiveLevel(settings.data.activeLevel);
       setDailyNewLimit(settings.data.dailyNewLimit);
+      setReviewLimit(settings.data.reviewLimit);
+      setAutoBalance(settings.data.autoBalance);
       setDesiredRetention(settings.data.desiredRetention);
       setFuriganaMode(settings.data.furiganaMode);
       setRomajiEnabled(settings.data.romajiEnabled);
@@ -48,7 +52,15 @@ export function SettingsPage() {
 
   const save = useMutation({
     mutationFn: () =>
-      updateSettings({ activeLevel, dailyNewLimit, desiredRetention, furiganaMode, romajiEnabled }),
+      updateSettings({
+        activeLevel,
+        dailyNewLimit,
+        reviewLimit,
+        autoBalance,
+        desiredRetention,
+        furiganaMode,
+        romajiEnabled,
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['settings'] });
       toast('Préférences enregistrées.', 'success');
@@ -184,6 +196,43 @@ export function SettingsPage() {
               <p className="mt-2 text-xs text-muted">
                 Plus la limite est haute, plus le rythme d'apprentissage est intense.
               </p>
+            </div>
+            <div className="h-px bg-line" aria-hidden />
+            <div>
+              <div className="flex items-center justify-between">
+                <label htmlFor="review-limit" className="font-semibold text-ink">
+                  Révisions par session
+                </label>
+                <span className="rounded-lg bg-jade-soft px-2.5 py-1 text-sm font-extrabold tabular-nums text-jade">
+                  {reviewLimit}
+                </span>
+              </div>
+              <Slider
+                id="review-limit"
+                min={5}
+                max={200}
+                step={5}
+                value={reviewLimit}
+                onChange={setReviewLimit}
+                className="mt-3"
+              />
+              <p className="mt-2 text-xs text-muted">
+                Le nombre maximal de kanji déjà vus repris en priorité à chaque session.
+              </p>
+            </div>
+            <div className="h-px bg-line" aria-hidden />
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="font-semibold text-ink">Équilibrage automatique</p>
+                <p className="text-sm text-muted">
+                  Réduit les nouveaux kanji quand beaucoup de révisions sont dues.
+                </p>
+              </div>
+              <Toggle
+                checked={autoBalance}
+                onChange={setAutoBalance}
+                label="Équilibrer la charge"
+              />
             </div>
             <div className="h-px bg-line" aria-hidden />
             <div>

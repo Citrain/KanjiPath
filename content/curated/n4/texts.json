@@ -1,0 +1,16 @@
+{
+  "level": "N4",
+  "notes": "Mini-textes de lecture graduée rédigés par KanjiPath : uniquement des kanji N5-N4 (les autres mots sont en kana). Schéma : { title, body, french }.",
+  "texts": [
+    {
+      "title": "海への旅行",
+      "body": "春、わたしは海へ旅行しました。朝、駅で父と待ちました。電車は人が多かったです。海は青くて、きれいでした。昼は店で魚を食べました。夜、ホテルで休みました。とても楽しい旅でした。",
+      "french": "Au printemps, j'ai fait un voyage à la mer. Le matin, j'ai retrouvé mon père à la gare. Il y avait beaucoup de monde dans le train. La mer était bleue et belle. À midi, j'ai mangé du poisson dans un restaurant. Le soir, je me suis reposé à l'hôtel. C'était un très bon voyage."
+    },
+    {
+      "title": "日曜日の朝",
+      "body": "日曜日の朝、わたしは早く起きます。犬とさんぽして、花を見ます。空は青くて、風が気持ちいいです。朝ごはんはパンとたまごとコーヒーです。妹はまだねています。わたしは音楽を聞いたり、えをかいたりします。来週はテストがあります。また勉強がいそがしいです。",
+      "french": "Le dimanche matin, je me lève tôt. Je me promène avec le chien et je regarde les fleurs. Le ciel est bleu, le vent est agréable. Au petit-déjeuner : pain, œufs et café. Ma petite sœur dort encore. Moi, j'écoute de la musique ou je dessine. La semaine prochaine, il y a un contrôle. Les révisions reprennent."
+    }
+  ]
+}

@@ -8,6 +8,7 @@ export const TEMPLATE_TO_CARD_SKILL: Record<string, ReviewCardSkill> = {
   reading_type_qcm: 'READING_TYPE',
   reading_input_kana: 'READING_TO_KANJI',
   vocab_reading_qcm: 'VOCAB_READING',
+  vocab_reading_advanced_qcm: 'VOCAB_READING',
   vocab_meaning_qcm: 'VOCAB_MEANING',
   sentence_cloze_kanji: 'CONTEXT_CLOZE',
   sentence_cloze_reading: 'CONTEXT_CLOZE',
@@ -25,7 +26,7 @@ export const CARD_SKILL_TO_TEMPLATES: Record<ReviewCardSkill, string[]> = {
   KANJI_READING: ['kanji_to_reading_qcm'],
   READING_TYPE: ['reading_type_qcm'],
   READING_TO_KANJI: ['reading_input_kana'],
-  VOCAB_READING: ['vocab_reading_qcm'],
+  VOCAB_READING: ['vocab_reading_qcm', 'vocab_reading_advanced_qcm'],
   VOCAB_MEANING: ['vocab_meaning_qcm'],
   CONTEXT_CLOZE: ['sentence_cloze_kanji', 'sentence_cloze_reading', 'sentence_translation_qcm'],
   RADICAL_RECOGNITION: ['radical_recognition_qcm', 'component_search_qcm'],
@@ -50,6 +51,7 @@ export function isKanaTemplate(template: string): boolean {
     'reading_input_kana',
     'kanji_to_reading_qcm',
     'vocab_reading_qcm',
+    'vocab_reading_advanced_qcm',
     'sentence_cloze_reading',
   ].includes(template);
 }

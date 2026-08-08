@@ -1,5 +1,16 @@
 {
   "level": "N3",
-  "notes": "Phrases créées manuellement pour compléter la sélection Tatoeba. Vides au départ, à compléter selon content:report.",
-  "sentences": []
+  "notes": "Phrases naturelles rédigées par KanjiPath, prioritaires sur la sélection Tatoeba dans les exercices. Schéma : { japanese, french }.",
+  "sentences": [
+    { "japanese": "昨日の会議は三時間で終わった。", "french": "La réunion d'hier a duré trois heures." },
+    { "japanese": "雪が降っているので、電車が遅れています。", "french": "Il neige, donc les trains ont du retard." },
+    { "japanese": "この問題は思っていたより易しかった。", "french": "Ce problème était plus facile que je ne pensais." },
+    { "japanese": "自然を守るために、できることから始めよう。", "french": "Pour protéger la nature, commençons par ce qui est en notre pouvoir." },
+    { "japanese": "努力すれば、必ず結果が出る。", "french": "À force d'efforts, on finit par obtenir des résultats." },
+    { "japanese": "彼は約束の時間に遅れた。", "french": "Il était en retard à l'heure du rendez-vous." },
+    { "japanese": "経験から学ぶことが多い。", "french": "On apprend beaucoup de l'expérience." },
+    { "japanese": "この町は近年、観光客が増えている。", "french": "Ces dernières années, les touristes sont de plus en plus nombreux dans cette ville." },
+    { "japanese": "事故の原因はまだ分かっていない。", "french": "La cause de l'accident n'est pas encore connue." },
+    { "japanese": "景気が良くなって、仕事が見つかりやすくなった。", "french": "Avec la reprise économique, il est devenu plus facile de trouver du travail." }
+  ]
 }

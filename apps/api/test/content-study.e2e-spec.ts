@@ -127,6 +127,90 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(body.sources[0].license).toBeTruthy();
   });
 
+  it('liste les mini-textes', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/texts',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(body.texts.length).toBeGreaterThan(0);
+    const text = body.texts.find((t: { id: string }) => t.id === 't-test-1');
+    expect(text?.title).toBe('一つ');
+    expect(text?.level).toBe('N5');
+  });
+
+  it('filtre les mini-textes par niveau', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/texts?level=N5',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(body.level).toBe('N5');
+    expect(body.texts.every((t: { level: string }) => t.level === 'N5')).toBe(true);
+  });
+
+  it('rejette un niveau de mini-textes invalide', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/texts?level=N9',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(400);
+  });
+
+  it("retourne le détail d'un mini-texte avec tokens", async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/texts/t-test-1',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(body.title).toBe('一つ');
+    expect(body.translationFr).toBeTruthy();
+    expect(body.tokens.length).toBeGreaterThan(0);
+    const kanjiToken = body.tokens.find((t: { surface: string }) => t.surface === '一');
+    expect(kanjiToken?.reading).toBe('ひと');
+    expect(kanjiToken?.romaji).toBe('hito');
+  });
+
+  it('retourne une 404 pour un mini-texte inconnu', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/texts/t-inexistant',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(404);
+  });
+
+  it('met à jour reviewLimit et autoBalance dans les préférences', async () => {
+    await fetchCsrf();
+    const patch = await app.inject({
+      method: 'PATCH',
+      url: '/api/v1/settings',
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+      payload: { reviewLimit: 25, autoBalance: false },
+    });
+    expect(patch.statusCode).toBe(200);
+    const updated = patch.json();
+    expect(updated.reviewLimit).toBe(25);
+    expect(updated.autoBalance).toBe(false);
+
+    const invalid = await app.inject({
+      method: 'PATCH',
+      url: '/api/v1/settings',
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+      payload: { reviewLimit: 3 },
+    });
+    expect(invalid.statusCode).toBe(400);
+  });
+
   let exerciseItemId = '';
   let reviewedLiteral = '';
 
@@ -484,6 +568,52 @@ async function seedContent(prisma: PrismaService): Promise<void> {
         endOffset: 4,
       },
       { sentenceId: 's-test-1', surface: '。', reading: '。', startOffset: 4, endOffset: 5 },
+    ],
+  });
+
+  await prisma.miniText.upsert({
+    where: { id: 't-test-1' },
+    create: {
+      id: 't-test-1',
+      title: '一つ',
+      body: '一つです。',
+      translationFr: "C'en est un.",
+      level: 'N5',
+      author: 'KanjiPath',
+      license: 'CC BY-SA 4.0',
+      sourceId: source.id,
+      editorialStatus: 'published',
+    },
+    update: { editorialStatus: 'published' },
+  });
+  await prisma.miniTextToken.deleteMany({ where: { miniTextId: 't-test-1' } });
+  await prisma.miniTextToken.createMany({
+    data: [
+      {
+        miniTextId: 't-test-1',
+        surface: '一',
+        reading: 'ひと',
+        romaji: 'hito',
+        startOffset: 0,
+        endOffset: 1,
+      },
+      {
+        miniTextId: 't-test-1',
+        surface: 'つ',
+        reading: 'つ',
+        romaji: 'tsu',
+        startOffset: 1,
+        endOffset: 2,
+      },
+      {
+        miniTextId: 't-test-1',
+        surface: 'です',
+        reading: 'です',
+        romaji: 'desu',
+        startOffset: 2,
+        endOffset: 4,
+      },
+      { miniTextId: 't-test-1', surface: '。', reading: '。', startOffset: 4, endOffset: 5 },
     ],
   });
 

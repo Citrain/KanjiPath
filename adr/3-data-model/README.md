@@ -13,8 +13,11 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
 
 ### `user_settings`
 
-- `user_id`, `active_level`, `daily_new_limit`, `desired_retention`
-- `furigana_mode`, `romaji_enabled`, `timezone`, `theme`
+- `user_id`, `active_level`, `daily_new_limit`, `review_limit`, `auto_balance`
+- `desired_retention`, `furigana_mode`, `romaji_enabled`, `timezone`, `theme`
+- `review_limit` / `auto_balance` (Phase 3) : personnalisation de la charge —
+  plafond de révisions par session et réduction automatique des nouveaux kanji
+  quand la charge due est haute (voir `study.service.ts#computeNewKanjiCount`).
 
 ### `sessions`
 
@@ -96,6 +99,18 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
 
 - `id`, `sentence_id`, `surface`, `reading`
 - `start_offset`, `end_offset`, `vocabulary_id`
+
+### `mini_texts` (lecture graduée, Phase 3)
+
+- `id`, `external_id`, `title`, `body`, `translation_fr`, `level`
+- `author`, `license`, `source_id`, `editorial_status`
+- Contenu curaté KanjiPath (CC BY-SA 4.0) ; kanji bornés au niveau par la
+  validation du pipeline.
+
+### `mini_text_tokens`
+
+- `id`, `mini_text_id`, `surface`, `reading`, `romaji`
+- `start_offset`, `end_offset`
 
 ---
 

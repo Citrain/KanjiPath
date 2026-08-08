@@ -32,6 +32,8 @@ model UserSettings {
   userId           String  @id @map("user_id")
   activeLevel      String  @default("N5") @map("active_level")
   dailyNewLimit    Int     @default(10) @map("daily_new_limit")
+  reviewLimit      Int     @default(40) @map("review_limit")
+  autoBalance      Boolean @default(true) @map("auto_balance")
   desiredRetention Float   @default(0.9) @map("desired_retention")
   furiganaMode     String  @default("always") @map("furigana_mode")
   romajiEnabled    Boolean @default(true) @map("romaji_enabled")
@@ -183,6 +185,7 @@ model ContentSource {
   curriculumKanji  CurriculumKanji[]
   vocabulary       Vocabulary[]
   sentences        Sentence[]
+  miniTexts        MiniText[]
   exercises        ExerciseItem[]
 
   @@map("content_sources")
@@ -405,6 +408,38 @@ model SentenceToken {
 
   @@index([sentenceId])
   @@map("sentence_tokens")
+}
+
+model MiniText {
+  id              String          @id @default(uuid())
+  externalId      String?         @unique @map("external_id")
+  title           String
+  body            String          @db.Text
+  translationFr   String          @map("translation_fr") @db.Text
+  level           JlptLevel       @default(N5)
+  author          String?
+  license         String?
+  sourceId        String?         @map("source_id")
+  editorialStatus EditorialStatus @default(draft) @map("editorial_status")
+  source          ContentSource?  @relation(fields: [sourceId], references: [id])
+  tokens          MiniTextToken[]
+
+  @@index([level])
+  @@map("mini_texts")
+}
+
+model MiniTextToken {
+  id          String   @id @default(uuid())
+  miniTextId  String   @map("mini_text_id")
+  surface     String
+  reading     String?
+  romaji      String?
+  startOffset Int      @map("start_offset")
+  endOffset   Int      @map("end_offset")
+  miniText    MiniText @relation(fields: [miniTextId], references: [id], onDelete: Cascade)
+
+  @@index([miniTextId])
+  @@map("mini_text_tokens")
 }
 
 model ExerciseTemplate {

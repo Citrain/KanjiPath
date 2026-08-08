@@ -15,6 +15,8 @@ export class SettingsService {
     return {
       activeLevel: settings.activeLevel as SettingsDto['activeLevel'],
       dailyNewLimit: settings.dailyNewLimit,
+      reviewLimit: settings.reviewLimit,
+      autoBalance: settings.autoBalance,
       desiredRetention: settings.desiredRetention,
       furiganaMode: settings.furiganaMode as SettingsDto['furiganaMode'],
       romajiEnabled: settings.romajiEnabled,
@@ -41,6 +43,19 @@ export class SettingsService {
         throw new BadRequestException('dailyNewLimit doit être entre 1 et 50');
       }
       data.dailyNewLimit = patch.dailyNewLimit;
+    }
+    if (patch.reviewLimit !== undefined) {
+      if (
+        !Number.isInteger(patch.reviewLimit) ||
+        patch.reviewLimit < 5 ||
+        patch.reviewLimit > 200
+      ) {
+        throw new BadRequestException('reviewLimit doit être entre 5 et 200');
+      }
+      data.reviewLimit = patch.reviewLimit;
+    }
+    if (patch.autoBalance !== undefined) {
+      data.autoBalance = Boolean(patch.autoBalance);
     }
     if (patch.desiredRetention !== undefined) {
       if (patch.desiredRetention < 0.7 || patch.desiredRetention > 0.99) {

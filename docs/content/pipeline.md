@@ -37,9 +37,9 @@ réutilisés tant qu'ils existent.
 |---|---|---|
 | `download` | télécharge KANJIDIC2, JMdict, KRADFILE (JSON), KanjiVG, Tatoeba, kanji-data ; calcule les checksums sha256 | `content/raw/*`, `content/reports/download.json` |
 | `import` | parse les sources brutes (XML KANJIDIC2, XML JMdict en flux, TSV Tatoeba + liens, zip KanjiVG) | `content/normalized/imported/*.json` |
-| `normalize` | fusionne avec le curaté (`content/curated/`), sélectionne vocabulaire (JMdict FR) et phrases (Tatoeba), **annote les phrases** (tokenisation kuromoji : lecture kana + romaji par token), calcule le **romaji** des lectures de kanji et du vocabulaire, extrait et **assainit** les SVG KanjiVG | `content/normalized/{kanji,vocabulary,sentences,curriculum,sources}.json`, `content/generated/kanjivg/*.svg` |
+| `normalize` | fusionne avec le curaté (`content/curated/`), sélectionne vocabulaire (JMdict FR) et phrases (Tatoeba), **annote les phrases et les mini-textes** (tokenisation kuromoji : lecture kana + romaji par token), calcule le **romaji** des lectures de kanji et du vocabulaire, extrait et **assainit** les SVG KanjiVG | `content/normalized/{kanji,vocabulary,sentences,texts,curriculum,sources}.json`, `content/generated/kanjivg/*.svg` |
 | `generate` | génère les exercices de façon **déterministe** (seed = gabarit + kanji + variante + version du pack) | `content/generated/exercises.json` |
-| `validate` | applique les règles ADR (doublons, réponses, distracteurs, seuils de couverture **par niveau**, licences, provenance) ; échec bloquant | `content/reports/validate.json` |
+| `validate` | applique les règles ADR (doublons, réponses, distracteurs, seuils de couverture **par niveau**, kanji des mini-textes bornés au niveau, licences, provenance) ; échec bloquant | `content/reports/validate.json` |
 | `report` | rapport de couverture par kanji et par niveau | `content/reports/report.json` |
 | `publish` | pack final (`editorialStatus: published`) + manifeste versionné | `content/generated/pack/*.json`, `content/manifests/<version>.json` |
 | `load` | upsert idempotent du pack dans MariaDB via Prisma (les id pack deviennent les id DB) + **nettoyage des contenus orphelins** (sans écraser l'historique utilisateur) | base `kanjipath` |
@@ -62,9 +62,9 @@ réutilisés tant qu'ils existent.
 - Le **romaji** (Hepburn modifié) est calculé au build par
   `tools/content/lib/romaji.mjs` (déterministe, testé) : lectures des kanji,
   vocabulaire, tokens de phrases. Jamais calculé au runtime.
-- Les **phrases** sont tokenisées par kuromoji au build : chaque token porte
-  `surface`, `reading` (hiragana), `romaji`, `startOffset`/`endOffset`. Une phrase
-  dont un token kanji n'a pas de lecture fait échouer `normalize`.
+- Les **phrases** et les **mini-textes** sont tokenisés par kuromoji au build : chaque
+  token porte `surface`, `reading` (hiragana), `romaji`, `startOffset`/`endOffset`.
+  Une phrase ou un texte dont un token kanji n'a pas de lecture fait échouer `normalize`.
 - Les exercices qui **demandent une lecture** n'incluent jamais le furigana/romaji
   du mot cible (masquage par position, voir `sentencePromptTokens` dans
   `tools/content/lib/generators.mjs`) pour ne pas donner la réponse.
@@ -99,6 +99,14 @@ sans doublon entre niveaux.
 - **Phrases** : paires japonais→français de Tatoeba (export détaillé + `links`),
   licence **CC BY 2.0 FR** (l'export CC0 ne contient quasiment aucune phrase
   japonaise). Auteur conservé ; si le compte a disparu, attribution « Tatoeba ».
+  Les **phrases curatées** (`content/curated/<niveau>/sentences.json`, rédigées par
+  KanjiPath, CC BY-SA 4.0) sont insérées **avant** la sélection Tatoeba : elles sont
+  donc servies en priorité dans les exercices de contexte (phrases plus naturelles).
+- **Mini-textes** : courts textes de lecture graduée rédigés par KanjiPath
+  (`content/curated/<niveau>/texts.json`, CC BY-SA 4.0). Chaque texte n'utilise que
+  des kanji du niveau ou d'un niveau inférieur (les autres mots restent en kana) ; la
+  validation refuse tout kanji hors référentiel ou de niveau supérieur. Annotés
+  (furigana + romaji) au build, servis par `GET /texts` et `GET /texts/:id`.
 - **KanjiVG** : SVG nettoyés au build (balises `svg/g/path` et attributs autorisés
   uniquement ; aucun attribut préfixé `kvg:` afin de produire un XML valide sans
   déclaration de namespace), servis par `GET /kanji/:literal/svg`.
@@ -108,7 +116,7 @@ sans doublon entre niveaux.
 ```text
 content/
   raw/          # sources brutes téléchargées (checksum dans reports/download.json)
-  normalized/   # imported/ (parsé) + kanji|vocabulary|sentences|curriculum|sources.json
+  normalized/   # imported/ (parsé) + kanji|vocabulary|sentences|texts|curriculum|sources.json
   curated/      # enrichissement français rédigé/validé manuellement (versionné)
   generated/    # exercices, SVG KanjiVG, pack publié (reproduit par le pipeline)
   manifests/    # manifeste de chaque pack publié (versionné)
@@ -125,23 +133,27 @@ pipeline).
 - Les exercices sont produits par des **gabarits déterministes** pendant le build :
   le même pack produit exactement les mêmes exercices (seed stable).
 - Interdit : générer une réponse aléatoire non validée pendant une session utilisateur.
-- Répartition par kanji : sens, lecture, vocabulaire, contexte, composants/traits,
-  confusion (voir `tools/content/lib/generators.mjs`).
+- Répartition par kanji : sens, lecture, vocabulaire, **lecture avancée**, contexte,
+  composants/traits, confusion (voir `tools/content/lib/generators.mjs`). Le gabarit
+  `vocab_reading_advanced_qcm` cible les mots à lecture irrégulière (rendaku, sokuon)
+  et propose en distracteur la lecture « régulière » dé-sonorisée.
 - **Seuils validés par niveau** (`LEVEL_MINIMUMS` dans
   `tools/content/stages/validate.mjs`) :
-  | Niveau | Exercices/kanji | Mots/kanji | Phrases/kanji | Total exercices |
-  |---|:---:|:---:|:---:|:---:|
-  | N5 | 40 | 6 | 6 | ≥ 3000 |
-  | N4 | 32 | 5 | 5 | ≥ 5000 |
-  | N3 | 32 | 5 | 5 | ≥ 10000 |
+  | Niveau | Exercices/kanji | Mots/kanji | Phrases/kanji | Mini-textes | Total exercices |
+  |---|:---:|:---:|:---:|:---:|:---:|
+  | N5 | 40 | 6 | 6 | 2 | ≥ 3000 |
+  | N4 | 32 | 5 | 5 | 2 | ≥ 5000 |
+  | N3 | 32 | 5 | 5 | 2 | ≥ 10000 |
 
 ## Validation
 
 Le pipeline refuse le build en cas d'identifiant dupliqué, kanji sans niveau/sens
 français, lecture invalide (kana/katakana), exercice sans correction, distracteur
 identique à la réponse, options dupliquées après normalisation, phrase sans kanji
-cible ou sans attribution (CC BY), seuils non atteints, licence manquante, contenu
-`draft` dans le pack, SVG manquant, référence vers ressource inexistante.
+cible ou sans attribution (CC BY), mini-texte dont les tokens ne couvrent pas le
+corps ou contenant un kanji hors référentiel / de niveau supérieur, seuils non
+atteints, licence manquante, contenu `draft` dans le pack, SVG manquant, référence
+vers ressource inexistante.
 Liste complète : `adr/2-content-pipeline/README.md#tests-automatiques-de-contenu`.
 
 ## Manifeste de publication
@@ -158,12 +170,14 @@ résultat de validation, commit git). Exemple : `content/manifests/2026.08.1.jso
 - Les enfants éditoriaux (sens, lectures, composants, liens curriculum/vocabulaire)
   sont remplacés ; les `review_logs` conservent l'historique (`exercise_items`
   référencés par `external_id`).
-- **Nettoyage des orphelins** : après chargement, tout exercice / mot / phrase absent
-  du pack publié est supprimé, **sauf** les exercices référencés par une session ou
-  un historique de révision (conservés pour ne pas casser la progression). Les
-  références d'exercices vers des mots/phrases supprimés sont mises à `null`.
+- **Nettoyage des orphelins** : après chargement, tout exercice / mot / phrase /
+  mini-texte absent du pack publié est supprimé, **sauf** les exercices référencés par
+  une session ou un historique de révision (conservés pour ne pas casser la
+  progression). Les références d'exercices vers des mots/phrases supprimés sont mises
+  à `null`.
 - **Id curatés stables** : les mots et phrases curatés ont un id dérivé d'un hash de
   leur contenu (`curatedVocabId`, `curatedSentenceId`), pas de leur position — un
-  ajout ne décale plus les id des suivants (pas d'orphelins au rechargement).
+  ajout ne décale plus les id des suivants (pas d'orphelins au rechargement). Les
+  mini-textes curatés suivent la même règle (`curatedTextId`, hash du titre + corps).
 - Ordre : sources → version → radicaux → kanji → curriculum → vocabulaire →
-  phrases → gabarits → exercices → nettoyage.
+  phrases → mini-textes → gabarits → exercices → nettoyage.

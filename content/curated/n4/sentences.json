@@ -1,12 +1,16 @@
 {
   "level": "N4",
-  "notes": "Phrases créées manuellement : Tatoeba manque de phrases courtes avec 堂.",
+  "notes": "Phrases naturelles rédigées par KanjiPath, prioritaires sur la sélection Tatoeba dans les exercices. Schéma : { japanese, french }.",
   "sentences": [
-    { "japanese": "食堂で昼ご飯を食べる。", "french": "Je mange le déjeuner à la cantine." },
-    { "japanese": "古いお堂に参った。", "french": "J'ai visité un vieux sanctuaire." },
-    { "japanese": "堂々とした声で発表した。", "french": "Il a présenté son exposé d'une voix assurée." },
-    { "japanese": "議事堂の前で写真を撮った。", "french": "J'ai pris une photo devant le parlement." },
-    { "japanese": "大聖堂の鐘が鳴っている。", "french": "Les cloches de la cathédrale sonnent." },
-    { "japanese": "講堂に学生が集まった。", "french": "Les étudiants se sont rassemblés dans l'auditorium." }
+    { "japanese": "来週、旅行に行く予定です。", "french": "La semaine prochaine, je prévois de partir en voyage." },
+    { "japanese": "朝ごはんを食べる時間がない。", "french": "Je n'ai pas le temps de petit-déjeuner." },
+    { "japanese": "妹は歌がじょうずです。", "french": "Ma petite sœur chante bien." },
+    { "japanese": "この問題の答えを教えてください。", "french": "Pouvez-vous me donner la réponse à cette question ?" },
+    { "japanese": "駅までの道を教えてもらえますか。", "french": "Pouvez-vous m'indiquer le chemin jusqu'à la gare ?" },
+    { "japanese": "風が強いので、気をつけてください。", "french": "Le vent est fort, faites attention." },
+    { "japanese": "昨日、新しい服を買いました。", "french": "Hier, j'ai acheté de nouveaux vêtements." },
+    { "japanese": "試験が終わって、ほっとしました。", "french": "L'examen terminé, j'ai été soulagé." },
+    { "japanese": "牛乳と卵を買ってきてください。", "french": "Pouvez-vous acheter du lait et des œufs ?" },
+    { "japanese": "この町は静かで、住みやすいです。", "french": "Cette ville est calme et agréable à vivre." }
   ]
 }

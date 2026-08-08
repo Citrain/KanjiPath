@@ -1,5 +1,16 @@
 {
   "level": "N5",
-  "notes": "Phrases créées ou validées manuellement pour compléter la couverture Tatoeba si besoin. Schéma : { japanese, french, author: 'KanjiPath', license: 'CC BY-SA 4.0', targetKanji: [...] }.",
-  "sentences": []
+  "notes": "Phrases naturelles rédigées par KanjiPath, prioritaires sur la sélection Tatoeba dans les exercices. Schéma : { japanese, french }.",
+  "sentences": [
+    { "japanese": "今日はいい天気ですね。", "french": "Il fait beau aujourd'hui, n'est-ce pas ?" },
+    { "japanese": "朝ごはんは何を食べますか。", "french": "Que mangez-vous au petit-déjeuner ?" },
+    { "japanese": "この本はとてもおもしろいです。", "french": "Ce livre est très intéressant." },
+    { "japanese": "明日、学校へ行きますか。", "french": "Allez-vous à l'école demain ?" },
+    { "japanese": "日本語を少し話せます。", "french": "Je peux parler un peu japonais." },
+    { "japanese": "友だちと映画を見ます。", "french": "Je regarde un film avec un ami." },
+    { "japanese": "毎朝、コーヒーを飲みます。", "french": "Chaque matin, je bois du café." },
+    { "japanese": "父は車を運転します。", "french": "Mon père conduit une voiture." },
+    { "japanese": "昨日は雨が降りました。", "french": "Il a plu hier." },
+    { "japanese": "この店は少し高いです。", "french": "Ce magasin est un peu cher." }
+  ]
 }

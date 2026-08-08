@@ -36,6 +36,8 @@ ajoute-le ici.
 | Une route API | `apps/api/src/modules/<domaine>/` |
 | Statistiques détaillées | `apps/api/src/modules/progress/progress.service.ts#stats` |
 | Révision ciblée (file) | `apps/api/src/modules/study/study.service.ts#buildTargetedQueue` |
+| Équilibrage charge (nouveaux kanji) | `apps/api/src/modules/study/study.service.ts#computeNewKanjiCount` |
+| Mini-textes (routes) | `apps/api/src/modules/content/content.service.ts#textList/textDetail` |
 | Validation body session | `packages/contracts/src/schemas/study.ts` (zod) |
 | Schéma / tables | `apps/api/prisma/schema.prisma` |
 | Config CLI Prisma (v7) | `apps/api/prisma.config.ts` |
@@ -53,7 +55,7 @@ ajoute-le ici.
 | Pipeline de contenu | `tools/content/run.mjs` (stages dans `tools/content/stages/`) |
 | Gabarits d'exercices | `tools/content/lib/generators.mjs` |
 | Chargement du pack en base | `tools/content/load.mjs` (`pnpm content:load`) |
-| Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json` (`n5/`, `n4/`, `n3/`) + `components-fr.json` |
+| Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json`, `texts.json` (`n5/`, `n4/`, `n3/`) + `components-fr.json` |
 
 ## Pièges connus (IMPORTANT)
 
@@ -325,6 +327,28 @@ ajoute-le ici.
     exercices changent d'id et le nettoyage de `content:load` supprime les anciens
     (sauf historique utilisateur) — c'est attendu.
 
+37. **Mini-textes : kanji bornés au niveau.** Chaque `texts.json` curaté est validé :
+    tout kanji du corps doit être **publié** et de niveau **inférieur ou égal** au
+    niveau du texte (les mots non couverts s'écrivent en kana). La validation échoue
+    sinon (`validate.mjs`). `normalize` lit `texts.json` pour **chaque** niveau de
+    `LEVELS` : l'absence du fichier fait échouer l'étape. Id stable
+    `curatedTextId(title, body)` (hash) — modifier le corps change l'id.
+
+38. **Phrases curatées prioritaires.** Depuis la Phase 3, les phrases curatées
+    (`sentences.json`) sont insérées **avant** la sélection Tatoeba par niveau et
+    comptent dans le quota par kanji. Conséquence : la sélection Tatoeba diminue
+    légèrement (les phrases remplacées deviennent orphelines et sont nettoyées au
+    `load`). Ne pas remettre les phrases curatées après la boucle Tatoeba, cela
+    annulerait la priorité dans les exercices de contexte.
+
+39. **Équilibrage de la charge (`autoBalance`).** `buildQueue` compte les cartes dues
+    (`dueCount`) puis calcule les nouveaux kanji via `computeNewKanjiCount` :
+    `min(base, max(0, reviewLimit − dueCount))`. Le mode `free` et
+    `autoBalance: false` ignorent la limite. `reviewLimit` borne aussi le `take` des
+    cartes dues. Les valeurs par défaut (40 / true) reproduisent le comportement
+    historique tant que ≤ 35 révisions sont dues. Tester via
+    `study-queue.spec.ts` plutôt qu'en session réelle.
+
 ## Recettes
 
 ### Ajouter une route API
@@ -364,7 +388,9 @@ ajoute-le ici.
 ### Modifier le contenu curaté d'un niveau (N5, N4, N3)
 
 1. Éditer `content/curated/<niveau>/kanji.json` (ordre, radicaux, confusions,
-   mnémotechniques) ou `vocabulary.json` / `sentences.json` (complétion).
+   mnémotechniques) ou `vocabulary.json` / `sentences.json` / `texts.json`
+   (complétion). Les mini-textes ne doivent employer que des kanji du niveau ou
+   inférieurs (piège 37).
 2. Relancer `pnpm content:normalize && pnpm content:generate && pnpm content:validate`.
 3. `pnpm content:report` pour vérifier la couverture (seuils par niveau dans
    `LEVEL_MINIMUMS` : N5 ≥ 40 exercices / 6 mots / 6 phrases, N4 et N3 ≥ 32 / 5 / 5).

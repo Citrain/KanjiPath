@@ -1,0 +1,16 @@
+{
+  "level": "N5",
+  "notes": "Mini-textes de lecture graduée rédigés par KanjiPath : uniquement des kanji N5 (les autres mots sont en kana). Schéma : { title, body, french }.",
+  "texts": [
+    {
+      "title": "休みの日",
+      "body": "今日は休みの日です。学校へは行きません。あさ、父といっしょにごはんを食べます。それから、本を読みます。午後は友だちと外であそびます。今日はたのしい一日です。",
+      "french": "Aujourd'hui, c'est un jour de repos. Je ne vais pas à l'école. Le matin, je mange avec mon père. Ensuite, je lis un livre. L'après-midi, je joue dehors avec un ami. C'est une bonne journée."
+    },
+    {
+      "title": "山と川",
+      "body": "今日は天気がいいです。山へ行きます。川の水がきれいです。ひるごはんはパンを食べます。午後は木の下で休みます。外には人がたくさんいます。",
+      "french": "Aujourd'hui, il fait beau. Je vais à la montagne. L'eau de la rivière est belle. À midi, je mange du pain. L'après-midi, je me repose sous un arbre. Dehors, il y a beaucoup de monde."
+    }
+  ]
+}

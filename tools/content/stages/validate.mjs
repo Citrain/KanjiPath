@@ -14,6 +14,7 @@ const TEMPLATE_CATEGORY = {
   reading_type_qcm: 'reading',
   vocab_reading_qcm: 'vocabulary',
   vocab_meaning_qcm: 'vocabulary',
+  vocab_reading_advanced_qcm: 'reading',
   sentence_cloze_kanji: 'context',
   sentence_cloze_reading: 'context',
   sentence_translation_qcm: 'context',
@@ -25,9 +26,9 @@ const TEMPLATE_CATEGORY = {
 };
 
 const LEVEL_MINIMUMS = {
-  N5: { exercises: 40, sentences: 6, words: 6, total: 3000 },
-  N4: { exercises: 32, sentences: 5, words: 5, total: 5000 },
-  N3: { exercises: 32, sentences: 5, words: 5, total: 10000 },
+  N5: { exercises: 40, sentences: 6, words: 6, texts: 2, total: 3000 },
+  N4: { exercises: 32, sentences: 5, words: 5, texts: 2, total: 5000 },
+  N3: { exercises: 32, sentences: 5, words: 5, texts: 2, total: 10000 },
 };
 const CATEGORY_SHARES = {
   meaning: 0.2,
@@ -44,10 +45,11 @@ function norm(text) {
 }
 
 export async function stageValidate() {
-  const [kanji, vocabulary, sentences, curriculum, sources, exercises] = await Promise.all([
+  const [kanji, vocabulary, sentences, texts, curriculum, sources, exercises] = await Promise.all([
     readJson(path.join(NORMALIZED_DIR, 'kanji.json')),
     readJson(path.join(NORMALIZED_DIR, 'vocabulary.json')),
     readJson(path.join(NORMALIZED_DIR, 'sentences.json')),
+    readJson(path.join(NORMALIZED_DIR, 'texts.json')),
     readJson(path.join(NORMALIZED_DIR, 'curriculum.json')),
     readJson(path.join(NORMALIZED_DIR, 'sources.json')),
     readJson(path.join(GENERATED_DIR, 'exercises.json')),
@@ -61,7 +63,7 @@ export async function stageValidate() {
   const sentenceIds = new Set(sentences.map((s) => s.id));
 
   const ids = new Set();
-  for (const list of [kanji, vocabulary, sentences, exercises]) {
+  for (const list of [kanji, vocabulary, sentences, texts, exercises]) {
     for (const item of list) {
       if (ids.has(item.id)) {
         errors.push(`Identifiant dupliqué: ${item.id}`);
@@ -152,6 +154,58 @@ export async function stageValidate() {
     }
     if (vocab.editorialStatus === 'draft') {
       errors.push(`Vocabulaire ${vocab.id} en état draft dans le pack`);
+    }
+  }
+
+  const LEVEL_RANK = { N5: 0, N4: 1, N3: 2, N2: 3, N1: 4 };
+  const kanjiLevelByLiteral = new Map(kanji.map((k) => [k.literal, k.level]));
+  const textsByLevel = {};
+  for (const text of texts) {
+    textsByLevel[text.level] = (textsByLevel[text.level] ?? 0) + 1;
+    if (!text.title || !text.body || !text.translationFr) {
+      errors.push(`Mini-texte ${text.id} incomplet (titre, corps ou traduction manquant)`);
+    }
+    if (LEVEL_RANK[text.level] === undefined) {
+      errors.push(`Mini-texte ${text.id} avec niveau invalide: ${text.level}`);
+    }
+    if (!text.license) {
+      errors.push(`Mini-texte ${text.id} sans licence`);
+    }
+    if (text.license?.startsWith('CC BY') && !text.author) {
+      errors.push(`Mini-texte ${text.id} sous ${text.license} sans attribution`);
+    }
+    if (text.editorialStatus === 'draft') {
+      errors.push(`Mini-texte ${text.id} en état draft dans le pack`);
+    }
+    for (const ch of [...text.body]) {
+      if (!/[\u3400-\u9fff\uf900-\ufaff]/.test(ch)) {
+        continue;
+      }
+      const kanjiLevel = kanjiLevelByLiteral.get(ch);
+      if (kanjiLevel === undefined) {
+        errors.push(`Mini-texte ${text.id}: kanji hors référentiel (${ch})`);
+      } else if (LEVEL_RANK[kanjiLevel] > LEVEL_RANK[text.level]) {
+        errors.push(`Mini-texte ${text.id} (${text.level}): kanji ${ch} de niveau supérieur (${kanjiLevel})`);
+      }
+    }
+    if (!Array.isArray(text.tokens) || text.tokens.length === 0) {
+      errors.push(`Mini-texte ${text.id} sans tokens annotés`);
+    } else {
+      const reassembled = text.tokens.map((token) => token.surface).join('');
+      if (reassembled !== text.body) {
+        errors.push(`Mini-texte ${text.id}: tokens ne couvrent pas le texte`);
+      }
+      for (const token of text.tokens) {
+        if (/[\u3400-\u9fff\uf900-\ufaff]/.test(token.surface) && (!token.reading || !token.romaji)) {
+          errors.push(`Mini-texte ${text.id}: token ${token.surface} sans lecture/romaji`);
+        }
+      }
+    }
+  }
+  for (const [level, minimums] of Object.entries(LEVEL_MINIMUMS)) {
+    const count = textsByLevel[level] ?? 0;
+    if (count < minimums.texts) {
+      errors.push(`Mini-textes ${level} insuffisants: ${count} (< ${minimums.texts})`);
     }
   }
 
@@ -278,6 +332,7 @@ export async function stageValidate() {
       kanji: kanji.length,
       vocabulary: vocabulary.length,
       sentences: sentences.length,
+      texts: texts.length,
       exercises: exercises.length,
     },
     categoryCounts,
@@ -298,5 +353,5 @@ export async function stageValidate() {
   for (const warning of warnings) {
     console.warn(`[validate] avertissement: ${warning}`);
   }
-  console.log(`[validate] ok — ${kanji.length} kanji, ${vocabulary.length} mots, ${sentences.length} phrases, ${exercises.length} exercices`);
+  console.log(`[validate] ok — ${kanji.length} kanji, ${vocabulary.length} mots, ${sentences.length} phrases, ${texts.length} mini-textes, ${exercises.length} exercices`);
 }

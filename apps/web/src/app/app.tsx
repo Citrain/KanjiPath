@@ -19,6 +19,12 @@ const WritingPage = lazy(() =>
 const ProgressionPage = lazy(() =>
   import('../features/progression/progression-page').then((m) => ({ default: m.ProgressionPage })),
 );
+const ReadingListPage = lazy(() =>
+  import('../features/reading/reading-list-page').then((m) => ({ default: m.ReadingListPage })),
+);
+const ReadingTextPage = lazy(() =>
+  import('../features/reading/reading-text-page').then((m) => ({ default: m.ReadingTextPage })),
+);
 const SettingsPage = lazy(() =>
   import('../features/settings/settings-page').then((m) => ({ default: m.SettingsPage })),
 );
@@ -108,6 +114,22 @@ export function App() {
             element={
               <Protected>
                 <SessionPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/lecture"
+            element={
+              <Protected>
+                <ReadingListPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/lecture/:id"
+            element={
+              <Protected>
+                <ReadingTextPage />
               </Protected>
             }
           />

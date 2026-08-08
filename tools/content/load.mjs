@@ -33,6 +33,7 @@ const TEMPLATE_META = {
   reading_type_qcm: { skill: 'reading', renderer: 'qcm', grader: 'exact-match' },
   vocab_reading_qcm: { skill: 'vocabulary', renderer: 'qcm', grader: 'kana-normalize' },
   vocab_meaning_qcm: { skill: 'vocabulary', renderer: 'qcm', grader: 'exact-match' },
+  vocab_reading_advanced_qcm: { skill: 'reading', renderer: 'qcm', grader: 'kana-normalize' },
   sentence_cloze_kanji: { skill: 'context', renderer: 'cloze-qcm', grader: 'exact-match' },
   sentence_cloze_reading: { skill: 'context', renderer: 'cloze-qcm', grader: 'kana-normalize' },
   sentence_translation_qcm: { skill: 'context', renderer: 'qcm', grader: 'exact-match' },
@@ -319,6 +320,47 @@ async function loadSentences(prisma, sentences) {
   }
 }
 
+async function loadMiniTexts(prisma, texts) {
+  for (const text of texts) {
+    await prisma.miniText.upsert({
+      where: { id: text.id },
+      create: {
+        id: text.id,
+        title: text.title,
+        body: text.body,
+        translationFr: text.translationFr,
+        level: text.level,
+        sourceId: text.sourceId,
+        author: text.author,
+        license: text.license,
+        editorialStatus: text.editorialStatus,
+      },
+      update: {
+        title: text.title,
+        body: text.body,
+        translationFr: text.translationFr,
+        level: text.level,
+        author: text.author,
+        license: text.license,
+        editorialStatus: text.editorialStatus,
+      },
+    });
+    await prisma.miniTextToken.deleteMany({ where: { miniTextId: text.id } });
+    if ((text.tokens ?? []).length > 0) {
+      await prisma.miniTextToken.createMany({
+        data: text.tokens.map((token) => ({
+          miniTextId: text.id,
+          surface: token.surface,
+          reading: token.reading ?? null,
+          romaji: token.romaji ?? null,
+          startOffset: token.startOffset,
+          endOffset: token.endOffset,
+        })),
+      });
+    }
+  }
+}
+
 async function loadExercises(prisma, exercises, versionId) {
   const templates = new Map();
   for (const exercise of exercises) {
@@ -445,16 +487,28 @@ async function cleanupOrphans(prisma, packIds) {
     await prisma.sentence.deleteMany({ where: { id: { in: orphanSentenceIds } } });
   }
   console.log(`[load] nettoyage: ${orphanSentenceIds.length} phrases orphelines supprimées`);
+
+  const orphanTexts = await prisma.miniText.findMany({
+    where: { id: { notIn: packIds.texts } },
+    select: { id: true },
+  });
+  const orphanTextIds = orphanTexts.map((t) => t.id);
+  if (orphanTextIds.length > 0) {
+    await prisma.miniTextToken.deleteMany({ where: { miniTextId: { in: orphanTextIds } } });
+    await prisma.miniText.deleteMany({ where: { id: { in: orphanTextIds } } });
+  }
+  console.log(`[load] nettoyage: ${orphanTextIds.length} mini-textes orphelins supprimés`);
 }
 
 export async function stageLoad() {
   loadEnv();
   const prisma = new PrismaClient({ adapter: createDbAdapter() });
 
-  const [kanji, vocabulary, sentences, exercises, curriculum, sources] = await Promise.all([
+  const [kanji, vocabulary, sentences, texts, exercises, curriculum, sources] = await Promise.all([
     readJson(path.join(PACK_DIR, 'kanji.json')),
     readJson(path.join(PACK_DIR, 'vocabulary.json')),
     readJson(path.join(PACK_DIR, 'sentences.json')),
+    readJson(path.join(PACK_DIR, 'texts.json')),
     readJson(path.join(PACK_DIR, 'exercises.json')),
     readJson(path.join(PACK_DIR, 'curriculum.json')),
     readJson(path.join(PACK_DIR, 'sources.json')),
@@ -487,12 +541,15 @@ export async function stageLoad() {
   await loadVocabulary(prisma, vocabulary);
   console.log('[load] phrases...');
   await loadSentences(prisma, sentences);
+  console.log('[load] mini-textes...');
+  await loadMiniTexts(prisma, texts);
   console.log('[load] exercices...');
   await loadExercises(prisma, exercises, versionId);
   console.log('[load] nettoyage des contenus orphelins...');
   await cleanupOrphans(prisma, {
     vocabulary: vocabulary.map((v) => v.id),
     sentences: sentences.map((s) => s.id),
+    texts: texts.map((t) => t.id),
     exercises: exercises.map((e) => e.id),
   });
 
@@ -500,6 +557,7 @@ export async function stageLoad() {
     kanji: await prisma.kanji.count(),
     vocabulary: await prisma.vocabulary.count(),
     sentences: await prisma.sentence.count(),
+    texts: await prisma.miniText.count(),
     exercises: await prisma.exerciseItem.count(),
   };
   console.log(`[load] terminé: ${JSON.stringify(counts)}`);

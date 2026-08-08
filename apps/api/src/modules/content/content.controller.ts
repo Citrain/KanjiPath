@@ -51,6 +51,16 @@ export class ContentController {
     return this.content.sources();
   }
 
+  @Get('texts')
+  texts(@Query('level') level?: string) {
+    return this.content.textList(level);
+  }
+
+  @Get('texts/:id')
+  textDetail(@Param('id') id: string) {
+    return this.content.textDetail(id);
+  }
+
   @Post('content/issues')
   @HttpCode(204)
   async createIssue(@CurrentUserId() userId: string, @Body() body: unknown) {

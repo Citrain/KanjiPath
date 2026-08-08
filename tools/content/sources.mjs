@@ -102,7 +102,7 @@ export const SOURCES = {
     url: 'https://github.com/',
     license: 'CC BY-SA 4.0',
     attributionText:
-      'Traductions françaises, mnémotechniques, notes et exercices créés pour KanjiPath.',
+      'Traductions françaises, mnémotechniques, notes, exercices, phrases curatées et mini-textes créés pour KanjiPath.',
     files: [],
   },
 };

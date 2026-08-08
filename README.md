@@ -115,7 +115,8 @@ Sans `DATABASE_URL_TEST`, les tests d'intégration sont automatiquement ignorés
 
 Le contenu pédagogique est versionné, sourcé et validé (aucun LLM au runtime).
 Licences : EDRDG CC BY-SA 4.0 (KANJIDIC2, JMdict, KRADFILE), CC BY-SA 3.0 (KanjiVG),
-Tatoeba (CC BY 2.0 FR avec attribution), kanji-data (MIT, croisement des niveaux).
+Tatoeba (CC BY 2.0 FR avec attribution), kanji-data (MIT, croisement des niveaux),
+contenu éditorial KanjiPath (phrases et mini-textes curatés, CC BY-SA 4.0).
 
 Premier remplissage de la base de contenu :
 

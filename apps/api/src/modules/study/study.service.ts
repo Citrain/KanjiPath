@@ -49,6 +49,23 @@ function shuffle<T>(items: T[]): T[] {
   return out;
 }
 
+export interface NewKanjiCountInput {
+  mode: string;
+  dailyNewLimit: number;
+  reviewLimit: number;
+  autoBalance: boolean;
+  dueCount: number;
+}
+
+export function computeNewKanjiCount(input: NewKanjiCountInput): number {
+  const base = input.mode === 'free' ? input.dailyNewLimit : Math.min(input.dailyNewLimit, 5);
+  if (input.mode === 'free' || !input.autoBalance) {
+    return base;
+  }
+  const room = Math.max(0, input.reviewLimit - input.dueCount);
+  return Math.min(base, room);
+}
+
 @Injectable()
 export class StudyService {
   constructor(private readonly prisma: PrismaService) {}
@@ -63,12 +80,21 @@ export class StudyService {
     }
     const settings = await this.prisma.userSettings.findUnique({ where: { userId } });
     const dailyNewLimit = settings?.dailyNewLimit ?? 10;
+    const reviewLimit = settings?.reviewLimit ?? 40;
+    const autoBalance = settings?.autoBalance ?? true;
 
     const exercises = await this.loadExercises();
     const queue =
       sessionMode === 'targeted' && target
         ? await this.buildTargetedQueue(userId, target, exercises)
-        : await this.buildQueue(userId, sessionMode, dailyNewLimit, exercises);
+        : await this.buildQueue(
+            userId,
+            sessionMode,
+            dailyNewLimit,
+            reviewLimit,
+            autoBalance,
+            exercises,
+          );
     if (queue.length === 0) {
       throw new BadRequestException('Aucun exercice disponible pour cette session');
     }
@@ -469,6 +495,8 @@ export class StudyService {
     userId: string,
     mode: string,
     dailyNewLimit: number,
+    reviewLimit: number,
+    autoBalance: boolean,
     exercises: Map<string, ExerciseRow[]>,
   ): Promise<ExerciseRow[]> {
     const used = new Set<string>();
@@ -477,15 +505,17 @@ export class StudyService {
     const endOfToday = new Date(now);
     endOfToday.setHours(23, 59, 59, 999);
 
+    const dueWhere = {
+      userId,
+      subjectType: 'kanji' as const,
+      dueAt: { lte: endOfToday },
+      state: { not: 'Suspended' as const },
+    };
+    const dueCount = await this.prisma.reviewCard.count({ where: dueWhere });
     const dueCards = await this.prisma.reviewCard.findMany({
-      where: {
-        userId,
-        subjectType: 'kanji',
-        dueAt: { lte: endOfToday },
-        state: { not: 'Suspended' },
-      },
+      where: dueWhere,
       orderBy: { dueAt: 'asc' },
-      take: 40,
+      take: reviewLimit,
     });
     for (const card of dueCards) {
       const templates = CARD_SKILL_TO_TEMPLATES[card.skill] ?? [];
@@ -538,7 +568,13 @@ export class StudyService {
     const discoveredIds = new Set(discovered.map((card) => card.subjectId));
     const curriculum = await this.prisma.curriculum.findFirst({ where: { status: 'published' } });
     if (curriculum) {
-      const takeNew = mode === 'free' ? dailyNewLimit : Math.min(dailyNewLimit, 5);
+      const takeNew = computeNewKanjiCount({
+        mode,
+        dailyNewLimit,
+        reviewLimit,
+        autoBalance,
+        dueCount,
+      });
       const newKanji: { kanjiId: string }[] = [];
       for (const level of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
         if (newKanji.length >= takeNew) {

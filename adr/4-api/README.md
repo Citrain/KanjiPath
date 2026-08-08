@@ -36,6 +36,8 @@ GET    /kanji/:literal/related
 GET    /kanji/:literal/vocabulary
 GET    /kanji/:literal/sentences
 GET    /kanji/:literal/progress
+GET    /texts
+GET    /texts/:id
 ```
 
 ---

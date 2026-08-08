@@ -156,12 +156,12 @@ Navigateur
 ## Flux de données (contenu et étude)
 
 ```text
-Pipeline (build)                     API (runtime)
+  Pipeline (build)                     API (runtime)
   download → import → normalize      GET /kanji, /kanji/:literal, /kanji/:literal/svg
-  → generate → validate → publish    GET /curricula, /sources
+  → generate → validate → publish    GET /curricula, /sources, /texts, /texts/:id
   → load (Prisma upsert)             POST /study/sessions, /study/answers (FSRS)
         ▼                            GET /progress/dashboard, /progress/levels/:level
-MariaDB : kanji, vocabulaire, phrases, exercices, cartes FSRS, progression
+MariaDB : kanji, vocabulaire, phrases, mini-textes, exercices, cartes FSRS, progression
 ```
 
 - Le contenu est **fixe et validé** : aucun LLM au runtime.
@@ -199,6 +199,10 @@ GET    /kanji/:literal/vocabulary
 GET    /kanji/:literal/sentences
 GET    /kanji/:literal/progress
 
+# Lecture (mini-textes)
+GET    /texts                          # liste (filtre ?level=)
+GET    /texts/:id                      # texte annoté + traduction
+
 # Étude
 POST   /study/sessions              # mode daily/weak_points/free/targeted (+ cible level/skill/kanjiIds)
 GET    /study/queue
@@ -216,7 +220,8 @@ GET    /progress/stats              # statistiques détaillées (précision, ré
 
 # Préférences
 GET    /settings
-PATCH  /settings
+PATCH  /settings                     # activeLevel, dailyNewLimit, reviewLimit, autoBalance,
+                                     # desiredRetention, furiganaMode, romajiEnabled, theme
 
 # Contenu
 GET    /sources
