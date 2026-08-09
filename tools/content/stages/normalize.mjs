@@ -806,7 +806,7 @@ export async function stageNormalize() {
   const curriculum = {
     code: 'JLPT_ALIGNED',
     name: 'Parcours aligné sur le JLPT',
-    version: '2026.08.9',
+    version: '2026.08.10',
     status: 'published',
     notes: LEVELS.map((level) => `${level} : ${curatedByLevel[level].kanji.notes}`).join('\n'),
     levels,

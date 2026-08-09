@@ -65,6 +65,9 @@ réutilisés tant qu'ils existent.
 - Les **phrases** et les **mini-textes** sont tokenisés par kuromoji au build : chaque
   token porte `surface`, `reading` (hiragana), `romaji`, `startOffset`/`endOffset`.
   Une phrase ou un texte dont un token kanji n'a pas de lecture fait échouer `normalize`.
+- Les mois numériques sont corrigés après tokenisation : kuromoji découpe parfois
+  `6月` en `6` + `月` et donnerait à tort `つき`; le pipeline les fusionne avec leur
+  lecture contextuelle (`6月` → `ろくがつ`).
 - Les exercices qui **demandent une lecture** n'incluent jamais le furigana/romaji
   du mot cible (masquage par position, voir `sentencePromptTokens` dans
   `tools/content/lib/generators.mjs`) pour ne pas donner la réponse.

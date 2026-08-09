@@ -139,7 +139,7 @@ source japonais-français supplémentaire sous licence compatible ou une capacit
 `content/curated/n1/mnemonics/` (mnémotechniques par lots),
 `tools/content/check-texts.mjs` (vérification de brouillons de mini-textes).
 
-Le pack **2026.08.9** de la **Phase 5** sélectionne toutes les ressources audio Tatoeba
+Le pack **2026.08.10** de la **Phase 5** sélectionne toutes les ressources audio Tatoeba
 exploitables à licence individuelle explicite : une par phrase japonais-français
 annotable, avec préférence CC BY 4.0 et CC BY-NC 4.0 limité à l'instance personnelle
 privée par ADR-002. Elles sont servies uniquement aux utilisateurs authentifiés avec

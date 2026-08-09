@@ -261,8 +261,12 @@ export class ContentService {
     if (!kanji) {
       throw new NotFoundException('Kanji introuvable');
     }
-    const sentences = await this.prisma.sentence.findMany({
-      where: { japanese: { contains: kanji.literal }, editorialStatus: 'published' },
+    const audioSentences = await this.prisma.sentence.findMany({
+      where: {
+        japanese: { contains: kanji.literal },
+        editorialStatus: 'published',
+        audioResources: { some: { editorialStatus: 'published' } },
+      },
       orderBy: { id: 'asc' },
       take: 20,
       include: {
@@ -270,6 +274,26 @@ export class ContentService {
         audioResources: { where: { editorialStatus: 'published' } },
       },
     });
+    const remaining = 20 - audioSentences.length;
+    const sentences =
+      remaining > 0
+        ? [
+            ...audioSentences,
+            ...(await this.prisma.sentence.findMany({
+              where: {
+                japanese: { contains: kanji.literal },
+                editorialStatus: 'published',
+                audioResources: { none: { editorialStatus: 'published' } },
+              },
+              orderBy: { id: 'asc' },
+              take: remaining,
+              include: {
+                tokens: { orderBy: { startOffset: 'asc' } },
+                audioResources: { where: { editorialStatus: 'published' } },
+              },
+            })),
+          ]
+        : audioSentences;
     return sentences.map((sentence) => ({
       id: sentence.id,
       japanese: sentence.japanese,

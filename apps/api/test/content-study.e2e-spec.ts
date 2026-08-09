@@ -93,7 +93,7 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(onReading?.romaji).toBe('ichi');
   });
 
-  it('retourne les phrases du kanji avec tokens annotés', async () => {
+  it('retourne les phrases audio en priorité avec leurs tokens annotés', async () => {
     const response = await app.inject({
       method: 'GET',
       url: '/api/v1/kanji/一/sentences',
@@ -582,6 +582,23 @@ async function seedContent(prisma: PrismaService): Promise<void> {
     });
   }
 
+  await prisma.sentence.upsert({
+    where: { id: 's-before-audio' },
+    create: {
+      id: 's-before-audio',
+      japanese: '一。',
+      translationFr: 'Un.',
+      difficulty: 'N5',
+      sourceId: source.id,
+      author: 'KanjiPath',
+      license: 'CC BY-SA 4.0',
+      editorialStatus: 'published',
+    },
+    update: {
+      japanese: '一。',
+      translationFr: 'Un.',
+    },
+  });
   await prisma.sentence.upsert({
     where: { id: 's-test-1' },
     create: {

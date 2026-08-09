@@ -213,6 +213,9 @@ ajoute-le ici.
     romaji des tokens kana utilise `pronunciation`. Le dictionnaire IPAdic couvre les
     lectures des tokens kanji, mais un token inconnu (UNK) n'en a pas : `normalize`
     échoue alors (choisir une autre phrase ou compléter le curaté).
+    Les mois avec chiffre arabe sont un cas à corriger : kuromoji découpe `6月` en `6`
+    et `月` (lu isolément `つき`). `annotateSentence` les fusionne en un token `6月`
+    lu `ろくがつ`; conserver ce correctif et son test.
 
 23. **Fuite de réponse par furigana/romaji** : tout exercice dont la réponse est une
     lecture (`kanji_to_reading_qcm`, `reading_input_kana`, `vocab_reading_qcm`,
