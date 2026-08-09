@@ -5,6 +5,7 @@ import { GENERATED_DIR, KANJIVG_DIR, NORMALIZED_DIR, REPORTS_DIR } from '../lib/
 
 const KANA_RE = /^[ぁ-ゖー]+$/;
 const KATAKANA_RE = /^[ァ-ヺー]+$/;
+const AUDIO_LICENSES = new Set(['CC BY 4.0', 'CC BY-NC 4.0']);
 
 const TEMPLATE_CATEGORY = {
   kanji_to_meaning_qcm: 'meaning',
@@ -80,6 +81,21 @@ export async function stageValidate() {
   for (const resource of audio) {
     if (!resource.sourceId || !resource.license || !resource.attribution || !resource.checksum) {
       errors.push(`Audio ${resource.id} sans provenance complète`);
+    }
+    if (!resource.audioId || !resource.tatoebaSentenceId || !resource.speaker) {
+      errors.push(`Audio ${resource.id} sans identifiants Tatoeba ou locuteur`);
+    }
+    if (!AUDIO_LICENSES.has(resource.license)) {
+      errors.push(`Audio ${resource.id} avec licence interdite: ${resource.license}`);
+    }
+    if (!resource.attribution?.includes(resource.speaker ?? '')) {
+      errors.push(`Audio ${resource.id} sans attribution du locuteur`);
+    }
+    if (!resource.sentenceId && !resource.vocabularyId) {
+      errors.push(`Audio ${resource.id} sans lien vers une phrase ou un vocabulaire`);
+    }
+    if (!resource.transcript) {
+      errors.push(`Audio ${resource.id} sans transcript`);
     }
     if (resource.editorialStatus === 'draft') {
       errors.push(`Audio ${resource.id} en état draft dans le pack`);
@@ -312,6 +328,9 @@ export async function stageValidate() {
       }
       if (exercise.skill !== 'listening') {
         errors.push(`Exercice ${exercise.id}: la dictée doit relever de l'écoute`);
+      }
+      if (exercise.acceptedAnswers.some((answer) => !KANA_RE.test(answer))) {
+        errors.push(`Exercice ${exercise.id}: réponse de dictée non normalisée en kana`);
       }
     }
     if (exercise.editorialStatus === 'draft') {

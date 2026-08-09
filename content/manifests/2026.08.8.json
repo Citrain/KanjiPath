@@ -1,0 +1,148 @@
+{
+  "version": "2026.08.8",
+  "createdAt": "2026-08-09T07:43:43.425Z",
+  "gitCommit": "9d4ed748621ecf7eeed19628d3ca6d85057d0abe",
+  "sources": [
+    {
+      "name": "KANJIDIC2",
+      "license": "CC BY-SA 4.0 (licence EDRDG)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "kanjidic2.xml.gz",
+          "sha256": "sha256:22ef6038f6c64ea32a0b5f229005384b94b45ad3cb4747f8e6dc99c6a7aaffa1"
+        }
+      ]
+    },
+    {
+      "name": "JMdict (multilingue, glosses françaises)",
+      "license": "CC BY-SA 4.0 (licence EDRDG)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "JMdict.gz",
+          "sha256": "sha256:62f5fd402cfbff619e592e11b16276fa8cdb7c7524126194e9000af6019dfcf5"
+        }
+      ]
+    },
+    {
+      "name": "KRADFILE (EDRDG), conversion Unicode/JSON",
+      "license": "CC BY-SA 3.0 (licence EDRDG)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "krad.json",
+          "sha256": "sha256:3db9b3415c4d97ee9b4bfe911c9d3f65927a75b1abdc50280eabad56ab8e8186"
+        },
+        {
+          "file": "krad_components.json",
+          "sha256": "sha256:d5d3d11153492a9aeff4c1526770929db14fa80360e3685927dd5cfc357b6caa"
+        }
+      ]
+    },
+    {
+      "name": "KanjiVG",
+      "license": "CC BY-SA 3.0",
+      "version": "r20250816",
+      "checksums": [
+        {
+          "file": "kanjivg-main.zip",
+          "sha256": "sha256:69a2944ec1183086fdee5ba9c1f48bc306b867480a95b2f337f3203bf50689a3"
+        }
+      ]
+    },
+    {
+      "name": "Tatoeba",
+      "license": "CC BY 2.0 FR (licences par défaut Tatoeba, attribution par auteur)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "jpn_sentences_detailed.tsv.bz2",
+          "sha256": "sha256:3fc4e9d9967cb627b0f38daff794129142237c29e1fada6698caccf249d564ec"
+        },
+        {
+          "file": "fra_sentences_detailed.tsv.bz2",
+          "sha256": "sha256:47718a8bcc46bac51835f8d5ba30c5ef67efb32e59904bd70fb88af0ca926c0b"
+        },
+        {
+          "file": "links.tar.bz2",
+          "sha256": "sha256:1ab92a74b2af893d67adbb0863b6cccc0312e4b4c95a5d53b1054a023319bba1"
+        }
+      ]
+    },
+    {
+      "name": "Tatoeba - enregistrements japonais sélectionnés",
+      "license": "Audio : CC BY 4.0 ou CC BY-NC 4.0 (instance personnelle privée uniquement) ; textes associés : CC BY 2.0 FR",
+      "version": "2026-08-08",
+      "checksums": [
+        {
+          "file": "jpn_sentences_with_audio.tsv.bz2",
+          "sha256": "sha256:6596b818312e85cba483f7764c9caf30676156afabd22e3ee82c6de45ef456d5"
+        },
+        {
+          "file": "tatoeba-audio-1283521.mp3",
+          "sha256": "sha256:a65a509700d64a5544f772e56c32b7627213a159959ffc2bb769038bc8f10450"
+        },
+        {
+          "file": "tatoeba-audio-1283538.mp3",
+          "sha256": "sha256:7f35132d0b6a24d37fef350b927272e4b208bb5b6a2f9129ef6e7ab2a75c78e3"
+        },
+        {
+          "file": "tatoeba-audio-1283544.mp3",
+          "sha256": "sha256:ae2f859262ac19f9896d716b1329d7608ccdbe20617ca64ce239d32d26c5e27d"
+        },
+        {
+          "file": "tatoeba-audio-1682.mp3",
+          "sha256": "sha256:f7cd0eddbc15669aac452df4ca67c13292a228cc4abadff66d30b1851292c3a3"
+        },
+        {
+          "file": "tatoeba-audio-1684.mp3",
+          "sha256": "sha256:baa1e124d32f5d210fadd2b052009476b95696266bda27c40898334911bd654c"
+        },
+        {
+          "file": "tatoeba-audio-1685.mp3",
+          "sha256": "sha256:3faf502519929b421114a13a909ae6c38060691030475508ea9711f72ad0b658"
+        },
+        {
+          "file": "tatoeba-audio-1686.mp3",
+          "sha256": "sha256:4f381c674204b69b81f7f99604b3c2361ca5ec546b0fa46e18be9584fa469972"
+        },
+        {
+          "file": "tatoeba-audio-1688.mp3",
+          "sha256": "sha256:86c46c0b9e5e98dd60937ebaccad3c3c94e231cfdc3c9455f9ed2d64a5bf0cbc"
+        },
+        {
+          "file": "tatoeba-audio-1690.mp3",
+          "sha256": "sha256:0567d18cadcf51477ae919faee640df9eb030111e0fb8ee4452fac7ff92b6f2f"
+        },
+        {
+          "file": "tatoeba-audio-1968.mp3",
+          "sha256": "sha256:c91c3625ce8d903fecf38f76d8b4ee18bdeb6036e3f6315651c833db068bdffd"
+        }
+      ]
+    },
+    {
+      "name": "kanji-data (David Gouveia)",
+      "license": "MIT",
+      "version": null,
+      "checksums": [
+        {
+          "file": "kanji-data.json",
+          "sha256": "sha256:561b72ea9df703c58fae0c68585812e172aaa7611d2fcee6719d55fd2dfd4fa4"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "kanji": 1420,
+    "vocabulary": 10181,
+    "sentences": 8540,
+    "texts": 10,
+    "audio": 10,
+    "exercises": 74020
+  },
+  "validation": {
+    "errors": 0,
+    "warnings": 0
+  }
+}

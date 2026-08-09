@@ -139,12 +139,19 @@ source japonais-français supplémentaire sous licence compatible ou une capacit
 `content/curated/n1/mnemonics/` (mnémotechniques par lots),
 `tools/content/check-texts.mjs` (vérification de brouillons de mini-textes).
 
-La **Phase 5** ajoute des ressources audio Tatoeba à licence individuelle explicite
-CC BY 4.0, servies uniquement aux utilisateurs authentifiés avec `nosniff` et cache
-privé. Le lot est figé par fichiers bruts et SHA-256 ; les attributions restent visibles
-dans les ressources et dans la page Sources. Les fiches proposent un bouton de lecture
-sans autoplay, et les dictées `audio_dictation_kana` sont matérialisées au build,
-normalisées en kana et suivies par la compétence `listening` / carte `AUDIO_DICTATION`.
+Le pack **2026.08.9** de la **Phase 5** sélectionne toutes les ressources audio Tatoeba
+exploitables à licence individuelle explicite : une par phrase japonais-français
+annotable, avec préférence CC BY 4.0 et CC BY-NC 4.0 limité à l'instance personnelle
+privée par ADR-002. Elles sont servies uniquement aux utilisateurs authentifiés avec
+`nosniff` et cache privé. Le lot est figé par fichiers bruts et SHA-256 ; les
+attributions restent visibles dans les ressources et dans la page Sources. Les fiches
+proposent un bouton de lecture sans autoplay. Seules les dictées dont la réponse kana
+est explicitement validée sont matérialisées au build et suivies par la compétence
+`listening` / carte `AUDIO_DICTATION`.
+
+Le snapshot actuel produit 645 clips automatiques exploitables, auxquels s'ajoutent les
+3 ressources éditoriales initiales, soit **648 ressources audio**. Le rapport
+`content/reports/audio-selection.json` conserve le décompte et les checksums.
 
 L'instance est réservée à un usage personnel privé : `ADR-002-usage-personnel-et-audio-non-commercial.md`
 autorise les clips CC BY-NC avec attribution, mais interdit toute distribution publique

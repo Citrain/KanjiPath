@@ -71,7 +71,8 @@ pnpm dev                # serveurs seul (DB déjà à jour)
 - Audio : importer uniquement des clips avec licence individuelle explicite. Pour cette
   instance personnelle privée, CC BY-NC est autorisée selon `ADR-002` ; toute
   distribution publique ou commerciale reste interdite tant que ces clips sont présents.
-  Conserver fichier brut, checksum, version, attribution et licence dans le pipeline.
+  Conserver fichier brut, checksum, version, attribution et licence dans le pipeline,
+  et vérifier chaque clip contre le snapshot Tatoeba `jpn_sentences_with_audio`.
 - Ne jamais présenter les listes de kanji comme « officielles JLPT » :
   formulation obligatoire « Parcours aligné sur le JLPT ».
 - Authentification : Argon2id, cookie `HttpOnly` + `SameSite=Lax`, CSRF double-submit,

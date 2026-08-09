@@ -6,11 +6,11 @@ import { sha256File } from './hash.mjs';
 
 const MAX_ATTEMPTS = 3;
 
-async function fetchToFile(url, destPath) {
+async function fetchToFile(url, destPath, timeoutMs) {
   const tmpPath = `${destPath}.part`;
   const response = await fetch(url, {
     redirect: 'follow',
-    signal: AbortSignal.timeout(20 * 60 * 1000),
+    signal: AbortSignal.timeout(timeoutMs),
     headers: { 'user-agent': 'kanjipath-content-pipeline' },
   });
   if (!response.ok) {
@@ -20,7 +20,7 @@ async function fetchToFile(url, destPath) {
   await rename(tmpPath, destPath);
 }
 
-export async function downloadFile(url, destPath, { force = false } = {}) {
+export async function downloadFile(url, destPath, { force = false, timeoutMs = 20 * 60 * 1000 } = {}) {
   await mkdir(path.dirname(destPath), { recursive: true });
   if (!force) {
     const existing = await stat(destPath).catch(() => null);
@@ -31,7 +31,7 @@ export async function downloadFile(url, destPath, { force = false } = {}) {
   let lastError;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
     try {
-      await fetchToFile(url, destPath);
+      await fetchToFile(url, destPath, timeoutMs);
       const bytes = (await stat(destPath)).size;
       if (bytes === 0) {
         throw new Error('fichier vide');

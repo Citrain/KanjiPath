@@ -1,6 +1,6 @@
 {
   "version": "2026-08-08",
-  "licenseReview": "Clips Tatoeba vérifiés individuellement : CC BY 4.0, redistribution et usage commercial autorisés avec attribution. Les enregistrements CC BY-NC, CC BY-ND, sans licence ou avec licence inconnue sont exclus.",
+  "licenseReview": "Les clips Tatoeba sont sélectionnés contre le snapshot jpn_sentences_with_audio du 2026-08-08 : CC BY 4.0, ou CC BY-NC 4.0 exclusivement pour cette instance personnelle privée selon ADR-002. Les enregistrements CC BY-ND, sans licence ou avec licence inconnue sont exclus. Chaque clip sélectionné conserve son id audio, son id de phrase, son locuteur, son attribution et son checksum dans le rapport de sélection du pipeline.",
   "vocabulary": [
     {
       "writtenForm": "十分",
@@ -30,13 +30,24 @@
       "difficulty": "N5",
       "author": "kuwasiku",
       "license": "CC BY 2.0 FR"
+    },
+    {
+      "id": "s-tatoeba-13563774",
+      "japanese": "実に。",
+      "french": "Vraiment.",
+      "difficulty": "N3",
+      "author": "kuwasiku",
+      "license": "CC BY 2.0 FR"
     }
   ],
   "resources": [
     {
       "id": "a-tatoeba-1283521",
+      "audioId": "1283521",
       "file": "tatoeba-audio-1283521.mp3",
       "sentenceId": "s-tatoeba-88248",
+      "tatoebaSentenceId": "88248",
+      "speaker": "fal",
       "targetKanji": "先",
       "acceptedAnswers": ["かのじょはせんせいです"],
       "explanation": "彼女は先生です。 se lit かのじょはせんせいです。",
@@ -46,8 +57,11 @@
     },
     {
       "id": "a-tatoeba-1283538",
+      "audioId": "1283538",
       "file": "tatoeba-audio-1283538.mp3",
       "sentenceId": "s-tatoeba-13563750",
+      "tatoebaSentenceId": "13563750",
+      "speaker": "fal",
       "vocabulary": { "writtenForm": "十分", "reading": "じゅうぶん" },
       "targetKanji": "十",
       "acceptedAnswers": ["じゅうぶんです"],
@@ -58,7 +72,11 @@
     },
     {
       "id": "a-tatoeba-1283544",
+      "audioId": "1283544",
       "file": "tatoeba-audio-1283544.mp3",
+      "sentenceId": "s-tatoeba-13563774",
+      "tatoebaSentenceId": "13563774",
+      "speaker": "fal",
       "transcript": "実に。",
       "attribution": "Audio : fal via Tatoeba, CC BY 4.0",
       "license": "CC BY 4.0"

@@ -99,6 +99,16 @@ export async function* bz2Lines(filePath) {
   }
 }
 
+const AUDIO_LICENSES = new Set(['CC BY 4.0', 'CC BY-NC 4.0']);
+
+export function parseTatoebaAudioLine(line) {
+  const [sentenceTatoebaId, audioId, speaker, license] = line.split('\t');
+  if (!sentenceTatoebaId || !audioId || !speaker || !AUDIO_LICENSES.has(license)) {
+    return null;
+  }
+  return { sentenceTatoebaId, audioId, speaker, license };
+}
+
 export async function* tarBz2Lines(filePath, entryFilter) {
   const bzStream = fs.createReadStream(filePath).pipe(bz2());
   const queue = [];
@@ -474,6 +484,7 @@ export async function runImport({ force = false } = {}) {
   }
 
   await importTatoeba(targetSet, { force });
+  await importTatoebaAudio({ force });
 
   let kanjivgIndex = await readJsonIfExists(path.join(IMPORTED_DIR, 'kanjivg-index.json'));
   if (force || !kanjivgIndex) {
@@ -573,4 +584,26 @@ async function importTatoeba(targetSet, { force = false } = {}) {
   }
   console.log(`[import] Tatoeba: ${pairs.length} paires jpn→fra`);
   await writeJson(outPath, pairs);
+}
+
+async function importTatoebaAudio({ force = false } = {}) {
+  const outPath = path.join(IMPORTED_DIR, 'tatoeba-audio.json');
+  if (!force) {
+    const existing = await readJsonIfExists(outPath);
+    if (existing && existing.length > 0) {
+      console.log(`[import] tatoeba-audio.json déjà présent (${existing.length} clips éligibles, réutilisé)`);
+      return;
+    }
+  }
+
+  const clips = [];
+  for await (const line of bz2Lines(path.join(RAW_DIR, 'jpn_sentences_with_audio.tsv.bz2'))) {
+    const clip = parseTatoebaAudioLine(line);
+    if (clip) {
+      clips.push(clip);
+    }
+  }
+  clips.sort((a, b) => Number(a.audioId) - Number(b.audioId));
+  await writeJson(outPath, clips);
+  console.log(`[import] Tatoeba audio: ${clips.length} clips CC BY 4.0 ou CC BY-NC 4.0 éligibles`);
 }

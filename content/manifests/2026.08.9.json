@@ -1,0 +1,2728 @@
+{
+  "version": "2026.08.9",
+  "createdAt": "2026-08-09T08:34:31.759Z",
+  "gitCommit": "9d4ed748621ecf7eeed19628d3ca6d85057d0abe",
+  "sources": [
+    {
+      "name": "KANJIDIC2",
+      "license": "CC BY-SA 4.0 (licence EDRDG)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "kanjidic2.xml.gz",
+          "sha256": "sha256:22ef6038f6c64ea32a0b5f229005384b94b45ad3cb4747f8e6dc99c6a7aaffa1"
+        }
+      ]
+    },
+    {
+      "name": "JMdict (multilingue, glosses françaises)",
+      "license": "CC BY-SA 4.0 (licence EDRDG)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "JMdict.gz",
+          "sha256": "sha256:62f5fd402cfbff619e592e11b16276fa8cdb7c7524126194e9000af6019dfcf5"
+        }
+      ]
+    },
+    {
+      "name": "KRADFILE (EDRDG), conversion Unicode/JSON",
+      "license": "CC BY-SA 3.0 (licence EDRDG)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "krad.json",
+          "sha256": "sha256:3db9b3415c4d97ee9b4bfe911c9d3f65927a75b1abdc50280eabad56ab8e8186"
+        },
+        {
+          "file": "krad_components.json",
+          "sha256": "sha256:d5d3d11153492a9aeff4c1526770929db14fa80360e3685927dd5cfc357b6caa"
+        }
+      ]
+    },
+    {
+      "name": "KanjiVG",
+      "license": "CC BY-SA 3.0",
+      "version": "r20250816",
+      "checksums": [
+        {
+          "file": "kanjivg-main.zip",
+          "sha256": "sha256:69a2944ec1183086fdee5ba9c1f48bc306b867480a95b2f337f3203bf50689a3"
+        }
+      ]
+    },
+    {
+      "name": "Tatoeba",
+      "license": "CC BY 2.0 FR (licences par défaut Tatoeba, attribution par auteur)",
+      "version": null,
+      "checksums": [
+        {
+          "file": "jpn_sentences_detailed.tsv.bz2",
+          "sha256": "sha256:3fc4e9d9967cb627b0f38daff794129142237c29e1fada6698caccf249d564ec"
+        },
+        {
+          "file": "fra_sentences_detailed.tsv.bz2",
+          "sha256": "sha256:47718a8bcc46bac51835f8d5ba30c5ef67efb32e59904bd70fb88af0ca926c0b"
+        },
+        {
+          "file": "links.tar.bz2",
+          "sha256": "sha256:1ab92a74b2af893d67adbb0863b6cccc0312e4b4c95a5d53b1054a023319bba1"
+        }
+      ]
+    },
+    {
+      "name": "Tatoeba - enregistrements japonais sélectionnés",
+      "license": "Audio : CC BY 4.0 ou CC BY-NC 4.0 (instance personnelle privée uniquement) ; textes associés : CC BY 2.0 FR",
+      "version": "2026-08-08",
+      "checksums": [
+        {
+          "file": "jpn_sentences_with_audio.tsv.bz2",
+          "sha256": "sha256:6596b818312e85cba483f7764c9caf30676156afabd22e3ee82c6de45ef456d5"
+        },
+        {
+          "file": "tatoeba-audio-1283521.mp3",
+          "sha256": "sha256:a65a509700d64a5544f772e56c32b7627213a159959ffc2bb769038bc8f10450"
+        },
+        {
+          "file": "tatoeba-audio-1283538.mp3",
+          "sha256": "sha256:7f35132d0b6a24d37fef350b927272e4b208bb5b6a2f9129ef6e7ab2a75c78e3"
+        },
+        {
+          "file": "tatoeba-audio-1283544.mp3",
+          "sha256": "sha256:ae2f859262ac19f9896d716b1329d7608ccdbe20617ca64ce239d32d26c5e27d"
+        },
+        {
+          "file": "tatoeba-audio-1682.mp3",
+          "sha256": "sha256:f7cd0eddbc15669aac452df4ca67c13292a228cc4abadff66d30b1851292c3a3"
+        },
+        {
+          "file": "tatoeba-audio-1684.mp3",
+          "sha256": "sha256:baa1e124d32f5d210fadd2b052009476b95696266bda27c40898334911bd654c"
+        },
+        {
+          "file": "tatoeba-audio-1685.mp3",
+          "sha256": "sha256:3faf502519929b421114a13a909ae6c38060691030475508ea9711f72ad0b658"
+        },
+        {
+          "file": "tatoeba-audio-1686.mp3",
+          "sha256": "sha256:4f381c674204b69b81f7f99604b3c2361ca5ec546b0fa46e18be9584fa469972"
+        },
+        {
+          "file": "tatoeba-audio-1688.mp3",
+          "sha256": "sha256:86c46c0b9e5e98dd60937ebaccad3c3c94e231cfdc3c9455f9ed2d64a5bf0cbc"
+        },
+        {
+          "file": "tatoeba-audio-1690.mp3",
+          "sha256": "sha256:0567d18cadcf51477ae919faee640df9eb030111e0fb8ee4452fac7ff92b6f2f"
+        },
+        {
+          "file": "tatoeba-audio-1968.mp3",
+          "sha256": "sha256:c91c3625ce8d903fecf38f76d8b4ee18bdeb6036e3f6315651c833db068bdffd"
+        },
+        {
+          "file": "tatoeba-audio-1682.mp3",
+          "sha256": "sha256:f7cd0eddbc15669aac452df4ca67c13292a228cc4abadff66d30b1851292c3a3"
+        },
+        {
+          "file": "tatoeba-audio-1684.mp3",
+          "sha256": "sha256:baa1e124d32f5d210fadd2b052009476b95696266bda27c40898334911bd654c"
+        },
+        {
+          "file": "tatoeba-audio-1685.mp3",
+          "sha256": "sha256:3faf502519929b421114a13a909ae6c38060691030475508ea9711f72ad0b658"
+        },
+        {
+          "file": "tatoeba-audio-1686.mp3",
+          "sha256": "sha256:4f381c674204b69b81f7f99604b3c2361ca5ec546b0fa46e18be9584fa469972"
+        },
+        {
+          "file": "tatoeba-audio-1688.mp3",
+          "sha256": "sha256:86c46c0b9e5e98dd60937ebaccad3c3c94e231cfdc3c9455f9ed2d64a5bf0cbc"
+        },
+        {
+          "file": "tatoeba-audio-1690.mp3",
+          "sha256": "sha256:0567d18cadcf51477ae919faee640df9eb030111e0fb8ee4452fac7ff92b6f2f"
+        },
+        {
+          "file": "tatoeba-audio-1968.mp3",
+          "sha256": "sha256:c91c3625ce8d903fecf38f76d8b4ee18bdeb6036e3f6315651c833db068bdffd"
+        },
+        {
+          "file": "tatoeba-audio-12194.mp3",
+          "sha256": "sha256:a7b347ad1891ad0eb29a20c57041d54dcaef87ff15be671aec920a0f746241a0"
+        },
+        {
+          "file": "tatoeba-audio-12198.mp3",
+          "sha256": "sha256:e133df0b5d079ec5562d3dee6e7394d164d27f044b9656ef3d8780cd21a4dbf6"
+        },
+        {
+          "file": "tatoeba-audio-12199.mp3",
+          "sha256": "sha256:d7fd84bab1008d03833002b4fdceaa85c01dba6c8ff8517cdbaddef8daac3b3b"
+        },
+        {
+          "file": "tatoeba-audio-12202.mp3",
+          "sha256": "sha256:67e744b807409ed49802b10c1f4e2e13044fc569d2f1e9437043503117810a28"
+        },
+        {
+          "file": "tatoeba-audio-12203.mp3",
+          "sha256": "sha256:1a45bf46f0298cadc497f8efda89328aaabc3efdb77bb87f3f2bef439ff901b5"
+        },
+        {
+          "file": "tatoeba-audio-12205.mp3",
+          "sha256": "sha256:118b058ba5e39c32ef148efe925f2c210b657183b56496ff995cff8e7b0bee71"
+        },
+        {
+          "file": "tatoeba-audio-12206.mp3",
+          "sha256": "sha256:89d1a0cabd90718ecac0b3def048aa6ca28e84d0bfb757cd0b5b9f4fdd15cfec"
+        },
+        {
+          "file": "tatoeba-audio-12207.mp3",
+          "sha256": "sha256:fe51ffa6ab337af5617238037787616e70bafd8fb474c52b95713ef2c5cc507e"
+        },
+        {
+          "file": "tatoeba-audio-12210.mp3",
+          "sha256": "sha256:02240689cd6588b85d507a901d9557454c3f9d438fe24b71697b1fa23c143424"
+        },
+        {
+          "file": "tatoeba-audio-12211.mp3",
+          "sha256": "sha256:042d242e31af94fbf814c015da695c50432ee1e9bde61077fc4b9bf3f72d590f"
+        },
+        {
+          "file": "tatoeba-audio-12212.mp3",
+          "sha256": "sha256:f7bce3fa25648357e6d1e80a57fde55942d94a6240bd2de46112bbaecb8f323d"
+        },
+        {
+          "file": "tatoeba-audio-12213.mp3",
+          "sha256": "sha256:a43aa0d200fe08007685975b484154ba3f77f9bb11be803e271017b1cdf34a47"
+        },
+        {
+          "file": "tatoeba-audio-12214.mp3",
+          "sha256": "sha256:61837c83fa25eb2042dbcd7c3ef582ce5dbe3b4e3a90ca4f242c24845b3fd2e3"
+        },
+        {
+          "file": "tatoeba-audio-12216.mp3",
+          "sha256": "sha256:4ec3fdb6bb89752c791296c4ce6bb878df2f9957cbcee84a207b1736a5b46a3d"
+        },
+        {
+          "file": "tatoeba-audio-12235.mp3",
+          "sha256": "sha256:e030297dd2cd7081ada9852b0efcefcad9670bf91f8830a951b679af6030662e"
+        },
+        {
+          "file": "tatoeba-audio-12236.mp3",
+          "sha256": "sha256:e01a811df788cbc86641e328f16f8a45d3dd4c5ea389f238fbec4587ced0186f"
+        },
+        {
+          "file": "tatoeba-audio-12237.mp3",
+          "sha256": "sha256:1a0b479736dbad4dc6ba7438c2d9ccfbd6358fe55fee525334348dd526c57f03"
+        },
+        {
+          "file": "tatoeba-audio-12238.mp3",
+          "sha256": "sha256:a36d79d89ca1ab7edb0985666b3c80f606030061a838cc2d384d3779939716c6"
+        },
+        {
+          "file": "tatoeba-audio-12242.mp3",
+          "sha256": "sha256:3f61797fa49dc45831f8aa3f48d192ca9842e90bede27a3bd980468cade17b43"
+        },
+        {
+          "file": "tatoeba-audio-12247.mp3",
+          "sha256": "sha256:be86185ca2de8c83cbe72490eaa1df6170d7721c0f123009f2491e110d5c241f"
+        },
+        {
+          "file": "tatoeba-audio-12248.mp3",
+          "sha256": "sha256:9e118019fab62c67fed99921ef2a5b2741c8b4c65d9312b9abfa407f137b5fda"
+        },
+        {
+          "file": "tatoeba-audio-12249.mp3",
+          "sha256": "sha256:1cb7bfc59f125ca1570ba493e7d88e454cc1983df7cdbb4342bea1fa72f3c7a6"
+        },
+        {
+          "file": "tatoeba-audio-12250.mp3",
+          "sha256": "sha256:3bca50ced2893737c58fd3c5e59e25d91b4ba134b71973d1e0f64b43e0df5c25"
+        },
+        {
+          "file": "tatoeba-audio-12512.mp3",
+          "sha256": "sha256:8ad0b78d6eab928244c886ff3de3c8c7da01de420199940a5094575557f74a91"
+        },
+        {
+          "file": "tatoeba-audio-12514.mp3",
+          "sha256": "sha256:809eb642871a76f969bc82d534e18484bd84de191b0536cf6ac43ce49c98fde4"
+        },
+        {
+          "file": "tatoeba-audio-12515.mp3",
+          "sha256": "sha256:2cb836b3fe1c2d129942f5e9024915e416bae54d7fa5fb1fbffee945fef4e497"
+        },
+        {
+          "file": "tatoeba-audio-12516.mp3",
+          "sha256": "sha256:09395d90babe7abe7180aeadb5ae8154f4069592b611d2a6fc1f6f03339dd9df"
+        },
+        {
+          "file": "tatoeba-audio-12545.mp3",
+          "sha256": "sha256:a3ec7fb513e6a77d4cb8688bec7b67da317b298ab73b3545676d0770761e5fa9"
+        },
+        {
+          "file": "tatoeba-audio-12546.mp3",
+          "sha256": "sha256:3f086c0cb273062d99f97325049f5b7bce8fa83cf78f4cb6a779d9b279709022"
+        },
+        {
+          "file": "tatoeba-audio-12547.mp3",
+          "sha256": "sha256:3da03d176c659b031c3fac8533417cc3d44d6de561700e1cd6021b948746586f"
+        },
+        {
+          "file": "tatoeba-audio-12548.mp3",
+          "sha256": "sha256:99d6bd8f28c5871d41b28ee044d799ee91af254875a2df11af8fdfd99c1a2273"
+        },
+        {
+          "file": "tatoeba-audio-12549.mp3",
+          "sha256": "sha256:0b40c6bb90f9fbabf6862f0dbf64c061d3293abb074a2e3e7ac090952081c540"
+        },
+        {
+          "file": "tatoeba-audio-12550.mp3",
+          "sha256": "sha256:cb8566763b5cc4c1ce0151da68224073afbb4473665d9db13fe71bf435bcece0"
+        },
+        {
+          "file": "tatoeba-audio-12551.mp3",
+          "sha256": "sha256:b59b443f437681dafbec27c2bd2614386bc7e361d1e968217f07c660abb9eaac"
+        },
+        {
+          "file": "tatoeba-audio-12552.mp3",
+          "sha256": "sha256:38863f2ef1b86ceb52e21122cb77da72a4d27623348cf483ad64d09c9611f7b5"
+        },
+        {
+          "file": "tatoeba-audio-12553.mp3",
+          "sha256": "sha256:5f33af03be91457347dc71066924efcfbd45da5068ecb7a54b303d18984b54a5"
+        },
+        {
+          "file": "tatoeba-audio-12554.mp3",
+          "sha256": "sha256:9599089fe659494e9608af13be265453395f8de1f0ff9c5c1810b6d7b7373cb6"
+        },
+        {
+          "file": "tatoeba-audio-12555.mp3",
+          "sha256": "sha256:c8a6d66bcc2d28f9dbb48c99648054f5cab8bb30e7bd5d43d074f6bb3bd81a7f"
+        },
+        {
+          "file": "tatoeba-audio-12556.mp3",
+          "sha256": "sha256:7d0856b61b34ac1802a7243ed233c0559fc33530af1bc22a50e12f4659bf6d99"
+        },
+        {
+          "file": "tatoeba-audio-12558.mp3",
+          "sha256": "sha256:f50497b1be604e2f437e9798b7e42d8566cb7107274f63c0e467fad49de9e274"
+        },
+        {
+          "file": "tatoeba-audio-12559.mp3",
+          "sha256": "sha256:8695fe4de80eb35bcf549f028726a511c71c173f4f3933f23cf7eb80c37092ee"
+        },
+        {
+          "file": "tatoeba-audio-12560.mp3",
+          "sha256": "sha256:f884a4f2e43745026c1420cfb31672bb3d786da3b810e15806f2fbb6b47aaff9"
+        },
+        {
+          "file": "tatoeba-audio-12561.mp3",
+          "sha256": "sha256:7805245c70c1f6e9b224695c792c02ba2aa3e94734e455e923aacc081f29c9f4"
+        },
+        {
+          "file": "tatoeba-audio-12562.mp3",
+          "sha256": "sha256:b0270e6339284da60596659dd95f81a2bbd23a87376848c361202b88c3395826"
+        },
+        {
+          "file": "tatoeba-audio-12563.mp3",
+          "sha256": "sha256:5a4bb25ea849c98011244049089002b2801cc32a41b5228d40e3f3dc880b4ea3"
+        },
+        {
+          "file": "tatoeba-audio-12564.mp3",
+          "sha256": "sha256:1de6ddd61e5f19db7c5da6458c9feb8334b8ab81ba5c138db58d3deeea8ae8ff"
+        },
+        {
+          "file": "tatoeba-audio-12565.mp3",
+          "sha256": "sha256:ad307e147842bea6bb0630e10591416c82d3e052b2cb99da42e3de12746f1e46"
+        },
+        {
+          "file": "tatoeba-audio-12566.mp3",
+          "sha256": "sha256:b974dcc1dc414ad471d0feb238c19bea5d1fdcb9eb49b7026b264af3c879837c"
+        },
+        {
+          "file": "tatoeba-audio-12567.mp3",
+          "sha256": "sha256:6a15e4038073987d9efe9ae64eee21c4a8f65db9121663c53064aaf5dbb0ef10"
+        },
+        {
+          "file": "tatoeba-audio-12568.mp3",
+          "sha256": "sha256:ce35d3a6b3c52e5607c86f7e950c81f1ffdf682582b82461dacdf48ab2739441"
+        },
+        {
+          "file": "tatoeba-audio-12569.mp3",
+          "sha256": "sha256:f620d5868ae4381a80177135a0ff64263fa420d35e06b7f576dda8084e6943c6"
+        },
+        {
+          "file": "tatoeba-audio-12570.mp3",
+          "sha256": "sha256:85bbdecf9cebf12fc014e54563e84b9295aefe5c1ab2c1bef4192e39ac900c34"
+        },
+        {
+          "file": "tatoeba-audio-12571.mp3",
+          "sha256": "sha256:a3ebef1fce46470ea491afd3d764b7b41d692e42f942d9b1f9599c2a64961d89"
+        },
+        {
+          "file": "tatoeba-audio-12572.mp3",
+          "sha256": "sha256:d897c58ffd8ddaf6f8a5d20ab34bf7fb889f5765b4b7535d001e497d896c686e"
+        },
+        {
+          "file": "tatoeba-audio-12574.mp3",
+          "sha256": "sha256:080776d5034273cf97e64cef544565c6ad44a2a6ad9d9a06579c01d4f4f434f9"
+        },
+        {
+          "file": "tatoeba-audio-12575.mp3",
+          "sha256": "sha256:183d20f205037afc3f8c4917f74fc355179ab52aecd931067e5d9c2f50212f4b"
+        },
+        {
+          "file": "tatoeba-audio-12578.mp3",
+          "sha256": "sha256:22b90817ce48ea27297b9804da710527c1b5319391a63370f304461062a29ab7"
+        },
+        {
+          "file": "tatoeba-audio-12633.mp3",
+          "sha256": "sha256:6bc625a2f80829d60e32221cd469473f7a2f3876cde7fac1447362dc0adcb009"
+        },
+        {
+          "file": "tatoeba-audio-12639.mp3",
+          "sha256": "sha256:555bc891d5dfcfd38a53dc39a01295852a0f8ecfff681e57a64ef57703ceaaf3"
+        },
+        {
+          "file": "tatoeba-audio-12640.mp3",
+          "sha256": "sha256:66587b42df3d273ba092f74405f6cc941c2bd6e56ba1228fd8de2bb50087a2c1"
+        },
+        {
+          "file": "tatoeba-audio-12642.mp3",
+          "sha256": "sha256:8c7f6898d655d2106a72234375390695cb94cdae901e7c8b48d5c3d835a9af4c"
+        },
+        {
+          "file": "tatoeba-audio-12643.mp3",
+          "sha256": "sha256:19036b70be5962ebfd505a8ca586f3809523cac5cacbeb1a11daf99c1e73a24f"
+        },
+        {
+          "file": "tatoeba-audio-12647.mp3",
+          "sha256": "sha256:0d416f907c4c90b3f46da8615dda348f9e7aa67854077624f1d43489a1e64325"
+        },
+        {
+          "file": "tatoeba-audio-12650.mp3",
+          "sha256": "sha256:a1262c759c690345e641b77956eb3096c9080bcdb85f7c1ded5fb1ee416d12f0"
+        },
+        {
+          "file": "tatoeba-audio-12651.mp3",
+          "sha256": "sha256:c717946b5c30282668240df492af0bd14427ee87c7a72ff1a43b6b3cf58a7f8f"
+        },
+        {
+          "file": "tatoeba-audio-12653.mp3",
+          "sha256": "sha256:d263f69dce296859708d87e864b2e1e7f4ab8d95241a029f08039ba074cf194c"
+        },
+        {
+          "file": "tatoeba-audio-12655.mp3",
+          "sha256": "sha256:c1bed0cacf656df72beedd143effda81ae3d8c6d8fe7f4c8af2f3d7a4ce147a1"
+        },
+        {
+          "file": "tatoeba-audio-12659.mp3",
+          "sha256": "sha256:210426540a8d6fb0fd697a64f917492f186e34891e572ee944a5c9bb21547043"
+        },
+        {
+          "file": "tatoeba-audio-12663.mp3",
+          "sha256": "sha256:34bc5fb42288e977fb0b9f9ed744982916a91d5fe940c3ed6111f9d79d878f80"
+        },
+        {
+          "file": "tatoeba-audio-12664.mp3",
+          "sha256": "sha256:8be94ea117a4a834043104f5719028ffdf0b8c08481f787a08b3e2f1ad4c354b"
+        },
+        {
+          "file": "tatoeba-audio-12665.mp3",
+          "sha256": "sha256:0445aa26e05780cf754131ac044898dbf9b40cd753513b6ec1c368b9c633118c"
+        },
+        {
+          "file": "tatoeba-audio-12668.mp3",
+          "sha256": "sha256:fea9a357b501253d0631a1b58d571f8618d380260725014ccf4e842b81886d82"
+        },
+        {
+          "file": "tatoeba-audio-12669.mp3",
+          "sha256": "sha256:ef0b6b90cbb8d0098d5f8fe9cd9bc8df56a045d4817ace0c8910b7ae14e9452c"
+        },
+        {
+          "file": "tatoeba-audio-12670.mp3",
+          "sha256": "sha256:8c66a35220728f7658cc3a8c000766591a6fa20f460db58329a23b268e973997"
+        },
+        {
+          "file": "tatoeba-audio-12671.mp3",
+          "sha256": "sha256:a1054a5ba0544eb2ca74b39dcce6c51f85b763dfde092bd1501a1e96c2b19466"
+        },
+        {
+          "file": "tatoeba-audio-12672.mp3",
+          "sha256": "sha256:d913783556c3b7b3314eace6367435851f82f34da44049827843d4eb8a4139a9"
+        },
+        {
+          "file": "tatoeba-audio-12676.mp3",
+          "sha256": "sha256:818ae64f87d9f5da7a5e594756a94f0e126ed9bb27007eb317ca31c705b9cb24"
+        },
+        {
+          "file": "tatoeba-audio-12677.mp3",
+          "sha256": "sha256:b648f24808252232f53719cf25d8e55e8102985de2e2439c7b3870d73e0d00de"
+        },
+        {
+          "file": "tatoeba-audio-12679.mp3",
+          "sha256": "sha256:dca4961ca8bdf7cdbc9e3f5bec45c17be410b14c94f3f5cbabcc504a93da87f1"
+        },
+        {
+          "file": "tatoeba-audio-12681.mp3",
+          "sha256": "sha256:d61bf3be2486705f30739527b5a472df8079ee3f08d3b9e9a012919f90aee754"
+        },
+        {
+          "file": "tatoeba-audio-12683.mp3",
+          "sha256": "sha256:de3d9b664cb8236904deb98868ce6aa937cf1187fbc12dcfaf5dcb7adb16b1e0"
+        },
+        {
+          "file": "tatoeba-audio-12691.mp3",
+          "sha256": "sha256:4323c6a5383a84a7252b0b5eba53eaa9a443f2ad3dfe3902631d53b0919626fb"
+        },
+        {
+          "file": "tatoeba-audio-12693.mp3",
+          "sha256": "sha256:c38787deebf2b3e8a45c8101e241f007a8885012b365425cf197cbf4d2fab51c"
+        },
+        {
+          "file": "tatoeba-audio-12694.mp3",
+          "sha256": "sha256:ed5eeb5ffce783895f1bf794341c8bb83226f0ffcf24ee0285c2c467b1852eff"
+        },
+        {
+          "file": "tatoeba-audio-12698.mp3",
+          "sha256": "sha256:c2965d1268de89c9ec30d028564666ab1498762f0638df2a7c4a29cffe13cbe8"
+        },
+        {
+          "file": "tatoeba-audio-12701.mp3",
+          "sha256": "sha256:a5504323b236ec877733c5563237d8283eabdbb11f9b234d7c0d39b5c91a2c47"
+        },
+        {
+          "file": "tatoeba-audio-12703.mp3",
+          "sha256": "sha256:6393080ff605ab5554fe08331d0443c3a940811e64ac8c814ee4cd8ebfa54543"
+        },
+        {
+          "file": "tatoeba-audio-12704.mp3",
+          "sha256": "sha256:6acd6e160813ea03cd66738034413cf9d01a7bcd7c3151e00f90a8d7f75cd333"
+        },
+        {
+          "file": "tatoeba-audio-12707.mp3",
+          "sha256": "sha256:31351378213eebd4990ac2de7c76c12bb9359148371d963d11a0d5d4f69428f2"
+        },
+        {
+          "file": "tatoeba-audio-12710.mp3",
+          "sha256": "sha256:84c291e4f54308fd7a08a799c252b878a7a7469d1935b157c534f7c58c1db1c5"
+        },
+        {
+          "file": "tatoeba-audio-12712.mp3",
+          "sha256": "sha256:faa5104920d190a4003bf17e563fb05e0a057092251c4d917d1c7fb893ef1ca0"
+        },
+        {
+          "file": "tatoeba-audio-12717.mp3",
+          "sha256": "sha256:e550b5ec2555e52c3dc233ed506c084c91f8754a04cc08453b1eb17c8b6db142"
+        },
+        {
+          "file": "tatoeba-audio-12718.mp3",
+          "sha256": "sha256:dcec03f67c3efd3649db5b23c36eff3c11f86509333a247398a4f5794cb9ef44"
+        },
+        {
+          "file": "tatoeba-audio-12720.mp3",
+          "sha256": "sha256:f323697e2e2907bdb4407cf70a10795a01a18deb2e43815b3c6b94cee40b206e"
+        },
+        {
+          "file": "tatoeba-audio-12725.mp3",
+          "sha256": "sha256:26b0fd348f0de4edc3f901e34059969e0fb675916b2f095d59efd2b5453462f2"
+        },
+        {
+          "file": "tatoeba-audio-12734.mp3",
+          "sha256": "sha256:18267c058db79604e3814cbeff8890f4f8859511e50579d00923e48c18de4453"
+        },
+        {
+          "file": "tatoeba-audio-12736.mp3",
+          "sha256": "sha256:495fb3fbe4db76ad27b9e132d570421d0bff05e0d153057a91d9c5560d90422d"
+        },
+        {
+          "file": "tatoeba-audio-12737.mp3",
+          "sha256": "sha256:698a96fc260bc4d67faaff63035c54ba2e27d1357c0db5eb8bb098201a6fe107"
+        },
+        {
+          "file": "tatoeba-audio-12738.mp3",
+          "sha256": "sha256:2d67ef4197368417c8854b25ebb3d5214bc5f4099cfad6be2248bdd3683e1021"
+        },
+        {
+          "file": "tatoeba-audio-12740.mp3",
+          "sha256": "sha256:8feb9932595fa3a45e35498854e8f9b1cd47d5f342f5532d08a0dd876958923a"
+        },
+        {
+          "file": "tatoeba-audio-12741.mp3",
+          "sha256": "sha256:33c462498ae38885834ba33c0e1e548ee77cdab69ecf8db1c3e2a90c61d42e4c"
+        },
+        {
+          "file": "tatoeba-audio-12742.mp3",
+          "sha256": "sha256:2b98fcaba04b32bb7488cc6d6d20488c3aabfa5f26cc36eb19f740a8e45a23c8"
+        },
+        {
+          "file": "tatoeba-audio-12745.mp3",
+          "sha256": "sha256:b5d4a791186b6280632f6c9243e5db06c7c97dfc879c8418c279159d4c82a27d"
+        },
+        {
+          "file": "tatoeba-audio-12748.mp3",
+          "sha256": "sha256:83d57e329b22a7faed2c3babf2fb561a8eb07fe21d81c69436ed12f052b64062"
+        },
+        {
+          "file": "tatoeba-audio-12750.mp3",
+          "sha256": "sha256:6f6ce1af65d26293c9f0785a007e3700fead83a15978c5b9139e39cfbea9f3a9"
+        },
+        {
+          "file": "tatoeba-audio-12751.mp3",
+          "sha256": "sha256:5c83ea83208ae9c8fa552055a66eb43b6d781128451a41b797533ceb247123f5"
+        },
+        {
+          "file": "tatoeba-audio-12752.mp3",
+          "sha256": "sha256:7fcc796e71d6f4b807ab6ec51a55b07f66edc62b19f03e449339613ab21c2e85"
+        },
+        {
+          "file": "tatoeba-audio-12764.mp3",
+          "sha256": "sha256:1f5eb034336c1321cce3f6727e56e583e29cbfc630cd512067182e535212ba03"
+        },
+        {
+          "file": "tatoeba-audio-29207.mp3",
+          "sha256": "sha256:5ab2c237c252156a97d3982c30b5e1695c2695433617e1e55a50578540f704bc"
+        },
+        {
+          "file": "tatoeba-audio-32022.mp3",
+          "sha256": "sha256:7d55ed1d69884ec0622523a5bb6eb130a10b7a94cfe1edb92a1cf83715c79c6e"
+        },
+        {
+          "file": "tatoeba-audio-46572.mp3",
+          "sha256": "sha256:a59aaacd2f57104cae5a8602b26193bce43bda2bb0a2dbb208f5f9085bc485c3"
+        },
+        {
+          "file": "tatoeba-audio-46573.mp3",
+          "sha256": "sha256:d3366308b67bc288388064c72ebe55cfd6e3137ff2784c4668cabcf4fd9de4c5"
+        },
+        {
+          "file": "tatoeba-audio-50228.mp3",
+          "sha256": "sha256:11d135e350a4eebff35c8899d0e9842f9287a4cb7381119f09de5cd61bf3acc5"
+        },
+        {
+          "file": "tatoeba-audio-50438.mp3",
+          "sha256": "sha256:ef174b8bdcbaac607019649aebc7d0abd35e3e5a15b78c844384c62ce20ba271"
+        },
+        {
+          "file": "tatoeba-audio-58686.mp3",
+          "sha256": "sha256:9e986676b116877bbf2f7104d4ab118aac804835240acd99d19c7c1d948bbda7"
+        },
+        {
+          "file": "tatoeba-audio-71543.mp3",
+          "sha256": "sha256:da88c4d7387ee38687f64147b115d8379942d5077051e2ddf31685efc1fc328c"
+        },
+        {
+          "file": "tatoeba-audio-71697.mp3",
+          "sha256": "sha256:5a90a78d77b6738708891bc540b2f4511c765f3015733c969309b0ba7d9a339c"
+        },
+        {
+          "file": "tatoeba-audio-73221.mp3",
+          "sha256": "sha256:fad0f08a1cd6139cb91e017f63f640a0809250c57cc614f847b549fbbc9c237c"
+        },
+        {
+          "file": "tatoeba-audio-74446.mp3",
+          "sha256": "sha256:8c867373594e9d49fd3dbca857a62c7f6026affcd22aa0bdb9b79c00571c4ef5"
+        },
+        {
+          "file": "tatoeba-audio-75302.mp3",
+          "sha256": "sha256:c81107661d1bd64288e46033b9ea69c7bd5bbcd59b0b371a4eb6bee039cc04bb"
+        },
+        {
+          "file": "tatoeba-audio-75846.mp3",
+          "sha256": "sha256:e461a57a8334774a8502d660c555197c9534b174613d0bb89853a5d6d712d204"
+        },
+        {
+          "file": "tatoeba-audio-76386.mp3",
+          "sha256": "sha256:cede8df2eb1a66df597142452e41bede1881f5ac268472ac5610597cc701b1f1"
+        },
+        {
+          "file": "tatoeba-audio-80685.mp3",
+          "sha256": "sha256:634a74cb3a45d6fdad8ee0e7c88e35f69e08aff7a8181152b101edffd278f5d8"
+        },
+        {
+          "file": "tatoeba-audio-97092.mp3",
+          "sha256": "sha256:26a49de6eff5bf2f90ee93b716f56877bfa0b2b1c740748f20bb574c4815586a"
+        },
+        {
+          "file": "tatoeba-audio-101959.mp3",
+          "sha256": "sha256:74b38c24964d2db8de181ed76a345f74c09e0dc3d57ea357421c743acef401b6"
+        },
+        {
+          "file": "tatoeba-audio-102313.mp3",
+          "sha256": "sha256:6d3765479d4e503a3993dae203f65d8cd1cd3859fa7aca5e82805f55a26a3326"
+        },
+        {
+          "file": "tatoeba-audio-103608.mp3",
+          "sha256": "sha256:8cc6e2d67eb6647166bf460f865f0bcd3a45aa336bf53c5eb3fbc8b69c886452"
+        },
+        {
+          "file": "tatoeba-audio-104251.mp3",
+          "sha256": "sha256:1abeac6811a33bcf398914f95b35429cd23b868177c9a91b90e04cc1dbdaa3e8"
+        },
+        {
+          "file": "tatoeba-audio-104299.mp3",
+          "sha256": "sha256:f86cc1f462297421aefcd15a2ae3dc990077056519fc56ccfbc5bd84b1c8adea"
+        },
+        {
+          "file": "tatoeba-audio-107085.mp3",
+          "sha256": "sha256:bdea376372c7397172c1d9f0c73bbb3323936399de05e7dd2ecd8f2367db014f"
+        },
+        {
+          "file": "tatoeba-audio-107472.mp3",
+          "sha256": "sha256:8d4486f78ecde762823bb8552039d4e79ed5d7f93fa5be54134a96c7b5e94eab"
+        },
+        {
+          "file": "tatoeba-audio-108414.mp3",
+          "sha256": "sha256:6a444655d8142bce1321c0dc431ecf5b55cb9343a143477d75f0e7a09e4a66f1"
+        },
+        {
+          "file": "tatoeba-audio-108493.mp3",
+          "sha256": "sha256:374ef01910f76b9b70f07452b61223559383e1f9d13d07a6b6a611759d63815e"
+        },
+        {
+          "file": "tatoeba-audio-108495.mp3",
+          "sha256": "sha256:0205304bb47689ba63e6ac17ad53327cfc04296f1a5cd8aeccb078716520bb11"
+        },
+        {
+          "file": "tatoeba-audio-108507.mp3",
+          "sha256": "sha256:3e3e5c6cbb3e99b40d0c80632b185bd7bbbeb3b1120382b7c06a2b2b156bdb78"
+        },
+        {
+          "file": "tatoeba-audio-108508.mp3",
+          "sha256": "sha256:f565874c8fe0122b157e61294671e39f3a7f8f4c10b29fd9401fb27f7633ee87"
+        },
+        {
+          "file": "tatoeba-audio-111906.mp3",
+          "sha256": "sha256:a6da9c515490aca18007ef0e8aea0da7868d78005c758fd5f8d3c67d9d348c95"
+        },
+        {
+          "file": "tatoeba-audio-111907.mp3",
+          "sha256": "sha256:40e38ad50869a748f6b86f168f80cb79e43ccf9e3fac8ed760b7b3c710d9046e"
+        },
+        {
+          "file": "tatoeba-audio-111918.mp3",
+          "sha256": "sha256:a791c36f3562d93108dff21f8638597b6fdf3d2cf27f80e4ddf2513d98d6d312"
+        },
+        {
+          "file": "tatoeba-audio-118742.mp3",
+          "sha256": "sha256:f1b78a2d69ee0c0e26270195f60ecdb06518911ce02e646038d0632009c2d75e"
+        },
+        {
+          "file": "tatoeba-audio-118788.mp3",
+          "sha256": "sha256:ddd07062b1aa949f73a0af26e5f408269f5c218f40fa05f5227268c688e33b93"
+        },
+        {
+          "file": "tatoeba-audio-118951.mp3",
+          "sha256": "sha256:89633006471d72b626898e19259c831ce859c4431544423ce694ef77d5e7f58f"
+        },
+        {
+          "file": "tatoeba-audio-119335.mp3",
+          "sha256": "sha256:e64464504c5edc84fed48dcf57c0e43b8748e173f40e26abc05816406ad15c05"
+        },
+        {
+          "file": "tatoeba-audio-122327.mp3",
+          "sha256": "sha256:7080cb588ec952092375e21f866394aadfa185b9b2aefda55e378d689810c58f"
+        },
+        {
+          "file": "tatoeba-audio-122699.mp3",
+          "sha256": "sha256:e22de6312900123290b9f662276c8a9446aa78f1edc9d03036f4d93da9cf7f0a"
+        },
+        {
+          "file": "tatoeba-audio-122700.mp3",
+          "sha256": "sha256:ea94328e310cbf60c9ecc68dd6d7f74d1ef2df9c8dd3b52d181c924163e33589"
+        },
+        {
+          "file": "tatoeba-audio-124302.mp3",
+          "sha256": "sha256:8f080b6c287bd28f504088d35ae630d4177c158bd79d8429f6e830f05bc30023"
+        },
+        {
+          "file": "tatoeba-audio-124967.mp3",
+          "sha256": "sha256:8634e4b57b04f5e90f899c1bc9734f163988d0cc0a5a6fced5344e912d04916d"
+        },
+        {
+          "file": "tatoeba-audio-125075.mp3",
+          "sha256": "sha256:4549846ac04d27f15decddc40819f5e95f3a3035077d09e552ce4879441a8578"
+        },
+        {
+          "file": "tatoeba-audio-125470.mp3",
+          "sha256": "sha256:cb204445091bbb904d2544f88a48a69be8f36dad7123c893feb5ee032306d72b"
+        },
+        {
+          "file": "tatoeba-audio-125517.mp3",
+          "sha256": "sha256:3e9f8d8312d5efe13c08221944afa76aa06083bc2d4eaece8a4592435305a3f7"
+        },
+        {
+          "file": "tatoeba-audio-125522.mp3",
+          "sha256": "sha256:6b7852418c7c31fb98073f2b50770657a6f6707c5c5c38770d3c2241810f0587"
+        },
+        {
+          "file": "tatoeba-audio-125557.mp3",
+          "sha256": "sha256:a6579fb9e6879f8770455bd80e21235251b8256ea8ee37db77d57bd563b4702d"
+        },
+        {
+          "file": "tatoeba-audio-125562.mp3",
+          "sha256": "sha256:fb491c01715f2f6097fe4a7b7b6013012fa1763aca70ee02a77889cba3c766cb"
+        },
+        {
+          "file": "tatoeba-audio-125573.mp3",
+          "sha256": "sha256:ecc23195da6094040eb18d994e6b948885eb7034c6b6527aad49ea552e65bd50"
+        },
+        {
+          "file": "tatoeba-audio-125575.mp3",
+          "sha256": "sha256:4322db44c7c6d06cc07bf5adb292e05aa4378cbc3e5f35d18f2a5277f243bb48"
+        },
+        {
+          "file": "tatoeba-audio-125576.mp3",
+          "sha256": "sha256:4df32e7b39580f6c5a91cffbce24b56e729c0aff09c27bb12b4168e104952b51"
+        },
+        {
+          "file": "tatoeba-audio-126075.mp3",
+          "sha256": "sha256:46d7363c7caf762073cfc76038f83162808ece8d16ac536e400a1317f5d3d684"
+        },
+        {
+          "file": "tatoeba-audio-126261.mp3",
+          "sha256": "sha256:b64108fb8ae0f549605cf33197e55adf4bee9ef7b60c08095f92eccd3c9f3f46"
+        },
+        {
+          "file": "tatoeba-audio-131798.mp3",
+          "sha256": "sha256:765bdf961fe6b164c291c11b39897b316b20b1ea3bc3414774608989660d8ad7"
+        },
+        {
+          "file": "tatoeba-audio-134975.mp3",
+          "sha256": "sha256:a903fc7dac4fdcc2d16bbae18b1f5c4e2cd1ff0500752eea6c5a2fbb23e2496a"
+        },
+        {
+          "file": "tatoeba-audio-134978.mp3",
+          "sha256": "sha256:a5de6d7cf4d4b572b2e60cb51249acd71f3989016b4774e156de30b4ed321764"
+        },
+        {
+          "file": "tatoeba-audio-137603.mp3",
+          "sha256": "sha256:6c0f5bd5a25e0722fb6273f060c20d2e1ac701906ccefdb35e9380aee68a7014"
+        },
+        {
+          "file": "tatoeba-audio-137635.mp3",
+          "sha256": "sha256:fc7484b954a880f73301fa0e77edf275e56d2a145e544c15c1a9590e961e2c2e"
+        },
+        {
+          "file": "tatoeba-audio-137636.mp3",
+          "sha256": "sha256:62a73f55ca4d493eab4263711bfeade950f13f1373f8400251205efa1b8d4b76"
+        },
+        {
+          "file": "tatoeba-audio-137637.mp3",
+          "sha256": "sha256:d0b3aa9edf037d0d2cceaa1faa30e30c2f782405416f572468433df811de2704"
+        },
+        {
+          "file": "tatoeba-audio-137698.mp3",
+          "sha256": "sha256:cbd560120ee123693542652dbc4395ac7c280997252bac64be76b0b40f005c93"
+        },
+        {
+          "file": "tatoeba-audio-137834.mp3",
+          "sha256": "sha256:be5d338eff69937bff2c660362360f1015312e4629e4771b09df8b85b6371119"
+        },
+        {
+          "file": "tatoeba-audio-137835.mp3",
+          "sha256": "sha256:dfea3303083ff940822156ef40e8e87aeadc8dac1832d33e2be01e8f157401c7"
+        },
+        {
+          "file": "tatoeba-audio-137837.mp3",
+          "sha256": "sha256:f848ba1558b003f076a0dc093c3f0296f9db85bc8fe0d8c80d42dbb9f80dd38e"
+        },
+        {
+          "file": "tatoeba-audio-137859.mp3",
+          "sha256": "sha256:5510c14f5cca9d42a4e24bd2403bca2db9c73377054bc728a6a462ce37f62eb8"
+        },
+        {
+          "file": "tatoeba-audio-137878.mp3",
+          "sha256": "sha256:f31e8b73ca7472620045ff020d07f707b238f64c934edc2e85f748ab3fb782fa"
+        },
+        {
+          "file": "tatoeba-audio-137942.mp3",
+          "sha256": "sha256:42caaaefd75a088c297319561f00e46d5ffaef7930b75b9ebfc7a2dd428aec82"
+        },
+        {
+          "file": "tatoeba-audio-138061.mp3",
+          "sha256": "sha256:3f83bf05a3cfd4717854b5ac384d43dad33d21f4d81db983bcbcaeeb0085c082"
+        },
+        {
+          "file": "tatoeba-audio-138075.mp3",
+          "sha256": "sha256:6be14a4216d1e328f9bfc2f118bea2ae3a13af2dc0a9dfb7048d110ce1090091"
+        },
+        {
+          "file": "tatoeba-audio-138238.mp3",
+          "sha256": "sha256:4e6f8ecf8aca100df4e8fa272f73a5dbc7332a9277a7a0355ec7a4029f5a10ba"
+        },
+        {
+          "file": "tatoeba-audio-138295.mp3",
+          "sha256": "sha256:fc4a671df76fd376208367bf912a06c457b411d81824ccdf9c579b2587dab154"
+        },
+        {
+          "file": "tatoeba-audio-138304.mp3",
+          "sha256": "sha256:0d29e70ba9bf86e7de7f2454428cb5de07bd70f2a950a232b375cd190252e66a"
+        },
+        {
+          "file": "tatoeba-audio-138379.mp3",
+          "sha256": "sha256:5048f23334746b5c16a54b74e4ae2402cde467130eb4d312c563edace467e9a1"
+        },
+        {
+          "file": "tatoeba-audio-139135.mp3",
+          "sha256": "sha256:2a9bc7ad4911fccca73365b092d61f668b6c78e5d0d1ecd5585516253c0f93f9"
+        },
+        {
+          "file": "tatoeba-audio-139136.mp3",
+          "sha256": "sha256:7dd966122179d643094b69985051d86d60d6ba21785636004c55c7d9ce274ff0"
+        },
+        {
+          "file": "tatoeba-audio-139370.mp3",
+          "sha256": "sha256:ac89e503dd0f703322d6c673cc551deeefd03385b219d2c41ca2b8ac9e6c6f8f"
+        },
+        {
+          "file": "tatoeba-audio-139413.mp3",
+          "sha256": "sha256:ddc9538142f7602cc12309fd6b910d7133f9dc900447c564da0c4c0561f3e086"
+        },
+        {
+          "file": "tatoeba-audio-139487.mp3",
+          "sha256": "sha256:a6c294cc560f19f88d0557d2fa70751125a07263092210aacc3d4c69b26d70fb"
+        },
+        {
+          "file": "tatoeba-audio-139488.mp3",
+          "sha256": "sha256:8fe962d3f7b5e0e0b89c1f40042d9961763983936180195eddb7b631a104982a"
+        },
+        {
+          "file": "tatoeba-audio-139653.mp3",
+          "sha256": "sha256:60a420c60f3476513a03b289152b42ff314cd7fd1208cb8132aebfe2c381b330"
+        },
+        {
+          "file": "tatoeba-audio-139717.mp3",
+          "sha256": "sha256:0f6cb26d0da162f428847f276a422853ea21c50b0597e27d32f9274385940d85"
+        },
+        {
+          "file": "tatoeba-audio-139997.mp3",
+          "sha256": "sha256:97dec20ca03db907344e4009a8bce722cdbdeb6a11f1f3569517e08cf4013091"
+        },
+        {
+          "file": "tatoeba-audio-140003.mp3",
+          "sha256": "sha256:83a40933106ee43279cf61c00f1578147c355194d696a0676bd2374f0d8056ba"
+        },
+        {
+          "file": "tatoeba-audio-140147.mp3",
+          "sha256": "sha256:8f47726cc01cd1e8d9a4e264554b029e5f01a3acf4c22733a15b396d1300e973"
+        },
+        {
+          "file": "tatoeba-audio-140149.mp3",
+          "sha256": "sha256:cb75bfb6aec4963ac64c6aa9fddcbb806814ebb916b497bcb82692e909bc9c9d"
+        },
+        {
+          "file": "tatoeba-audio-140154.mp3",
+          "sha256": "sha256:e34179ced40ae1a745e96308459124c4be4a0c660d5bb537f350f622ac928b41"
+        },
+        {
+          "file": "tatoeba-audio-140162.mp3",
+          "sha256": "sha256:7d37301e9993c2ec78420a62e0e2a3673d3a6bbd7362fac70af8aee01ba47f5e"
+        },
+        {
+          "file": "tatoeba-audio-140208.mp3",
+          "sha256": "sha256:457d7742ac4dd401a3d76bf57a33e256cb5c152dce87412051b75b00607862c2"
+        },
+        {
+          "file": "tatoeba-audio-140351.mp3",
+          "sha256": "sha256:e0a8af329a766d767fe9dbe39b7d7fb8fd97bf7ed32834a4a0bd1e37519ada63"
+        },
+        {
+          "file": "tatoeba-audio-140353.mp3",
+          "sha256": "sha256:1abb5193d3a3f049bfbf22d0e6bd3e1b27413988c68dc541ad323d470777476e"
+        },
+        {
+          "file": "tatoeba-audio-140412.mp3",
+          "sha256": "sha256:fec71e37a96f600ab43a8e5de1c43bfec4d64d9bf70147ca4858dcc428333d63"
+        },
+        {
+          "file": "tatoeba-audio-140420.mp3",
+          "sha256": "sha256:b397bfb0357d21f022fa5aefe1fdb6e4b10a5d29d66dbdc21c2ad6ddc9492af7"
+        },
+        {
+          "file": "tatoeba-audio-140631.mp3",
+          "sha256": "sha256:7688e45f5cc613439c6ff5bdf1564fca729ff983452711ddfe2ffda434ca747f"
+        },
+        {
+          "file": "tatoeba-audio-140632.mp3",
+          "sha256": "sha256:1f625e7356836c49207453ac806ae85fdf89b1946fff6e2b0f33ccc4625463b8"
+        },
+        {
+          "file": "tatoeba-audio-140633.mp3",
+          "sha256": "sha256:7d524c443e80ccb3ed7dd15010a0af8191c892307bf878a62e11780ee18b20d4"
+        },
+        {
+          "file": "tatoeba-audio-151911.mp3",
+          "sha256": "sha256:0f3b4a1bce66bb530ed56fdda87d7f7dc659f849012f3511c65e63c15836fb29"
+        },
+        {
+          "file": "tatoeba-audio-151956.mp3",
+          "sha256": "sha256:cdf179955374c6376e60222fcd126ce8ef89cacdff35148255b619d665d250f2"
+        },
+        {
+          "file": "tatoeba-audio-151958.mp3",
+          "sha256": "sha256:fc479c663c88f594f904fa22ffcbee2dd71719c0e9420f191cb55492ff16d40d"
+        },
+        {
+          "file": "tatoeba-audio-152051.mp3",
+          "sha256": "sha256:e7cd800590410e8500b010e74d153a77270e1e7b852e0a7f08a48226c8e76ded"
+        },
+        {
+          "file": "tatoeba-audio-152152.mp3",
+          "sha256": "sha256:69efcb99b0b4e5d0453a2aa7e2af9808b97d7b7223e5f9d60ed2e93119a77bcd"
+        },
+        {
+          "file": "tatoeba-audio-152154.mp3",
+          "sha256": "sha256:14ba083fc7d5f4a582b2e7fe5b46382085a626f672cb343ae01622f4c44cead0"
+        },
+        {
+          "file": "tatoeba-audio-152156.mp3",
+          "sha256": "sha256:8208ac27b496d7c641c226adfe03c874326603474b75dfe46b7b20093efef241"
+        },
+        {
+          "file": "tatoeba-audio-152629.mp3",
+          "sha256": "sha256:af9d9b33218398e81d42eadadee6141cce79616335d7f390dad3c7761abb85f4"
+        },
+        {
+          "file": "tatoeba-audio-152737.mp3",
+          "sha256": "sha256:0c64d9b7e9f883b958c6ee5c8d674dab32783f9e0481880ed8786c93f2a45054"
+        },
+        {
+          "file": "tatoeba-audio-152817.mp3",
+          "sha256": "sha256:b29cdfad30a1d9816232c72b94c529c21c98378061918353ce8bd3f345f66e54"
+        },
+        {
+          "file": "tatoeba-audio-153095.mp3",
+          "sha256": "sha256:82f1ce4bb108b4965f4c0deaa0d1a2fe47beb18fe64f4c4c493b826a800f9c65"
+        },
+        {
+          "file": "tatoeba-audio-161663.mp3",
+          "sha256": "sha256:910ac2671cbbfdad9581ee55bf2d031403d14a0b1d8bf67b33530e61320dfcee"
+        },
+        {
+          "file": "tatoeba-audio-161684.mp3",
+          "sha256": "sha256:24ed1c0dc38193dd8975688896812ac63bd9a9b48d2bd6aec562521a2928784c"
+        },
+        {
+          "file": "tatoeba-audio-162419.mp3",
+          "sha256": "sha256:099084d626fdc613a4e9911cb8d06a2f298c84d736cc982482ef74e706d78844"
+        },
+        {
+          "file": "tatoeba-audio-162427.mp3",
+          "sha256": "sha256:5112d20635c6d5bf5db6a53b1635ccdb266dd2e9522ada8e30b831aa39308c7a"
+        },
+        {
+          "file": "tatoeba-audio-162447.mp3",
+          "sha256": "sha256:183b2cd711db33225c64450c5a91c50c59cf11abb0328e5fa31d1e73abebe752"
+        },
+        {
+          "file": "tatoeba-audio-162514.mp3",
+          "sha256": "sha256:8910bd915d8a6cc33d5bd17f68656cc27b2caffb1425ad21f7a21849b68ead8d"
+        },
+        {
+          "file": "tatoeba-audio-162822.mp3",
+          "sha256": "sha256:70158de0d40d1c299c8e5d299157093770ab1cefa78b8f4975e8f6b14eac21ca"
+        },
+        {
+          "file": "tatoeba-audio-163053.mp3",
+          "sha256": "sha256:c9f9c2cd9507880a50500f4935c98c5abd28134ec0c4fd186d4f4a5af999b446"
+        },
+        {
+          "file": "tatoeba-audio-163118.mp3",
+          "sha256": "sha256:758119b28e826d1bc380bc840cf2f95c4f14f306df09df41934e76d2bf42d4b1"
+        },
+        {
+          "file": "tatoeba-audio-163125.mp3",
+          "sha256": "sha256:4c31659340c3c4363c60e8a197b263525086e9ca678f5d9dc8822e355a078715"
+        },
+        {
+          "file": "tatoeba-audio-164625.mp3",
+          "sha256": "sha256:fd5258c03e0526b7eb5a562a7bbf11c8581650836f6abaa3a9d4dc20202841a9"
+        },
+        {
+          "file": "tatoeba-audio-164626.mp3",
+          "sha256": "sha256:d982f0a6cd7f82d96764db3f0fdcb60721b5656e62f34cb768d7fdc0d6dcff48"
+        },
+        {
+          "file": "tatoeba-audio-164654.mp3",
+          "sha256": "sha256:35086beadf479cbcf815184d8058d918dc55a24b2e8e6928198a3624e44a533f"
+        },
+        {
+          "file": "tatoeba-audio-164773.mp3",
+          "sha256": "sha256:511d839ea8722845f77657a625caf2d4d8f6960858db26cfaf0f1999aa30180a"
+        },
+        {
+          "file": "tatoeba-audio-164855.mp3",
+          "sha256": "sha256:728ae18fe1cfee2dc7095018765ae0cbc428337b5753d234bcbd8206de7b0d1f"
+        },
+        {
+          "file": "tatoeba-audio-164856.mp3",
+          "sha256": "sha256:c5d1f63034c60857bf2ad0353fcf2084df2d6a5f78be7a9aacd7f1bd0124e2a7"
+        },
+        {
+          "file": "tatoeba-audio-164858.mp3",
+          "sha256": "sha256:fb94ee8874dda3b1c1c8c14b336781e2f513697a11c661673989f5780758ec5c"
+        },
+        {
+          "file": "tatoeba-audio-164883.mp3",
+          "sha256": "sha256:799c44d533a95d56e1ef9d0b1ed0decbc643b4b3be655d2968aef41b6b0574b6"
+        },
+        {
+          "file": "tatoeba-audio-165039.mp3",
+          "sha256": "sha256:ffaf8751f35446980daafd50604f76f0966dcd7d38b504b15a05cef965503bae"
+        },
+        {
+          "file": "tatoeba-audio-165150.mp3",
+          "sha256": "sha256:590626eee56573a1b4e4d1a73d4a65d510257b45a26f11f1979d904c044e9d54"
+        },
+        {
+          "file": "tatoeba-audio-165292.mp3",
+          "sha256": "sha256:c3944217c5052fa2319b09b18ab9d8b5ccdc8ef261b1a21ea77604285dd68215"
+        },
+        {
+          "file": "tatoeba-audio-165293.mp3",
+          "sha256": "sha256:4526503597da316757b437d3e6d31ce0e903e47865ff81aca46a26619c552bc0"
+        },
+        {
+          "file": "tatoeba-audio-165294.mp3",
+          "sha256": "sha256:50e82afc6d82e908ee930ac7977afb36b71fd640519f9a0cdd340137dffcdd93"
+        },
+        {
+          "file": "tatoeba-audio-165297.mp3",
+          "sha256": "sha256:5776518c631b1862cc36cde66a0f5f3d5152185b4ba8cd2f25041fffc9db8e40"
+        },
+        {
+          "file": "tatoeba-audio-165301.mp3",
+          "sha256": "sha256:26fc0df2fb70a6a60d88a7106d091e99c0c773b0195bd44f755e79f042fee3d0"
+        },
+        {
+          "file": "tatoeba-audio-165302.mp3",
+          "sha256": "sha256:5d714e013670b17b1101d977b0f20d916035710336b0d2d4d45e47fe39bd3339"
+        },
+        {
+          "file": "tatoeba-audio-165315.mp3",
+          "sha256": "sha256:df2cd6e8f4bb41c4268792312e2c3b8b0af84d6ab6529174b202fa2e3cf39c00"
+        },
+        {
+          "file": "tatoeba-audio-165327.mp3",
+          "sha256": "sha256:efc3799b4fde9671f5e5317ae5029aef54655a999054386234fddf78fdf369b9"
+        },
+        {
+          "file": "tatoeba-audio-165511.mp3",
+          "sha256": "sha256:d7b9daec3a5044986da3492bdb89015925f28da06948ef2ede7ed8f0fc181747"
+        },
+        {
+          "file": "tatoeba-audio-165681.mp3",
+          "sha256": "sha256:32fe2dde7b621e1ff19572530b1b2d4896147532b4d9b75c8bf75000448dcd35"
+        },
+        {
+          "file": "tatoeba-audio-165759.mp3",
+          "sha256": "sha256:eabbd9c73ce8a0288df7dd198fc4a2c8e3759998803fb2ae1ef322194eedef02"
+        },
+        {
+          "file": "tatoeba-audio-165774.mp3",
+          "sha256": "sha256:d6c09f907f9d7ab8c69809fce46ee5a95a765ea0ce58ab2064a4c072fc70e73e"
+        },
+        {
+          "file": "tatoeba-audio-166020.mp3",
+          "sha256": "sha256:b1f0b6c3099a8d32e02bfaf7a8b30758c0424c5c70bad64b2ee8089cd7b00185"
+        },
+        {
+          "file": "tatoeba-audio-166264.mp3",
+          "sha256": "sha256:cb344b3379933c660b72f0169f9b81e951145ac13928d3d31de9219a180a5d7f"
+        },
+        {
+          "file": "tatoeba-audio-166421.mp3",
+          "sha256": "sha256:3791b0098166b4719bd048a39b97175bb81a3048c398606c306b84a873a36f33"
+        },
+        {
+          "file": "tatoeba-audio-166664.mp3",
+          "sha256": "sha256:bdb38b457ac4fefc198351f5b2632d8a6aa1afd06682840f225a0d1294c0bd02"
+        },
+        {
+          "file": "tatoeba-audio-166666.mp3",
+          "sha256": "sha256:112aaf44830c5a5c3fbaaa3cbf69b5068dea2901589db42a8c23cae861194fc4"
+        },
+        {
+          "file": "tatoeba-audio-166750.mp3",
+          "sha256": "sha256:6e1e14b29dd7b8cb165031fd88e6df6a2e27d754b1bfbe4daa449f7d7a81a511"
+        },
+        {
+          "file": "tatoeba-audio-166751.mp3",
+          "sha256": "sha256:8824f74bd23cd47361e5da5dbde679cb797a3bc9c01efdf189f977e67d1c2ab1"
+        },
+        {
+          "file": "tatoeba-audio-166951.mp3",
+          "sha256": "sha256:7bb51321aaecb91516b19f0d52e7f0769355656e4cce1d2cf66b81b101c63e79"
+        },
+        {
+          "file": "tatoeba-audio-167122.mp3",
+          "sha256": "sha256:419a351dc2a0c26fa321ac32d9f75d46245a905c0c2b678501bd5792fb23d6ca"
+        },
+        {
+          "file": "tatoeba-audio-167814.mp3",
+          "sha256": "sha256:938fd465cd0e1e27b50b1de671748b7e89b4e72441d65e8eff0c6ce12c848007"
+        },
+        {
+          "file": "tatoeba-audio-167930.mp3",
+          "sha256": "sha256:1914bf17f774bbbed9db7f9b65a77652934f864656dab10d19449a9c6a74e340"
+        },
+        {
+          "file": "tatoeba-audio-168162.mp3",
+          "sha256": "sha256:8d10156d4f89ca6b91de8b7a85b986acaf6f6a0d79432fde9d587721bb9acb4d"
+        },
+        {
+          "file": "tatoeba-audio-168381.mp3",
+          "sha256": "sha256:6fe1cf6443f3456dcc376d6875d072503df50458185bdb67bc8ed25f90462b95"
+        },
+        {
+          "file": "tatoeba-audio-168510.mp3",
+          "sha256": "sha256:2dc8358924b42939a67d428f97fdde1764939a04cd1ebc2b22f8f587a874d232"
+        },
+        {
+          "file": "tatoeba-audio-168656.mp3",
+          "sha256": "sha256:59ce3fbfa5536c7d81851c266d78f3783d52f3bf5ea0ff31ce9e96c812d92807"
+        },
+        {
+          "file": "tatoeba-audio-168662.mp3",
+          "sha256": "sha256:3e6c3f07b36d4e728a666e9701ead26790f44ae77191a631cd4f796cd9e39dd6"
+        },
+        {
+          "file": "tatoeba-audio-168696.mp3",
+          "sha256": "sha256:9491834f685fbfc68f1afb639143b59f8c2c2ad76fe5b908cde915036664a7af"
+        },
+        {
+          "file": "tatoeba-audio-168825.mp3",
+          "sha256": "sha256:e38f8850d4ddf1cdc6116e0380680d9a90b016994cb24513016d7f5b90096836"
+        },
+        {
+          "file": "tatoeba-audio-169031.mp3",
+          "sha256": "sha256:9116939ba228549410186d212fa6da8c2654e366433095b3197aec8c9d55f5c6"
+        },
+        {
+          "file": "tatoeba-audio-169037.mp3",
+          "sha256": "sha256:ea48cb3f7cab9ad4384dd45cc8504319f68adef03356a1b2d8faf814bb9c0431"
+        },
+        {
+          "file": "tatoeba-audio-169059.mp3",
+          "sha256": "sha256:1acf309eb7de796a18e580b0b67f7d27a8a695ad94b5848344041dfe5a1c1969"
+        },
+        {
+          "file": "tatoeba-audio-171826.mp3",
+          "sha256": "sha256:10f9ab687f28360260ce2db6c15bc8dbea414ee8bd8fccfe7dcbad6161f1382d"
+        },
+        {
+          "file": "tatoeba-audio-171860.mp3",
+          "sha256": "sha256:8c89ef1bbdd5948bbdc005dad8b1dc1081e18a451cd1c817ab8eb4e3990bfb57"
+        },
+        {
+          "file": "tatoeba-audio-172188.mp3",
+          "sha256": "sha256:f7a5c25bd550a048c1b3d34da4d3e635a4588525cfcb612f11734c5b5fc56c1e"
+        },
+        {
+          "file": "tatoeba-audio-172189.mp3",
+          "sha256": "sha256:ea038066a701e70bf5572cddeef005a98cdaede2afcf442165bdb136b3f5210b"
+        },
+        {
+          "file": "tatoeba-audio-172235.mp3",
+          "sha256": "sha256:4366dc8c36e6a9f3556cd064e62f5a581c88b0d843977ed012f779a55f7aa617"
+        },
+        {
+          "file": "tatoeba-audio-172260.mp3",
+          "sha256": "sha256:9a0c23d94f63617d403a2cfb76816515664a9248307e84128881fcc1903e9514"
+        },
+        {
+          "file": "tatoeba-audio-172267.mp3",
+          "sha256": "sha256:d598e100610a27804320aefa3f76b4a8b0548385197f933241255fa7d4d55315"
+        },
+        {
+          "file": "tatoeba-audio-172400.mp3",
+          "sha256": "sha256:42af5b5cd29e97f635f60e4c027e8483d240a890684591d9dd5d0c6dcfcc5d51"
+        },
+        {
+          "file": "tatoeba-audio-172484.mp3",
+          "sha256": "sha256:5c3308724a27dde665d097acf27d9c4e7299d22b7b043d3088aef42a733d4356"
+        },
+        {
+          "file": "tatoeba-audio-172569.mp3",
+          "sha256": "sha256:cf8c3e2651214f6cff487d30eec4aee2922df21c0edff3dd3ae36a9293f26e80"
+        },
+        {
+          "file": "tatoeba-audio-172602.mp3",
+          "sha256": "sha256:e3056c17413c41c09c600b10bf895b130e011a451bfb375dbfaa72b35e6e2719"
+        },
+        {
+          "file": "tatoeba-audio-172603.mp3",
+          "sha256": "sha256:e22dce901fbd11fa83589a4ed8e90e09f2ab1e11fbb27b33b24bd159fad01584"
+        },
+        {
+          "file": "tatoeba-audio-172883.mp3",
+          "sha256": "sha256:d278f2ef1be90f3ed6c7af22c12c7cc6e2584d956bbf5687199e297967d99247"
+        },
+        {
+          "file": "tatoeba-audio-174946.mp3",
+          "sha256": "sha256:fbc35105326a7894f14db37088a5200aab8b1c2869d9e25ce1b329e05f1fea6a"
+        },
+        {
+          "file": "tatoeba-audio-176982.mp3",
+          "sha256": "sha256:7b0b0897d81b7f4ab3ca3e58565d29983d2754949a8f881b1d309939a5c25fbb"
+        },
+        {
+          "file": "tatoeba-audio-177030.mp3",
+          "sha256": "sha256:60b3cdf2121b8435951642a31228a57d2b4182bff758332542eb72bcf38ed96f"
+        },
+        {
+          "file": "tatoeba-audio-177232.mp3",
+          "sha256": "sha256:b60a413847b1a9d15400a9cfccc0f9dc18a2550ce6e9e0c0eea98972205cbc1a"
+        },
+        {
+          "file": "tatoeba-audio-177235.mp3",
+          "sha256": "sha256:10f5ab69adece4b0c0ce8243433056be50f4092f66ce149df73895c1b82bab49"
+        },
+        {
+          "file": "tatoeba-audio-177395.mp3",
+          "sha256": "sha256:205d3472dd4378ab1cdb4df3c78a2d7de3774b2f95e90a6158f924db49b7cb23"
+        },
+        {
+          "file": "tatoeba-audio-177398.mp3",
+          "sha256": "sha256:b4fc72d924f13f6438950495a9e8fd1ca0018c183a409c2d12de2c6f77939907"
+        },
+        {
+          "file": "tatoeba-audio-177399.mp3",
+          "sha256": "sha256:bc2c634e9c63c55375ed25d0f4c7b989a0cb8244692156e733d2911f19b9ed47"
+        },
+        {
+          "file": "tatoeba-audio-177414.mp3",
+          "sha256": "sha256:dfb09561916e9232bf2b0faf8646fe7e1c983ff0ee15c353032506be8c008b2c"
+        },
+        {
+          "file": "tatoeba-audio-177495.mp3",
+          "sha256": "sha256:a81d427ccb3c26924ebf23aac11c171238f27ebdcc60fc2ca15ead6b5399b1a5"
+        },
+        {
+          "file": "tatoeba-audio-177710.mp3",
+          "sha256": "sha256:174f62afcbbff13c571463857dc595532ac8669255241592528f6fd3aee86df0"
+        },
+        {
+          "file": "tatoeba-audio-177711.mp3",
+          "sha256": "sha256:eee67ba47b5d946bd195d1fe4a56a319a19f38399e67b0e1875812db22c74ddb"
+        },
+        {
+          "file": "tatoeba-audio-177756.mp3",
+          "sha256": "sha256:0317de97450a80d75f75121492416b3f5efcd3ff7c5bb10a757018b11b4cd1a5"
+        },
+        {
+          "file": "tatoeba-audio-177828.mp3",
+          "sha256": "sha256:6d34238ed937540396e8b7a97bc5ed79f6309717ddaaa84d731754a1a2cf4649"
+        },
+        {
+          "file": "tatoeba-audio-178348.mp3",
+          "sha256": "sha256:006d9eb53c6944bcd8c0c9156a8d1acef9b8f8fdee4450817bc3104677f9e190"
+        },
+        {
+          "file": "tatoeba-audio-178408.mp3",
+          "sha256": "sha256:ac9d4bacecac45e9cda9a39a1d2b4066a53952192952905a3e7e0b8d9f058d32"
+        },
+        {
+          "file": "tatoeba-audio-178523.mp3",
+          "sha256": "sha256:e9b14bde79cdc3c5cc7e5de8b90dbd7092a9595c38338be1ac690abd4edc7015"
+        },
+        {
+          "file": "tatoeba-audio-178653.mp3",
+          "sha256": "sha256:c936aa19172f8045bea133e6107f1618e197317a12a3776137c57e60d467ed09"
+        },
+        {
+          "file": "tatoeba-audio-178740.mp3",
+          "sha256": "sha256:2f6a4fbfdee45d795fcf3a4ba1d33cbd7cbc4021daa13fda923a6a7b6548cb47"
+        },
+        {
+          "file": "tatoeba-audio-178742.mp3",
+          "sha256": "sha256:89768a06c914a263c49d335528e235e9b07f973312d3c3b4f4903abd140fa563"
+        },
+        {
+          "file": "tatoeba-audio-178743.mp3",
+          "sha256": "sha256:e9ceb08aba32b4eb1ad142a7b3aeeb40cfadac59f72848dc49a5bca61be6a246"
+        },
+        {
+          "file": "tatoeba-audio-178744.mp3",
+          "sha256": "sha256:4135021b10d9f829474525914aa4cb8fca6da877f9bf181eff3bb59dd78382fe"
+        },
+        {
+          "file": "tatoeba-audio-179952.mp3",
+          "sha256": "sha256:6c41fd3d850b378292c272ef7da8500022ca7c749d4259edab55d7db418d5e4d"
+        },
+        {
+          "file": "tatoeba-audio-179953.mp3",
+          "sha256": "sha256:e0e0a16d84c0cb386fe322181ecd3b429784112ae7749e71369332e7273404ce"
+        },
+        {
+          "file": "tatoeba-audio-179960.mp3",
+          "sha256": "sha256:e5a6452d032328aabed353162d181f3cf407f005ce126bf892fb372846a64e52"
+        },
+        {
+          "file": "tatoeba-audio-180012.mp3",
+          "sha256": "sha256:53ab17dc79384a99b139416f704a81edb4774bbcb637b1f1b79f0cb0f7adcf6f"
+        },
+        {
+          "file": "tatoeba-audio-180016.mp3",
+          "sha256": "sha256:507798d7d016050865079044b50277b95e7d736e3e8daa279c2f8ae0d9c1c991"
+        },
+        {
+          "file": "tatoeba-audio-180245.mp3",
+          "sha256": "sha256:b3d2faeca882b9b06369f193ee9133178bee192df9fe68653d126d3d54366086"
+        },
+        {
+          "file": "tatoeba-audio-180316.mp3",
+          "sha256": "sha256:b9f97dbe1f940b0827d31c06f8b0421195d2a69f172967edfcba937c545f4a8a"
+        },
+        {
+          "file": "tatoeba-audio-180369.mp3",
+          "sha256": "sha256:d01b67e1f68718723a4032a684026ae0683a113d4c14e604e52f5fee4aba0dfe"
+        },
+        {
+          "file": "tatoeba-audio-180370.mp3",
+          "sha256": "sha256:3d321cc3b97540688dea35c3f4074e9aac6638be1eb948ec598adc5e23aa026b"
+        },
+        {
+          "file": "tatoeba-audio-180375.mp3",
+          "sha256": "sha256:048909558f2aa16899b5b690723ae34f15744ac9c7fb7baf0724fe3049310910"
+        },
+        {
+          "file": "tatoeba-audio-180376.mp3",
+          "sha256": "sha256:cbc75debc2e373ba8e759ba02805140e35b3bf0e8564fba8235e51c4c7111e5d"
+        },
+        {
+          "file": "tatoeba-audio-180434.mp3",
+          "sha256": "sha256:197a26f8c62a1fcf04032162954523cf828093f844a585b9f73f4dc7c460a7c5"
+        },
+        {
+          "file": "tatoeba-audio-180439.mp3",
+          "sha256": "sha256:c06d1725c8e73965d9362a1ed444b806c983294221f9843d4c4d9aac223d0be7"
+        },
+        {
+          "file": "tatoeba-audio-180511.mp3",
+          "sha256": "sha256:ea8805acae03c3792e4676a7f99310b7443f55c9518450d0a75bb06f78a9d184"
+        },
+        {
+          "file": "tatoeba-audio-180516.mp3",
+          "sha256": "sha256:de5ec66f24c353095505b1f0112f610c0d65f039ed626095b432b7984548a656"
+        },
+        {
+          "file": "tatoeba-audio-180798.mp3",
+          "sha256": "sha256:8c27cc461165ef4f8731fbd2e609894f9515d757854e0d3ff3e68888124217cf"
+        },
+        {
+          "file": "tatoeba-audio-181223.mp3",
+          "sha256": "sha256:9a967ad779903362369f4b2bd168e17dd02c86ce8a83705de100de9b2a7467c2"
+        },
+        {
+          "file": "tatoeba-audio-181845.mp3",
+          "sha256": "sha256:8d031f6ed0e697c23af5fbc1e6c6768561ace25294e7cf59d3eb8dc20d846b36"
+        },
+        {
+          "file": "tatoeba-audio-181910.mp3",
+          "sha256": "sha256:7b787bc2e6c98e36518c6e577f0cb0d4ceed5181ada13550266547d99d7f5829"
+        },
+        {
+          "file": "tatoeba-audio-181912.mp3",
+          "sha256": "sha256:088a0abc24d247ec83c741f110569a053ba012e17e573c15b4b3303f634c8463"
+        },
+        {
+          "file": "tatoeba-audio-182091.mp3",
+          "sha256": "sha256:ac90305225367286aa4934c2bc7f10d40e6ba95c47bb79c7d312c6f98fdbea49"
+        },
+        {
+          "file": "tatoeba-audio-182092.mp3",
+          "sha256": "sha256:95fce49c40fe61210b475d3bf204bd42ca1510035dd955e08768a19f1f5462f2"
+        },
+        {
+          "file": "tatoeba-audio-182096.mp3",
+          "sha256": "sha256:87dbbfb60ab151b8bea09f030e75532a1999fe45c6140e3c2826f9266f44a10b"
+        },
+        {
+          "file": "tatoeba-audio-182298.mp3",
+          "sha256": "sha256:2dd2f87ab6888533671274c8ae83aa5b7873700a10ad653d6b3ffba653698628"
+        },
+        {
+          "file": "tatoeba-audio-182604.mp3",
+          "sha256": "sha256:ad10c39992b044f2fad5503aa9f88618b2c439c27070d68d501401940e45f888"
+        },
+        {
+          "file": "tatoeba-audio-182936.mp3",
+          "sha256": "sha256:e3b8e55f50306f38aa5e08d25f72b7983aaa408fb22fecf901e357ae0d5e4856"
+        },
+        {
+          "file": "tatoeba-audio-182941.mp3",
+          "sha256": "sha256:99e528781b7d70e473bf92bd9c36065b8b7033ec9bc20a330babbe1036985af2"
+        },
+        {
+          "file": "tatoeba-audio-182989.mp3",
+          "sha256": "sha256:2788cc0cbf36c6a9d6e1ed24a1b79c02e6367ec2cfd06f1ca4f8b408afe0e383"
+        },
+        {
+          "file": "tatoeba-audio-184253.mp3",
+          "sha256": "sha256:3955534fbcf823da51a27f44a887be6d6ce5beabc0a4322ac0af2c5067671e88"
+        },
+        {
+          "file": "tatoeba-audio-184254.mp3",
+          "sha256": "sha256:9cdd8d6c292645f383f98df1961a1bfc1366b1e9d5d320105cd9b6b9c7d0520a"
+        },
+        {
+          "file": "tatoeba-audio-184268.mp3",
+          "sha256": "sha256:6141220cbbc4987b96a1924040a173ca1abc7f7938a9b8168576254f31d46b9c"
+        },
+        {
+          "file": "tatoeba-audio-184269.mp3",
+          "sha256": "sha256:3b7e17e3970d72663f7d8df196511b54a1871b0a64cfc88154269b1bc90f4bbc"
+        },
+        {
+          "file": "tatoeba-audio-184298.mp3",
+          "sha256": "sha256:55327247795d1a68524f1b0a893e47cbeb31453de88f5606e97ede65b1f3b5f2"
+        },
+        {
+          "file": "tatoeba-audio-186294.mp3",
+          "sha256": "sha256:cca50dd78609b09ff9f6e6f4c79cf6ee3037f7f2c9fa66c28a2f3372bf7450aa"
+        },
+        {
+          "file": "tatoeba-audio-186608.mp3",
+          "sha256": "sha256:f1623e821357d311316998378dc35f964daa16627fee36f0d8447bdb9635232c"
+        },
+        {
+          "file": "tatoeba-audio-187038.mp3",
+          "sha256": "sha256:26825b6e2600f690910d59588ee3e640013c9a0f48e1951124f2402ea57fe9cc"
+        },
+        {
+          "file": "tatoeba-audio-187042.mp3",
+          "sha256": "sha256:b6f6871bbc69425d59c649f1dcafb59c3a21365fe5227c03578c8991ed32d8b3"
+        },
+        {
+          "file": "tatoeba-audio-187193.mp3",
+          "sha256": "sha256:030d0b7eb9c18f091bece644253b26d68111973c04b4916d47643ac3335a46e4"
+        },
+        {
+          "file": "tatoeba-audio-187376.mp3",
+          "sha256": "sha256:645febeef4093a49e17f06a4613357f6ccde693ef4618276abf106c8777e9c08"
+        },
+        {
+          "file": "tatoeba-audio-187772.mp3",
+          "sha256": "sha256:af21b3fd7319efd7f55fc8bc9579bb8e0e20575a73deb98af451d44ac5c18720"
+        },
+        {
+          "file": "tatoeba-audio-187773.mp3",
+          "sha256": "sha256:cedb0ce1b028de2030bd14e65262b222e745c7127599826b12d40f7fab85f3b7"
+        },
+        {
+          "file": "tatoeba-audio-187781.mp3",
+          "sha256": "sha256:7d360b4b4550dc280d6a54bdbb06007481b955fde549442d63f05e6a943d8ee9"
+        },
+        {
+          "file": "tatoeba-audio-187782.mp3",
+          "sha256": "sha256:f3870b27cc0e06507ffb7359ea27276cdccca6ff879bd0871710191144b66778"
+        },
+        {
+          "file": "tatoeba-audio-188925.mp3",
+          "sha256": "sha256:b87adce78a70d2eab7d16271308a4b9cb20073ab7ede2c6798ed931455937fbf"
+        },
+        {
+          "file": "tatoeba-audio-189555.mp3",
+          "sha256": "sha256:958e53786a00616c51d4cd3d89f2ff88b61bbe30d299e7025bd660fb3d48a9cd"
+        },
+        {
+          "file": "tatoeba-audio-189556.mp3",
+          "sha256": "sha256:077f008176ab1a35fcbc063fd361270796799bbf0547fcf44cdf3f58c1b52dfc"
+        },
+        {
+          "file": "tatoeba-audio-189557.mp3",
+          "sha256": "sha256:f79675fd1a72a74cc219f42208441fbf80cbd1bce295cca7081ecc884c737905"
+        },
+        {
+          "file": "tatoeba-audio-189562.mp3",
+          "sha256": "sha256:e5085ca6ac561dcc8e2456ffcbdadda74b4478643111eefc0f88560a5aa81e52"
+        },
+        {
+          "file": "tatoeba-audio-189564.mp3",
+          "sha256": "sha256:67e935a90ad7b5a93c6a7331662a9687a012a51d3364c416eefc8ea26a9966fd"
+        },
+        {
+          "file": "tatoeba-audio-191389.mp3",
+          "sha256": "sha256:4e1b061d5b6fac0cd0fd072de3549538716a6eb4e2fbdb047459e4f735cfb241"
+        },
+        {
+          "file": "tatoeba-audio-191438.mp3",
+          "sha256": "sha256:dd8865b500786093fb0ddf0130c5ae5325f6bef9f0ebfd15e8c95823e9a92e3b"
+        },
+        {
+          "file": "tatoeba-audio-191492.mp3",
+          "sha256": "sha256:e2a29850aed11059f58044d83bfbf26e0ba2aa3d3413d7131addbc4693c79fa0"
+        },
+        {
+          "file": "tatoeba-audio-191493.mp3",
+          "sha256": "sha256:db1a9eb7ce5df1028f3cb74b703f22396d3479569abe1d672e085c21f05def5e"
+        },
+        {
+          "file": "tatoeba-audio-191494.mp3",
+          "sha256": "sha256:5354244381b02769c598fda2d95cee1645bd6cf153c0f5f53de4f26306445556"
+        },
+        {
+          "file": "tatoeba-audio-191495.mp3",
+          "sha256": "sha256:1127cdd0f5d50b7602a038d7a65202c8dd681e34c59e6f7304a7ac77580612e5"
+        },
+        {
+          "file": "tatoeba-audio-191544.mp3",
+          "sha256": "sha256:fce09f3f83e479aa1d6bc3a2f69b514b3d2c6dcc6932b2cd3e2edf5e6b7f1bed"
+        },
+        {
+          "file": "tatoeba-audio-191545.mp3",
+          "sha256": "sha256:0f8802bab23c14f0cbdd863552b01ddeee79dc2a669fe0b5339752432043b936"
+        },
+        {
+          "file": "tatoeba-audio-194056.mp3",
+          "sha256": "sha256:9193bee586b805cf934f5b6c0b14221d2dde639105a52426001db68349614381"
+        },
+        {
+          "file": "tatoeba-audio-194613.mp3",
+          "sha256": "sha256:097421cf752393078aad6aa282c9eecb529a6d710b0274ad0fbbf7a7bdfe1ca6"
+        },
+        {
+          "file": "tatoeba-audio-194818.mp3",
+          "sha256": "sha256:c283ecdeb2a8a9c685ba8cec8b68759c9c880a78a5d585e832d35a82abe450d1"
+        },
+        {
+          "file": "tatoeba-audio-194973.mp3",
+          "sha256": "sha256:640753c48859116ba8aab16ee85cd5bee0b27837731e525de6ed35b40783a503"
+        },
+        {
+          "file": "tatoeba-audio-195209.mp3",
+          "sha256": "sha256:2a6161a21f2c2b8ee6619821ef04c0be9b68d35befc57d23b0db542752829f3e"
+        },
+        {
+          "file": "tatoeba-audio-195285.mp3",
+          "sha256": "sha256:f8f1a3836fb281a5f81698e90750456f8d25ee4b3d1ad9ba697553f6919022ed"
+        },
+        {
+          "file": "tatoeba-audio-195306.mp3",
+          "sha256": "sha256:b1c82328bf6b2468a9cc78e846e7f4aad9d0c18416b3b14a9ef246af3d097905"
+        },
+        {
+          "file": "tatoeba-audio-195311.mp3",
+          "sha256": "sha256:974ddec11497dbd57abe5c6425507085513792b0fb16f727dc4708abff83741e"
+        },
+        {
+          "file": "tatoeba-audio-195343.mp3",
+          "sha256": "sha256:f9a0310ac73a01d6bb15a77df81e475fa4343c556904a8f875b108d783c2ef06"
+        },
+        {
+          "file": "tatoeba-audio-195613.mp3",
+          "sha256": "sha256:fa175e95ad7ab3fc08f4b630638a346ebd9e3efaf48f2c8b5e0971a070f8b210"
+        },
+        {
+          "file": "tatoeba-audio-195618.mp3",
+          "sha256": "sha256:5c3b9610c50a173f67135d11478fda8ba28b81ef471486b0e066d228b1b79679"
+        },
+        {
+          "file": "tatoeba-audio-195623.mp3",
+          "sha256": "sha256:5dd38a0929d684c7c5878e1d492f0c95df9c0a5e35346940aaf911926c1b934d"
+        },
+        {
+          "file": "tatoeba-audio-195921.mp3",
+          "sha256": "sha256:8abfbae6916708864c79f25785937679f8911a28f70ad47d8a03fbc5551d07a9"
+        },
+        {
+          "file": "tatoeba-audio-195925.mp3",
+          "sha256": "sha256:d5819feb3bae3a498a268fb10d7e2b1e6d268dc3864f59a373749b31bf18216a"
+        },
+        {
+          "file": "tatoeba-audio-195928.mp3",
+          "sha256": "sha256:dba6fdc18ed651073c970af78753190626598897ff115e2653b469eb32c27d00"
+        },
+        {
+          "file": "tatoeba-audio-196209.mp3",
+          "sha256": "sha256:e8285909b6094e5bfdacde065b35bacff59d498089ce494ae278c84530747985"
+        },
+        {
+          "file": "tatoeba-audio-199650.mp3",
+          "sha256": "sha256:83a214c099cb843f7f68684da8ffa3c5de38fa41939817083ef4899824ad4f7a"
+        },
+        {
+          "file": "tatoeba-audio-201488.mp3",
+          "sha256": "sha256:c173b145eb3221474c5186b23d72d64596f1b88fa2c205d95d2124f871e04461"
+        },
+        {
+          "file": "tatoeba-audio-201732.mp3",
+          "sha256": "sha256:babb1c6f7fd1a6ca1fa53ce17e55f40cfb148abefad93d855506f84c72026cc6"
+        },
+        {
+          "file": "tatoeba-audio-202170.mp3",
+          "sha256": "sha256:e2d2f160c2d3263967883c66e22147351b71d25b7923604d246773f17e202cbb"
+        },
+        {
+          "file": "tatoeba-audio-202390.mp3",
+          "sha256": "sha256:5dae53897d3561e527ad6595fa536ab6f662709913b2bee8dd228845d9f69bc9"
+        },
+        {
+          "file": "tatoeba-audio-203554.mp3",
+          "sha256": "sha256:ff64a5043d3d116a906e8ada417e86144f4d168444a4f442fb9c5e495bcf47f6"
+        },
+        {
+          "file": "tatoeba-audio-203939.mp3",
+          "sha256": "sha256:693fb12bc431b9e52f7ca4b038b49ca8e5815ca4fd381a2b4e3dd2698dd96aba"
+        },
+        {
+          "file": "tatoeba-audio-204184.mp3",
+          "sha256": "sha256:2fa80dc026273e88fa23695fb7c69ecbec5aee56a117619762035968bcb17daa"
+        },
+        {
+          "file": "tatoeba-audio-204236.mp3",
+          "sha256": "sha256:9f5d9857a5b319ab1ce9de12fe7e84d8710a28c4fdf6ff69e9f193e8f1ca31a6"
+        },
+        {
+          "file": "tatoeba-audio-204353.mp3",
+          "sha256": "sha256:7e24372073af95b44b73de43284e7b18f067eea0f05d2caba9b636e19a5f091d"
+        },
+        {
+          "file": "tatoeba-audio-204355.mp3",
+          "sha256": "sha256:006f019f4c76ed43bd28e79a59649463f221dc258c5b598bc3b2af65e1496844"
+        },
+        {
+          "file": "tatoeba-audio-204566.mp3",
+          "sha256": "sha256:2578efcd06681fc7b6f313c7c8cddd06e17f0e0521a58868cc6aa460a9b4a5c5"
+        },
+        {
+          "file": "tatoeba-audio-204718.mp3",
+          "sha256": "sha256:b760c6ef633ee3401b8da90e1345de182106063d1f482186c981614904c54778"
+        },
+        {
+          "file": "tatoeba-audio-205573.mp3",
+          "sha256": "sha256:0ab9c19b12010b1a1e37ea95c6347f9f12255feeb6ef7fd36ea7452b44ec336c"
+        },
+        {
+          "file": "tatoeba-audio-205574.mp3",
+          "sha256": "sha256:be4d433c75f3db9d4d6f4add317ba4bf27def633f43c80c1f0c78bdde7093828"
+        },
+        {
+          "file": "tatoeba-audio-205579.mp3",
+          "sha256": "sha256:e102dd6ad740755e41d00bee6006b46de695a6b7589c3a048323ca0886b717bf"
+        },
+        {
+          "file": "tatoeba-audio-205580.mp3",
+          "sha256": "sha256:dbfcfecac6f81f28b833c5a6a27d5cc880651924f5a95f17936a7173f5f139e9"
+        },
+        {
+          "file": "tatoeba-audio-205582.mp3",
+          "sha256": "sha256:e5e0c8ea54875906e1f75aee71f3cded5118697228d2b90e5682e16cfaf7e33a"
+        },
+        {
+          "file": "tatoeba-audio-205583.mp3",
+          "sha256": "sha256:538692f8337516ab055799035e37aefc4534023dd2ee199eb40eae409eda64d0"
+        },
+        {
+          "file": "tatoeba-audio-206061.mp3",
+          "sha256": "sha256:7ee7b83997af0d0ac047b8e90decf3c075b2780e8a3c48580782acc550c47f3a"
+        },
+        {
+          "file": "tatoeba-audio-206065.mp3",
+          "sha256": "sha256:3a9ec0791c4cea9cf7706dba5ae1457079c33edcdcfea31356a74abb910f20c6"
+        },
+        {
+          "file": "tatoeba-audio-206074.mp3",
+          "sha256": "sha256:740641f8ac04691a72a6d8ce386e5b6afdc71a81ba47060c664ecc5b14d99083"
+        },
+        {
+          "file": "tatoeba-audio-206075.mp3",
+          "sha256": "sha256:b9ff69d3230ab1f62f51b95e35a4bc83bec51beaa226729e83e19cf959e98806"
+        },
+        {
+          "file": "tatoeba-audio-206428.mp3",
+          "sha256": "sha256:57a2580f5bb8fa88fdc80370c68fcfd89790e80ae3b6307e30decbca3222f41b"
+        },
+        {
+          "file": "tatoeba-audio-208885.mp3",
+          "sha256": "sha256:923f6982cc0f05db6e85ed4d24af806c30473ae3cbb1a15b802128c5f66533d6"
+        },
+        {
+          "file": "tatoeba-audio-208886.mp3",
+          "sha256": "sha256:44270b1beb09e43200e87fa0b9d9b2dcffac429c1a12d1983c02ea1719e9d29a"
+        },
+        {
+          "file": "tatoeba-audio-210459.mp3",
+          "sha256": "sha256:1d4bed5fe598c98fa424216d0af8602da8b0bc630886117fa08dec0867faad45"
+        },
+        {
+          "file": "tatoeba-audio-210460.mp3",
+          "sha256": "sha256:3f874de4a03b9dfa6820c61dd4ad5df7f90c72c40f999a93e025fdf6e0dc7301"
+        },
+        {
+          "file": "tatoeba-audio-210463.mp3",
+          "sha256": "sha256:9b97c4f72de6effc5f264016efac123d72e22d868d7c8bbdccd781b44c42bd23"
+        },
+        {
+          "file": "tatoeba-audio-210786.mp3",
+          "sha256": "sha256:c202edcb78e9e7255e1ec1df71f62264ba9c29f47fc0c93b15b203fb60a184ae"
+        },
+        {
+          "file": "tatoeba-audio-211091.mp3",
+          "sha256": "sha256:e09e14f2bf560daedd88cefd3318fca63e16f418ffa8cd30c53fe2bc8e907300"
+        },
+        {
+          "file": "tatoeba-audio-211754.mp3",
+          "sha256": "sha256:dced3f0e166c5c359fa1e288321e846bd8e597c838fa4fd443b4b39d37ee86f7"
+        },
+        {
+          "file": "tatoeba-audio-212759.mp3",
+          "sha256": "sha256:39b4e14106286990121edf0a38244572b121f3c9e94fc9cb521271115f638b80"
+        },
+        {
+          "file": "tatoeba-audio-212766.mp3",
+          "sha256": "sha256:d52fd16ddea7eb6c19803fc89b94ee246c5b9ac3076aa0bf70eb9786b904de6a"
+        },
+        {
+          "file": "tatoeba-audio-212770.mp3",
+          "sha256": "sha256:1d49365e13ffd08f02fc1132ca9a98a2a998e8b18c7b6602b0d0e588dbf11015"
+        },
+        {
+          "file": "tatoeba-audio-212774.mp3",
+          "sha256": "sha256:ebc54219090be67a653adf10e7b9637d89d3623f386470530ce5c32ba9b3cd46"
+        },
+        {
+          "file": "tatoeba-audio-213731.mp3",
+          "sha256": "sha256:fcabcabdf4cd8f42087059bef093376b7db41c30c32fe094360315cf386c0fc1"
+        },
+        {
+          "file": "tatoeba-audio-213734.mp3",
+          "sha256": "sha256:d67c8d33b885979bc242bfcbcb04ab01994c501b021bca57c9729014371b776f"
+        },
+        {
+          "file": "tatoeba-audio-213735.mp3",
+          "sha256": "sha256:2c9f7e7f9ad171e795ea37b6f02f16153f9e10fd6f5e4ed5a0b479f5959d301e"
+        },
+        {
+          "file": "tatoeba-audio-214213.mp3",
+          "sha256": "sha256:33b7d843b8c1645df5c8640d14bef8318ffde6b913e3e3c39fcf0bcf62d7e250"
+        },
+        {
+          "file": "tatoeba-audio-214215.mp3",
+          "sha256": "sha256:e955567a3b561bb99e5923c6f7a7276e2e1de9b3e7d7ddd445e4850879533f94"
+        },
+        {
+          "file": "tatoeba-audio-214218.mp3",
+          "sha256": "sha256:06633ff50a7180424a64f96060dffd3672e6654d743724ed62f25dab9dbb319f"
+        },
+        {
+          "file": "tatoeba-audio-214227.mp3",
+          "sha256": "sha256:a8aab686c1275243d741f12023e943b37c583be040389a94cc883ac1752afa7d"
+        },
+        {
+          "file": "tatoeba-audio-214235.mp3",
+          "sha256": "sha256:392a10c10dd4b0835c17b032fb54121278b2d9fa0f50aed0907076831a736fcf"
+        },
+        {
+          "file": "tatoeba-audio-214251.mp3",
+          "sha256": "sha256:4bf7ca09b0d2d163dd42ad30894e6fffae55c1924bbc71534c2071dcd941a8ef"
+        },
+        {
+          "file": "tatoeba-audio-214252.mp3",
+          "sha256": "sha256:124c5bc6a02462dcdfdbfc555f36dae40b4eda981fe06113c2ef91f1878cbbdc"
+        },
+        {
+          "file": "tatoeba-audio-214254.mp3",
+          "sha256": "sha256:43e2c42e85d7989838fbcf9e05f8ad2e22b4e674434731a2ccaaf550d475cc68"
+        },
+        {
+          "file": "tatoeba-audio-214259.mp3",
+          "sha256": "sha256:d90b7b4e5dc40bda50b6bfbda3eaac029c68e9dfbd7a8b318bc421f7ee15fe8b"
+        },
+        {
+          "file": "tatoeba-audio-214268.mp3",
+          "sha256": "sha256:26f2236199d31ade68054c769dfab7d0d22a75115cb5c2f9b53438e32ce06ae8"
+        },
+        {
+          "file": "tatoeba-audio-214269.mp3",
+          "sha256": "sha256:fe45c2944a8c07819ee17689854043657954ff766a067acf98860789bd0f7116"
+        },
+        {
+          "file": "tatoeba-audio-214358.mp3",
+          "sha256": "sha256:4e09a7d2fe5a077326713a8c3c4a419c45fcd3126c0d677e22942d073fd4a18b"
+        },
+        {
+          "file": "tatoeba-audio-214505.mp3",
+          "sha256": "sha256:1bc1b01b1ba7223e141aede77c82a7e46b7eae6d44228bcae1d443ce7f3367b1"
+        },
+        {
+          "file": "tatoeba-audio-214506.mp3",
+          "sha256": "sha256:88856ae814cd4546c897fb0d05d1eccbf383404d4d2f532895fe8172c0194655"
+        },
+        {
+          "file": "tatoeba-audio-214689.mp3",
+          "sha256": "sha256:a3880a4c9797cfcddc5a4b083b26e608d8ba66868292412db6f3c605946e0c43"
+        },
+        {
+          "file": "tatoeba-audio-214988.mp3",
+          "sha256": "sha256:e620cb5274886465ee7ec19853f6ed28fb69e1bc119ad8a41e82c7414f30ede6"
+        },
+        {
+          "file": "tatoeba-audio-215035.mp3",
+          "sha256": "sha256:2fe7c892b579d4fa722811763adf6b573361d2c619a3ba83104f2464ee0c2931"
+        },
+        {
+          "file": "tatoeba-audio-215036.mp3",
+          "sha256": "sha256:8ff944cc322cfcf6e972c5b085a4fc613994acc58bcd5e80112eba681e8d2203"
+        },
+        {
+          "file": "tatoeba-audio-215077.mp3",
+          "sha256": "sha256:e505aace11c0f0eef2babd3b69254a60d92001518f55e55aceb2a867ec780068"
+        },
+        {
+          "file": "tatoeba-audio-215078.mp3",
+          "sha256": "sha256:c7279279d3fc5e7e17e4a1655f028b4d7a15da845751f73b431305278b235d4f"
+        },
+        {
+          "file": "tatoeba-audio-215271.mp3",
+          "sha256": "sha256:f730781226ed3e18b3d5e18e2d42d35cf0a5c334996c31cf7efe8f839372fa5e"
+        },
+        {
+          "file": "tatoeba-audio-215272.mp3",
+          "sha256": "sha256:b8604b1c2a76a606262c7e39c883538795c3595197902670316ec80f7aed8a06"
+        },
+        {
+          "file": "tatoeba-audio-215273.mp3",
+          "sha256": "sha256:ce77a5c82ec6dba5c4ac368bc08576a5c0f94feb3a42d6ce30f06d64a19cc739"
+        },
+        {
+          "file": "tatoeba-audio-215367.mp3",
+          "sha256": "sha256:75e08b265b9eeb3e0f5b96ac4e07efd84726c81cd14c22c3fbb85dfef084dc25"
+        },
+        {
+          "file": "tatoeba-audio-215503.mp3",
+          "sha256": "sha256:5aafbaa2925c3293a34e5f388d39027387903d5936123c4a9702835be14b9375"
+        },
+        {
+          "file": "tatoeba-audio-215603.mp3",
+          "sha256": "sha256:fa511daa036f47956f0beb1592ecfdf752cdef18bfee16cc31e40edcdbef38e5"
+        },
+        {
+          "file": "tatoeba-audio-215702.mp3",
+          "sha256": "sha256:ac43ed2a1791ae2874ee86606dbb27e0318f2d59a608ccc3b0a389060e639b7f"
+        },
+        {
+          "file": "tatoeba-audio-215819.mp3",
+          "sha256": "sha256:07ba74a7f1dbc1a0fcaaf9caaf1e1d719311970d6e5c1a8a00bc12c86a511a6b"
+        },
+        {
+          "file": "tatoeba-audio-215880.mp3",
+          "sha256": "sha256:b97d63f9809065bc84cd29703c328b13f610c817568c6f5a32f005a146341da4"
+        },
+        {
+          "file": "tatoeba-audio-216232.mp3",
+          "sha256": "sha256:09ea8129c3d9a2461fc9316ad0c8f34c1bc3eb9265526d5a11440ddbd0c4a597"
+        },
+        {
+          "file": "tatoeba-audio-216233.mp3",
+          "sha256": "sha256:b64ad7671583f28dee63035ca1f412910080c70f16f9d783c426fcdcfdd0e7ab"
+        },
+        {
+          "file": "tatoeba-audio-216234.mp3",
+          "sha256": "sha256:ddbbd6d4540aef114b7b7b4184d155173380fd58ccb46df96791e44252888f44"
+        },
+        {
+          "file": "tatoeba-audio-216351.mp3",
+          "sha256": "sha256:5562970e0870d552e4f50513f911f8189951560ea263c9c9c167cc1806052f3d"
+        },
+        {
+          "file": "tatoeba-audio-216353.mp3",
+          "sha256": "sha256:4577cd60b9c7d9b07c4bb6a9a9bb91540b17b5832299f0d1acfa7fd5dffa1795"
+        },
+        {
+          "file": "tatoeba-audio-216386.mp3",
+          "sha256": "sha256:8b87c68297a1056ea4c1d4a4e2820202879eaba742300c91a570ae4b8444e381"
+        },
+        {
+          "file": "tatoeba-audio-216722.mp3",
+          "sha256": "sha256:b5147aee0635c5bf2a85ba0ee6e7dfd9bcc68372ba8c0bfd362a3c515a905516"
+        },
+        {
+          "file": "tatoeba-audio-216723.mp3",
+          "sha256": "sha256:21bde5f23f412e786507f0119715c94c8174ca378c3746d5479630c4f01caecf"
+        },
+        {
+          "file": "tatoeba-audio-216755.mp3",
+          "sha256": "sha256:b11107f408ab3efbd47ff6bbf6748a8eb64abd5643803a663dc992c367a3cac2"
+        },
+        {
+          "file": "tatoeba-audio-216756.mp3",
+          "sha256": "sha256:488a32f619601c4d207d69c459fa5f9ecb65da6325708c9203128c98245ca505"
+        },
+        {
+          "file": "tatoeba-audio-216757.mp3",
+          "sha256": "sha256:1c03e8d11da6043c10679413d178f48eaa1884ce7c89825df349ee9edc1f8036"
+        },
+        {
+          "file": "tatoeba-audio-216809.mp3",
+          "sha256": "sha256:e86bf33cd1c3dd3587b29dc688b7c11ea1cd09a05cde876eb70e18e2f726e19c"
+        },
+        {
+          "file": "tatoeba-audio-216940.mp3",
+          "sha256": "sha256:793509cc76e83fa3ffedcad1908a7871aa685df5b05d7abe6ce5ef6858d87a4e"
+        },
+        {
+          "file": "tatoeba-audio-217203.mp3",
+          "sha256": "sha256:bf1de8e8b87b159862fd76480555caf777ed668146a11ddea696faa591f80f9c"
+        },
+        {
+          "file": "tatoeba-audio-217298.mp3",
+          "sha256": "sha256:183b220215ddb311a4faad71ef04008e2e1da9e185167322dac5d8f156f65ea4"
+        },
+        {
+          "file": "tatoeba-audio-217305.mp3",
+          "sha256": "sha256:8a2fd4cee3bb349fbbbcd8beb0abe71e703ed0fea38c4371fb574a63ef7f6086"
+        },
+        {
+          "file": "tatoeba-audio-217307.mp3",
+          "sha256": "sha256:e90366c99e2d907aadca4f4354aaa50a8a9ed23f4936c1b3f7a3b0998e0483da"
+        },
+        {
+          "file": "tatoeba-audio-217321.mp3",
+          "sha256": "sha256:c4ba6db3649ae0db21126e738a03d9764b0f3cef16de7105abda9804809c3be4"
+        },
+        {
+          "file": "tatoeba-audio-217340.mp3",
+          "sha256": "sha256:b47fed44b916501d485aec4edf00be5830ac0fd33901f3326cb4c067c9277a92"
+        },
+        {
+          "file": "tatoeba-audio-217346.mp3",
+          "sha256": "sha256:97df776a7ce9435fc3bde06aeda8e87f08fbd9973f668b76c5df62a1e8bbe338"
+        },
+        {
+          "file": "tatoeba-audio-217347.mp3",
+          "sha256": "sha256:c6390b84e4d303dd13a944623a8baff7bc509ac364d35c1b43f3fd8a41658dc1"
+        },
+        {
+          "file": "tatoeba-audio-217358.mp3",
+          "sha256": "sha256:7ca8b19c8b0beb5dac5b49a57d12f791fc047cb29217fa7f96a030924bfae7f6"
+        },
+        {
+          "file": "tatoeba-audio-217380.mp3",
+          "sha256": "sha256:9be644a9d4c75012289a165f9328d6a76a78d1bb365ac7155972e809e2e4e3e7"
+        },
+        {
+          "file": "tatoeba-audio-217381.mp3",
+          "sha256": "sha256:a4038aa719d3b43c2fe0707124b11ef1dfe1f75dcc2709da7edd1ac7676e8fd5"
+        },
+        {
+          "file": "tatoeba-audio-217382.mp3",
+          "sha256": "sha256:b6fd2fdc807f3ef6eed18bd8c6197ec086e1b4b6700c96a5bfe3038e361206a7"
+        },
+        {
+          "file": "tatoeba-audio-217383.mp3",
+          "sha256": "sha256:9704cb6d977c4869ad428b1705209993c4dec9445d78fb033fcea78442915fe2"
+        },
+        {
+          "file": "tatoeba-audio-217401.mp3",
+          "sha256": "sha256:2353260632c850c98ecb322a4ea1bdd1dce7a11ef513f6fa2ed030e643dfbca8"
+        },
+        {
+          "file": "tatoeba-audio-217414.mp3",
+          "sha256": "sha256:dc88c0b7f2048e71d8f41e16b9b4971639dd3ccfbf5b878ac8596e431e97f05d"
+        },
+        {
+          "file": "tatoeba-audio-217415.mp3",
+          "sha256": "sha256:2746831e426e4e7e5284280bc73b24b2ad2f57f34734298ffe74bb78e585de4a"
+        },
+        {
+          "file": "tatoeba-audio-217416.mp3",
+          "sha256": "sha256:62893722754a8b0803e527d85f23363fb1e799bec72cd782778f981f1cdc3d6b"
+        },
+        {
+          "file": "tatoeba-audio-217433.mp3",
+          "sha256": "sha256:da84ceb36d31d6a2201b9a7a3a2b475fe982bbadc0ba1912c252165ceaa3757a"
+        },
+        {
+          "file": "tatoeba-audio-217443.mp3",
+          "sha256": "sha256:47c4c352ffb9328e4c812dcab22fd49fa72b67dba308c272d94d0696ef058ee1"
+        },
+        {
+          "file": "tatoeba-audio-217462.mp3",
+          "sha256": "sha256:424357d78dce162398378bdc2e6a67b37d2a75b3140d6dcb056accc5cf845b46"
+        },
+        {
+          "file": "tatoeba-audio-217463.mp3",
+          "sha256": "sha256:b21c2c3472ed5abc83baf1e593a6a327655cab21aeac6622c842bfb4d5bba640"
+        },
+        {
+          "file": "tatoeba-audio-217464.mp3",
+          "sha256": "sha256:8a938df0deeb24e1ee2dc6122523cf85d81c8170ac3afa690ca3f81b1fe88868"
+        },
+        {
+          "file": "tatoeba-audio-217465.mp3",
+          "sha256": "sha256:eb9585bf9b16e65e51ef993707e9f9acf414b76c271f20b3887ab139092c845b"
+        },
+        {
+          "file": "tatoeba-audio-217466.mp3",
+          "sha256": "sha256:c2e80b785b7be847fbda413bd110a9a80d5818b3f33bb643bf73ec3fe7c9421e"
+        },
+        {
+          "file": "tatoeba-audio-217467.mp3",
+          "sha256": "sha256:9b5f2fc4dcca1729e1867d1049137004384264eeba14c29cbe514ea6bd748a66"
+        },
+        {
+          "file": "tatoeba-audio-217468.mp3",
+          "sha256": "sha256:3b1cfdfd47637aed013c0c5e82106ad30dfe6df3b8d484135bebc990e110d0d9"
+        },
+        {
+          "file": "tatoeba-audio-217469.mp3",
+          "sha256": "sha256:f92b4c88ea66cd72407c1966f0e0e72b91a217978557b2b93c80bf737558664e"
+        },
+        {
+          "file": "tatoeba-audio-217470.mp3",
+          "sha256": "sha256:620f002ab3f4781ff21c93dfd18315acf4cea2a76dc86cda8f304ced62db6525"
+        },
+        {
+          "file": "tatoeba-audio-217471.mp3",
+          "sha256": "sha256:2e82df3d148a49715a34511c8a1641d7ee2234b0a7beab44b24bd16eb19e17af"
+        },
+        {
+          "file": "tatoeba-audio-217472.mp3",
+          "sha256": "sha256:b4de283549fe5c74bd8ea44e7a5582560601111c1feab2dd909d311cf4b7d213"
+        },
+        {
+          "file": "tatoeba-audio-217476.mp3",
+          "sha256": "sha256:a11f01a290a1cc5c7c16d116ef1a5384ed38f7d789d1308c14a9b64922be1298"
+        },
+        {
+          "file": "tatoeba-audio-217509.mp3",
+          "sha256": "sha256:567886c666869d167a036d87178851e04c4a2befb4746a67e9f80fbcbdb24415"
+        },
+        {
+          "file": "tatoeba-audio-217510.mp3",
+          "sha256": "sha256:f1d7d50304a3582881625d4caec580728cfff56e768bd6cda60918a27995691a"
+        },
+        {
+          "file": "tatoeba-audio-217541.mp3",
+          "sha256": "sha256:91c9d4f10946dfe425702a9cdc91cef25df54c66043b8257c5366e8ed99345ef"
+        },
+        {
+          "file": "tatoeba-audio-217542.mp3",
+          "sha256": "sha256:df88f73e47e25bb4bf66ada935c3ed37d7f274807f26725e330978c526446777"
+        },
+        {
+          "file": "tatoeba-audio-217543.mp3",
+          "sha256": "sha256:165c9ada24a513dfbd32687137fec2fa84f2177b2df8cabe0d21e88bda625550"
+        },
+        {
+          "file": "tatoeba-audio-217544.mp3",
+          "sha256": "sha256:ae217dc67ff29346b53215b25e4cfa20cdfc987f897f186c7e3c845a77d93074"
+        },
+        {
+          "file": "tatoeba-audio-217545.mp3",
+          "sha256": "sha256:406e6734647aea6a6168ecab94afc039bf7e8f04d78ea74aac5d4dc665b68d3d"
+        },
+        {
+          "file": "tatoeba-audio-217563.mp3",
+          "sha256": "sha256:07fd17d069b181e4a317cd78c4e18d8ce143621a28b15e39770c72a847079fae"
+        },
+        {
+          "file": "tatoeba-audio-217564.mp3",
+          "sha256": "sha256:e0917ca0fea9b04dc5436e04980b2612faf07083fc64dd6a8187ba18c51576fb"
+        },
+        {
+          "file": "tatoeba-audio-217809.mp3",
+          "sha256": "sha256:dd18b1631aa0cfa14fe1a617fae2ca76396ef1e7be9174f785bf0f4e51ed3695"
+        },
+        {
+          "file": "tatoeba-audio-217978.mp3",
+          "sha256": "sha256:238d7fec8726279600d8303546c308f2aa36bee2aa5e3367cecbd34e8c899947"
+        },
+        {
+          "file": "tatoeba-audio-217992.mp3",
+          "sha256": "sha256:ca65bc856d5353be36894f68a3548aae876d6924ab5e115f2a30c04a7f45bc4a"
+        },
+        {
+          "file": "tatoeba-audio-217995.mp3",
+          "sha256": "sha256:15281ea4819ec7fd650eabc948bc73c3469df12251a81347e31c85332f32134f"
+        },
+        {
+          "file": "tatoeba-audio-218298.mp3",
+          "sha256": "sha256:f01c6cdb1263985e624c377b21c300036116bc39d2afb86be50d3db188b2975f"
+        },
+        {
+          "file": "tatoeba-audio-218331.mp3",
+          "sha256": "sha256:46898b664f54f493f840de097a292d7f11fecf06312bb002b11e2a290e0f296f"
+        },
+        {
+          "file": "tatoeba-audio-218359.mp3",
+          "sha256": "sha256:775df3e59560190411425ed72c92fbafc7bfa691413ef912bbd2c699288382fe"
+        },
+        {
+          "file": "tatoeba-audio-218372.mp3",
+          "sha256": "sha256:e2343d7e1dcbe6179b6c86347e1b474ff965befd1f166a9af82bf25b2149239b"
+        },
+        {
+          "file": "tatoeba-audio-218373.mp3",
+          "sha256": "sha256:31ee4f319c602254ec69140b852c7a93f07d658f1a89c4d3a0663cc06f8a1103"
+        },
+        {
+          "file": "tatoeba-audio-218374.mp3",
+          "sha256": "sha256:0e5031af359af0d83f86ef93f6043b18af6065c6d3d93acfe811f2aa6d3f1c11"
+        },
+        {
+          "file": "tatoeba-audio-218375.mp3",
+          "sha256": "sha256:f0a33d514860691b371b322857e3949f52ecbba7c05c2c9ff3e6f196e4d62179"
+        },
+        {
+          "file": "tatoeba-audio-218376.mp3",
+          "sha256": "sha256:b134e58980da40a8d9a505a61660098818926343e0682aca31dd524197c51a2d"
+        },
+        {
+          "file": "tatoeba-audio-218378.mp3",
+          "sha256": "sha256:68660d984506b19e6c4e8505202ed8751f78c4a318160a5931ba98d99079355b"
+        },
+        {
+          "file": "tatoeba-audio-218379.mp3",
+          "sha256": "sha256:01e6c22d00f551cd78ffab72060488a329877df1a733ce371bfcad3c6eac5d33"
+        },
+        {
+          "file": "tatoeba-audio-218380.mp3",
+          "sha256": "sha256:b356ad2140caf2d6175e43e7329e3e01b6923aed12e44e333d5a42e80e77f8d3"
+        },
+        {
+          "file": "tatoeba-audio-218389.mp3",
+          "sha256": "sha256:4f51224f0f36926db238d73b3046d3e2ca5b69e4a3bb88cbf923d387be3a48e8"
+        },
+        {
+          "file": "tatoeba-audio-218390.mp3",
+          "sha256": "sha256:dadc50416b0d6449f2ff05f95af1f4f13be03a306dc0df7d8853b69ae725d97c"
+        },
+        {
+          "file": "tatoeba-audio-218666.mp3",
+          "sha256": "sha256:9cefa51f5eb5bac83205432a5a905e04a158ba7bf89af8f2b6b87a778861d8cc"
+        },
+        {
+          "file": "tatoeba-audio-218732.mp3",
+          "sha256": "sha256:310a870fadae4d92360c4671b8b58c05b33dd3b3b9456e45ebb246239e82be7f"
+        },
+        {
+          "file": "tatoeba-audio-218793.mp3",
+          "sha256": "sha256:8a5a9882a90d0f7cd20e0885c17a79553886f67af3f6076d3e054113e7707ace"
+        },
+        {
+          "file": "tatoeba-audio-218794.mp3",
+          "sha256": "sha256:8be0be3f1159c39db70ef4808da3335a906352360dc8d2fc8253e6c539111538"
+        },
+        {
+          "file": "tatoeba-audio-218795.mp3",
+          "sha256": "sha256:f7f9a5ee941280a7670b7f02624f13fb980f7e002bc6aad9e0c21eb23c51378e"
+        },
+        {
+          "file": "tatoeba-audio-218796.mp3",
+          "sha256": "sha256:167b4c94d7887b0fc33281a6e6ffa26d4f1519c3c81984dd36718032d881082c"
+        },
+        {
+          "file": "tatoeba-audio-219022.mp3",
+          "sha256": "sha256:c89d81bada3c49248578778315b107de54b30a1c019ae9adb5d5d0cd105d1386"
+        },
+        {
+          "file": "tatoeba-audio-219026.mp3",
+          "sha256": "sha256:8cf9cf0c9a8476e3b43172f37128705720d7d93bbe97c89cabce176d8b1db766"
+        },
+        {
+          "file": "tatoeba-audio-219029.mp3",
+          "sha256": "sha256:472a93487030c1840c707ba42837db4adbb684e227756e4e99dfddc95c8a6c44"
+        },
+        {
+          "file": "tatoeba-audio-219079.mp3",
+          "sha256": "sha256:64a67354e6bc762aeb7102ccd4f6a53d432adef3369f1a135025c7aa2ff14a5d"
+        },
+        {
+          "file": "tatoeba-audio-219081.mp3",
+          "sha256": "sha256:428a86c5a1dd654daba7800a161de94022cdf317a04b9a8e02b8af95abbe9f8d"
+        },
+        {
+          "file": "tatoeba-audio-219259.mp3",
+          "sha256": "sha256:1b23dfcc9e4e613b96717456585728127f5b2aa92509f3ddd771979ec76aceb3"
+        },
+        {
+          "file": "tatoeba-audio-219340.mp3",
+          "sha256": "sha256:c002d0cb9e5ce62310a9f46bfa51cfccfd37fa0364486ded2cfdc66e495a4d52"
+        },
+        {
+          "file": "tatoeba-audio-219343.mp3",
+          "sha256": "sha256:5aaf6f2e0d69dca3898a6d49660a28e745df21d5f86565ad2f09763cd2adc975"
+        },
+        {
+          "file": "tatoeba-audio-219344.mp3",
+          "sha256": "sha256:7deeddf7162f4d3ad81c82a6114b23ebc8c0ec80a0086276b80a850ec963461b"
+        },
+        {
+          "file": "tatoeba-audio-219358.mp3",
+          "sha256": "sha256:9ee5da1cb6a4d5ae37b875dcace8f8f1412a7b41edd60a8514c29646a3cfd76a"
+        },
+        {
+          "file": "tatoeba-audio-219383.mp3",
+          "sha256": "sha256:0636e75e4c8f7bfe6dd8bc367d566aabdc12b56bc2b5442baadca6a4aaf46517"
+        },
+        {
+          "file": "tatoeba-audio-219384.mp3",
+          "sha256": "sha256:8f8d9468e4564a07f9e8e429ca083334ba2e37e100fb776eb4663e39d09fe8cc"
+        },
+        {
+          "file": "tatoeba-audio-219385.mp3",
+          "sha256": "sha256:c8594c8b4ef4b40bbd4cbea5579a024c9f03d8474f8650ece3aa27a2aa8e1e5b"
+        },
+        {
+          "file": "tatoeba-audio-220634.mp3",
+          "sha256": "sha256:80c735e990f8a695f73c1cda818db9abcae2068a556954f6ff3cac46ccb1b857"
+        },
+        {
+          "file": "tatoeba-audio-220637.mp3",
+          "sha256": "sha256:c6a37054320239866db94d5f8945e028204f501484e38fc8bd68c5514b7a9523"
+        },
+        {
+          "file": "tatoeba-audio-220638.mp3",
+          "sha256": "sha256:890f99a6932e59c4012f0eca1df77ae86235178b93447a211196b2537beb82eb"
+        },
+        {
+          "file": "tatoeba-audio-220674.mp3",
+          "sha256": "sha256:34b5cf20a2bdd2d232d7977f4461f6ac60a5dd90f394377eebcb10dd4832378f"
+        },
+        {
+          "file": "tatoeba-audio-220694.mp3",
+          "sha256": "sha256:5a42887ba65c65298ebfe4abdd00d8ebfe2aaaffe8d0360db61c88c1856b958f"
+        },
+        {
+          "file": "tatoeba-audio-220736.mp3",
+          "sha256": "sha256:97ea23be36aef25bcd35d9180057825619c1cb81f2425ffa74a77a4b77e625e1"
+        },
+        {
+          "file": "tatoeba-audio-220738.mp3",
+          "sha256": "sha256:50bcbfea5ffc149c32e279620b62154cb566c21fdd9dc07fdb867c0e65126883"
+        },
+        {
+          "file": "tatoeba-audio-220739.mp3",
+          "sha256": "sha256:e4ffae4db1ccc2911eff478a039d480205a0c19b56fc03253a963c87bc08878b"
+        },
+        {
+          "file": "tatoeba-audio-220740.mp3",
+          "sha256": "sha256:087f3e0e0933249d94c4244fcc5f85ed697ffb18e6f430d787d046e42eddf947"
+        },
+        {
+          "file": "tatoeba-audio-221378.mp3",
+          "sha256": "sha256:f153f2b3723b2fc66e914edea50cac2a6dc37cc59146c281e1bbaecaa32eb319"
+        },
+        {
+          "file": "tatoeba-audio-221384.mp3",
+          "sha256": "sha256:68570bf87dcd95996786d3edd2e8299324c2e31dc54c12ab71345094c28a05d0"
+        },
+        {
+          "file": "tatoeba-audio-221406.mp3",
+          "sha256": "sha256:d2de302a704b95b53995fc15f962b975e4d096fa69120bd3b7bd17fe727b3fbe"
+        },
+        {
+          "file": "tatoeba-audio-221423.mp3",
+          "sha256": "sha256:4f5ee45945326c5537fcaf82dca7bc8c4c4b9477d28ea84ebb6edc8b32643996"
+        },
+        {
+          "file": "tatoeba-audio-221448.mp3",
+          "sha256": "sha256:58d2d33b028da08cbb78ef1791ef3c59694256fc9a3ae896d7359da6276783ec"
+        },
+        {
+          "file": "tatoeba-audio-221495.mp3",
+          "sha256": "sha256:61e253db7753893315af5dbac9f67a05ec2d2d3a9318ac5dcbf8169ce49c1f80"
+        },
+        {
+          "file": "tatoeba-audio-221500.mp3",
+          "sha256": "sha256:7a22e6070037592c55cc427e8c57049b18a2c032d35149902ab118b2fd2f37bc"
+        },
+        {
+          "file": "tatoeba-audio-221501.mp3",
+          "sha256": "sha256:0272b9757e536e3d72680780d3e67fa776a87b8be85829ecb8e1da57ac69d85f"
+        },
+        {
+          "file": "tatoeba-audio-221857.mp3",
+          "sha256": "sha256:34c28b45d29dd4b87d597e275ab97c53924316d8b4459a05511e8e146813a63f"
+        },
+        {
+          "file": "tatoeba-audio-221959.mp3",
+          "sha256": "sha256:de365d73c141a6289740365814bc584de633ce5e92938de07e5befa38564817f"
+        },
+        {
+          "file": "tatoeba-audio-222028.mp3",
+          "sha256": "sha256:d9f342d41095017b863e4fc447d22b670372e1c934e33c13cf7975b64af5a243"
+        },
+        {
+          "file": "tatoeba-audio-222029.mp3",
+          "sha256": "sha256:fc0accbcc4ac223c27248e13bfe48f77db2bf96e431bbd21087d7cda04c60b1f"
+        },
+        {
+          "file": "tatoeba-audio-222031.mp3",
+          "sha256": "sha256:a59221aef46f9d36c5e2ce738e3c399adfecc0ccc81108818ddb8a1e97d959b6"
+        },
+        {
+          "file": "tatoeba-audio-222032.mp3",
+          "sha256": "sha256:37e67a017aa5e63a14f460e7ea175b75979118d282cace8d0f0bc33eb8f85dec"
+        },
+        {
+          "file": "tatoeba-audio-222034.mp3",
+          "sha256": "sha256:2c46f1844239ce9b52173cbc15b4229927387f55b444638619fc52ed2a5cdce3"
+        },
+        {
+          "file": "tatoeba-audio-222035.mp3",
+          "sha256": "sha256:bb2f04ffdb5596b0d6a20b57855c9ebe7020e35d0dba53c08fed083c98daae77"
+        },
+        {
+          "file": "tatoeba-audio-222107.mp3",
+          "sha256": "sha256:f7f0425375287589fa6f8ed7e24bed41772f6e1fac617dd112050d2cbb64a03e"
+        },
+        {
+          "file": "tatoeba-audio-222120.mp3",
+          "sha256": "sha256:2c9b4664ad87d7ab0a3f26e30deb117c361a62901ea70b23373529791bd912cd"
+        },
+        {
+          "file": "tatoeba-audio-222123.mp3",
+          "sha256": "sha256:3c4a3e47d0f2dac07b5e50f6463645f2a3da8336bfefcb1ff5e3196eb50be30f"
+        },
+        {
+          "file": "tatoeba-audio-222129.mp3",
+          "sha256": "sha256:63d5d8096c99fe0092c0d8b6e437bb83aeef8f2f3a6386969670abd727b98822"
+        },
+        {
+          "file": "tatoeba-audio-222131.mp3",
+          "sha256": "sha256:5441c501fd11908f89e03f65727e5414dce2bb7f4dd18449d4e062c55a046b5b"
+        },
+        {
+          "file": "tatoeba-audio-222153.mp3",
+          "sha256": "sha256:49dbaf45bc7f49ef386cef17f152a13e946fb694de12e5c8cf05560aa5103a69"
+        },
+        {
+          "file": "tatoeba-audio-222157.mp3",
+          "sha256": "sha256:ec171015a427f3937802c28465d6e9888e401aa9cd4baffd62b04bedb54bb6e2"
+        },
+        {
+          "file": "tatoeba-audio-222189.mp3",
+          "sha256": "sha256:4945d7f0ff3cd35c928d9d3a67f2258aa0bf2df54244c8ff4eea4fc7725a3ca2"
+        },
+        {
+          "file": "tatoeba-audio-222195.mp3",
+          "sha256": "sha256:2b63e046a5e26d7b7a04be2cc94a880e65dba49515e08a53c0993cbcd21ec3e4"
+        },
+        {
+          "file": "tatoeba-audio-222199.mp3",
+          "sha256": "sha256:abc31c8c6dcce0adb729b2decf6c9ca3c0895b752e638a5d61bc2c1d1c2df32b"
+        },
+        {
+          "file": "tatoeba-audio-222212.mp3",
+          "sha256": "sha256:e794e4d28588ac7c0ece5667ecbc1d7f50bc7211b535896abfed34dce2fd1620"
+        },
+        {
+          "file": "tatoeba-audio-222227.mp3",
+          "sha256": "sha256:ecb264fe7d48d8a8b0fdaef250a702a3b48110abca166d763f8228cb08c4fed4"
+        },
+        {
+          "file": "tatoeba-audio-222249.mp3",
+          "sha256": "sha256:234383e175af23c3808efc615d2ca120a6ad6019538e6a884f443d1be029b1e0"
+        },
+        {
+          "file": "tatoeba-audio-222274.mp3",
+          "sha256": "sha256:873c02fe7215de7b66fe9f731439202f80425000d9a7b936f09e9d52ee755956"
+        },
+        {
+          "file": "tatoeba-audio-222280.mp3",
+          "sha256": "sha256:199e942b18baa80c94365618bd0565bbd3c8e037ebcb8086e6daec3a70cf548b"
+        },
+        {
+          "file": "tatoeba-audio-222282.mp3",
+          "sha256": "sha256:4a01abaaa4bd94ea99ff9d332e5280bc1610fc92952b88578bedb1eaa7928446"
+        },
+        {
+          "file": "tatoeba-audio-222284.mp3",
+          "sha256": "sha256:c21b5c0982a6752b1e1e66aaa539987e39e9fed150583f788aecce924822021e"
+        },
+        {
+          "file": "tatoeba-audio-222285.mp3",
+          "sha256": "sha256:c46ae00d94c81f4a08c287bd73864917f12c75b7ad720df9b8d24912679142d5"
+        },
+        {
+          "file": "tatoeba-audio-230224.mp3",
+          "sha256": "sha256:fae093e632c5d58fa08c84e40150786f5010dfbb57fc0b8d8e90371782a32522"
+        },
+        {
+          "file": "tatoeba-audio-230333.mp3",
+          "sha256": "sha256:943ff955112f57d4e71ce92d0dfb27eeaa2dc5ade694a573146e67551c8e2eae"
+        },
+        {
+          "file": "tatoeba-audio-230504.mp3",
+          "sha256": "sha256:35473907c6f1d1d2db513db469670a2c23691fb3e455048838e94369d0303e3f"
+        },
+        {
+          "file": "tatoeba-audio-230505.mp3",
+          "sha256": "sha256:eb797fb56a333fa374b89991a096f8738c8f37a34408044b4fad8dc1be439685"
+        },
+        {
+          "file": "tatoeba-audio-230515.mp3",
+          "sha256": "sha256:efe1de7fd1787509ab47747d1ee0015f87005506322953927a30366054362dda"
+        },
+        {
+          "file": "tatoeba-audio-230516.mp3",
+          "sha256": "sha256:458d49ae5a67cfa21a39239038240cf407cec93aba1f5539bdfe316de6d4ef79"
+        },
+        {
+          "file": "tatoeba-audio-230561.mp3",
+          "sha256": "sha256:a9605d20acf1602f7b4296d22d6eee31f5c1fd11e53355ad68fc3fb510f13812"
+        },
+        {
+          "file": "tatoeba-audio-230609.mp3",
+          "sha256": "sha256:e22dc4fda2ecb050a3f7c2ca825b44d9052b682dc31a6192b5cf8f74051793b2"
+        },
+        {
+          "file": "tatoeba-audio-238598.mp3",
+          "sha256": "sha256:b688189f3e38a4fb3c897cfde3f5e503ce71c47b6bd768ae9747232f2afdf4b6"
+        },
+        {
+          "file": "tatoeba-audio-238599.mp3",
+          "sha256": "sha256:499a13f9b3aa53294baf51a873b1d7c805bcdb294ddcc429781554d8ea07e898"
+        },
+        {
+          "file": "tatoeba-audio-238603.mp3",
+          "sha256": "sha256:b4498677ac3c08d078b0ba4a292125fc5343b8ca982de2cdef3319748c8f7f99"
+        },
+        {
+          "file": "tatoeba-audio-238624.mp3",
+          "sha256": "sha256:69e88e22fc8bf01967ba597ac43ccdc324950b5fde157a434085a11d674bda5f"
+        },
+        {
+          "file": "tatoeba-audio-238639.mp3",
+          "sha256": "sha256:3ca13236778f499c46f7451127d76ccd92d7b70ebd3e73b597e7a2bcacf3ab0c"
+        },
+        {
+          "file": "tatoeba-audio-238662.mp3",
+          "sha256": "sha256:8ff7bb09fa24cacf181f3a5a779461a64779d11dee709cb1b7450dbaca8446af"
+        },
+        {
+          "file": "tatoeba-audio-238666.mp3",
+          "sha256": "sha256:28ce4694d15111c9d4607f8287d490ab64c2ca1f79f59b6d59122cf3acc7e8e5"
+        },
+        {
+          "file": "tatoeba-audio-238669.mp3",
+          "sha256": "sha256:27ae548b78466426f988a1d5a8e1b643da233d086c7bc8d396fde649b8a727e7"
+        },
+        {
+          "file": "tatoeba-audio-238740.mp3",
+          "sha256": "sha256:382889b8b6fdfcbc24ccec7705cf92c76d3fd77fc3eaf0ce6cdbd5648cf7b6bc"
+        },
+        {
+          "file": "tatoeba-audio-238744.mp3",
+          "sha256": "sha256:f7cdeafc1658a9977359f440fe9552771300bfb78105be54c624457913fb933b"
+        },
+        {
+          "file": "tatoeba-audio-238916.mp3",
+          "sha256": "sha256:4e1af9fcd8c23fa6c6f54cf92046f6c17d65f3fa7b1e9934abe55b292b3c59e7"
+        },
+        {
+          "file": "tatoeba-audio-238993.mp3",
+          "sha256": "sha256:94fba850884e07b7ced0e6c23ccab41c78ee246105e0627d897bf5aca51a63ea"
+        },
+        {
+          "file": "tatoeba-audio-239061.mp3",
+          "sha256": "sha256:487e108aefe666a95bfffb22091ed284076847391564fcc2211f272a116af6d3"
+        },
+        {
+          "file": "tatoeba-audio-240255.mp3",
+          "sha256": "sha256:861bfb6779b0a93b30d411d10e8335751c7f2163f85a0160653bfef15f2011d6"
+        },
+        {
+          "file": "tatoeba-audio-240567.mp3",
+          "sha256": "sha256:ef63b8aa1bbcf8d7d80f11a6f407a2b6e55b8105ea6f46cb0a73a64ec0bdd7d9"
+        },
+        {
+          "file": "tatoeba-audio-240730.mp3",
+          "sha256": "sha256:c21d5162de2cd67ac33bc93a8e89f340f7d6b8e210f7e2468351689b55059015"
+        },
+        {
+          "file": "tatoeba-audio-240762.mp3",
+          "sha256": "sha256:fc27446920943e30dc458a3318f92322044c43a0cc2baae1a6374001d990abde"
+        },
+        {
+          "file": "tatoeba-audio-247171.mp3",
+          "sha256": "sha256:cb5ae4f5361dbd794d44cc40ffd0fa7e12e45976044c32743f65ec90d3047e2d"
+        },
+        {
+          "file": "tatoeba-audio-247174.mp3",
+          "sha256": "sha256:5db165b59a26c240b7bc77c263f51305da8866d6d4377eb3eec92c2413a44171"
+        },
+        {
+          "file": "tatoeba-audio-250026.mp3",
+          "sha256": "sha256:a7c3d98bbaf2082a249c5e928f2cc40d7371123e3aec89b7d1cc0efc4bed853e"
+        },
+        {
+          "file": "tatoeba-audio-250037.mp3",
+          "sha256": "sha256:465bc2889134a3d7baf1604a30f81e9e7fc6c443d5c5e1677c12235175c00354"
+        },
+        {
+          "file": "tatoeba-audio-250038.mp3",
+          "sha256": "sha256:28382a81d02703ba0525acff65e0b12567be59eb706fbce42f21c35b0fbf19a0"
+        },
+        {
+          "file": "tatoeba-audio-250042.mp3",
+          "sha256": "sha256:ea00bbdf8fbf3d89533a747b261ec8d6a3e3d04d535c8a5e79fab59795cc0bc4"
+        },
+        {
+          "file": "tatoeba-audio-250099.mp3",
+          "sha256": "sha256:69ef40b6d228e09d2d81fc8a5cf4a9681f755dcd2564fac71a9423130218fc56"
+        },
+        {
+          "file": "tatoeba-audio-250123.mp3",
+          "sha256": "sha256:f41af979c037487658a98ad2271721ac1bf0a19dd1e911933753fdd2b5ac10d7"
+        },
+        {
+          "file": "tatoeba-audio-250194.mp3",
+          "sha256": "sha256:dabc7616ae85b7df40a2bd98e178e2014955240d68d8c39b18548032d8622b7b"
+        },
+        {
+          "file": "tatoeba-audio-250523.mp3",
+          "sha256": "sha256:a7707656ebfca9079b28f0bc5430d3b75662bb33f2c6cf3da113dbdb17f5e49f"
+        },
+        {
+          "file": "tatoeba-audio-250532.mp3",
+          "sha256": "sha256:418bd95bd8e563b61af3c8001d24576c2e0af5db358dbbfa87e3857cbaf002db"
+        },
+        {
+          "file": "tatoeba-audio-250653.mp3",
+          "sha256": "sha256:af1e4e6f58788d4d79ab40284603fa665beeabe9b186a6de337043e3b6f323ee"
+        },
+        {
+          "file": "tatoeba-audio-250654.mp3",
+          "sha256": "sha256:31b3bb69a2be9fd0b19c9077f97efb653222fc05784f94724bc438fe9f68c061"
+        },
+        {
+          "file": "tatoeba-audio-251642.mp3",
+          "sha256": "sha256:8f568573e0be5c1257e67d13d46581cc08aa4de1f71f85f0f35a1ea42a5f1868"
+        },
+        {
+          "file": "tatoeba-audio-251666.mp3",
+          "sha256": "sha256:0562114cd53ec303e9dd1119088b6771f29f7fa22d8dc8114d027bebd5541b37"
+        },
+        {
+          "file": "tatoeba-audio-251668.mp3",
+          "sha256": "sha256:e33ddee4feb57a43abdc762106ceeff1a322cf5f82efd1f69dba0268c00eab0d"
+        },
+        {
+          "file": "tatoeba-audio-251827.mp3",
+          "sha256": "sha256:1a4643ab0882a9f33f42ec9a724f252d94467b54f7ba1aa637678430c3d66f6b"
+        },
+        {
+          "file": "tatoeba-audio-251893.mp3",
+          "sha256": "sha256:bab51ef702241173b4b8b6ee2fd05d50b9c2986eae240b407a0f9c64ff0769b0"
+        },
+        {
+          "file": "tatoeba-audio-261037.mp3",
+          "sha256": "sha256:7ce33a8b930b9366fcead4fd8252b742f7afd60982df07c765cc66e2559bfd02"
+        },
+        {
+          "file": "tatoeba-audio-262971.mp3",
+          "sha256": "sha256:e691e6f03b04926a077669b8eb078926241da9fd07262eb4e339e37b38b56ff7"
+        },
+        {
+          "file": "tatoeba-audio-262983.mp3",
+          "sha256": "sha256:8f3a3aae03c30fc25bfa978d78fcb746562e10f4b2448a14d1b2eda8af37d7b4"
+        },
+        {
+          "file": "tatoeba-audio-263494.mp3",
+          "sha256": "sha256:71caf0c445623aac56864de99b49b318730aec080021723264943b5c18afbc0d"
+        },
+        {
+          "file": "tatoeba-audio-263635.mp3",
+          "sha256": "sha256:53eae3bea2613d6d84fa1265424a4337b8e3f1f5a77cd71907e634cea314ea79"
+        },
+        {
+          "file": "tatoeba-audio-263654.mp3",
+          "sha256": "sha256:a4a3313a1673a4f4edb1ea67b71fdc7458ba0d31f22ae78af50f4c433f96edcd"
+        },
+        {
+          "file": "tatoeba-audio-263745.mp3",
+          "sha256": "sha256:f957cafdbfdb468cddf49f2431f269385b4a428fe75040ca67eecbe847330fcb"
+        },
+        {
+          "file": "tatoeba-audio-263851.mp3",
+          "sha256": "sha256:00df0d26f740868a8e7d903d3a18958007a8f9bb7e6c161d8dd29a678e2f5052"
+        },
+        {
+          "file": "tatoeba-audio-268867.mp3",
+          "sha256": "sha256:cdca3003b6aaf20d32ee4c94aab9ec98fb07a5324c3c2c21300a9c85cf041b64"
+        },
+        {
+          "file": "tatoeba-audio-268943.mp3",
+          "sha256": "sha256:72855330c114ce06b779b3cd14d632de6c993c7fdcdf810bfc01cdc07530bc4b"
+        },
+        {
+          "file": "tatoeba-audio-268944.mp3",
+          "sha256": "sha256:99f5e9c500ddebfe0b691197ec878b89938d14078174365f9b06574714533a23"
+        },
+        {
+          "file": "tatoeba-audio-269096.mp3",
+          "sha256": "sha256:2f79f070f60ec70a2b2f44773c8948344fff54287e14ade4b36e1197b710d1a6"
+        },
+        {
+          "file": "tatoeba-audio-269587.mp3",
+          "sha256": "sha256:925eea01da93b332c731080b9d6cfc505c5d080e6a76f7e9d16318d05b9d5063"
+        },
+        {
+          "file": "tatoeba-audio-269588.mp3",
+          "sha256": "sha256:d041376c027395bfe5fc3f54387eeb5c1d1032c21b8cf9ecc19fe8f786b8c986"
+        },
+        {
+          "file": "tatoeba-audio-269901.mp3",
+          "sha256": "sha256:60eebc20e31b62a47190491759f35769f83064853c2535ae55440f69fcf4f288"
+        },
+        {
+          "file": "tatoeba-audio-270736.mp3",
+          "sha256": "sha256:c38f2bc47388571758f4a0bcadd7fde2df544de7885fb9060d22ff9d1184b9af"
+        },
+        {
+          "file": "tatoeba-audio-270995.mp3",
+          "sha256": "sha256:fc48502c86ba1306cfa3b5d9d0ad3fa23cd4f16cc97b517946462d428ddafe17"
+        },
+        {
+          "file": "tatoeba-audio-272439.mp3",
+          "sha256": "sha256:d68b4fdc6467b97468b19e237e5726c93e341fd15f2d38241fc699366b20a11f"
+        },
+        {
+          "file": "tatoeba-audio-538527.mp3",
+          "sha256": "sha256:fe4c9d31b3b1b6a9568557338e85243c6eddbf0f69d08b503e149146decd49f5"
+        },
+        {
+          "file": "tatoeba-audio-798294.mp3",
+          "sha256": "sha256:d95c1e0c77628c1eed7940139073716ee52b363695c270ad53db8274ad859923"
+        },
+        {
+          "file": "tatoeba-audio-909027.mp3",
+          "sha256": "sha256:ee41f51f1fe91159781aaa4d06af1bc806c9266dd7fe6d9f0acd1ef01704fd91"
+        },
+        {
+          "file": "tatoeba-audio-1144205.mp3",
+          "sha256": "sha256:08c225a88fd753228afeb77db3277272027dca0d2a351857eba5398ba3e724da"
+        }
+      ]
+    },
+    {
+      "name": "kanji-data (David Gouveia)",
+      "license": "MIT",
+      "version": null,
+      "checksums": [
+        {
+          "file": "kanji-data.json",
+          "sha256": "sha256:561b72ea9df703c58fae0c68585812e172aaa7611d2fcee6719d55fd2dfd4fa4"
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "kanji": 1420,
+    "vocabulary": 10181,
+    "sentences": 8284,
+    "texts": 10,
+    "audio": 648,
+    "exercises": 74027
+  },
+  "validation": {
+    "errors": 0,
+    "warnings": 0
+  }
+}

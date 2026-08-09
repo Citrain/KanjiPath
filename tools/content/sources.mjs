@@ -86,10 +86,15 @@ export const SOURCES = {
     id: 'tatoeba_audio',
     name: 'Tatoeba - enregistrements japonais sélectionnés',
     url: 'https://tatoeba.org/en/downloads',
-    license: 'Audio : CC BY 4.0 ; textes associés : CC BY 2.0 FR',
+    license: 'Audio : CC BY 4.0 ou CC BY-NC 4.0 (instance personnelle privée uniquement) ; textes associés : CC BY 2.0 FR',
     attributionText:
-      'Enregistrements japonais Tatoeba sélectionnés individuellement sous CC BY 4.0 : audio 1283521, 1283538 et 1283544 par fal via Tatoeba (CC BY 4.0). Attribution du locuteur, de Tatoeba et de la licence conservée par clip. Les textes associés conservent séparément leur auteur et leur licence CC BY 2.0 FR.',
+      'Enregistrements japonais Tatoeba sélectionnés individuellement depuis le snapshot jpn_sentences_with_audio du 2026-08-08. Chaque clip conserve son identifiant, son locuteur, sa licence individuelle et son checksum. Les clips CC BY-NC 4.0 sont limités à cette instance personnelle privée selon ADR-002 ; les textes associés conservent séparément leur auteur et leur licence CC BY 2.0 FR.',
     files: [
+      {
+        file: 'jpn_sentences_with_audio.tsv.bz2',
+        url: 'https://downloads.tatoeba.org/exports/per_language/jpn/jpn_sentences_with_audio.tsv.bz2',
+        version: '2026-08-08',
+      },
       {
         file: 'tatoeba-audio-1283521.mp3',
         url: 'https://api.tatoeba.org/v1/audios/1283521/file',

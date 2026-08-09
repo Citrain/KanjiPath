@@ -17,7 +17,7 @@ Référence : `adr/2-content-pipeline/README.md` (section « Sources principales
 | kanji-data (David Gouveia) | croisement des niveaux JLPT (jlpt_new) | MIT | `kanji-data.json` |
 | Miroir kanjiapi.dev | second croisement des niveaux JLPT | données kanjiapi.dev | `kanjiapi-jlpt.json` |
 | kuromoji (+ dictionnaire IPAdic embarqué) | tokenisation des phrases au build (lectures, romaji) — outil, aucune donnée redistribuée | Apache 2.0 (kuromoji) ; IPAdic : BSD-3 + clause IPADIC | dépendance dev racine |
-| Tatoeba - enregistrements japonais sélectionnés | lecture audio et dictées | Audio : CC BY 4.0 ; texte associé : CC BY 2.0 FR | `tatoeba-audio-1283521.mp3`, `tatoeba-audio-1283538.mp3`, `tatoeba-audio-1283544.mp3` |
+| Tatoeba - enregistrements japonais sélectionnés | lecture audio et dictées | Audio : CC BY 4.0, ou CC BY-NC 4.0 uniquement pour l'instance privée ADR-002 ; texte associé : CC BY 2.0 FR | `jpn_sentences_with_audio.tsv.bz2`, fichiers audio sélectionnés et checksummés dans `content/reports/audio-selection.json` |
 
 Les textes EDRDG sont sous Creative Commons Attribution-ShareAlike ; l'attribution et
 le partage à l'identique sont obligatoires. Les checksums (sha256) de chaque fichier
@@ -32,12 +32,13 @@ manifeste du pack.
 - **KRADFILE** : le fichier original n'est plus distribué directement par l'EDRDG ;
   nous utilisons une conversion Unicode/JSON fidèle (même licence EDRDG), en
   documentant les deux provenances.
-- **Audio Tatoeba** : seuls les clips dont la licence individuelle est explicitement
-  `CC BY 4.0` sont importés. Cette licence autorise l'usage commercial et la
-  redistribution avec attribution, lien vers la licence et indication des changements.
-  Les clips `CC BY-NC`, `CC BY-ND`, sans licence ou à licence inconnue sont refusés.
-  Le lot initial, figé au 2026-08-08, contient les audios 1283521, 1283538 et
-  1283544 de `fal`, avec les SHA-256 déclarés dans `tools/content/sources.mjs`.
+- **Audio Tatoeba** : le snapshot `jpn_sentences_with_audio.tsv.bz2` du 2026-08-08
+  établit la licence individuelle de chaque clip. La curation autorise uniquement
+  `CC BY 4.0` et, pour l'instance privée ADR-002, `CC BY-NC 4.0`; les clips `CC BY-ND`,
+  sans licence ou à licence inconnue sont refusés. Une ressource est retenue seulement
+  si sa phrase japonais-français est annotable et si son téléchargement réussit. Un seul
+  clip est conservé par phrase, CC BY étant préféré. Chaque SHA-256 est consigné dans
+  `content/reports/audio-selection.json`; le pipeline refuse ensuite toute modification.
   Le texte et l'audio gardent leurs attributions distinctes.
 - **Usage personnel (ADR-002)** : l'instance étant privée et non redistribuée, les
   clips Tatoeba sous CC BY-NC 4.0 peuvent aussi être importés avec leur attribution.

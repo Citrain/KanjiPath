@@ -2,8 +2,9 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import yauzl from 'yauzl';
 import { XMLParser } from 'fast-xml-parser';
-import { readJson, writeJson, writeText } from '../lib/fs-utils.mjs';
-import { GENERATED_DIR, IMPORTED_DIR, CURATED_DIR, KANJIVG_DIR, NORMALIZED_DIR, RAW_DIR } from '../lib/paths.mjs';
+import { readJson, readJsonIfExists, writeJson, writeText } from '../lib/fs-utils.mjs';
+import { downloadFile } from '../lib/download.mjs';
+import { GENERATED_DIR, IMPORTED_DIR, CURATED_DIR, KANJIVG_DIR, NORMALIZED_DIR, RAW_DIR, REPORTS_DIR } from '../lib/paths.mjs';
 import { fnv1a, sha256File } from '../lib/hash.mjs';
 import { kanaToRomaji } from '../lib/romaji.mjs';
 import { annotateSentence, createTokenizer } from '../lib/tokenize.mjs';
@@ -330,6 +331,41 @@ const VOCAB_QUOTA = { N5: 8, N4: 8, N3: 8, N2: 10, N1: 15 };
 const VOCAB_BONUS = { N5: 60, N4: 60, N3: 60, N2: 60, N1: 100 };
 const LEVEL_RANK = Object.fromEntries(LEVELS.map((level, index) => [level, index]));
 const CURRICULUM_SOURCES = ['kanji-data (MIT)', 'kanjiapi.dev (miroir)', 'KANJIDIC2 jlpt historique'];
+const AUDIO_DOWNLOAD_CONCURRENCY = 4;
+const AUDIO_DOWNLOAD_TIMEOUT_MS = 60 * 1000;
+
+function audioLicensePriority(license) {
+  return license === 'CC BY 4.0' ? 0 : 1;
+}
+
+export function selectTatoebaAudio(clips, pairs, excludedAudioIds) {
+  const pairBySentenceId = new Map();
+  for (const pair of pairs) {
+    const existing = pairBySentenceId.get(String(pair.jpnId));
+    if (!existing || pair.french.length < existing.french.length || (pair.french.length === existing.french.length && pair.fraId < existing.fraId)) {
+      pairBySentenceId.set(String(pair.jpnId), pair);
+    }
+  }
+  const selectedBySentenceId = new Map();
+  for (const clip of clips) {
+    if (excludedAudioIds.has(clip.audioId)) {
+      continue;
+    }
+    const pair = pairBySentenceId.get(clip.sentenceTatoebaId);
+    if (!pair) {
+      continue;
+    }
+    const existing = selectedBySentenceId.get(clip.sentenceTatoebaId);
+    if (
+      !existing ||
+      audioLicensePriority(clip.license) < audioLicensePriority(existing.clip.license) ||
+      (clip.license === existing.clip.license && Number(clip.audioId) < Number(existing.clip.audioId))
+    ) {
+      selectedBySentenceId.set(clip.sentenceTatoebaId, { clip, pair });
+    }
+  }
+  return [...selectedBySentenceId.values()].sort((a, b) => Number(a.clip.audioId) - Number(b.clip.audioId));
+}
 
 export async function stageNormalize() {
   const curatedByLevel = {};
@@ -348,6 +384,7 @@ export async function stageNormalize() {
   const krad = await readJson(path.join(IMPORTED_DIR, 'krad.json'));
   const jmdict = await readJson(path.join(IMPORTED_DIR, 'jmdict.json'));
   const tatoeba = await readJson(path.join(IMPORTED_DIR, 'tatoeba.json'));
+  const tatoebaAudio = await readJson(path.join(IMPORTED_DIR, 'tatoeba-audio.json'));
   const kanjivgIndex = await readJson(path.join(IMPORTED_DIR, 'kanjivg-index.json'));
   const downloadReport = await readJson(path.join(NORMALIZED_DIR, '..', 'reports', 'download.json')).catch(() => null);
 
@@ -547,8 +584,32 @@ export async function stageNormalize() {
     });
   }
 
+  const audioCandidateById = new Map(tatoebaAudio.map((clip) => [clip.audioId, clip]));
+  for (const resource of audioCurated.resources ?? []) {
+    if (!resource.audioId || !resource.tatoebaSentenceId || !resource.speaker) {
+      throw new Error(`Audio sans métadonnées Tatoeba complètes: ${resource.id}`);
+    }
+    const candidate = audioCandidateById.get(resource.audioId);
+    if (!candidate) {
+      throw new Error(`Audio absent du snapshot Tatoeba: ${resource.audioId}`);
+    }
+    if (
+      candidate.sentenceTatoebaId !== resource.tatoebaSentenceId ||
+      candidate.speaker !== resource.speaker ||
+      candidate.license !== resource.license
+    ) {
+      throw new Error(`Audio Tatoeba non conforme au snapshot: ${resource.audioId}`);
+    }
+  }
+  const automaticAudio = selectTatoebaAudio(
+    tatoebaAudio,
+    tatoeba,
+    new Set((audioCurated.resources ?? []).map((resource) => resource.audioId)),
+  );
+
   const sentencesOut = [];
   const usedSentences = new Set(audioCurated.sentences.map((sentence) => sentence.japanese));
+  const automaticAudioResources = [];
   const sentenceCountByKanji = new Map([...allSet].map((k) => [k, 0]));
   const sortedPairs = [...tatoeba].sort((a, b) => a.japanese.length - b.japanese.length || a.jpnId - b.jpnId);
   const tokenizer = await createTokenizer();
@@ -577,6 +638,52 @@ export async function stageNormalize() {
       author: sentence.author,
       editorialStatus: 'reviewed',
     });
+  }
+  for (const { clip, pair } of automaticAudio) {
+    if (usedSentences.has(pair.japanese)) {
+      continue;
+    }
+    const tokens = annotateSentence(tokenizer, pair.japanese);
+    if (!tokens) {
+      skippedUnreadable.push(pair.japanese);
+      continue;
+    }
+    const targetKanjiIds = kanjiLiteralsOf(pair.japanese)
+      .filter((literal) => allSet.has(literal))
+      .map(kanjiIdOf);
+    if (targetKanjiIds.length === 0) {
+      throw new Error(`Phrase audio sans kanji publié: ${pair.japanese}`);
+    }
+    usedSentences.add(pair.japanese);
+    sentencesOut.push({
+      id: sentenceIdOf(Number(clip.sentenceTatoebaId)),
+      externalId: `tatoeba-${clip.sentenceTatoebaId}`,
+      japanese: pair.japanese,
+      translationFr: pair.french,
+      difficulty: estimatedLevelOf(pair.japanese),
+      targetKanjiIds,
+      tokens,
+      sourceId: 'tatoeba',
+      license: 'CC BY 2.0 FR',
+      author: pair.author ?? 'Tatoeba',
+      editorialStatus: 'reviewed',
+    });
+    automaticAudioResources.push({
+      id: `a-tatoeba-${clip.audioId}`,
+      audioId: clip.audioId,
+      file: `tatoeba-audio-${clip.audioId}.mp3`,
+      sentenceId: sentenceIdOf(Number(clip.sentenceTatoebaId)),
+      tatoebaSentenceId: clip.sentenceTatoebaId,
+      speaker: clip.speaker,
+      transcript: pair.japanese,
+      attribution: `Audio : ${clip.speaker} via Tatoeba, ${clip.license}`,
+      license: clip.license,
+    });
+    for (const literal of kanjiLiteralsOf(pair.japanese)) {
+      if (sentenceCountByKanji.has(literal)) {
+        sentenceCountByKanji.set(literal, sentenceCountByKanji.get(literal) + 1);
+      }
+    }
   }
   for (const level of LEVELS) {
     const levelSet = setsByLevel.get(level);
@@ -699,7 +806,7 @@ export async function stageNormalize() {
   const curriculum = {
     code: 'JLPT_ALIGNED',
     name: 'Parcours aligné sur le JLPT',
-    version: '2026.08.7',
+    version: '2026.08.9',
     status: 'published',
     notes: LEVELS.map((level) => `${level} : ${curatedByLevel[level].kanji.notes}`).join('\n'),
     levels,
@@ -721,14 +828,74 @@ export async function stageNormalize() {
 
   const audioDir = path.join(GENERATED_DIR, 'audio');
   await fs.mkdir(audioDir, { recursive: true });
+  const automaticSelectionPath = path.join(REPORTS_DIR, 'audio-selection.json');
+  const previousSelection = await readJsonIfExists(automaticSelectionPath);
+  const previousChecksums = new Map((previousSelection?.clips ?? []).map((clip) => [clip.audioId, clip.checksum]));
+  const automaticSelection = [];
+  const rejectedAudio = [];
+  for (let index = 0; index < automaticAudioResources.length; index += AUDIO_DOWNLOAD_CONCURRENCY) {
+    const batch = automaticAudioResources.slice(index, index + AUDIO_DOWNLOAD_CONCURRENCY);
+    const downloaded = await Promise.all(
+      batch.map(async (resource) => {
+        try {
+          const result = await downloadFile(
+            `https://api.tatoeba.org/v1/audios/${resource.audioId}/file`,
+            path.join(RAW_DIR, resource.file),
+            { timeoutMs: AUDIO_DOWNLOAD_TIMEOUT_MS },
+          );
+          const expected = previousChecksums.get(resource.audioId);
+          if (expected && result.sha256 !== expected) {
+            throw new Error(`Checksum audio modifié: ${resource.audioId}`);
+          }
+          resource.checksum = result.sha256;
+          return {
+            audioId: resource.audioId,
+            sentenceTatoebaId: resource.tatoebaSentenceId,
+            speaker: resource.speaker,
+            license: resource.license,
+            file: resource.file,
+            sha256: result.sha256,
+          };
+        } catch (error) {
+          if (error.message.startsWith('Checksum audio modifié:')) {
+            throw error;
+          }
+          rejectedAudio.push({
+            audioId: resource.audioId,
+            sentenceTatoebaId: resource.tatoebaSentenceId,
+            reason: error.message,
+          });
+          return null;
+        }
+      }),
+    );
+    automaticSelection.push(...downloaded.filter((clip) => clip));
+  }
+  await writeJson(automaticSelectionPath, {
+    stage: 'audio-selection',
+    status: 'ok',
+    snapshotVersion: '2026-08-08',
+    counts: {
+      candidates: automaticAudio.length,
+      selected: automaticSelection.length,
+      rejected: rejectedAudio.length,
+    },
+    clips: automaticSelection,
+    rejected: rejectedAudio,
+  });
+  const audioSource = sources.find((source) => source.id === 'tatoeba_audio');
+  if (audioSource) {
+    audioSource.checksums.push(...automaticSelection.map((clip) => ({ file: clip.file, sha256: clip.sha256 })));
+  }
+
   const audioOut = [];
-  for (const resource of audioCurated.resources ?? []) {
+  for (const resource of [...(audioCurated.resources ?? []), ...automaticAudioResources.filter((resource) => resource.checksum)]) {
     const sourceFile = path.join(RAW_DIR, resource.file);
     const filePath = `audio/${resource.id}.mp3`;
     const destination = path.join(GENERATED_DIR, filePath);
-    const checksum = await sha256File(sourceFile);
+    const checksum = resource.checksum ?? (await sha256File(sourceFile));
     const expected = SOURCES.tatoeba_audio.files.find((file) => file.file === resource.file)?.sha256;
-    if (!expected || checksum !== `sha256:${expected}`) {
+    if ((expected && checksum !== `sha256:${expected}`) || (!expected && !resource.checksum)) {
       throw new Error(`Checksum audio invalide: ${resource.file}`);
     }
     await fs.copyFile(sourceFile, destination);
@@ -745,6 +912,9 @@ export async function stageNormalize() {
     }
     audioOut.push({
       id: resource.id,
+      audioId: resource.audioId,
+      tatoebaSentenceId: resource.tatoebaSentenceId,
+      speaker: resource.speaker,
       vocabularyId: vocabulary?.id,
       sentenceId: resource.sentenceId,
       sourceId: 'tatoeba_audio',
@@ -790,6 +960,7 @@ export async function stageNormalize() {
   console.log(
     `[normalize] vocabulaire: ${vocabularyOut.length} mots; phrases: ${sentencesOut.length}; mini-textes: ${textsOut.length}`,
   );
+  console.log(`[normalize] audio: ${audioOut.length} ressources (${automaticSelection.length} sélectionnées automatiquement)`);
   if (skippedUnreadable.length > 0) {
     console.log(
       `[normalize] ${skippedUnreadable.length} phrases Tatoeba écartées (lecture complète impossible, token inconnu)`,

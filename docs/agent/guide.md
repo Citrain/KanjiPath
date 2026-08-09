@@ -432,11 +432,14 @@ ajoute-le ici.
      `CLEANUP_CHUNK` (4000). Ne jamais réintroduire de `notIn` sur la liste complète
      du pack.
 
-48. **Audio Phase 5 : licence par clip, jamais par présomption de corpus.** Les clips
-    Tatoeba importés sont déclarés dans `content/curated/audio.json` et
+48. **Audio Phase 5 : licence par clip, jamais par présomption de corpus.** Le snapshot
+    Tatoeba `jpn_sentences_with_audio.tsv.bz2` est importé dans
+    `normalized/imported/tatoeba-audio.json` et ne conserve que CC BY 4.0 ou CC BY-NC
+    4.0. Chaque clip de `content/curated/audio.json` doit correspondre au snapshot
+    (id audio, id phrase, locuteur, licence) et à une entrée checksummée de
     `tools/content/sources.mjs`. Le téléchargement compare le SHA-256 attendu ; la
     normalisation copie seulement les fichiers validés dans `generated/audio/`. Ne pas
-    importer les licences NC, ND, vides ou inconnues. Une dictée utilise
+    importer les licences ND, vides ou inconnues. Une dictée utilise
     `audio_dictation_kana`, compétence `listening`, carte `AUDIO_DICTATION`, et le
     transcript ne doit jamais apparaître dans le prompt.
 
@@ -445,15 +448,15 @@ ajoute-le ici.
     publier les fichiers, le pack ou l'application tant qu'un clip CC BY-NC est chargé ;
     une version distribuée doit revenir aux seules licences compatibles commercialement.
 
-50. **Import audio massif différé.** Le lot actuel contient 3 clips CC BY 4.0. Le
-    snapshot Tatoeba japonais du 2026-08-08 contient aussi 1 282 clips CC BY-NC 4.0,
-    éligibles seulement selon ADR-002. Cette extension est volontairement reportée à une
-    tâche dédiée : télécharger l'export
-    `jpn_sentences_with_audio.tsv.bz2`, filtrer strictement `CC BY-NC 4.0`, conserver
-    pour chaque clip l'auteur, l'id audio, l'id phrase, la licence, l'attribution, le
-    fichier brut et le SHA-256, puis ne rattacher que les phrases/transcriptions
-    pédagogiquement exploitables. Ne jamais importer les 1 282 clips aveuglément ni
-    générer une dictée sans réponse kana explicitement validée. Terminer par
+50. **Sélection audio CC BY-NC.** Le snapshot Tatoeba japonais du 2026-08-08 reste la
+    source des candidats. `normalize` retient une ressource par phrase avec traduction
+    française et annotation kuromoji, privilégie CC BY 4.0, télécharge le clip et
+    consigne son SHA-256 dans `reports/audio-selection.json`. Les téléchargements audio
+    sont limités à quatre requêtes parallèles pour respecter l'API Tatoeba. Les échecs de
+    téléchargement sont consignés mais non publiés. Au second passage, tout checksum
+    modifié bloque le pipeline. Le snapshot actuel produit 645 clips automatiques ; ne
+    pas figer ce nombre, lire le rapport. Ne créer une entrée dans `audio.json` que pour une
+    exception éditoriale ou une dictée dont la réponse kana a été validée. Terminer par
     `content:normalize`, `content:generate`, `content:validate`, `content:publish` et
     `content:load`.
 

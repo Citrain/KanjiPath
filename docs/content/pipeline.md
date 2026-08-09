@@ -35,8 +35,8 @@ réutilisés tant qu'ils existent.
 
 | Étape | Rôle | Sorties |
 |---|---|---|
-| `download` | télécharge KANJIDIC2, JMdict, KRADFILE (JSON), KanjiVG, Tatoeba, kanji-data et les clips audio explicitement licenciés ; calcule les checksums sha256 et refuse un checksum audio inattendu | `content/raw/*`, `content/reports/download.json` |
-| `import` | parse les sources brutes (XML KANJIDIC2, XML JMdict en flux, TSV Tatoeba + liens, zip KanjiVG) | `content/normalized/imported/*.json` |
+| `download` | télécharge KANJIDIC2, JMdict, KRADFILE (JSON), KanjiVG, Tatoeba, kanji-data, le snapshot audio Tatoeba et les clips explicitement sélectionnés ; calcule les checksums sha256 et refuse un checksum audio inattendu | `content/raw/*`, `content/reports/download.json` |
+| `import` | parse les sources brutes (XML KANJIDIC2, XML JMdict en flux, TSV Tatoeba + liens + audio, zip KanjiVG) | `content/normalized/imported/*.json` |
 | `normalize` | fusionne avec le curaté (`content/curated/`), sélectionne vocabulaire (JMdict FR) et phrases (Tatoeba), matérialise les ressources audio validées, **annote les phrases et les mini-textes** (tokenisation kuromoji : lecture kana + romaji par token), calcule le **romaji** des lectures de kanji et du vocabulaire, extrait et **assainit** les SVG KanjiVG | `content/normalized/{kanji,vocabulary,sentences,texts,audio,curriculum,sources}.json`, `content/generated/{kanjivg,audio}/*` |
 | `generate` | génère les exercices de façon **déterministe** (seed = gabarit + kanji + variante + version du pack), dont les dictées audio | `content/generated/exercises.json` |
 | `validate` | applique les règles ADR (doublons, réponses, distracteurs, seuils de couverture **par niveau**, kanji des mini-textes bornés au niveau, licences, provenance) ; échec bloquant | `content/reports/validate.json` |
@@ -131,6 +131,27 @@ niveau** (N5 d'abord), sans doublon entre niveaux.
   uniquement ; aucun attribut préfixé `kvg:` afin de produire un XML valide sans
   déclaration de namespace), servis par `GET /kanji/:literal/svg`.
 
+### Audio Tatoeba
+
+- Le snapshot `jpn_sentences_with_audio.tsv.bz2` est téléchargé et importé dans
+  `content/normalized/imported/tatoeba-audio.json`. Seuls les enregistrements dont la
+  licence individuelle est exactement `CC BY 4.0` ou `CC BY-NC 4.0` sont retenus comme
+  candidats ; tous les autres sont écartés.
+- Le pipeline sélectionne une ressource par phrase japonais-français annotable, en
+  préférant CC BY 4.0 à CC BY-NC 4.0 lorsqu'une phrase possède plusieurs clips. Il
+  télécharge chaque fichier depuis l'API Tatoeba, enregistre son SHA-256 dans
+  `content/reports/audio-selection.json` et refuse toute modification ultérieure du
+  checksum. Les refus de téléchargement restent consignés dans ce rapport et ne sont pas
+  publiés.
+- `content/curated/audio.json` ne contient que les clips ou les dictées nécessitant une
+  validation éditoriale explicite. Chaque clip manuel doit correspondre au snapshot sur
+  l'identifiant audio, l'identifiant de phrase, le locuteur et la licence.
+- Les clips CC BY-NC 4.0 ne sont utilisables que dans l'instance privée définie par
+  ADR-002. Leur présence interdit tout partage du pack, publication de l'application ou
+  usage commercial.
+- Un clip associé à une dictée porte une réponse kana vérifiée manuellement. Le
+  transcript est conservé dans la ressource et l'explication, jamais dans le prompt.
+
 ## Arborescence `content/`
 
 ```text
@@ -176,10 +197,11 @@ corps ou contenant un kanji hors référentiel / de niveau supérieur, seuils no
 atteints, licence manquante, contenu `draft` dans le pack, SVG manquant, référence
 vers ressource inexistante.
 
-Pour l'audio, le validateur exige aussi un fichier packagé, un SHA-256, une licence,
-une attribution, un chemin sous `generated/audio/` et des liens valides vers le mot ou
-la phrase. Une dictée doit référencer une ressource audio, avoir une correction kana
-et ne doit jamais porter le transcript dans son prompt.
+Pour l'audio, le validateur exige aussi un fichier packagé, un SHA-256, une licence
+autorisée, l'identifiant audio Tatoeba, l'identifiant de phrase, le locuteur, une
+attribution, un chemin sous `generated/audio/` et un lien valide vers le mot ou la
+phrase. Une dictée doit référencer une ressource audio, avoir une correction kana et ne
+doit jamais porter le transcript dans son prompt.
 Liste complète : `adr/2-content-pipeline/README.md#tests-automatiques-de-contenu`.
 
 ## Manifeste de publication
