@@ -36,6 +36,13 @@ pnpm content:build
 - Sauvegarde quotidienne de la base.
 - `COOKIE_SECURE=true` (cookies `Secure`), `CORS_ORIGIN` restreint au domaine du site.
 
+## Services IA locaux (conversation planifiée)
+
+Le mode conversation d'ADR-003 est prévu pour une instance locale. Ollama, STT,
+VOICEVOX et le TTS français éventuel restent liés a `127.0.0.1` et ne sont pas exposés
+par le reverse proxy. Une installation qui ne les fournit pas doit conserver le mode
+texte et rendre un diagnostic explicite. Voir [local-ai.md](./local-ai.md).
+
 ## Variables de production
 
 ```env

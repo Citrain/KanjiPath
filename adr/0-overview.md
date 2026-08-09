@@ -27,7 +27,9 @@ Application web moderne pour apprendre les kanji du débutant au avancé, align�
 
 - **JLPT** : jamais présenter les listes comme officielles → "Parcours aligné sur le JLPT"
 - **Public** : interface française, débutant/intermédiaire, mobile-first
-- **Pas d'IA runtime** : tous les exercices sont fixes, validés, versionnés
+- **Pas d'IA runtime dans les exercices** : tous les exercices sont fixes, validés,
+  versionnés. ADR-003 définit l'exception conversationnelle locale, sous contrôle du
+  backend et sans source de vérité LLM.
 
 ---
 
@@ -58,6 +60,7 @@ Application web moderne pour apprendre les kanji du débutant au avancé, align�
 | `9-security-perf/` | Sécurité, performance, résilience, observabilité |
 | `10-testing-deployment/` | Tests et déploiement |
 | `11-phases/` | Plan d'implémentation, phases, critères, principes |
+| `12-local-ai-conversation.md` | Découpage opérationnel de l'ADR-003 (conversation vocale locale) |
 
 ---
 

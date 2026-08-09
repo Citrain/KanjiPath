@@ -41,3 +41,30 @@ export type StudySessionMode = (typeof SESSION_MODES)[number];
 
 export const FURIGANA_MODES = ['always', 'hover', 'never'] as const;
 export type FuriganaMode = (typeof FURIGANA_MODES)[number];
+
+export const CONVERSATION_SCENARIOS = [
+  'introduction',
+  'restaurant',
+  'shop',
+  'travel',
+  'work',
+  'leisure',
+  'video_games',
+  'family',
+] as const;
+export type ConversationScenario = (typeof CONVERSATION_SCENARIOS)[number];
+
+export const CONVERSATION_DIFFICULTIES = ['easy', 'normal', 'hard'] as const;
+export type ConversationDifficulty = (typeof CONVERSATION_DIFFICULTIES)[number];
+
+export const CONVERSATION_CORRECTION_MODES = [
+  'none',
+  'important',
+  'all',
+  'end_of_turn',
+  'end_of_session',
+] as const;
+export type ConversationCorrectionMode = (typeof CONVERSATION_CORRECTION_MODES)[number];
+
+export const JAPANESE_SPEECH_SPEEDS = ['slow', 'normal', 'natural'] as const;
+export type JapaneseSpeechSpeed = (typeof JAPANESE_SPEECH_SPEEDS)[number];

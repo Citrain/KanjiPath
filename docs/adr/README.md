@@ -5,6 +5,7 @@ kanji**, conservée à la racine du dépôt pour rester la source de vérité un
 
 - **ADR complète** : [`../../ADR-001-plateforme-apprentissage-kanji.md`](../../ADR-001-plateforme-apprentissage-kanji.md)
 - **ADR-002, instance personnelle et audio CC BY-NC** : [`../../ADR-002-usage-personnel-et-audio-non-commercial.md`](../../ADR-002-usage-personnel-et-audio-non-commercial.md)
+- **ADR-003, conversation vocale japonaise locale** : [`../../ADR-003-conversation-vocale-japonais-locale.md`](../../ADR-003-conversation-vocale-japonais-locale.md)
 - **Découpage opérationnel par tâche** : [`../../adr/`](../../adr/)
 
 ## Découpage (`adr/`)
@@ -26,6 +27,8 @@ kanji**, conservée à la racine du dépôt pour rester la source de vérité un
 
 ## Historique des versions de l'ADR
 
+- **1.3** — ADR-003 autorise un LLM local uniquement pour le mode conversation oral,
+  sous contraintes et validation applicatives. Les exercices restent déterministes.
 - **1.2** — Montée de Prisma ORM **v6 → v7** : client généré dans
   `apps/api/src/generated/prisma` (provider `prisma-client`, `output` requis),
   moteur « Rust-free », driver adapter `@prisma/adapter-mariadb` obligatoire,
@@ -34,6 +37,10 @@ kanji**, conservée à la racine du dépôt pour rester la source de vérité un
 - **1.1** — PostgreSQL 18 remplacé par **MariaDB 11.4 LTS+** (local, sans Docker,
   Prisma provider `mysql`) ; suppression de Docker Compose pour le développement local.
 - **1.0** — version initiale.
+
+ADR-003 complète ADR-001 avec une exception strictement bornee : le LLM local peut
+conduire une conversation orale, mais les exercices publies restent fixes, versionnes et
+valides hors runtime.
 
 ## Règle
 

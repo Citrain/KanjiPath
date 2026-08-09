@@ -12,6 +12,7 @@ Plateforme web d'apprentissage progressif des kanji — parcours **aligné sur l
 | [content/licensing.md](./content/licensing.md) | Sources de données, licences, provenance, règles d'attribution |
 | [operations/development.md](./operations/development.md) | Environnement local (sans Docker), MariaDB, scripts de lancement |
 | [operations/deployment.md](./operations/deployment.md) | Environnements, production, vérifications |
+| [operations/local-ai.md](./operations/local-ai.md) | Préparation Windows des services locaux du futur mode conversation vocal |
 | [adr/README.md](./adr/README.md) | Pointeur vers l'ADR-001 et son découpage par tâche |
 | [agent/guide.md](./agent/guide.md) | Guide pour agent de code : conventions, pièges connus, recettes |
 
@@ -19,6 +20,8 @@ Plateforme web d'apprentissage progressif des kanji — parcours **aligné sur l
 
 - **ADR-001** : `../ADR-001-plateforme-apprentissage-kanji.md` (racine) — décision
   d'architecture complète. Découpage opérationnel dans `../adr/`.
+- **ADR-003** : `../ADR-003-conversation-vocale-japonais-locale.md` — mode
+  conversation vocal local, fournisseurs STT/LLM/TTS et contraintes pédagogiques.
 - **Règles agent** : `../AGENTS.md`.
 - **Démarrage rapide** : `../README.md`.
 
@@ -156,3 +159,9 @@ Le snapshot actuel produit 645 clips automatiques exploitables, auxquels s'ajout
 L'instance est réservée à un usage personnel privé : `ADR-002-usage-personnel-et-audio-non-commercial.md`
 autorise les clips CC BY-NC avec attribution, mais interdit toute distribution publique
 ou commerciale tant qu'ils sont présents.
+
+Le mode de conversation vocale locale est disponible à `/conversation` pour N5/N4. Son
+mode texte reste opérationnel sans IA locale. L'API est le seul relais vers les services
+loopback, conserve uniquement les transcriptions finales et les tours, et valide le JSON
+du LLM avec une unique réparation avant un fallback texte. Les exercices et le pipeline
+restent déterministes et sans LLM au runtime.

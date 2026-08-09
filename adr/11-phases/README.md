@@ -118,6 +118,10 @@ attribution et licence dans le pipeline. Les fiches ont une lecture explicite sa
 autoplay, et les dictées fixes `audio_dictation_kana` alimentent la compétence
 `listening` et la carte `AUDIO_DICTATION`.
 
+Le mode conversation vocale locale est planifié séparément par ADR-003. Il démarre par
+le mode texte et les providers injectables, avant STT/WebSocket, et ne remplace jamais
+les exercices déterministes.
+
 ---
 
 ## Critères d'acceptation fonctionnels

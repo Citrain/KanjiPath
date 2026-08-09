@@ -14,6 +14,7 @@ de contenu propre. Pas de microservices : une seule API modulaire.
 | Données | MariaDB 11.4+ (testée 12.x), Prisma ORM 7 (provider `mysql`, driver adapter `@prisma/adapter-mariadb`) |
 | Répétition espacée | `ts-fsrs` derrière une interface du domaine |
 | Contenu | pipeline déterministe `tools/content/` (voir `docs/content/pipeline.md`) |
+| Conversation vocale locale | providers injectables : faster-whisper (STT), Ollama/Qwen (LLM), VOICEVOX (TTS JA), TTS FR configurable ; voir ADR-003 |
 | Qualité | Vitest, Biome |
 
 Détail et justification : `adr/1-foundations/README.md`.
@@ -39,6 +40,7 @@ apps/
         study/         # session d'étude (choix de mode — jour/points faibles/libre/ciblée,
                        # quiz clavier 1-4/Entrée, résultats)
         settings/      # préférences (niveau actif, limites, furigana, romaji, thème)
+        conversation/  # choix de session, texte/micro, transcripts et corrections
         sources/       # page sources et licences
       lib/             # apiFetch (client HTTP, CSRF), theme (encre/washi),
                        # format (dates), progress (série), skills (libellés)
@@ -62,6 +64,7 @@ apps/
         study/         # sessions, file d'étude, réponses (FSRS), reprise, révision ciblée
         progress/      # tableau de bord, niveaux, points faibles, historique, statistiques
         settings/      # préférences utilisateur
+        conversation/  # orchestrateur, providers STT/LLM/TTS et WebSocket local
     test/              # tests d'intégration (e2e)
 
 packages/
@@ -170,6 +173,8 @@ MariaDB : kanji, vocabulaire, phrases, mini-textes, exercices, cartes FSRS, prog
 - Les id du pack sont les id DB (upsert idempotent) : la progression survit aux
   rechargements de contenu.
 - Les SVG KanjiVG sont assainis au build puis servis par l'API (voir sécurité).
+- Le futur mode conversation (ADR-003) est séparé du pipeline : son LLM local ne peut
+  ni publier du contenu ni déterminer seul le niveau ou les objectifs pédagogiques.
 
 ## Endpoints
 
@@ -229,6 +234,20 @@ PATCH  /settings                     # activeLevel, dailyNewLimit, reviewLimit, 
 # Contenu
 GET    /sources
 POST   /content/issues
+
+# Conversation locale
+POST   /conversations
+GET    /conversations                 # sessions persistées, non affichées dans l'UI conversation
+GET    /conversations/:id
+POST   /conversations/:id/turns       # mode texte, transcript final uniquement
+POST   /conversations/:id/end
+POST   /conversations/:id/reopen      # route API de reprise, non exposée dans l'UI actuelle
+GET    /conversation-topics
+GET    /conversation-settings
+GET    /conversation-progress         # LearningEvent par type + activité récente
+GET    /voices/ja
+GET    /local-ai/health
+WS     /conversations/:id/live
 ```
 
 ## Sécurité
@@ -242,6 +261,11 @@ Détail complet : `adr/9-security-perf/README.md`. Points clés :
 - Les SVG KanjiVG sont **assainis au build** (balises `svg/g/path` et attributs
   autorisés uniquement) puis servis avec `X-Content-Type-Options: nosniff` et un
   chemin résolu sous `content/generated/kanjivg` (pas de traversée).
+- Les services IA de conversation sont locaux et liés a `127.0.0.1`. Audio et transcripts
+  sont des données utilisateur : les buffers audio et `stt.partial` sont éphémères, seuls
+  les transcripts `stt.final` et les tours sont persistés. Le relais API diffuse
+  `stt.partial` sans l'envoyer au LLM. Les chunks sont bornés à 64 KiB, un tour à 2 MiB;
+  aucun appel tiers ni tool calling LLM ne sont autorisés.
 
 ## Performance / index
 

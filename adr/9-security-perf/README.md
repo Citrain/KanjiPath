@@ -22,11 +22,20 @@
 - journalisation sans réponses sensibles
 - aucune publicité ou traçage tiers
 - télémétrie désactivable
+- les transcripts et la voix de conversation (ADR-003) sont des données utilisateur ;
+  aucun envoi tiers par défaut et aucun audio conservé sans choix explicite
 
 ### 15.3 SVG
 
 - les fichiers KanjiVG sont traités comme des données contrôlées lors du build
 - **ne jamais injecter un SVG arbitraire fourni par un utilisateur**
+
+### 15.4 Conversation locale (future)
+
+- Ollama, STT et TTS liés à `127.0.0.1`, sans exposition LAN par défaut
+- taille maximale des chunks et durée maximale des tours
+- historique borné, protection contre accumulation mémoire
+- sortie LLM validée par schéma ; aucune exécution de tool calling en V1
 
 ---
 
@@ -43,6 +52,7 @@
 - cache des fiches et SVG
 - pagination des grandes listes
 - index MariaDB sur les files de révision
+- profilage séparé STT, LLM et TTS avant toute optimisation de conversation
 
 ### 16.1 Hors connexion (V1.1)
 

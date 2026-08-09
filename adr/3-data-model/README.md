@@ -119,6 +119,17 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
 - `attribution_text`, `license`, `editorial_status`
 - Les fichiers restent dans le pack généré ; la base ne stocke pas de binaire.
 
+### Conversation locale (ADR-003, future)
+
+- `conversation_sessions` : utilisateur, niveau, scénario, difficulté, objectifs,
+  politique de correction, état et dates.
+- `conversation_turns` : session, transcript final, transcript corrigé, réponse,
+  correction structurée, contexte pédagogique et dates.
+- `conversation_learning_events` : tour, grammaire ou vocabulaire ciblé, résultat,
+  type d'erreur et date.
+- Les binaires audio ne sont pas persistés par défaut. Une migration devra définir les
+  contraintes et index avant toute implémentation.
+
 ---
 
 ## 5. Exercices

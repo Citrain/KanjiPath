@@ -9,6 +9,10 @@
 
 ### Historique des versions
 
+- **1.3** (2026-08-09) : le mode conversation vocale local est défini par
+  `ADR-003-conversation-vocale-japonais-locale.md`. Il autorise un LLM local seulement
+  pour conduire une conversation sous contraintes applicatives ; les exercices restent
+  fixes, versionnés et sans LLM au runtime.
 - **1.2** (2026-08-08) : montée de Prisma ORM **v6 → v7** (client généré dans
   `apps/api/src/generated/prisma`, moteur « Rust-free », driver adapter
   `@prisma/adapter-mariadb` obligatoire, configuration CLI dans
@@ -152,6 +156,10 @@ Tous les exercices sont :
 - ou générés de manière déterministe pendant le développement ou le build.
 
 Le résultat généré doit être enregistré dans des fichiers versionnés ou en base, relisible et testable.
+
+L'exception limitée du mode conversation orale local est documentée par ADR-003 : le
+LLM local n'y conduit que le dialogue, sous les contraintes et la validation du backend.
+Il ne génère pas les exercices publiés et ne devient pas la source de vérité du niveau.
 
 Une IA peut éventuellement aider le développeur à créer du contenu, mais rien ne doit être publié sans validation linguistique et sans être stocké comme contenu fixe.
 

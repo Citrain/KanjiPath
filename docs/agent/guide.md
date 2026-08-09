@@ -6,7 +6,8 @@ ajoute-le ici.
 
 ## Démarrer une tâche
 
-1. Lire `AGENTS.md`, puis le dossier `adr/` du thème concerné.
+1. Lire `AGENTS.md`, puis le dossier `adr/` du thème concerné. Pour la conversation,
+   lire aussi ADR-003 et `docs/operations/local-ai.md`.
 2. Lire le(s) document(s) `docs/` du module touché.
 3. Vérifier l'état : `pnpm typecheck && pnpm lint && pnpm test`.
 4. Travailler, puis repasser ces trois commandes (+ `pnpm content:validate` si le
@@ -59,6 +60,7 @@ ajoute-le ici.
 | Chargement du pack en base | `tools/content/load.mjs` (`pnpm content:load`) |
 | Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json`, `texts.json` (`n5/`→`n1/`) + `components-fr.json`, `radicals-fr.json`, `confusions-fr.json` |
 | Squelette curaté N1 (généré) | `tools/content/n1-scaffold.mjs` (reconstruit `content/curated/n1/kanji.json` ; mnémotechniques dans `content/curated/n1/mnemonics/*.json`) |
+| Conversation vocale locale | `apps/api/src/modules/conversation/`, `apps/web/src/features/conversation/`, contrats `conversation.ts` ; ADR-003 ensuite |
 
 ## Pièges connus (IMPORTANT)
 
@@ -461,8 +463,156 @@ ajoute-le ici.
     modifié bloque le pipeline. Le snapshot actuel produit 645 clips automatiques ; ne
     pas figer ce nombre, lire le rapport. Ne créer une entrée dans `audio.json` que pour une
     exception éditoriale ou une dictée dont la réponse kana a été validée. Terminer par
-    `content:normalize`, `content:generate`, `content:validate`, `content:publish` et
-    `content:load`.
+     `content:normalize`, `content:generate`, `content:validate`, `content:publish` et
+     `content:load`.
+
+51. **Conversation locale : LLM borné par l'application.** ADR-003 autorise Ollama
+    seulement pour le dialogue oral ; les exercices restent fixes. Le frontend ne doit
+    appeler ni Ollama, ni faster-whisper, ni VOICEVOX. Le backend utilise des providers
+    injectables, valide strictement la sortie JSON du LLM, ne retente qu'une fois et
+    maintient un fallback texte. Les services sont limités à `127.0.0.1`; aucun audio
+    ou transcript n'est envoyé à un tiers par défaut.
+
+52. **Conversation locale : partial != final.** Seul `stt.final` est persisté et
+    transmis au LLM. `stt.partial` est une hypothèse UI instable. Ne pas conserver les
+    audios par défaut ; limiter taille des chunks, durée des tours et historique afin
+    de borner mémoire et données utilisateur. Consulter `docs/operations/local-ai.md`
+     avant de modifier le setup GPU, Docker, STT ou TTS.
+
+53. **Conversation locale : WebSocket API uniquement.** La route navigateur est
+    `/api/v1/conversations/:id/live`, authentifiée par le cookie de session et proxyfiée
+    par Vite en développement (`ws: true`). Les chunks PCM mono 16 kHz sont limités à
+    64 KiB et 2 MiB par tour; ne pas exposer une URL des services locaux au web.
+
+54. **Conversation locale : démarrage STT.** `services/stt/` contient le conteneur
+    faster-whisper et son protocole HTTP/WebSocket. Dans Docker, Uvicorn écoute
+    `0.0.0.0` seulement dans le conteneur; la publication Docker DOIT rester
+    `-p 127.0.0.1:8765:8765`. Le gateway met en file au plus huit messages avant
+    l'authentification, puis relaie les partials sans persistance.
+
+55. **Démarrage vocal Windows.** `dev.ps1 -Voice` et `pnpm dev:voice` préparent le venv
+    `services/stt/.venv`, démarrent Ollama/STT et activent `LOCAL_AI_ENABLED` seulement
+    pour ce processus de développement. Ne pas lancer cette option par défaut : elle peut
+    télécharger un modèle Ollama et consommer CPU/GPU. VOICEVOX demande un port 50021 déjà
+    actif ou le paramètre explicite `-VoicevoxPath`.
+
+56. **Venv STT local.** `services/stt/.venv` est un environnement généré, ignoré par Git
+    et Biome via `.venv/`. Ne jamais y appliquer de formatage ni y committer une dépendance.
+    `dev.ps1 -Voice` transmet `STT_MODEL`, `STT_DEVICE` et `STT_COMPUTE_TYPE` de `.env`
+    au processus séparé : modifier ces variables impose un redémarrage du STT.
+    `ctranslate2.get_cuda_device_count()` peut détecter un GPU même si les DLL CUDA 12/
+    cuDNN 9 ne sont pas accessibles : `cublas64_12.dll` absent impose le retour CPU.
+    Sous Windows, installer les wheels NVIDIA CUDA Runtime, NVRTC, cuBLAS et cuDNN dans le
+    venv STT; `dev.ps1` ajoute leurs répertoires `nvidia/*/bin` au `PATH` seulement pour
+    le processus STT. Les versions installées sont consignées dans
+    `docs/operations/local-ai.md`.
+
+57. **Délai LLM local.** La génération Ollama attend quatre minutes, car un modèle 14B
+    chargé sur CPU peut dépasser largement le délai HTTP de santé. Ne pas réduire ce délai
+    globalement : les health checks restent bornés à huit secondes et le modèle est gardé
+    dix minutes en mémoire après une réponse. Le STT `large-v3-turbo` sur CPU a un délai
+    de tour distinct de 60 secondes; ne pas le réduire à 15 secondes.
+
+58. **Qwen en conversation.** Envoyer `think: false` à Ollama pour les tours structurés
+    de conversation : le raisonnement interne augmente la latence et peut empêcher une
+    réponse JSON courte d'arriver avant le délai, sans apporter de valeur pédagogique.
+
+59. **Sessions conversationnelles.** Les sessions et tours restent persistés pour le suivi
+    pédagogique, mais `/conversation` n'affiche ni historique ni reprise. La route
+    `POST /conversations/:id/reopen` reste disponible côté API et clôture toute autre
+    session active du même utilisateur.
+
+60. **Champs de réponse japonais.** La validation Zod exige un caractère japonais dans
+    `reply.ja` et uniquement du latin imprimable dans `reading`. Ne pas imposer ce schéma
+    complet au décodeur Ollama: sur Qwen 14B il peut bloquer la génération; utiliser son
+    mode JSON natif, puis valider et réparer une seule fois côté API.
+
+61. **WebSocket STT et Node 24.** Le `final` de `startLive` peut être rejeté par une
+    fermeture socket avant que `finish()` ne l'attende. Toujours lui attacher un `catch`
+    neutre à sa création, sinon Node traite ce rejet comme non géré et arrête NestJS.
+    Si le streaming échoue, envoyer uniquement le buffer mémoire du tour terminé vers
+    `POST /transcribe`; ne jamais le persister.
+
+62. **Retour microphone navigateur.** Le vu-mètre de `/conversation` est calculé sur les
+    échantillons `getUserMedia` avant leur envoi. Il atteste seulement la capture locale,
+    jamais la réception STT; conserver cette distinction dans son libellé.
+
+63. **Tour conversationnel optimiste.** Après un envoi texte ou l'arrêt du micro, afficher
+    immédiatement une bulle utilisateur et un loader partenaire, puis verrouiller le
+    formulaire jusqu'à `assistant.text` ou `error`. Pour la voix, la bulle commence par
+    l'état de transcription et est remplacée par `stt.final`.
+
+64. **VOICEVOX Windows.** Installer l'édition CPU avec Winget (`HiroshibaKazuyuki.VOICEVOX.CPU`)
+    quand Ollama et le STT occupent la VRAM. `dev.ps1 -Voice` recherche l'installation Winget
+    via le registre utilisateur et démarre `VOICEVOX.exe`; conserver cette détection comme
+    secours au paramètre explicite `-VoicevoxPath`.
+
+65. **Libellés VOICEVOX.** L'API retourne des noms et styles japonais. Le sélecteur web les
+    romanise et traduit les styles connus; utiliser `Voix <id>` et `Style <id>` comme
+    fallback plutôt que d'afficher un libellé uniquement japonais.
+
+66. **Révision grammaticale conversationnelle.** Une demande libre de réviser une forme
+    (ex. `〜ている`) reste une instruction de dialogue, pas la création d'un exercice LLM.
+    Le prompt doit maintenir cette forme, corriger les essais et relancer; ne jamais répondre
+    par une formule d'abandon après une erreur partielle.
+
+67. **Réponses contextualisées.** Le partenaire doit interpréter toute réponse brève,
+    elliptique ou en romaji à partir de l'échange précédent. La correction appartient à sa
+    carte dédiée; la réplique doit apporter une information ou réaction nouvelle puis une
+    relance, jamais seulement répéter la réponse utilisateur. Si une sortie JSON valide ne
+    comporte aucune question de suivi, la régénérer une seule fois avec le même historique;
+    ce n'est pas une nouvelle conversation LLM.
+
+68. **Historique conversationnel complet.** Le prompt reçoit tous les tours de la session,
+    pas une fenêtre des derniers tours. Les tours sont fournis à Ollama comme messages
+    `user`/`assistant`, pas sérialisés dans le prompt système. Avant de répondre, le LLM reçoit
+    l'instruction de relire ce contexte complet. Prévoir un `OLLAMA_CONTEXT_LENGTH` suffisant;
+    cette instance locale utilise 32 768 tokens.
+
+69. **Sévérité des corrections.** Une omission lexicale, une forme incomplète ou une phrase
+    non naturelle est `important`, même si le sens reste devinable. Ainsi le mode de correction
+    « Importantes » ne masque pas les essais que l'apprenant doit retravailler.
+
+70. **Relecture romaji.** Si une entrée tout en romaji reçoit `correction: null`, faire une
+    seule relecture locale avec le même historique. N'adopter son résultat que s'il contient une
+    correction réellement nécessaire; sinon préserver la réponse initiale.
+
+71. **Relances non répétitives.** Une relance doit développer le sujet et ne pas redemander
+    une information déjà donnée. Rejeter une sortie dont la question est identique à une
+    question assistant présente dans l'historique, puis régénérer une seule fois avec ce
+    contexte.
+
+72. **Romaji elliptique.** Les petits modèles confondent facilement une réponse incomplète et
+    une salutation. Le prompt de conversation doit donc inclure un exemple contrasté : ne jamais
+    corriger `genki desu ka`, mais corriger `ki desu` en `元気です` seulement après une question
+    assistant qui rend cette intention non ambiguë. La relecture romaji emploie un prompt court
+    distinct du prompt de dialogue et un mini-contrat (`needed`, `corrected`, `explanationFr`),
+    pour éviter que ses nombreuses règles masquent la correction. L'API valide ce contrat puis
+    ajoute la correction a une reponse deja validee. Ne pas coder cette association comme une
+    règle métier : conserver la validation JSON et la relecture romaji du backend.
+
+73. **JSON LLM partiellement structuré.** Qwen peut fournir `corrected` sans `needed`,
+    `severity` ni `explanationFr`. Le backend accepte seulement cette forme de correction
+    identifiable, complète les métadonnées et une explication française minimale, puis valide le
+    résultat final avec le schéma Zod public. Ne pas accepter arbitrairement des champs inconnus
+    ni contourner la validation du contrat API.
+
+74. **Fausse correction.** Si `corrected` est identique au transcript après normalisation NFKC,
+    casse, espaces et ponctuation, supprimer la correction avant de répondre : le web doit
+    afficher l'état vert `Phrase correcte.`, pas une carte de correction vide ou redondante.
+
+75. **Correction lisible débutant.** `correction.corrected` est affiché directement dans
+    `A dire`: le prompt doit donc exiger uniquement du hiragana ou katakana, sans kanji. Les
+    kanji restent possibles dans `reply.ja`, mais pas dans la reformulation ni les exemples
+    japonais de l'explication française.
+
+76. **Romaji correct.** Ne jamais créer une correction uniquement parce que le modèle réécrit du
+    romaji en kana. Les conventions simplifiées de voyelles longues et les emprunts tels que
+    `menu` sont acceptés tant que la grammaire et le sens sont corrects.
+
+77. **Relance LLM échouée.** Une première réponse JSON valide sans question fraîche déclenche une
+    seule régénération. Si cette dernière échoue ou répète une question, conserver la première
+    réponse plutôt que le fallback statique : elle reste plus contextuelle pour l'apprenant.
 
 ## Recettes
 
@@ -499,6 +649,16 @@ ajoute-le ici.
    dans un module dédié et la tester avec Vitest :
    `pnpm --filter @kanjipath/web test`.
 6. `pnpm --filter @kanjipath/web typecheck`.
+
+### Implémenter le mode conversation locale
+
+1. Lire ADR-003, `adr/12-local-ai-conversation.md` et `docs/operations/local-ai.md`.
+2. Mettre à jour contrats, schéma Prisma et migration avant les contrôleurs.
+3. Créer les providers injectables et `ConversationOrchestrator` ; ne mettre aucune
+   logique pédagogique dans un contrôleur HTTP/WebSocket.
+4. Couvrir le mode texte et les indisponibilités STT/LLM/TTS avant le micro live.
+5. Ajouter tests unitaires (politiques + JSON), intégration (providers mockés) et E2E
+   sans exiger un micro physique.
 
 ### Modifier le contenu curaté d'un niveau (N5, N4, N3, N2)
 

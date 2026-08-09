@@ -34,6 +34,11 @@ const SourcesPage = lazy(() =>
 const SessionPage = lazy(() =>
   import('../features/study/session-page').then((m) => ({ default: m.SessionPage })),
 );
+const ConversationPage = lazy(() =>
+  import('../features/conversation/conversation-page').then((m) => ({
+    default: m.ConversationPage,
+  })),
+);
 
 function AuthSplash() {
   return (
@@ -114,6 +119,14 @@ export function App() {
             element={
               <Protected>
                 <SessionPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/conversation"
+            element={
+              <Protected>
+                <ConversationPage />
               </Protected>
             }
           />

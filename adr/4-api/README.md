@@ -56,6 +56,25 @@ GET    /study/resume
 
 ---
 
+## Conversation locale (ADR-003, future)
+
+```
+POST   /conversations
+GET    /conversations/:id
+POST   /conversations/:id/end
+GET    /conversation-topics
+GET    /conversation-settings
+GET    /voices/ja
+GET    /local-ai/health
+WS     /conversations/:id/live
+```
+
+Le WebSocket transporte les chunks audio et les événements `stt.partial`, `stt.final`,
+correction, texte et audio. Les contrats doivent borner les payloads et valider la
+sortie structurée du LLM côté backend.
+
+---
+
 ## Progression
 
 ```

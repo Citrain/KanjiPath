@@ -24,6 +24,7 @@ model User {
   kanjiProgress  UserKanjiProgress[]
   studySessions  StudySession[]
   contentIssues  ContentIssue[]
+  conversations  ConversationSession[]
 
   @@map("users")
 }
@@ -170,6 +171,37 @@ enum ContentIssueStatus {
   open
   resolved
   rejected
+}
+
+enum ConversationStatus {
+  active
+  ended
+}
+
+enum ConversationDifficulty {
+  easy
+  normal
+  hard
+}
+
+enum ConversationCorrectionMode {
+  none
+  important
+  all
+  end_of_turn
+  end_of_session
+}
+
+enum JapaneseSpeechSpeed {
+  slow
+  normal
+  natural
+}
+
+enum LearningEventType {
+  grammar
+  vocabulary
+  new_item
 }
 
 model ContentSource {
@@ -626,4 +658,58 @@ model ContentIssue {
 
   @@index([subjectType, subjectRef])
   @@map("content_issues")
+}
+
+model ConversationSession {
+  id                  String                     @id @default(uuid())
+  userId              String                     @map("user_id")
+  level               JlptLevel
+  scenario            String
+  difficulty          ConversationDifficulty
+  correctionMode      ConversationCorrectionMode @map("correction_mode")
+  japaneseSpeechSpeed JapaneseSpeechSpeed        @map("japanese_speech_speed")
+  japaneseSpeakerId   Int                        @default(1) @map("japanese_speaker_id")
+  goalsJson           Json                       @map("goals_json")
+  status              ConversationStatus         @default(active)
+  startedAt           DateTime                   @default(now()) @map("started_at")
+  endedAt             DateTime?                  @map("ended_at")
+  user                User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  turns               ConversationTurn[]
+  learningEvents      LearningEvent[]
+
+  @@index([userId, endedAt])
+  @@map("conversation_sessions")
+}
+
+model ConversationTurn {
+  id             String              @id @default(uuid())
+  sessionId      String              @map("session_id")
+  position       Int
+  transcript     String              @db.Text
+  correctionJson Json?               @map("correction_json")
+  replyJson      Json                @map("reply_json")
+  contextJson    Json                @map("context_json")
+  createdAt      DateTime            @default(now()) @map("created_at")
+  session        ConversationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  learningEvents LearningEvent[]
+
+  @@unique([sessionId, position])
+  @@index([sessionId, createdAt])
+  @@map("conversation_turns")
+}
+
+model LearningEvent {
+  id        String              @id @default(uuid())
+  sessionId String              @map("session_id")
+  turnId    String              @map("turn_id")
+  type      LearningEventType
+  targetId  String              @map("target_id")
+  outcome   String
+  createdAt DateTime            @default(now()) @map("created_at")
+  session   ConversationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  turn      ConversationTurn    @relation(fields: [turnId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, createdAt])
+  @@index([turnId])
+  @@map("learning_events")
 }

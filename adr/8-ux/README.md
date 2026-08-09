@@ -47,6 +47,16 @@ Toutes les sections définies dans `5-kanji-card/`.
 - correction détaillée
 - bouton « Signaler un problème »
 
+### Conversation vocale locale (ADR-003)
+
+- sélection du niveau, difficulté, voix et mode de correction ; le sujet se construit
+  librement au fil du dialogue ;
+- mode texte toujours disponible ;
+- état micro et diagnostic explicite si le STT local est indisponible ;
+- transcript partiel visuellement distinct du transcript final ;
+- fil de messagerie, correction française mise en avant et réponse japonaise texte/audio ;
+- contrôle indépendant de l'audio français et de la vitesse japonaise.
+
 ### Statistiques
 
 - précision et rétention

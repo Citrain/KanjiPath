@@ -13,6 +13,7 @@ local et lancé comme service système.
 
 ```bash
 .\dev.bat          # ou : pnpm dev:all
+.\dev.bat -Voice   # ajoute Ollama + STT, VOICEVOX si déjà lancé
 ```
 
 Le script `dev.ps1` (appelé par `dev.bat`) fait tout dans l'ordre :
@@ -32,6 +33,16 @@ Variantes :
 ```bash
 pnpm dev:setup     # tout le setup SANS lancer les serveurs
 pnpm dev           # lance seulement web + api (DB déjà à jour)
+pnpm dev:voice     # setup + web/API + Ollama + STT local
+```
+
+`-Voice` crée au premier passage `services/stt/.venv`, installe ses dépendances et
+démarre faster-whisper sur `127.0.0.1:8765`. Il démarre Ollama et télécharge le modèle
+configuré s'il manque. VOICEVOX reste optionnel : le démarrer avant le script, ou fournir
+son exécutable natif :
+
+```powershell
+.\dev.bat -Voice -VoicevoxPath "C:\chemin\vers\VOICEVOX.exe"
 ```
 
 ## Configuration (`.env`)
@@ -47,6 +58,9 @@ SESSION_TTL_DAYS=30
 
 - `COOKIE_SECURE=true` en production uniquement (HTTPS).
 - `.env` est gitignoré ; ne jamais committer de secret.
+- Les variables `LOCAL_AI_*`, `OLLAMA_*`, `STT_*`, `VOICEVOX_*`, `FRENCH_TTS_*` et
+  `CONVERSATION_*` configurent la conversation locale. Elle reste en mode texte tant que
+  `LOCAL_AI_ENABLED=false`; le détail des services est dans [local-ai.md](./local-ai.md).
 
 ## Scripts utiles
 
@@ -106,3 +120,4 @@ pnpm test
 | Le service MariaDB ne démarre pas | Relancer en administrateur |
 | `pnpm` non reconnu | `npm install -g pnpm` puis rouvrir le terminal |
 | Port 5173/3001 occupé | Un ancien `pnpm dev` tourne encore (Ctrl+C ou tuer le process) |
+| Service de conversation indisponible | Le mode texte doit rester disponible ; vérifier les services loopback selon `local-ai.md` |
