@@ -57,7 +57,7 @@ Ce qui est implémenté :
 - Web : tableau de bord (CTA « Continuer l'apprentissage », stats du jour, série,
   kanji à réviser, activité 30 j, points faibles, parcours N5→N1), liste + recherche
    des kanji avec sélecteur de niveau, filtres de statut, **filtres de fréquence
-   (Top 500 / Top 1000) et tri par fréquence**, fiche kanji complète
+    (Top 500 / Top 1000), avec audio, et tri par fréquence**, fiche kanji complète
    (tracé animé KanjiVG, lectures avec romaji, radical/composants, mnémotechnique,
    progression par compétence, navigation précédent/suivant, signalement de contenu),
    **entraînement à l'écriture** (`/kanji/:literal/ecriture` : grille de pratique,

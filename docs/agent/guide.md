@@ -53,6 +53,7 @@ ajoute-le ici.
 | Tracé d'écriture (validation géométrique) | `apps/web/src/features/kanji/stroke-match.ts` (pur, testé) |
 | Série (jours consécutifs) | `apps/web/src/lib/progress.ts` (calcul côté client) |
 | Pipeline de contenu | `tools/content/run.mjs` (stages dans `tools/content/stages/`) |
+| Filtre kanji avec audio | `hasAudio` dans `ContentService#kanjiList`, consommé par `features/kanji/kanji-list-page.tsx` |
 | Ajouts éditoriaux de kanji (hors listes jlpt_new) | `IMPORT_EXTRA` dans `tools/content/lib/importers.mjs` |
 | Gabarits d'exercices | `tools/content/lib/generators.mjs` |
 | Chargement du pack en base | `tools/content/load.mjs` (`pnpm content:load`) |

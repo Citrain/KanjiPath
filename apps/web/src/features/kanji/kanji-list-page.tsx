@@ -18,12 +18,18 @@ const FILTERS: Array<{ value: KanjiStatus | 'all'; label: string }> = [
 ];
 
 type FrequencyFilter = 'all' | 'top500' | 'top1000';
+type AudioFilter = 'all' | 'withAudio';
 type SortMode = 'order' | 'frequency';
 
 const FREQUENCY_FILTERS: Array<{ value: FrequencyFilter; label: string }> = [
   { value: 'all', label: 'Toutes fréquences' },
   { value: 'top500', label: 'Top 500' },
   { value: 'top1000', label: 'Top 1000' },
+];
+
+const AUDIO_FILTERS: Array<{ value: AudioFilter; label: string }> = [
+  { value: 'all', label: 'Tous les kanji' },
+  { value: 'withAudio', label: 'Avec audio' },
 ];
 
 const SKELETON_COUNT = 12;
@@ -33,6 +39,7 @@ export function KanjiListPage() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<KanjiStatus | 'all'>('all');
   const [frequencyFilter, setFrequencyFilter] = useState<FrequencyFilter>('all');
+  const [audioFilter, setAudioFilter] = useState<AudioFilter>('all');
   const [sort, setSort] = useState<SortMode>('order');
 
   const curricula = useQuery({ queryKey: ['curricula'], queryFn: fetchCurricula });
@@ -61,6 +68,9 @@ export function KanjiListPage() {
       ) {
         return false;
       }
+      if (audioFilter === 'withAudio' && !kanji.hasAudio) {
+        return false;
+      }
       if (query.length === 0) {
         return true;
       }
@@ -76,7 +86,7 @@ export function KanjiListPage() {
       );
     }
     return matching;
-  }, [items, search, filter, frequencyFilter, sort]);
+  }, [items, search, filter, frequencyFilter, audioFilter, sort]);
 
   const counts = useMemo(() => {
     const base: Record<KanjiStatus, number> = { new: 0, learning: 0, reviewing: 0, mastered: 0 };
@@ -87,6 +97,7 @@ export function KanjiListPage() {
   }, [items]);
 
   const masteredRatio = items.length > 0 ? counts.mastered / items.length : 0;
+  const audioCount = items.filter((kanji) => kanji.hasAudio).length;
 
   return (
     <div className="flex flex-col gap-8">
@@ -140,6 +151,7 @@ export function KanjiListPage() {
               setLevel(next);
               setFilter('all');
               setFrequencyFilter('all');
+              setAudioFilter('all');
               setSearch('');
             }}
           />
@@ -191,26 +203,52 @@ export function KanjiListPage() {
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <fieldset aria-label="Filtrer par fréquence" className="flex min-w-0 flex-wrap gap-2">
-          {FREQUENCY_FILTERS.map((item) => {
-            const active = frequencyFilter === item.value;
-            return (
-              <button
-                key={item.value}
-                type="button"
-                aria-pressed={active}
-                onClick={() => setFrequencyFilter(item.value)}
-                className={`cursor-pointer rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-all duration-150 ${
-                  active
-                    ? 'border-transparent bg-sky text-white'
-                    : 'border-line bg-surface text-muted hover:border-line-strong hover:text-ink'
-                }`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </fieldset>
+        <div className="flex min-w-0 flex-wrap gap-4">
+          <fieldset aria-label="Filtrer par fréquence" className="flex min-w-0 flex-wrap gap-2">
+            {FREQUENCY_FILTERS.map((item) => {
+              const active = frequencyFilter === item.value;
+              return (
+                <button
+                  key={item.value}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setFrequencyFilter(item.value)}
+                  className={`cursor-pointer rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-all duration-150 ${
+                    active
+                      ? 'border-transparent bg-sky text-white'
+                      : 'border-line bg-surface text-muted hover:border-line-strong hover:text-ink'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
+          </fieldset>
+
+          <fieldset aria-label="Filtrer par audio" className="flex min-w-0 flex-wrap gap-2">
+            {AUDIO_FILTERS.map((item) => {
+              const active = audioFilter === item.value;
+              return (
+                <button
+                  key={item.value}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setAudioFilter(item.value)}
+                  className={`cursor-pointer rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-all duration-150 ${
+                    active
+                      ? 'border-transparent bg-jade text-white'
+                      : 'border-line bg-surface text-muted hover:border-line-strong hover:text-ink'
+                  }`}
+                >
+                  {item.label}{' '}
+                  {item.value === 'withAudio' ? (
+                    <span className="opacity-70">({audioCount})</span>
+                  ) : null}
+                </button>
+              );
+            })}
+          </fieldset>
+        </div>
 
         <Segmented
           ariaLabel="Trier les kanji"
@@ -274,6 +312,7 @@ export function KanjiListPage() {
                   onClick={() => {
                     setSearch('');
                     setFilter('all');
+                    setAudioFilter('all');
                   }}
                   className="cursor-pointer text-sm font-bold text-accent hover:underline"
                 >

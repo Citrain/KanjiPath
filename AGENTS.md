@@ -73,6 +73,8 @@ pnpm dev                # serveurs seul (DB déjà à jour)
   distribution publique ou commerciale reste interdite tant que ces clips sont présents.
   Conserver fichier brut, checksum, version, attribution et licence dans le pipeline,
   et vérifier chaque clip contre le snapshot Tatoeba `jpn_sentences_with_audio`.
+- Les filtres de contenu affichés sur une liste doivent être fournis par le résumé API
+  (ex. `hasAudio` dans `KanjiSummary`), jamais par une requête par carte côté web.
 - Ne jamais présenter les listes de kanji comme « officielles JLPT » :
   formulation obligatoire « Parcours aligné sur le JLPT ».
 - Authentification : Argon2id, cookie `HttpOnly` + `SameSite=Lax`, CSRF double-submit,

@@ -50,6 +50,26 @@ export class ContentService {
         nextDueByKanji.set(card.subjectId, card.dueAt);
       }
     }
+    const audioResources = await this.prisma.audioResource.findMany({
+      where: { editorialStatus: 'published' },
+      select: {
+        sentence: { select: { japanese: true } },
+        vocabulary: { select: { kanjiLinks: { select: { kanjiId: true } } } },
+      },
+    });
+    const audioKanjiIds = new Set<string>();
+    for (const resource of audioResources) {
+      for (const link of resource.vocabulary?.kanjiLinks ?? []) {
+        audioKanjiIds.add(link.kanjiId);
+      }
+      if (resource.sentence) {
+        for (const entry of entries) {
+          if (resource.sentence.japanese.includes(entry.kanji.literal)) {
+            audioKanjiIds.add(entry.kanjiId);
+          }
+        }
+      }
+    }
 
     const kanji: KanjiSummary[] = entries.map((entry) => {
       const progress = progressByKanji.get(entry.kanjiId);
@@ -66,6 +86,7 @@ export class ContentService {
         status: progress?.status ?? 'new',
         overallScore: progress?.overallScore ?? 0,
         nextDueAt: nextDueByKanji.get(entry.kanjiId)?.toISOString() ?? null,
+        hasAudio: audioKanjiIds.has(entry.kanjiId),
       };
     });
 
@@ -105,6 +126,16 @@ export class ContentService {
       where: { userId, subjectType: 'kanji', subjectId: kanji.id },
       orderBy: { dueAt: 'asc' },
     });
+    const audio = await this.prisma.audioResource.findFirst({
+      where: {
+        editorialStatus: 'published',
+        OR: [
+          { sentence: { japanese: { contains: kanji.literal } } },
+          { vocabulary: { kanjiLinks: { some: { kanjiId: kanji.id } } } },
+        ],
+      },
+      select: { id: true },
+    });
 
     const rawConfusions = Array.isArray(kanji.notes?.confusions)
       ? (kanji.notes?.confusions as string[])
@@ -133,6 +164,7 @@ export class ContentService {
       status: progress?.status ?? 'new',
       overallScore: progress?.overallScore ?? 0,
       nextDueAt: nextDue?.dueAt.toISOString() ?? null,
+      hasAudio: audio !== null,
     };
 
     return {
@@ -195,9 +227,16 @@ export class ContentService {
     }
     const links = await this.prisma.vocabularyKanji.findMany({
       where: { kanjiId: kanji.id },
+      orderBy: [{ vocabulary: { writtenForm: 'asc' } }, { vocabularyId: 'asc' }, { position: 'asc' }],
       include: { vocabulary: { include: { audioResources: { where: { editorialStatus: 'published' } } } } },
     });
-    return links.map((link) => ({
+    const uniqueLinks = new Map<string, (typeof links)[number]>();
+    for (const link of links) {
+      if (!uniqueLinks.has(link.vocabularyId)) {
+        uniqueLinks.set(link.vocabularyId, link);
+      }
+    }
+    return [...uniqueLinks.values()].map((link) => ({
       id: link.vocabulary.id,
       writtenForm: link.vocabulary.writtenForm,
       reading: link.vocabulary.reading,
@@ -353,6 +392,26 @@ export class ContentService {
       where: { literal: { in: [...relatedLiterals] } },
       include: { curriculumLinks: { orderBy: { order: 'asc' }, take: 1 } },
     });
+    const audioResources = await this.prisma.audioResource.findMany({
+      where: { editorialStatus: 'published' },
+      select: {
+        sentence: { select: { japanese: true } },
+        vocabulary: { select: { kanjiLinks: { select: { kanjiId: true } } } },
+      },
+    });
+    const audioKanjiIds = new Set<string>();
+    for (const resource of audioResources) {
+      for (const link of resource.vocabulary?.kanjiLinks ?? []) {
+        audioKanjiIds.add(link.kanjiId);
+      }
+      if (resource.sentence) {
+        for (const item of related) {
+          if (resource.sentence.japanese.includes(item.literal)) {
+            audioKanjiIds.add(item.id);
+          }
+        }
+      }
+    }
     return related.map((k) => {
       const link = k.curriculumLinks[0];
       return {
@@ -368,6 +427,7 @@ export class ContentService {
         status: 'new' as const,
         overallScore: 0,
         nextDueAt: null,
+        hasAudio: audioKanjiIds.has(k.id),
       };
     });
   }

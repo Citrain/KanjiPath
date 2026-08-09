@@ -73,6 +73,9 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(body.level).toBe('N5');
     expect(body.kanji.length).toBeGreaterThanOrEqual(2);
     expect(body.kanji[0].literal).toBe('一');
+    expect(body.kanji.find((item: { literal: string }) => item.literal === '一')?.hasAudio).toBe(
+      true,
+    );
   });
 
   it('retourne la fiche détaillée du kanji 一', async () => {
@@ -105,6 +108,19 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(kanjiToken?.reading).toBe('ひと');
     expect(kanjiToken?.romaji).toBe('hito');
     expect(sentence.audio?.url).toBe('/audio/a-test-1');
+  });
+
+  it('retourne chaque mot une seule fois, même si le kanji y apparaît plusieurs fois', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/kanji/一/vocabulary',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(
+      body.vocabulary.filter((word: { id: string }) => word.id === 'v-test-duplicate'),
+    ).toHaveLength(1);
   });
 
   it('retourne une 404 pour un kanji inconnu', async () => {
@@ -631,6 +647,27 @@ async function seedContent(prisma: PrismaService): Promise<void> {
   await prisma.vocabularyKanji.deleteMany({ where: { vocabularyId: 'v-test-1' } });
   await prisma.vocabularyKanji.create({
     data: { vocabularyId: 'v-test-1', kanjiId: 'k-04e00', position: 0, readingInWord: 'ひと' },
+  });
+  await prisma.vocabulary.upsert({
+    where: { id: 'v-test-duplicate' },
+    create: {
+      id: 'v-test-duplicate',
+      writtenForm: '一一',
+      reading: 'いちいち',
+      romaji: 'ichiichi',
+      meaningFr: 'un par un',
+      partOfSpeech: 'adverbe',
+      sourceId: source.id,
+      editorialStatus: 'published',
+    },
+    update: { editorialStatus: 'published' },
+  });
+  await prisma.vocabularyKanji.deleteMany({ where: { vocabularyId: 'v-test-duplicate' } });
+  await prisma.vocabularyKanji.createMany({
+    data: [
+      { vocabularyId: 'v-test-duplicate', kanjiId: 'k-04e00', position: 0, readingInWord: 'いち' },
+      { vocabularyId: 'v-test-duplicate', kanjiId: 'k-04e00', position: 1, readingInWord: 'いち' },
+    ],
   });
   await prisma.audioResource.upsert({
     where: { id: 'a-test-1' },

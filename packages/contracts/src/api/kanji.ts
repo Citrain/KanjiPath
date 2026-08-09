@@ -47,6 +47,7 @@ export interface KanjiSummary {
   status: KanjiStatus;
   overallScore: number;
   nextDueAt: string | null;
+  hasAudio: boolean;
 }
 
 export interface KanjiDetail extends KanjiSummary {

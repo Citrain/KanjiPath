@@ -48,11 +48,13 @@ const FICHE_SKILLS: Array<{
   { key: 'context', label: 'Contexte' },
   { key: 'stroke', label: 'Traits' },
 ];
+const VOCABULARY_PAGE_SIZE = 8;
 
 export function KanjiCardPage() {
   const { literal = '' } = useParams();
   const { romajiEnabled, furiganaMode } = useDisplaySettings();
   const [issueOpen, setIssueOpen] = useState(false);
+  const [vocabularyPagination, setVocabularyPagination] = useState({ literal, page: 0 });
 
   const detail = useQuery({
     queryKey: ['kanji', literal],
@@ -135,6 +137,25 @@ export function KanjiCardPage() {
     { label: 'Grade JP', value: kanji.schoolGrade ? `${kanji.schoolGrade}` : '—' },
     { label: 'N° parcours', value: `#${kanji.order}` },
   ];
+  const vocabularyItems = vocabulary.data?.vocabulary ?? [];
+  const vocabularyPageCount = Math.max(1, Math.ceil(vocabularyItems.length / VOCABULARY_PAGE_SIZE));
+  const currentVocabularyPage =
+    vocabularyPagination.literal === literal
+      ? Math.min(vocabularyPagination.page, vocabularyPageCount - 1)
+      : 0;
+  const visibleVocabulary = vocabularyItems.slice(
+    currentVocabularyPage * VOCABULARY_PAGE_SIZE,
+    (currentVocabularyPage + 1) * VOCABULARY_PAGE_SIZE,
+  );
+  const changeVocabularyPage = (offset: number) => {
+    setVocabularyPagination((current) => {
+      const page = current.literal === literal ? current.page : 0;
+      return {
+        literal,
+        page: Math.max(0, Math.min(page + offset, vocabularyPageCount - 1)),
+      };
+    });
+  };
 
   return (
     <motion.div
@@ -279,20 +300,22 @@ export function KanjiCardPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <SectionHeader title="Lectures" />
-          <div className="mt-5 flex flex-col gap-5">
-            <div>
+          <div className="mt-6 flex flex-col items-center gap-6 text-center">
+            <div className="w-full">
               <p className="text-xs font-bold uppercase tracking-wider text-sky">
                 On'yomi · sino-japonaise
               </p>
-              <div className="mt-2.5 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap justify-center gap-2.5">
                 {onReadings.map((r) => (
                   <span
                     key={`on-${r.reading}`}
-                    className="flex flex-col items-center rounded-lg border border-sky/20 bg-sky-soft px-3 py-1.5 text-sky"
+                    className="flex min-w-18 flex-col items-center rounded-xl border border-sky/20 bg-sky-soft px-4 py-2 text-sky"
                   >
-                    <span className="font-jp text-lg font-semibold leading-tight">{r.reading}</span>
+                    <span className="font-jp text-2xl font-semibold leading-tight sm:text-3xl">
+                      {r.reading}
+                    </span>
                     {romajiEnabled && r.romaji ? (
-                      <span className="text-[0.6875rem] font-semibold opacity-75">{r.romaji}</span>
+                      <span className="mt-0.5 text-xs font-semibold opacity-75">{r.romaji}</span>
                     ) : null}
                   </span>
                 ))}
@@ -301,24 +324,24 @@ export function KanjiCardPage() {
                 ) : null}
               </div>
             </div>
-            <div>
+            <div className="w-full">
               <p className="text-xs font-bold uppercase tracking-wider text-accent">
                 Kun'yomi · japonaise
               </p>
-              <div className="mt-2.5 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap justify-center gap-2.5">
                 {kunReadings.map((r) => (
                   <span
                     key={`kun-${r.reading}-${r.okurigana ?? ''}`}
-                    className="flex flex-col items-center rounded-lg border border-accent/20 bg-accent-soft px-3 py-1.5 text-accent"
+                    className="flex min-w-18 flex-col items-center rounded-xl border border-accent/20 bg-accent-soft px-4 py-2 text-accent"
                   >
-                    <span className="text-lg font-semibold leading-tight">
+                    <span className="text-2xl font-semibold leading-tight sm:text-3xl">
                       <span className="font-jp">{r.reading}</span>
                       {r.okurigana ? (
-                        <span className="text-sm opacity-60">.{r.okurigana}</span>
+                        <span className="text-base opacity-60">.{r.okurigana}</span>
                       ) : null}
                     </span>
                     {romajiEnabled && r.romaji ? (
-                      <span className="text-[0.6875rem] font-semibold opacity-75">{r.romaji}</span>
+                      <span className="mt-0.5 text-xs font-semibold opacity-75">{r.romaji}</span>
                     ) : null}
                   </span>
                 ))}
@@ -327,7 +350,7 @@ export function KanjiCardPage() {
                 ) : null}
               </div>
             </div>
-            <p className="text-xs text-muted">
+            <p className="text-sm text-muted">
               {commonReadings.length} lecture{commonReadings.length > 1 ? 's' : ''} courante
               {commonReadings.length > 1 ? 's' : ''}
               {rareReadings.length > 0
@@ -335,7 +358,7 @@ export function KanjiCardPage() {
                 : ''}
             </p>
             {rareReadings.length > 0 ? (
-              <details className="group rounded-xl border border-line bg-surface-2 p-3.5">
+              <details className="group w-full rounded-xl border border-line bg-surface-2 p-3.5 text-left">
                 <summary className="cursor-pointer list-none text-sm font-semibold text-muted transition-colors hover:text-ink">
                   <span className="inline-flex items-center gap-2">
                     <ChevronRight
@@ -345,7 +368,7 @@ export function KanjiCardPage() {
                     Lectures rares ({rareReadings.length})
                   </span>
                 </summary>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-3 flex flex-wrap justify-center gap-2">
                   {rareReadings.map((r) => (
                     <span
                       key={`rare-${r.reading}-${r.type}`}
@@ -384,29 +407,33 @@ export function KanjiCardPage() {
         <Card>
           <SectionHeader title="Radical & composants" />
           {kanji.radical ? (
-            <div className="mt-5 flex items-center gap-4 rounded-2xl border border-accent/25 bg-accent-soft p-4">
-              <span className="font-jp text-5xl text-ink">{kanji.radical.literal}</span>
+            <div className="mt-6 flex flex-col items-center justify-center gap-2 rounded-2xl border border-accent/25 bg-accent-soft p-5 text-center">
+              <span className="font-jp text-6xl leading-none text-ink">
+                {kanji.radical.literal}
+              </span>
               <div>
-                <p className="font-bold text-ink">{kanji.radical.nameFr ?? 'radical'}</p>
+                <p className="text-lg font-bold text-ink">{kanji.radical.nameFr ?? 'radical'}</p>
                 <p className="text-sm text-muted">{kanji.radical.meaningFr ?? ''}</p>
-                <p className="mt-1 text-[0.6875rem] font-bold uppercase tracking-wide text-accent">
+                <p className="mt-1.5 text-xs font-bold uppercase tracking-wide text-accent">
                   radical principal
                 </p>
               </div>
             </div>
           ) : (
-            <p className="mt-5 text-sm text-muted">Radical non renseigné.</p>
+            <p className="mt-6 text-center text-sm text-muted">Radical non renseigné.</p>
           )}
           {kanji.components.length > 0 ? (
-            <ul className="mt-4 flex flex-wrap gap-2">
+            <ul className="mt-5 flex flex-wrap justify-center gap-3">
               {kanji.components.map((component, index) => (
                 <li
                   // biome-ignore lint/suspicious/noArrayIndexKey: liste statique de composants, jamais réordonnée
                   key={`${component.literal}-${index}`}
-                  className="flex items-center gap-2.5 rounded-xl border border-line bg-surface-2 px-3 py-2"
+                  className="flex min-w-24 flex-col items-center gap-1.5 rounded-xl border border-line bg-surface-2 px-4 py-3 text-center"
                 >
-                  <span className="font-jp text-2xl text-ink">{component.literal}</span>
-                  <span className="text-xs text-muted">
+                  <span className="font-jp text-3xl leading-none text-ink">
+                    {component.literal}
+                  </span>
+                  <span className="text-sm text-muted">
                     {component.nameFr ?? 'composant'}
                     {component.isRadical ? (
                       <span className="ml-1 font-bold text-accent">· radical</span>
@@ -507,7 +534,7 @@ export function KanjiCardPage() {
       <section aria-labelledby="vocabulaire">
         <SectionHeader
           title="Vocabulaire associé"
-          aside={vocabulary.data ? <Badge>{vocabulary.data.vocabulary.length} mots</Badge> : null}
+          aside={vocabulary.data ? <Badge>{vocabularyItems.length} mots</Badge> : null}
         />
         {vocabulary.isPending ? (
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -515,35 +542,69 @@ export function KanjiCardPage() {
             <Skeleton className="h-32" />
             <Skeleton className="h-32" />
           </div>
-        ) : vocabulary.data && vocabulary.data.vocabulary.length > 0 ? (
-          <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {vocabulary.data.vocabulary.map((word) => (
-              <li
-                key={word.id}
-                className="rounded-2xl border border-line bg-surface p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-1"
-              >
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="font-jp text-2xl text-ink">{word.writtenForm}</span>
-                  <span className="flex flex-col items-end">
-                    <span className="text-sm font-bold text-accent">{word.reading}</span>
-                    {romajiEnabled && word.romaji ? (
-                      <span className="text-[0.6875rem] font-medium text-muted">{word.romaji}</span>
-                    ) : null}
-                  </span>
-                </div>
-                <p className="mt-2 text-sm leading-snug text-ink-soft">{word.meaningFr}</p>
-                {word.audio ? (
-                  <div className="mt-3">
-                    <AudioButton audio={word.audio} label={`Écouter ${word.writtenForm}`} />
+        ) : vocabularyItems.length > 0 ? (
+          <>
+            <ul className="mt-5 grid gap-4 lg:grid-cols-2">
+              {visibleVocabulary.map((word) => (
+                <li
+                  key={word.id}
+                  className="rounded-2xl border border-line bg-surface p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-1 sm:p-6"
+                >
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="font-jp text-3xl leading-tight text-ink sm:text-4xl">
+                      {word.writtenForm}
+                    </span>
+                    <span className="flex flex-col items-end text-right">
+                      <span className="text-xl font-bold text-accent sm:text-2xl">
+                        {word.reading}
+                      </span>
+                      {romajiEnabled && word.romaji ? (
+                        <span className="text-base font-semibold text-muted">{word.romaji}</span>
+                      ) : null}
+                    </span>
                   </div>
-                ) : null}
-                <p className="mt-2.5 text-[0.6875rem] font-semibold uppercase tracking-wide text-muted">
-                  {word.partOfSpeech ?? 'mot'}
-                  {word.readingInWord ? ` · ${kanji.literal} → ${word.readingInWord}` : ''}
-                </p>
-              </li>
-            ))}
-          </ul>
+                  <p className="mt-3 text-base leading-relaxed text-ink-soft">{word.meaningFr}</p>
+                  {word.audio ? (
+                    <div className="mt-4">
+                      <AudioButton audio={word.audio} label={`Écouter ${word.writtenForm}`} />
+                    </div>
+                  ) : null}
+                  <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted">
+                    {word.partOfSpeech ?? 'mot'}
+                    {word.readingInWord ? ` · ${kanji.literal} → ${word.readingInWord}` : ''}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            {vocabularyPageCount > 1 ? (
+              <nav
+                aria-label="Pagination du vocabulaire associé"
+                className="mt-5 flex items-center justify-between gap-3"
+              >
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={currentVocabularyPage === 0}
+                  onClick={() => changeVocabularyPage(-1)}
+                >
+                  <ChevronLeft aria-hidden className="size-4" />
+                  Précédents
+                </Button>
+                <span className="text-sm font-semibold text-muted">
+                  Page {currentVocabularyPage + 1} sur {vocabularyPageCount}
+                </span>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={currentVocabularyPage === vocabularyPageCount - 1}
+                  onClick={() => changeVocabularyPage(1)}
+                >
+                  Suivants
+                  <ChevronRight aria-hidden className="size-4" />
+                </Button>
+              </nav>
+            ) : null}
+          </>
         ) : (
           <p className="mt-4 text-sm text-muted">Pas encore de vocabulaire pour ce kanji.</p>
         )}
