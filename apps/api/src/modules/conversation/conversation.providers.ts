@@ -1,4 +1,4 @@
-import type { ConversationModelOutput, JapaneseVoice } from '@kanjipath/contracts';
+import type { JapaneseVoice } from '@kanjipath/contracts';
 import { Injectable } from '@nestjs/common';
 import { ConversationConfig } from './conversation.config';
 
@@ -65,9 +65,21 @@ export class OllamaProvider implements LlmProvider {
       return { available: false, detail: 'Mode IA locale désactivé' };
     try {
       const response = await request(`${this.config.values.ollamaBaseUrl}/api/tags`);
-      return response.ok
-        ? { available: true, detail: null }
-        : { available: false, detail: `Ollama a répondu ${response.status}` };
+      if (!response.ok) return { available: false, detail: `Ollama a répondu ${response.status}` };
+      const payload: unknown = await response.json();
+      if (!isRecord(payload) || !Array.isArray(payload.models)) {
+        return { available: false, detail: 'Réponse Ollama invalide' };
+      }
+      const configuredModel = this.config.values.ollamaModel;
+      const modelAvailable = payload.models.some(
+        (model) =>
+          isRecord(model) &&
+          ((typeof model.name === 'string' && model.name === configuredModel) ||
+            (typeof model.model === 'string' && model.model === configuredModel)),
+      );
+      return modelAvailable
+        ? { available: true, detail: configuredModel }
+        : { available: false, detail: `Modèle Ollama introuvable : ${configuredModel}` };
     } catch {
       return { available: false, detail: 'Ollama est indisponible' };
     }
@@ -95,10 +107,15 @@ export class OllamaProvider implements LlmProvider {
           format: 'json',
           think: false,
           keep_alive: '10m',
-          options: { num_ctx: this.config.values.ollamaContextLength },
+          options: {
+            num_ctx: this.config.values.ollamaContextLength,
+            num_predict: this.config.values.ollamaMaxTokens,
+            temperature: 0.65,
+            top_p: 0.9,
+          },
         }),
       },
-      240_000,
+      this.config.values.ollamaTimeoutSeconds * 1_000,
     );
     if (!response.ok) throw new Error(`Ollama a répondu ${response.status}`);
     const payload: unknown = await response.json();
@@ -325,16 +342,4 @@ function parseLivePayload(
     return null;
   }
   return null;
-}
-
-export function fallbackModelOutput(): ConversationModelOutput {
-  return {
-    reply: {
-      ja: 'そうですか。もう少し詳しく教えてください。',
-      reading: 'Sou desu ka. Mou sukoshi kuwashiku oshiete kudasai.',
-    },
-    correction: null,
-    learning: { grammarIds: [], vocabularyIds: [], newItems: [] },
-    conversation: { shouldContinue: true, intent: 'clarification' },
-  };
 }

@@ -3,6 +3,20 @@ import { readJson, writeJson } from '../lib/fs-utils.mjs';
 import { buildKanjiContext, generateForKanji } from '../lib/generators.mjs';
 import { GENERATED_DIR, NORMALIZED_DIR, REPORTS_DIR } from '../lib/paths.mjs';
 
+const DICTATION_ANSWER_RE = /^[ぁ-ゖー]+$/;
+const MAX_DICTATION_CHARACTERS = 36;
+
+export function dictationAnswer(sentence) {
+  const answer = sentence.tokens
+    .map((token) => token.reading)
+    .filter((reading) => typeof reading === 'string')
+    .join('')
+    .replace(/[、。！？!?]/g, '');
+  return DICTATION_ANSWER_RE.test(answer) && answer.length <= MAX_DICTATION_CHARACTERS
+    ? answer
+    : null;
+}
+
 export async function stageGenerate() {
   const kanji = await readJson(path.join(NORMALIZED_DIR, 'kanji.json'));
   const vocabulary = await readJson(path.join(NORMALIZED_DIR, 'vocabulary.json'));
@@ -19,27 +33,29 @@ export async function stageGenerate() {
   for (const k of kanji) {
     exercises.push(...generateForKanji(pack, ctx, k));
   }
+  const sentencesById = new Map(sentences.map((sentence) => [sentence.id, sentence]));
   for (const resource of audio) {
-    if (!resource.targetKanji || !resource.acceptedAnswers || !resource.explanation) {
+    const sentence = resource.sentenceId ? sentencesById.get(resource.sentenceId) : undefined;
+    const answer = resource.acceptedAnswers?.[0] ?? (sentence ? dictationAnswer(sentence) : null);
+    const targetKanjiId = resource.targetKanji
+      ? kanji.find((item) => item.literal === resource.targetKanji)?.id
+      : sentence?.targetKanjiIds[0];
+    if (!sentence || !answer || !targetKanjiId) {
       continue;
-    }
-    const target = kanji.find((item) => item.literal === resource.targetKanji);
-    if (!target) {
-      throw new Error(`Kanji cible audio absent: ${resource.targetKanji}`);
     }
     exercises.push({
       id: `x-audio-dictation-${resource.id}`,
       template: 'audio_dictation_kana',
       skill: 'listening',
-      level: target.level,
-      targetKanjiId: target.id,
+      level: sentence.difficulty,
+      targetKanjiId,
       vocabularyId: resource.vocabularyId,
       sentenceId: resource.sentenceId,
       audioResourceId: resource.id,
       prompt: { audioResourceId: resource.id, instruction: 'Écoutez puis écrivez la phrase entendue en kana.' },
-      acceptedAnswers: resource.acceptedAnswers,
+      acceptedAnswers: [answer],
       distractors: [],
-      explanation: resource.explanation,
+      explanation: `${sentence.japanese} se lit ${answer}。`,
       difficulty: 2,
       sourceId: 'tatoeba_audio',
       editorialStatus: 'reviewed',

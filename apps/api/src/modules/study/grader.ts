@@ -41,7 +41,7 @@ export function toHiragana(text: string): string {
 
 export function normalizeAnswer(text: string, kanaNormalize: boolean): string {
   let value = String(text).normalize('NFC').trim().toLowerCase();
-  value = value.replace(/[\s、。，．.!！?？]/g, '');
+  value = value.replace(/[\s\u200B-\u200D\u2060\uFEFF、。，．.!！?？]/g, '');
   if (kanaNormalize) {
     value = toHiragana(value);
   }

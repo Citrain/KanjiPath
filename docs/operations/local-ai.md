@@ -43,6 +43,10 @@ ollama run qwen3.5:9b-q8_0
 Ollama doit repondre sur `http://127.0.0.1:11434/api/tags`. Garder ce service sur
 loopback ; il ne doit pas etre expose au reseau local.
 
+Cette instance utilise `gemma4:26b` via `OLLAMA_MODEL` dans `.env`. Le test local opt-in du
+prompt valide le dialogue multi-tour et une scène de restaurant avec ce modèle. Le provider reste
+indépendant du modèle : toute substitution doit repasser cette évaluation avant utilisation.
+
 ## VOICEVOX (TTS japonais)
 
 Le moteur expose son API sur `127.0.0.1:50021`. Exemple GPU :
@@ -128,13 +132,20 @@ Un mot manquant, une forme incomplète ou une erreur qui empêche une phrase nat
 classée `important`, pour rester visible même lorsque l'utilisateur choisit les corrections
 importantes seulement.
 Le partenaire ne redemande pas une information déjà donnée et ne répète pas une question de
-l'historique : chaque relance doit développer le sujet avec un angle nouveau.
+l'historique ou du tour courant. Une question n'est pas obligatoire à chaque tour : dans une
+mise en scène, une politesse ou une instruction naturelle peut faire avancer le dialogue sans
+interrogatoire. L'API rejette une réponse générique, une réplique déjà produite ou une question
+déjà posée, puis demande une unique régénération. Si elle échoue encore, le tour reste
+réessayable et rien n'est persisté : aucune phrase de fallback ne devient un faux message du
+partenaire.
 Chaque tour appelle le LLM avec l'historique complet de la session, sous forme de messages
-`user` et `assistant` de l'API Ollama, plutôt que comme un JSON dans le prompt système. Si une
-sortie JSON valide ne contient aucune question de suivi, l'API effectue une seule régénération
-avec le même contexte; elle ne crée pas une nouvelle conversation ni une mémoire LLM distincte. Cette
-instance utilise `OLLAMA_CONTEXT_LENGTH=32768` pour préserver cet historique; réduire cette
+`user` et `assistant` de l'API Ollama, plutôt que comme un JSON dans le prompt système. Une
+réponse sans question reste valide si elle fait naturellement avancer la scène. Cette instance
+utilise `OLLAMA_CONTEXT_LENGTH=32768` pour préserver cet historique; réduire cette
 valeur peut faire perdre les tours les plus anciens si la conversation devient trop longue.
+Chaque génération est en outre limitée à `OLLAMA_MAX_TOKENS=512` et
+`OLLAMA_TIMEOUT_SECONDS=120`; un dépassement rend le tour réessayable au lieu de persister une
+réponse artificielle.
 Quand une entrée entièrement en romaji reçoit une sortie sans correction, l'API effectue aussi
 une relecture locale dédiée aux erreurs de romaji, aux omissions et à la grammaire. La première
 réponse est conservée si cette relecture ne détecte aucune erreur.
@@ -156,8 +167,11 @@ afin qu'un débutant puisse la lire; les kanji restent réservés à la répliqu
 Le romaji n'est pas une erreur en soi: une correction n'est jamais affichée uniquement parce que
 le partenaire retranscrit la même phrase en kana. Les écritures simplifiées des voyelles longues
 et les emprunts tels que `menu` restent acceptés si la phrase est grammaticalement correcte.
-Lorsqu'une première réponse LLM est valide mais que sa régénération de relance échoue ou répète
-une question, l'API conserve cette première réponse plutôt que le fallback texte générique.
+Le contrat demandé au LLM contient uniquement la réplique, la correction et l'intention. Le
+backend complète `learning` avec des tableaux vides : le modèle ne peut pas inventer un
+identifiant de progression. Le prompt sépare explicitement l'interlocuteur japonais visible du
+professeur discret, interdit le réflexe question-réponse-question et fournit des contraintes de
+longueur concrètes par difficulté.
 
 Avec `large-v3-turbo` sur CPU, la transcription finale dispose d'un délai de 60 secondes.
 Une erreur `Délai STT dépassé` indique une machine trop lente ou une transcription bloquée,
@@ -185,7 +199,9 @@ Les variables suivantes sont documentées dans `.env.example`. Laisser
 LOCAL_AI_ENABLED=true
 OLLAMA_BASE_URL=http://127.0.0.1:11434
 OLLAMA_MODEL=qwen3.5:9b-q8_0
-OLLAMA_CONTEXT_LENGTH=16384
+OLLAMA_CONTEXT_LENGTH=32768
+OLLAMA_MAX_TOKENS=512
+OLLAMA_TIMEOUT_SECONDS=120
 STT_BASE_URL=http://127.0.0.1:8765
 STT_LANGUAGE=ja
 STT_PROVIDER=faster-whisper
@@ -233,12 +249,13 @@ Ollama, le STT Python et KanjiPath. Ajouter `-VoicevoxPath` à `dev.bat` si VOIC
 pas déjà démarré. Le lancement standard (`pnpm dev` ou `dev.bat`) ne démarre jamais ces
 services.
 
-Le premier tour avec un grand modèle tel que `qwen3:14b` peut prendre plusieurs minutes
-sur CPU. L'API attend jusqu'à quatre minutes pour une génération et conserve ensuite le
-modèle dix minutes dans Ollama pour éviter ce coût à chaque tour.
+Le premier tour avec un grand modèle peut prendre plusieurs minutes sur CPU. L'API attend par
+défaut 120 secondes (`OLLAMA_TIMEOUT_SECONDS`) et conserve ensuite le modèle dix minutes dans
+Ollama pour éviter ce coût à chaque tour. Augmenter explicitement ce délai pour une exécution CPU
+plus lente.
 
 Si un tour reste bloqué alors que `ollama ps` montre le modèle chargé, annuler uniquement
-ce modèle avec `ollama stop qwen3:14b`, puis renvoyer le message. Le backend demande le
+le modèle configuré avec `ollama stop <modèle>`, puis renvoyer le message. Le backend demande le
 mode JSON natif d'Ollama et valide la structure ensuite : ne pas remplacer ce mode par un
 schéma JSON de décodage complexe, qui peut bloquer Qwen 14B.
 

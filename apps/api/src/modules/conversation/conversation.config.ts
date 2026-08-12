@@ -5,6 +5,8 @@ export interface ConversationConfigValues {
   ollamaBaseUrl: string;
   ollamaModel: string;
   ollamaContextLength: number;
+  ollamaMaxTokens: number;
+  ollamaTimeoutSeconds: number;
   sttBaseUrl: string;
   voicevoxBaseUrl: string;
   voicevoxSpeakerId: number;
@@ -63,8 +65,14 @@ export class ConversationConfig {
       ollamaModel: process.env.OLLAMA_MODEL ?? 'qwen3.5:9b-q8_0',
       ollamaContextLength: positiveInteger(
         process.env.OLLAMA_CONTEXT_LENGTH,
-        16_384,
+        32_768,
         'OLLAMA_CONTEXT_LENGTH',
+      ),
+      ollamaMaxTokens: positiveInteger(process.env.OLLAMA_MAX_TOKENS, 512, 'OLLAMA_MAX_TOKENS'),
+      ollamaTimeoutSeconds: positiveInteger(
+        process.env.OLLAMA_TIMEOUT_SECONDS,
+        120,
+        'OLLAMA_TIMEOUT_SECONDS',
       ),
       sttBaseUrl: loopbackUrl(process.env.STT_BASE_URL ?? 'http://127.0.0.1:8765', 'STT_BASE_URL'),
       voicevoxBaseUrl: loopbackUrl(

@@ -180,7 +180,17 @@ export class StudyService {
     });
     const exercise = await this.prisma.exerciseItem.findUnique({
       where: { id: exerciseItemId },
-      include: { kanji: true, template: true },
+      include: {
+        kanji: {
+          include: {
+            readings: {
+              where: { commonness: 'common' },
+              orderBy: { reading: 'asc' },
+            },
+          },
+        },
+        template: true,
+      },
     });
     if (!exercise?.kanji) {
       throw new NotFoundException('Exercice introuvable');
@@ -237,6 +247,10 @@ export class StudyService {
       correct,
       acceptedAnswers,
       explanation: extractExplanation(exercise.explanationJson),
+      readings: exercise.kanji.readings.map((reading) => ({
+        reading: reading.reading,
+        romaji: reading.romaji,
+      })),
       rating,
       nextDueAt: updatedCard.due.toISOString(),
     };

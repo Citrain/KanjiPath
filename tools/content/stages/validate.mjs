@@ -332,6 +332,10 @@ export async function stageValidate() {
       if (exercise.acceptedAnswers.some((answer) => !KANA_RE.test(answer))) {
         errors.push(`Exercice ${exercise.id}: réponse de dictée non normalisée en kana`);
       }
+      const sentence = exercise.sentenceId ? sentences.find((item) => item.id === exercise.sentenceId) : null;
+      if (!sentence?.tokens || !sentence.tokens.every((token) => typeof token.reading === 'string')) {
+        errors.push(`Exercice ${exercise.id}: phrase de dictée sans lecture complète`);
+      }
     }
     if (exercise.editorialStatus === 'draft') {
       errors.push(`Exercice ${exercise.id} en état draft dans le pack`);

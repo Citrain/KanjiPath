@@ -55,6 +55,10 @@ export interface AnswerResult {
   correct: boolean;
   acceptedAnswers: string[];
   explanation: string | null;
+  readings: Array<{
+    reading: string;
+    romaji: string | null;
+  }>;
   rating: 'again' | 'hard' | 'good' | 'easy';
   nextDueAt: string;
 }

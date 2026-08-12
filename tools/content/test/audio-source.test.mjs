@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import audio from '../../../content/curated/audio.json' with { type: 'json' };
 import { parseTatoebaAudioLine } from '../lib/importers.mjs';
+import { dictationAnswer } from '../stages/generate.mjs';
 import { selectTatoebaAudio } from '../stages/normalize.mjs';
 import { SOURCES } from '../sources.mjs';
 
@@ -68,5 +69,20 @@ describe('audio source curation', () => {
       expect(resource.explanation).toContain(resource.transcript);
       expect(resource.acceptedAnswers).not.toContain(resource.transcript);
     }
+  });
+
+  it('derives a kana-only answer from fully annotated short sentences', () => {
+    expect(
+      dictationAnswer({
+        tokens: [
+          { reading: 'かのじょ' },
+          { reading: 'は' },
+          { reading: 'せんせい' },
+          { reading: 'です' },
+          { reading: '。' },
+        ],
+      }),
+    ).toBe('かのじょはせんせいです');
+    expect(dictationAnswer({ tokens: [{ reading: 'きょう' }, { reading: '3' }] })).toBeNull();
   });
 });

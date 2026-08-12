@@ -102,18 +102,20 @@ type ConversationModelOutput = {
     corrected: string;
     explanationFr: string;
   } | null;
-  learning: {
-    grammarIds: string[];
-    vocabularyIds: string[];
-    newItems: string[];
-  };
   conversation: { shouldContinue: boolean; intent: string };
 };
 ```
 
 En cas de sortie invalide, l'API tente une reparation une seule fois, journalise le
-probleme sans audio inutile et applique un fallback texte controle si la seconde sortie
-est invalide.
+probleme sans audio inutile et refuse le tour si la seconde sortie est invalide. Aucun
+fallback generique n'est persiste ni reinjecte dans l'historique comme une vraie replique.
+Le suivi pedagogique reste calcule et valide par l'application; le LLM ne genere aucun
+identifiant de progression.
+
+Le prompt donne la priorite a un interlocuteur japonais credible, puis au professeur discret :
+il repond au contenu avant de corriger, partage des informations ou agit dans la scene, varie les
+actes de dialogue et ne force pas une question a chaque tour. Les reponses generiques, les
+repliques dupliquees et les questions deja posees sont refusees avec une seule regeneration.
 
 ## Architecture applicative prevue
 
@@ -172,8 +174,8 @@ progression. Le micro reel n'est pas requis pour chaque test E2E.
 La V1 est livrable lorsque N5/N4, sujet et difficulte sont selectionnables ; les
 transcriptions partielle/finale sont distinctes ; la reponse japonaise texte/audio et
 les corrections francaises fonctionnent ; l'audio francais est configurable ;
-l'historique et la progression sont sauvegardes ; le fallback texte et la page de
-diagnostic sont disponibles ; aucun service cloud n'est obligatoire ; les tests
+l'historique et la progression sont sauvegardes ; les erreurs locales restent réessayables et la
+page de diagnostic est disponible ; aucun service cloud n'est obligatoire ; les tests
 unitaires, integration et E2E nominaux passent.
 
 ## Decisions differees

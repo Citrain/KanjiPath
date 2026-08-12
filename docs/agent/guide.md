@@ -464,14 +464,28 @@ ajoute-le ici.
     pas figer ce nombre, lire le rapport. Ne créer une entrée dans `audio.json` que pour une
     exception éditoriale ou une dictée dont la réponse kana a été validée. Terminer par
      `content:normalize`, `content:generate`, `content:validate`, `content:publish` et
-     `content:load`.
+      `content:load`.
+
+48a. **Réponses kana : supprimer les caractères invisibles au contrôle.** Le clavier ou
+    le copier-coller peut introduire `U+200B` à `U+200D`, `U+2060` ou `U+FEFF`, invisibles
+    dans le champ mais distincts pour JavaScript. `normalizeAnswer` dans
+    `apps/api/src/modules/study/grader.ts` les retire, comme les espaces et la ponctuation.
+    Conserver ce comportement pour que deux réponses identiques à l'écran ne soient jamais
+    évaluées différemment.
+
+48b. **Dictées audio automatiques : lecture tokenisée seulement.** `generate.mjs` dérive la
+    réponse depuis les tokens de la phrase audio, jamais depuis le transcript kanji. Une dictée
+    est créée seulement si la lecture concaténée est entièrement en hiragana/katakana après
+    retrait de la ponctuation et fait au plus 36 caractères. Ce filtre conserve des corrections
+    vérifiables et évite les phrases avec chiffres ou lectures manquantes.
 
 51. **Conversation locale : LLM borné par l'application.** ADR-003 autorise Ollama
     seulement pour le dialogue oral ; les exercices restent fixes. Le frontend ne doit
     appeler ni Ollama, ni faster-whisper, ni VOICEVOX. Le backend utilise des providers
-    injectables, valide strictement la sortie JSON du LLM, ne retente qu'une fois et
-    maintient un fallback texte. Les services sont limités à `127.0.0.1`; aucun audio
-    ou transcript n'est envoyé à un tiers par défaut.
+    injectables, valide strictement la sortie JSON du LLM et ne retente qu'une fois. Une seconde
+    sortie invalide échoue sans persistance, jamais avec une fausse réplique générique. Les
+    services sont limités à `127.0.0.1`; aucun audio ou transcript n'est envoyé à un tiers par
+    défaut.
 
 52. **Conversation locale : partial != final.** Seul `stt.final` est persisté et
     transmis au LLM. `stt.partial` est une hypothèse UI instable. Ne pas conserver les
@@ -507,11 +521,11 @@ ajoute-le ici.
     le processus STT. Les versions installées sont consignées dans
     `docs/operations/local-ai.md`.
 
-57. **Délai LLM local.** La génération Ollama attend quatre minutes, car un modèle 14B
-    chargé sur CPU peut dépasser largement le délai HTTP de santé. Ne pas réduire ce délai
-    globalement : les health checks restent bornés à huit secondes et le modèle est gardé
-    dix minutes en mémoire après une réponse. Le STT `large-v3-turbo` sur CPU a un délai
-    de tour distinct de 60 secondes; ne pas le réduire à 15 secondes.
+57. **Délai LLM local.** La génération Ollama attend 120 secondes et le modèle reste dix
+    minutes en mémoire après une réponse. Les health checks restent bornés à huit secondes.
+    Augmenter explicitement `OLLAMA_TIMEOUT_SECONDS` pour un modèle exécuté sur CPU plutôt que
+    de coder un délai différent dans le provider. Le STT `large-v3-turbo` sur CPU a un délai de
+    tour distinct de 60 secondes; ne pas le réduire à 15 secondes.
 
 58. **Qwen en conversation.** Envoyer `think: false` à Ollama pour les tours structurés
     de conversation : le raisonnement interne augmente la latence et peut empêcher une
@@ -526,6 +540,12 @@ ajoute-le ici.
     `reply.ja` et uniquement du latin imprimable dans `reading`. Ne pas imposer ce schéma
     complet au décodeur Ollama: sur Qwen 14B il peut bloquer la génération; utiliser son
     mode JSON natif, puis valider et réparer une seule fois côté API.
+
+60a. **Relance conversationnelle : ne jamais renvoyer la question courante.** Une question
+    de suivi doit différer de la question de l'utilisateur et de celles déjà posées par le
+    partenaire (`conversationReplyIssue`). Sinon l'échange peut boucler. Une régénération est
+    tentée; si elle échoue ou reproduit encore la question, le tour échoue sans persistance. Le
+    test de régression est dans `conversation.orchestrator.spec.ts`.
 
 61. **WebSocket STT et Node 24.** Le `final` de `startLive` peut être rejeté par une
     fermeture socket avant que `finish()` ne l'attende. Toujours lui attacher un `catch`
@@ -558,10 +578,9 @@ ajoute-le ici.
 
 67. **Réponses contextualisées.** Le partenaire doit interpréter toute réponse brève,
     elliptique ou en romaji à partir de l'échange précédent. La correction appartient à sa
-    carte dédiée; la réplique doit apporter une information ou réaction nouvelle puis une
-    relance, jamais seulement répéter la réponse utilisateur. Si une sortie JSON valide ne
-    comporte aucune question de suivi, la régénérer une seule fois avec le même historique;
-    ce n'est pas une nouvelle conversation LLM.
+    carte dédiée; la réplique doit apporter une information ou réaction nouvelle, jamais
+    seulement répéter la réponse utilisateur. Une question de suivi est optionnelle : une
+    politesse ou une instruction qui poursuit naturellement une mise en scène est valide.
 
 68. **Historique conversationnel complet.** Le prompt reçoit tous les tours de la session,
     pas une fenêtre des derniers tours. Les tours sont fournis à Ollama comme messages
@@ -610,9 +629,24 @@ ajoute-le ici.
     romaji en kana. Les conventions simplifiées de voyelles longues et les emprunts tels que
     `menu` sont acceptés tant que la grammaire et le sens sont corrects.
 
-77. **Relance LLM échouée.** Une première réponse JSON valide sans question fraîche déclenche une
-    seule régénération. Si cette dernière échoue ou répète une question, conserver la première
-    réponse plutôt que le fallback statique : elle reste plus contextuelle pour l'apprenant.
+77. **Qualité de la réplique avant persistance.** Une réponse générique, une réplique déjà
+    produite ou une question identique à celle du tour courant ou de l'historique déclenche une
+    unique régénération. Si elle reste insatisfaisante, lever une erreur réessayable sans créer de
+    tour. Ne jamais réintroduire un fallback conversationnel statique : il polluerait l'historique
+    et donnerait une fausse impression de réussite.
+
+78. **Contrat génératif minimal.** Le LLM produit seulement `reply`, `correction` et
+    `conversation`. Le backend ajoute `learning` vide et reste seul propriétaire des identifiants
+    de progression. Le schéma des nouvelles sorties impose une correction en kana; le schéma de
+    lecture des tours persistés reste compatible avec les anciennes corrections contenant des
+    kanji.
+
+79. **Évaluation locale du prompt.** Le test opt-in
+    `conversation.local-eval.spec.ts` utilise le vrai `OllamaProvider` et l'orchestrateur complet.
+    Lancer depuis `apps/api` avec
+    `$env:RUN_LOCAL_AI_EVAL='true'; $env:LOCAL_AI_ENABLED='true'; pnpm exec dotenv -e ../../.env -- vitest run src/modules/conversation/conversation.local-eval.spec.ts`.
+    Il lit `OLLAMA_MODEL` dans `.env`; avec `gemma4:26b`, les scénarios loisirs multi-tour et
+    restaurant doivent passer avant toute modification majeure du prompt ou du modèle.
 
 ## Recettes
 

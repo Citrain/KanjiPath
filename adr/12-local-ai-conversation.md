@@ -5,7 +5,7 @@ Reference complete :
 
 ## Decision operationnelle
 
-Le futur mode conversation est une fonctionnalite distincte des exercices fixes. Il
+Le mode conversation est une fonctionnalite distincte des exercices fixes. Il
 utilise une orchestration backend et des providers injectables : `SpeechToTextProvider`
 (faster-whisper), `LLMProvider` (Ollama/Qwen), `JapaneseTTSProvider` (VOICEVOX) et
 `FrenchTTSProvider` (local ou navigateur). Le frontend ne joint jamais ces services
@@ -13,7 +13,8 @@ directement.
 
 Le backend garde la source de verite pedagogique : niveau, scenario, contraintes de
 grammaire/vocabulaire/kanji, objectifs et politique de correction. La sortie LLM est un
-JSON valide par schema, repare une fois puis remplacee par un fallback texte controle.
+JSON valide par schema et repare une fois. Si elle reste invalide, generique ou repetitive,
+le tour echoue sans etre persiste : aucun fallback fictif ne pollue l'historique.
 
 ## Contraintes
 

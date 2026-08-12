@@ -107,7 +107,6 @@ export interface ProcessConversationTurnRequest {
 export interface ProcessConversationTurnResponse {
   turn: ConversationTurnDto;
   audio: { mimeType: string; base64: string } | null;
-  usedFallback: boolean;
 }
 
 export type ConversationLiveClientEvent =

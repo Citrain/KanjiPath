@@ -315,6 +315,8 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(response.statusCode).toBe(201);
     const body = response.json();
     expect(body.correct).toBe(true);
+    expect(body.readings.length).toBeGreaterThan(0);
+    expect(body.readings[0].reading).toBeTruthy();
     expect(body.nextDueAt).toBeTruthy();
   });
 

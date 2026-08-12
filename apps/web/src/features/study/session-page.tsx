@@ -1081,6 +1081,20 @@ function ExerciseView({
                       {result.explanation}
                     </p>
                   ) : null}
+                  {result.readings.length > 0 ? (
+                    <p className="mt-2.5 text-sm font-semibold text-ink-soft">
+                      Lectures :{' '}
+                      <span className="font-jp text-base">
+                        {result.readings
+                          .map((reading) =>
+                            romajiEnabled && reading.romaji
+                              ? `${reading.reading} (${reading.romaji})`
+                              : reading.reading,
+                          )
+                          .join(' · ')}
+                      </span>
+                    </p>
+                  ) : null}
                   <p className="mt-3 text-xs font-semibold text-muted">
                     Prochaine révision :{' '}
                     {new Date(result.nextDueAt).toLocaleString('fr-FR', {

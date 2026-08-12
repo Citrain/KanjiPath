@@ -16,6 +16,7 @@ import {
   createConversation,
   endConversation,
   fetchConversationSettings,
+  fetchConversationTopics,
   fetchJapaneseVoices,
   fetchLocalAiHealth,
   sendConversationTurn,
@@ -119,7 +120,8 @@ interface Recorder {
 
 export function ConversationPage() {
   const [level, setLevel] = useState<JlptLevel>('N5');
-  const scenario: ConversationScenario = 'introduction';
+  const [scenario, setScenario] = useState<ConversationScenario>('introduction');
+  const [goal, setGoal] = useState('');
   const [difficulty, setDifficulty] = useState<ConversationDifficulty>('easy');
   const [correctionMode, setCorrectionMode] = useState<ConversationCorrectionMode>('important');
   const [speed, setSpeed] = useState<JapaneseSpeechSpeed>('normal');
@@ -139,6 +141,10 @@ export function ConversationPage() {
   const settings = useQuery({
     queryKey: ['conversation', 'settings'],
     queryFn: fetchConversationSettings,
+  });
+  const topics = useQuery({
+    queryKey: ['conversation', 'topics'],
+    queryFn: fetchConversationTopics,
   });
   const health = useQuery({
     queryKey: ['conversation', 'health'],
@@ -172,6 +178,7 @@ export function ConversationPage() {
       setVoiceProcessing(false);
       setVoiceAwaitingFinal(false);
       setPendingTranscript(null);
+      setGoal('');
     },
   });
 
@@ -295,7 +302,7 @@ export function ConversationPage() {
 
       <div role="status" className="flex flex-wrap gap-2" aria-label="État des services locaux">
         <Badge tone={modelReady ? 'success' : 'neutral'}>
-          LLM {modelReady ? 'prêt' : 'texte de repli'}
+          LLM {modelReady ? 'prêt' : 'indisponible'}
         </Badge>
         <Badge tone={voiceReady ? 'success' : 'neutral'}>
           STT {voiceReady ? 'prêt' : 'indisponible'}
@@ -332,6 +339,23 @@ export function ConversationPage() {
                     {item.label}
                   </option>
                 ))}
+              </select>
+            </Field>
+            <Field label="Situation">
+              <select
+                aria-label="Situation"
+                value={scenario}
+                onChange={(event) => setScenario(event.target.value as ConversationScenario)}
+                className={selectClass}
+              >
+                {(topics.data?.topics ?? []).map((topic) => (
+                  <option key={topic.id} value={topic.id}>
+                    {topic.label}
+                  </option>
+                ))}
+                {topics.data?.topics.length ? null : (
+                  <option value="introduction">Conversation libre</option>
+                )}
               </select>
             </Field>
             <Field label="Corrections">
@@ -378,6 +402,18 @@ export function ConversationPage() {
                 <option value="natural">Naturelle</option>
               </select>
             </Field>
+            <div className="sm:col-span-2">
+              <Field label="Objectif personnel (facultatif)">
+                <input
+                  aria-label="Objectif personnel"
+                  value={goal}
+                  onChange={(event) => setGoal(event.target.value)}
+                  maxLength={160}
+                  className={selectClass}
+                  placeholder="Ex. pratiquer 〜ている dans une conversation naturelle"
+                />
+              </Field>
+            </div>
           </div>
           <Button
             size="lg"
@@ -390,6 +426,7 @@ export function ConversationPage() {
                 correctionMode,
                 japaneseSpeechSpeed: speed,
                 japaneseSpeakerId: speakerId ?? undefined,
+                goals: goal.trim() ? [goal.trim()] : undefined,
               })
             }
           >
@@ -402,7 +439,11 @@ export function ConversationPage() {
       ) : (
         <>
           <Card className="flex flex-wrap items-center justify-between gap-3 p-4">
-            <p className="font-semibold text-ink">{session.level} · Conversation libre</p>
+            <p className="font-semibold text-ink">
+              {session.level} ·{' '}
+              {topics.data?.topics.find((topic) => topic.id === session.scenario)?.label ??
+                'Conversation'}
+            </p>
             <Button
               variant="secondary"
               size="sm"
@@ -439,7 +480,7 @@ export function ConversationPage() {
                       <p className="mt-1 text-sm text-muted">{item.reply.reading}</p>
                     </div>
                   </div>
-                  <CorrectionCard correction={item.correction} />
+                  <CorrectionCard correction={item.correction} mode={session.correctionMode} />
                 </div>
               ))}
               {pendingTranscript !== null ? (

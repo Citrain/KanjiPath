@@ -79,7 +79,8 @@ pnpm dev:voice          # setup + web/API + services vocaux locaux
   les transcriptions/audio sont des données utilisateur.
 - Conversation locale : `apps/api/src/modules/conversation/` est l'unique relais vers
   Ollama, faster-whisper et VOICEVOX. Ne jamais persister `stt.partial` ou un buffer
-  audio; un JSON LLM invalide reçoit une seule réparation avant le fallback texte.
+  audio; un JSON LLM invalide reçoit une seule réparation, puis le tour échoue sans
+  persistance. Ne jamais fabriquer ou persister une réplique de fallback générique.
 - Conversation locale : les corrections de romaji restent contextuelles. Un exemple de prompt
   peut guider une ellipse connue, mais ne doit jamais devenir une règle métier codée en dur;
   conserver la validation JSON et la relecture dédiée, dont le prompt doit rester distinct et
@@ -94,9 +95,11 @@ pnpm dev:voice          # setup + web/API + services vocaux locaux
 - Conversation locale : le romaji simplifié reste une réponse correcte quand la grammaire et le
   sens sont justes. Ne jamais créer une correction uniquement parce que le modèle le retranscrit
   en kana, y compris pour les voyelles longues et emprunts tels que `menu`.
-- Conversation locale : une réponse de dialogue déjà valide est conservée si l'unique
-  régénération de relance échoue; ne pas remplacer une réponse contextualisée par le fallback
-  texte statique uniquement parce qu'elle n'a pas de question fraîche.
+- Conversation locale : une réponse générique, dupliquée ou dont la question a déjà été posée
+  reçoit une seule régénération. Si elle reste insatisfaisante, le tour échoue sans persistance;
+  une réponse sans question reste valide quand elle fait naturellement avancer l'échange.
+- Conversation locale : le LLM ne génère aucun identifiant de progression. Son contrat de sortie
+  contient réplique, correction et intention; `learning` est complété et borné par l'application.
 - Audio : importer uniquement des clips avec licence individuelle explicite. Pour cette
   instance personnelle privée, CC BY-NC est autorisée selon `ADR-002` ; toute
   distribution publique ou commerciale reste interdite tant que ces clips sont présents.

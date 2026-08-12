@@ -6,6 +6,14 @@ describe('audio dictation grading', () => {
     expect(gradeAnswer('audio_dictation_kana', 'ジュウブン です。', ['じゅうぶんです'])).toBe(true);
   });
 
+  it('ignores invisible characters in kana answers', () => {
+    expect(
+      gradeAnswer('audio_dictation_kana', 'かのじょは\u200Bせんせいです', [
+        'かのじょはせんせいです',
+      ]),
+    ).toBe(true);
+  });
+
   it('does not accept a different transcript', () => {
     expect(
       gradeAnswer('audio_dictation_kana', 'じゅうぶんではありません', ['じゅうぶんです']),

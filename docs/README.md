@@ -66,8 +66,9 @@ Ce qui est implémenté :
    **entraînement à l'écriture** (`/kanji/:literal/ecriture` : grille de pratique,
    tracé au pointeur validé trait par trait contre KanjiVG — point de départ, sens,
    forme — aide fantôme réglable, trait passé/effacé, signalement de tracé),
-  session d'étude (choix du mode — jour/points faibles/libre/**ciblée** par niveau/
-  compétence/kanji, quiz avec raccourcis clavier 1-4 et Entrée, feedback animé,
+   session d'étude (choix du mode — jour/points faibles/libre/**ciblée** par niveau/
+   compétence/kanji, quiz avec raccourcis clavier 1-4 et Entrée, feedback animé avec
+   lectures kana et romaji après réponse,
   résultats + confettis), **lecture graduée** (`/lecture` : liste des mini-textes ;
   `/lecture/:id` : texte annoté furigana/romaji + traduction, **tokens cliquables :
   lecture en contexte** — traduction du mot s'il est au référentiel, sinon
@@ -163,5 +164,6 @@ ou commerciale tant qu'ils sont présents.
 Le mode de conversation vocale locale est disponible à `/conversation` pour N5/N4. Son
 mode texte reste opérationnel sans IA locale. L'API est le seul relais vers les services
 loopback, conserve uniquement les transcriptions finales et les tours, et valide le JSON
-du LLM avec une unique réparation avant un fallback texte. Les exercices et le pipeline
-restent déterministes et sans LLM au runtime.
+du LLM avec une unique réparation; une sortie toujours invalide ou générique rend le tour
+réessayable sans faux fallback persisté. Les exercices et le pipeline restent déterministes et
+sans LLM au runtime.

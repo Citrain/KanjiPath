@@ -1,7 +1,7 @@
 {
   "version": "2026.08.10",
-  "createdAt": "2026-08-09T09:19:07.251Z",
-  "gitCommit": "c7404afadd1ff0291d0a083ea65a0754feb4a274",
+  "createdAt": "2026-08-12T19:30:10.746Z",
+  "gitCommit": "87835a16f7d35846e956edb5f61cd50d187769f5",
   "sources": [
     {
       "name": "KANJIDIC2",
@@ -2719,7 +2719,7 @@
     "sentences": 8284,
     "texts": 10,
     "audio": 648,
-    "exercises": 74027
+    "exercises": 74470
   },
   "validation": {
     "errors": 0,

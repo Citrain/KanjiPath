@@ -152,8 +152,10 @@ niveau** (N5 d'abord), sans doublon entre niveaux.
 - Les clips CC BY-NC 4.0 ne sont utilisables que dans l'instance privée définie par
   ADR-002. Leur présence interdit tout partage du pack, publication de l'application ou
   usage commercial.
-- Un clip associé à une dictée porte une réponse kana vérifiée manuellement. Le
-  transcript est conservé dans la ressource et l'explication, jamais dans le prompt.
+- Chaque clip associé à une phrase entièrement annotée fournit une dictée. Sa réponse kana
+  est dérivée de façon déterministe des lectures kuromoji, sans ponctuation, et refusée si
+  elle contient autre chose que du kana ou dépasse 36 caractères. Le transcript est conservé
+  dans la ressource et l'explication, jamais dans le prompt.
 
 ## Arborescence `content/`
 
@@ -203,8 +205,8 @@ vers ressource inexistante.
 Pour l'audio, le validateur exige aussi un fichier packagé, un SHA-256, une licence
 autorisée, l'identifiant audio Tatoeba, l'identifiant de phrase, le locuteur, une
 attribution, un chemin sous `generated/audio/` et un lien valide vers le mot ou la
-phrase. Une dictée doit référencer une ressource audio, avoir une correction kana et ne
-doit jamais porter le transcript dans son prompt.
+phrase. Une dictée doit référencer une ressource audio, une phrase à lecture complète, une
+correction kana et ne doit jamais porter le transcript dans son prompt.
 Liste complète : `adr/2-content-pipeline/README.md#tests-automatiques-de-contenu`.
 
 ## Manifeste de publication

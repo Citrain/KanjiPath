@@ -1,14 +1,24 @@
-import type { ConversationCorrection } from '@kanjipath/contracts';
+import type { ConversationCorrection, ConversationCorrectionMode } from '@kanjipath/contracts';
 import { Check, Languages, Volume2 } from 'lucide-react';
 
-export function CorrectionCard({ correction }: { correction: ConversationCorrection | null }) {
+export function CorrectionCard({
+  correction,
+  mode,
+}: {
+  correction: ConversationCorrection | null;
+  mode: ConversationCorrectionMode;
+}) {
   if (!correction) {
     return (
       <div className="ml-10 flex items-center gap-2 rounded-xl border border-dashed border-line px-3 py-2 text-xs text-muted">
         <span className="flex size-5 items-center justify-center rounded-full bg-jade-soft text-jade">
           <Check aria-hidden className="size-3" />
         </span>
-        Phrase correcte.
+        {mode === 'none'
+          ? 'Corrections désactivées.'
+          : mode === 'important'
+            ? 'Aucune correction importante.'
+            : 'Phrase correcte.'}
       </div>
     );
   }

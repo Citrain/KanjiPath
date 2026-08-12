@@ -130,7 +130,7 @@ describeWithDb('conversation locale (integration MariaDB)', () => {
     expect(response.json().turn.transcript).toBe('こんにちは');
     expect(response.json().turn.reply.ja).toBe('こんにちは。元気ですか？');
     expect(response.json().audio.base64).toBe('UklGRg==');
-    expect(response.json().usedFallback).toBe(false);
+    expect(response.json()).not.toHaveProperty('usedFallback');
   });
 
   it('relaye stt.partial sans le persister, puis persiste seulement stt.final', async () => {
@@ -189,7 +189,7 @@ describeWithDb('conversation locale (integration MariaDB)', () => {
       headers: { cookie: sessionCookie },
     });
     expect(progress.statusCode).toBe(200);
-    expect(progress.json().events.newItem).toBeGreaterThan(0);
+    expect(progress.json().events.newItem).toBe(0);
     const end = await app.inject({
       method: 'POST',
       url: `/api/v1/conversations/${conversationId}/end`,
