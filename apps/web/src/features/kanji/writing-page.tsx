@@ -270,7 +270,7 @@ function WritingPad({
       viewBox="0 0 109 109"
       role="img"
       aria-label={`Zone de tracé du kanji ${literal}, trait ${Math.min(current + 1, strokes.length)} sur ${strokes.length}`}
-      className={`aspect-square w-full touch-none select-none rounded-2xl border border-line bg-bg ${
+      className={`mx-auto aspect-square w-full max-w-[32rem] touch-none select-none rounded-2xl border border-line bg-bg ${
         disabled ? '' : 'cursor-crosshair'
       }`}
       onPointerDown={onPointerDown}
