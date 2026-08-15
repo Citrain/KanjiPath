@@ -13,11 +13,14 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
 
 ### `user_settings`
 
-- `user_id`, `active_level`, `daily_new_limit`, `review_limit`, `auto_balance`
+- `user_id`, `active_level`, `daily_new_limit`, `review_limit`, `auto_balance`,
+  `kana_input_enabled`
 - `desired_retention`, `furigana_mode`, `romaji_enabled`, `timezone`, `theme`
 - `review_limit` / `auto_balance` (Phase 3) : personnalisation de la charge —
   plafond de révisions par session et réduction automatique des nouveaux kanji
   quand la charge due est haute (voir `study.service.ts#computeNewKanjiCount`).
+- `kana_input_enabled` exclut, lorsqu'il vaut `false`, tous les exercices qui imposent
+  une saisie en kana, quel que soit le mode de session.
 
 ### `sessions`
 

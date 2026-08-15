@@ -47,6 +47,7 @@ export interface SettingsDto {
   dailyNewLimit: number;
   reviewLimit: number;
   autoBalance: boolean;
+  kanaInputEnabled: boolean;
   desiredRetention: number;
   furiganaMode: 'always' | 'hover' | 'never';
   romajiEnabled: boolean;

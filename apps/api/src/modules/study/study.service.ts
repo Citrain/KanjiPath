@@ -16,7 +16,12 @@ import {
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '../../generated/prisma/client';
 import { PrismaService } from '../../infrastructure/database/prisma.service';
-import { CARD_SKILL_TO_TEMPLATES, gradeAnswer, TEMPLATE_TO_CARD_SKILL } from './grader';
+import {
+  CARD_SKILL_TO_TEMPLATES,
+  gradeAnswer,
+  requiresKanaInput,
+  TEMPLATE_TO_CARD_SKILL,
+} from './grader';
 
 const scheduler = new FsrsReviewScheduler();
 
@@ -82,8 +87,9 @@ export class StudyService {
     const dailyNewLimit = settings?.dailyNewLimit ?? 10;
     const reviewLimit = settings?.reviewLimit ?? 40;
     const autoBalance = settings?.autoBalance ?? true;
+    const kanaInputEnabled = settings?.kanaInputEnabled ?? true;
 
-    const exercises = await this.loadExercises();
+    const exercises = await this.loadExercises(kanaInputEnabled);
     const queue =
       sessionMode === 'targeted' && target
         ? await this.buildTargetedQueue(userId, target, exercises)
@@ -466,14 +472,14 @@ export class StudyService {
     });
   }
 
-  private async loadExercises(): Promise<Map<string, ExerciseRow[]>> {
+  private async loadExercises(kanaInputEnabled: boolean): Promise<Map<string, ExerciseRow[]>> {
     const items = await this.prisma.exerciseItem.findMany({
       where: { editorialStatus: 'published' },
       include: { kanji: { select: { literal: true } }, template: true },
     });
     const byTemplateKanji = new Map<string, ExerciseRow[]>();
     for (const item of items) {
-      if (!item.kanjiId) {
+      if (!item.kanjiId || (!kanaInputEnabled && requiresKanaInput(item.template.type))) {
         continue;
       }
       const key = `${item.template.type}:${item.kanjiId}`;

@@ -1,5 +1,15 @@
 import { describe, expect, it } from 'vitest';
+import { requiresKanaInput } from './grader';
 import { computeNewKanjiCount } from './study.service';
+
+describe('requiresKanaInput', () => {
+  it('identifie uniquement les réponses qui imposent une saisie en kana', () => {
+    expect(requiresKanaInput('reading_input_kana')).toBe(true);
+    expect(requiresKanaInput('audio_dictation_kana')).toBe(true);
+    expect(requiresKanaInput('kanji_to_reading_qcm')).toBe(false);
+    expect(requiresKanaInput('sentence_cloze_reading')).toBe(false);
+  });
+});
 
 describe('computeNewKanjiCount', () => {
   const base = { mode: 'daily', dailyNewLimit: 10, reviewLimit: 40, autoBalance: true };

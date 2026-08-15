@@ -132,6 +132,9 @@ pnpm dev:voice          # setup + web/API + services vocaux locaux
   (ex. `hasAudio` dans `KanjiSummary`), jamais par une requête par carte côté web.
 - Les lectures affichées dans une phrase viennent des tokens de contexte générés au
   pipeline, jamais de la lecture isolée du kanji.
+- Étude : `kanaInputEnabled=false` exclut `reading_input_kana` et
+  `audio_dictation_kana` de toute nouvelle session, quel que soit son mode. Ne pas
+  exclure les QCM qui affichent des choix en kana, car ils ne requièrent pas de clavier japonais.
 - Ne jamais présenter les listes de kanji comme « officielles JLPT » :
   formulation obligatoire « Parcours aligné sur le JLPT ».
 - Authentification : Argon2id, cookie `HttpOnly` + `SameSite=Lax`, CSRF double-submit,

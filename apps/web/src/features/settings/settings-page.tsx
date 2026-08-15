@@ -33,6 +33,7 @@ export function SettingsPage() {
   const [dailyNewLimit, setDailyNewLimit] = useState(10);
   const [reviewLimit, setReviewLimit] = useState(40);
   const [autoBalance, setAutoBalance] = useState(true);
+  const [kanaInputEnabled, setKanaInputEnabled] = useState(true);
   const [desiredRetention, setDesiredRetention] = useState(0.9);
   const [furiganaMode, setFuriganaMode] = useState<FuriganaMode>('always');
   const [romajiEnabled, setRomajiEnabled] = useState(true);
@@ -44,6 +45,7 @@ export function SettingsPage() {
       setDailyNewLimit(settings.data.dailyNewLimit);
       setReviewLimit(settings.data.reviewLimit);
       setAutoBalance(settings.data.autoBalance);
+      setKanaInputEnabled(settings.data.kanaInputEnabled);
       setDesiredRetention(settings.data.desiredRetention);
       setFuriganaMode(settings.data.furiganaMode);
       setRomajiEnabled(settings.data.romajiEnabled);
@@ -57,6 +59,7 @@ export function SettingsPage() {
         dailyNewLimit,
         reviewLimit,
         autoBalance,
+        kanaInputEnabled,
         desiredRetention,
         furiganaMode,
         romajiEnabled,
@@ -173,6 +176,20 @@ export function SettingsPage() {
                 value={activeLevel}
                 options={LEVEL_OPTIONS}
                 onChange={setActiveLevel}
+              />
+            </div>
+            <div className="h-px bg-line" aria-hidden />
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="font-semibold text-ink">Saisie en japonais</p>
+                <p className="text-sm text-muted">
+                  Inclure les questions qui demandent d'écrire en kana, dans tous les modes.
+                </p>
+              </div>
+              <Toggle
+                checked={kanaInputEnabled}
+                onChange={setKanaInputEnabled}
+                label="Inclure la saisie en japonais"
               />
             </div>
             <div className="h-px bg-line" aria-hidden />

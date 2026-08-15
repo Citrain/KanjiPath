@@ -17,6 +17,7 @@ export class SettingsService {
       dailyNewLimit: settings.dailyNewLimit,
       reviewLimit: settings.reviewLimit,
       autoBalance: settings.autoBalance,
+      kanaInputEnabled: settings.kanaInputEnabled,
       desiredRetention: settings.desiredRetention,
       furiganaMode: settings.furiganaMode as SettingsDto['furiganaMode'],
       romajiEnabled: settings.romajiEnabled,
@@ -56,6 +57,12 @@ export class SettingsService {
     }
     if (patch.autoBalance !== undefined) {
       data.autoBalance = Boolean(patch.autoBalance);
+    }
+    if (patch.kanaInputEnabled !== undefined) {
+      if (typeof patch.kanaInputEnabled !== 'boolean') {
+        throw new BadRequestException('kanaInputEnabled doit être un booléen');
+      }
+      data.kanaInputEnabled = patch.kanaInputEnabled;
     }
     if (patch.desiredRetention !== undefined) {
       if (patch.desiredRetention < 0.7 || patch.desiredRetention > 0.99) {

@@ -87,7 +87,7 @@ Réglages disponibles :
 - vitesse d'animation
 - nombre de nouveaux kanji par jour
 - objectif de rétention
-- mode clavier
+- saisie en japonais activable ou exclue globalement pour tous les modes d'étude
 - thème
 - son (futur)
 

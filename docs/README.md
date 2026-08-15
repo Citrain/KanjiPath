@@ -78,7 +78,8 @@ Ce qui est implémenté :
   précision 7/30/90 j, par compétence et niveau, rétention estimée FSRS, charge de
   révision à 7 jours), page sources, page préférences
   (niveau actif, limite quotidienne, **révisions par session**, **équilibrage
-  automatique**, rétention, furigana, romaji, thème encre/washi).
+  automatique**, **exclusion globale de la saisie en kana**, rétention, furigana,
+  romaji, thème encre/washi).
   Navigation : sidebar desktop + barre inférieure mobile, menu utilisateur, toasts.
   Toutes les phrases d'exemple sont annotées au build (furigana par token + romaji,
   tokenisation kuromoji), affichées selon les préférences furigana/romaji. Design

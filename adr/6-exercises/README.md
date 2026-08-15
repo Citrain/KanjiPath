@@ -70,6 +70,9 @@ Regroupés par compétence, tous fixes et validés (aucun LLM au runtime).
   si explicitement déclarées dans le pack.
 - compétence `listening`, carte `AUDIO_DICTATION` ; les items sont matérialisés et
   validés au build.
+- La préférence `kanaInputEnabled=false` retire `reading_input_kana` et
+  `audio_dictation_kana` de toutes les files d'étude. Les QCM dont les choix sont en
+  kana restent disponibles puisqu'ils ne nécessitent pas de clavier japonais.
 
 ## 6.7 Exercices futurs (post-V1)
 

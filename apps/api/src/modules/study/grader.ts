@@ -35,6 +35,10 @@ export const CARD_SKILL_TO_TEMPLATES: Record<ReviewCardSkill, string[]> = {
   AUDIO_DICTATION: ['audio_dictation_kana'],
 };
 
+export function requiresKanaInput(template: string): boolean {
+  return template === 'reading_input_kana' || template === 'audio_dictation_kana';
+}
+
 export function toHiragana(text: string): string {
   return text.replace(/[ァ-ヺ]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0x60));
 }

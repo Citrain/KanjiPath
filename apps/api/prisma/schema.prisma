@@ -36,6 +36,7 @@ model UserSettings {
   dailyNewLimit    Int     @default(10) @map("daily_new_limit")
   reviewLimit      Int     @default(40) @map("review_limit")
   autoBalance      Boolean @default(true) @map("auto_balance")
+  kanaInputEnabled Boolean @default(true) @map("kana_input_enabled")
   desiredRetention Float   @default(0.9) @map("desired_retention")
   furiganaMode     String  @default("always") @map("furigana_mode")
   romajiEnabled    Boolean @default(true) @map("romaji_enabled")

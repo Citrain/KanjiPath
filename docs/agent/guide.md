@@ -758,6 +758,12 @@ ajoute-le ici.
     API pour charger le nouveau contrat; sinon il peut continuer à valider l'historique avec un
     schéma obsolète malgré un `packages/contracts/dist` correct.
 
+90. **Exclusion de la saisie kana.** La préférence `kanaInputEnabled` est appliquée dans
+    `StudyService#loadExercises` avant la construction de toute file. Lorsqu'elle est désactivée,
+    exclure `reading_input_kana` et `audio_dictation_kana` dans tous les modes, mais conserver les
+    QCM dont les options sont en kana : ils ne nécessitent pas de clavier japonais. Une session déjà
+    créée garde sa file persistée; la préférence s'applique aux nouvelles sessions.
+
 ## Recettes
 
 ### Ajouter une route API

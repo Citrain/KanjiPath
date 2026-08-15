@@ -39,7 +39,7 @@ apps/
                        # statistiques détaillées)
         study/         # session d'étude (choix de mode — jour/points faibles/libre/ciblée,
                        # quiz clavier 1-4/Entrée, résultats)
-        settings/      # préférences (niveau actif, limites, furigana, romaji, thème)
+        settings/      # préférences (niveau, limites, saisie kana, furigana, romaji, thème)
         conversation/  # choix de session, texte/micro, transcripts et corrections
         ai-quiz/       # génération locale d'un quiz personnel, rendu et correction déterministe
         sources/       # page sources et licences

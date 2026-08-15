@@ -246,19 +246,20 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(response.statusCode).toBe(404);
   });
 
-  it('met à jour reviewLimit et autoBalance dans les préférences', async () => {
+  it('met à jour la charge et la saisie kana dans les préférences', async () => {
     await fetchCsrf();
     const patch = await app.inject({
       method: 'PATCH',
       url: '/api/v1/settings',
       cookies: { kp_csrf: csrfToken },
       headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
-      payload: { reviewLimit: 25, autoBalance: false },
+      payload: { reviewLimit: 25, autoBalance: false, kanaInputEnabled: false },
     });
     expect(patch.statusCode).toBe(200);
     const updated = patch.json();
     expect(updated.reviewLimit).toBe(25);
     expect(updated.autoBalance).toBe(false);
+    expect(updated.kanaInputEnabled).toBe(false);
 
     const invalid = await app.inject({
       method: 'PATCH',
