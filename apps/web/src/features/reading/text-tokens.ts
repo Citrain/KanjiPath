@@ -1,8 +1,8 @@
 import type { MiniTextTokenDto } from '@kanjipath/contracts';
 
-export function groupTextTokens(tokens: MiniTextTokenDto[]): MiniTextTokenDto[][] {
-  const sentences: MiniTextTokenDto[][] = [];
-  let current: MiniTextTokenDto[] = [];
+export function groupTextTokens<T extends Pick<MiniTextTokenDto, 'surface'>>(tokens: T[]): T[][] {
+  const sentences: T[][] = [];
+  let current: T[] = [];
   for (const token of tokens) {
     current.push(token);
     if (token.surface.endsWith('。')) {

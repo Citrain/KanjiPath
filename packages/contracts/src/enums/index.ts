@@ -69,3 +69,13 @@ export type ConversationCorrectionMode = (typeof CONVERSATION_CORRECTION_MODES)[
 
 export const JAPANESE_SPEECH_SPEEDS = ['slow', 'normal', 'natural'] as const;
 export type JapaneseSpeechSpeed = (typeof JAPANESE_SPEECH_SPEEDS)[number];
+
+export const PERSONAL_VOCABULARY_ORIGINS = [
+  'published_vocabulary',
+  'published_text',
+  'conversation',
+] as const;
+export type PersonalVocabularyOrigin = (typeof PERSONAL_VOCABULARY_ORIGINS)[number];
+
+export const PERSONAL_VOCABULARY_CARD_KINDS = ['meaning', 'reading', 'self'] as const;
+export type PersonalVocabularyCardKind = (typeof PERSONAL_VOCABULARY_CARD_KINDS)[number];

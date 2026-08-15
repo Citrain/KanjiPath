@@ -799,9 +799,12 @@ export class ContentService {
       author: text.author,
       license: text.license,
       tokens: text.tokens.map((token) => ({
+        id: token.id,
         surface: token.surface,
         reading: token.reading,
         romaji: token.romaji,
+        startOffset: token.startOffset,
+        endOffset: token.endOffset,
       })),
     };
   }

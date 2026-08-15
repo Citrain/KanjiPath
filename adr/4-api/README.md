@@ -102,6 +102,27 @@ GET    /progress/stats
 
 ---
 
+## Carnet personnel (ADR-007)
+
+```
+GET    /personal-vocabulary?archived=false
+POST   /personal-vocabulary
+POST   /personal-vocabulary/:id/archive
+POST   /personal-vocabulary/:id/restore
+DELETE /personal-vocabulary/:id
+GET    /personal-vocabulary/resume
+POST   /personal-vocabulary/sessions
+POST   /personal-vocabulary/answers
+POST   /personal-vocabulary/sessions/:id/finish
+POST   /personal-vocabulary/sessions/:id/abandon
+```
+
+Les créations publiées ne reçoivent qu'un identifiant de contenu : l'API résout et fige
+elle-même les données et leur provenance. Une création conversationnelle exige un tour
+appartenant à la session de l'utilisateur authentifié.
+
+---
+
 ## Paramètres
 
 ```

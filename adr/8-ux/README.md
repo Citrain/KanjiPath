@@ -74,6 +74,17 @@ Toutes les sections définies dans `5-kanji-card/`.
 - fil de messagerie, correction française mise en avant et réponse japonaise texte/audio ;
 - contrôle indépendant de l'audio français et de la vitesse japonaise.
 
+### Carnet de vocabulaire personnel (ADR-007)
+
+- liste des mots actifs et archivés, avec lecture, sens, extrait et provenance publiée
+  affichable ;
+- bouton d'enregistrement commun dans la lecture/lookup et les tours de conversation ;
+- session FSRS personnelle courte, avec rappel du sens, saisie de lecture ou
+  auto-évaluation explicite ;
+- archivage réversible et suppression confirmée qui annonce la suppression des cartes
+  et journaux ;
+- toutes les actions restent utilisables au tactile comme au clavier.
+
 ### Statistiques
 
 - précision et rétention

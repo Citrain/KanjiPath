@@ -137,5 +137,14 @@ La session recommandée mélange :
 La mission materialise une sous-session courte et deterministe : revisions dues, erreurs
 recentes, nouveaux kanji seulement si `autoBalance` le permet, puis consolidation de
 contexte. Elle reutilise les cartes et logs FSRS existants ; vocabulaire et lecture sont
-des etapes informatives sans carte. Une mission conserve sa file pour reprise et ne
-modifie pas les regles de maitrise.
+ des etapes informatives sans carte. Une mission conserve sa file pour reprise et ne
+ modifie pas les regles de maitrise.
+
+### Carnet de vocabulaire personnel (ADR-007)
+
+Le carnet a son propre stockage FSRS. Les cartes de sens, de lecture et, si aucune
+donnée ne permet un rappel contrôlable, d'auto-évaluation, sont planifiées avec le même
+scheduler mais dans des tables et sessions distinctes. Elles ne mettent jamais à jour
+`user_kanji_progress`, les scores de maîtrise, les files ou les statistiques du
+curriculum. L'archivage retire les cartes des nouvelles files sans supprimer les logs ;
+la suppression explicite retire l'entrée et tout son historique personnel associé.

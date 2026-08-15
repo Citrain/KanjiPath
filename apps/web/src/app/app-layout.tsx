@@ -39,6 +39,7 @@ const NAV_ITEMS = [
   { to: '/conversation', label: 'Conversation', short: 'Parler', icon: MessageCircle },
   { to: '/quiz-ia', label: 'Quiz IA', short: 'Quiz IA', icon: BrainCircuit },
   { to: '/lecture', label: 'Lecture', icon: BookOpen },
+  { to: '/carnet', label: 'Carnet', icon: BookMarked },
   { to: '/kanji', label: 'Kanji', icon: Shapes },
   { to: '/progression', label: 'Progression', icon: TrendingUp },
 ] as const;
@@ -282,7 +283,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             aria-label="Navigation principale mobile"
             className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-lg lg:hidden"
           >
-            <div className="grid grid-cols-7">
+            <div className="grid grid-cols-8">
               {NAV_ITEMS.map((item) => {
                 const Icon = item.icon;
                 return (

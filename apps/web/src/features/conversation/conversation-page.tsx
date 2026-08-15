@@ -12,6 +12,7 @@ import { Badge, Button, Card, ErrorState, Skeleton } from '@kanjipath/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Bot, Mic, MicOff, Send, UserRound, Volume2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { SaveVocabularyButton } from '../personal-vocabulary/save-vocabulary-button';
 import {
   createConversation,
   endConversation,
@@ -466,6 +467,11 @@ export function ConversationPage() {
                         Vous <UserRound aria-hidden className="size-3.5" />
                       </p>
                       <p>{item.transcript}</p>
+                      <div className="mt-3 flex justify-end">
+                        <SaveVocabularyButton
+                          source={{ origin: 'conversation', conversationTurnId: item.id }}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-start gap-2">

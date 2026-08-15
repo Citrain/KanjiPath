@@ -84,6 +84,7 @@ export interface AudioResourceDto {
 }
 
 export interface SentenceTokenDto {
+  id?: string;
   surface: string;
   reading: string | null;
   romaji: string | null;

@@ -79,3 +79,11 @@ La page `GET /sources` (API) et l'écran `/sources` (web) listent : source, vers
 date d'import, licence, attribution, et la version du pack publié.
 
 Les ressources audio affichent en plus leur attribution au niveau de la ressource.
+
+## Carnet de vocabulaire personnel
+
+Lorsqu'un utilisateur enregistre un mot issu du contenu publié dans son carnet, l'API
+fige une copie de sa référence, de la version du pack courant, de la source, de sa
+version, de l'attribution et de la licence affichables. Cette copie ne change pas la
+provenance du contenu publié et reste privée. Les mots issus d'une conversation ne
+reçoivent aucune provenance publiée et ne sont jamais ajoutés au pipeline.

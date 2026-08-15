@@ -6,6 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 import { LevelBadge } from '../../components/level-badge';
 import { fetchTextDetail, fetchWordLookup } from '../content/api';
 import { SentenceView, useDisplaySettings } from '../content/japanese';
+import { SaveVocabularyButton } from '../personal-vocabulary/save-vocabulary-button';
 import { groupTextTokens } from './text-tokens';
 
 const KANJI_RE = /[\u3400-\u9fff\uf900-\ufaff]/;
@@ -19,10 +20,13 @@ export function ReadingTextPage() {
     queryFn: () => fetchTextDetail(id),
     enabled: id.length > 0,
   });
+  const selectedToken = selected
+    ? (text.data?.tokens.find((token) => token.id === selected) ?? null)
+    : null;
   const lookup = useQuery({
     queryKey: ['word-lookup', selected],
-    queryFn: () => fetchWordLookup(selected ?? ''),
-    enabled: selected !== null,
+    queryFn: () => fetchWordLookup(selectedToken?.surface ?? ''),
+    enabled: selectedToken !== null,
   });
 
   if (text.isPending) {
@@ -48,7 +52,6 @@ export function ReadingTextPage() {
 
   const data = text.data;
   const sentences = groupTextTokens(data.tokens);
-  const selectedToken = selected ? data.tokens.find((token) => token.surface === selected) : null;
 
   return (
     <div>
@@ -80,19 +83,22 @@ export function ReadingTextPage() {
                 romajiEnabled={romajiEnabled}
                 furiganaMode={furiganaMode}
                 className="text-2xl"
-                onTokenClick={(surface) => {
-                  if (!KANJI_RE.test(surface)) {
+                onTokenClick={(token) => {
+                  if (!KANJI_RE.test(token.surface)) {
                     return;
                   }
-                  setSelected((current) => (current === surface ? null : surface));
+                  const tokenId = token.id;
+                  if (tokenId) {
+                    setSelected((current) => (current === tokenId ? null : tokenId));
+                  }
                 }}
-                activeSurface={selected}
+                activeTokenId={selected}
               />
             ))}
           </div>
         </Card>
         <div className="flex flex-col gap-4">
-          {selected !== null ? (
+          {selectedToken !== null ? (
             <Card>
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
@@ -100,8 +106,8 @@ export function ReadingTextPage() {
                     Lecture en contexte
                   </p>
                   <p className="mt-1 font-jp text-3xl font-bold text-ink">
-                    {selected}
-                    {selectedToken?.reading && selectedToken.reading !== selected ? (
+                    {selectedToken.surface}
+                    {selectedToken.reading && selectedToken.reading !== selectedToken.surface ? (
                       <span className="ml-2 text-lg font-medium text-muted">
                         {selectedToken.reading}
                         {romajiEnabled && selectedToken.romaji ? ` · ${selectedToken.romaji}` : ''}
@@ -127,7 +133,7 @@ export function ReadingTextPage() {
                   {lookup.data.vocabulary.length > 0 ? (
                     <ul className="mt-4 flex flex-col gap-3">
                       {lookup.data.vocabulary.map((word) => (
-                        <li key={word.id} className="flex flex-col gap-0.5">
+                        <li key={word.id} className="flex flex-col gap-2">
                           <p className="font-jp text-lg font-semibold text-ink">
                             {word.writtenForm}
                             <span className="ml-2 text-base font-medium text-muted">
@@ -141,6 +147,16 @@ export function ReadingTextPage() {
                             {word.meaningFr}
                             {word.partOfSpeech ? ` — ${word.partOfSpeech}` : ''}
                           </p>
+                          <div>
+                            <SaveVocabularyButton
+                              source={{
+                                vocabularyId: word.id,
+                                textId: data.id,
+                                tokenId: selectedToken.id,
+                                origin: 'published',
+                              }}
+                            />
+                          </div>
                         </li>
                       ))}
                     </ul>

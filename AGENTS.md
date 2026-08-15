@@ -134,6 +134,11 @@ pnpm dev:voice          # setup + web/API + services vocaux locaux
   concernee, avec migration Prisma, contrats API, tests et documentation. Elles ne peuvent ni
   publier des donnees personnelles, ni contourner FSRS, les preferences d'etude, les licences ou
   les contraintes locales de l'ADR-003.
+- Carnet personnel (ADR-007) : ne jamais réutiliser `review_cards`, `review_logs`,
+  `study_sessions` ou `user_kanji_progress` pour ses révisions. Les entrées, sources,
+  cartes, journaux et sessions restent dans leurs tables dédiées ; une provenance
+  publiée est résolue côté API et figée avec sa version, tandis qu'un tour de
+  conversation doit toujours être chargé avec son propriétaire.
 - Carte visuelle (ADR-006) : ne jamais persister ou inférer une relation au runtime. La vue API
   reste bornée et s'appuie uniquement sur les relations publiées du pipeline ; le web calcule la
   disposition mais conserve une liste textuelle, des filtres accessibles et un état de progression

@@ -27,6 +27,8 @@ model User {
   conversations  ConversationSession[]
   aiQuizSessions AiQuizSession[]
   dailyMissions  DailyMission[]
+  personalVocabularyEntries  PersonalVocabularyEntry[]
+  personalVocabularySessions PersonalVocabularySession[]
 
   @@map("users")
 }
@@ -227,6 +229,24 @@ enum LearningEventType {
 enum AiQuizStatus {
   active
   finished
+}
+
+enum PersonalVocabularyOrigin {
+  published_vocabulary
+  published_text
+  conversation
+}
+
+enum PersonalVocabularyCardKind {
+  meaning
+  reading
+  self
+}
+
+enum PersonalVocabularySessionItemStatus {
+  pending
+  answered
+  skipped
 }
 
 model ContentSource {
@@ -806,4 +826,114 @@ model AiQuizAnswer {
   @@unique([sessionId, questionKey])
   @@index([sessionId, answeredAt])
   @@map("ai_quiz_answers")
+}
+
+model PersonalVocabularyEntry {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  surface     String
+  reading     String?
+  meaningFr   String?  @map("meaning_fr") @db.Text
+  excerpt     String?  @db.Text
+  dedupeKey   String   @map("dedupe_key")
+  archivedAt  DateTime? @map("archived_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  source      PersonalVocabularySource?
+  cards       PersonalVocabularyReviewCard[]
+
+  @@unique([userId, dedupeKey])
+  @@index([userId, archivedAt, createdAt])
+  @@map("personal_vocabulary_entries")
+}
+
+model PersonalVocabularySource {
+  id              String                    @id @default(uuid())
+  entryId         String                    @unique @map("entry_id")
+  origin          PersonalVocabularyOrigin
+  reference       String?
+  contentVersion  String?                   @map("content_version")
+  sourceName      String?                   @map("source_name")
+  sourceUrl       String?                   @map("source_url") @db.Text
+  sourceVersion   String?                   @map("source_version")
+  attributionText String?                   @map("attribution_text") @db.Text
+  license         String?
+  createdAt       DateTime                  @default(now()) @map("created_at")
+  entry           PersonalVocabularyEntry   @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@map("personal_vocabulary_sources")
+}
+
+model PersonalVocabularyReviewCard {
+  id             String                       @id @default(uuid())
+  entryId        String                       @map("entry_id")
+  kind           PersonalVocabularyCardKind
+  state          CardState                    @default(New)
+  dueAt          DateTime                     @default(now()) @map("due_at")
+  stability      Float                        @default(0)
+  difficulty     Float                        @default(0)
+  reps           Int                          @default(0)
+  lapses         Int                          @default(0)
+  elapsedDays    Float                        @default(0) @map("elapsed_days")
+  scheduledDays  Float                        @default(0) @map("scheduled_days")
+  learningSteps  Float                        @default(0) @map("learning_steps")
+  lastReviewAt   DateTime?                    @map("last_review_at")
+  createdAt      DateTime                     @default(now()) @map("created_at")
+  updatedAt      DateTime                     @updatedAt @map("updated_at")
+  entry          PersonalVocabularyEntry      @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  logs           PersonalVocabularyReviewLog[]
+  sessionItems   PersonalVocabularySessionItem[]
+
+  @@unique([entryId, kind])
+  @@index([dueAt])
+  @@map("personal_vocabulary_review_cards")
+}
+
+model PersonalVocabularyReviewLog {
+  id             String                        @id @default(uuid())
+  reviewCardId   String                        @map("review_card_id")
+  rating         Rating
+  wasCorrect     Boolean                       @map("was_correct")
+  responseTimeMs Int?                          @map("response_time_ms")
+  answerPayload  Json?                         @map("answer_payload")
+  stateBefore    CardState                     @map("state_before")
+  stateAfter     CardState                     @map("state_after")
+  dueAfter       DateTime                      @map("due_after")
+  stabilityAfter Float                         @map("stability_after")
+  reviewedAt     DateTime                      @default(now()) @map("reviewed_at")
+  reviewCard     PersonalVocabularyReviewCard  @relation(fields: [reviewCardId], references: [id], onDelete: Cascade)
+
+  @@index([reviewCardId, reviewedAt])
+  @@map("personal_vocabulary_review_logs")
+}
+
+model PersonalVocabularySession {
+  id              String                         @id @default(uuid())
+  userId          String                         @map("user_id")
+  startedAt       DateTime                       @default(now()) @map("started_at")
+  endedAt         DateTime?                      @map("ended_at")
+  answeredCount   Int                            @default(0) @map("answered_count")
+  correctCount    Int                            @default(0) @map("correct_count")
+  durationSeconds Int                            @default(0) @map("duration_seconds")
+  user            User                           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items           PersonalVocabularySessionItem[]
+
+  @@index([userId, endedAt])
+  @@map("personal_vocabulary_sessions")
+}
+
+model PersonalVocabularySessionItem {
+  id           String                              @id @default(uuid())
+  sessionId    String                              @map("session_id")
+  position     Int
+  reviewCardId String                              @map("review_card_id")
+  status       PersonalVocabularySessionItemStatus @default(pending)
+  wasCorrect   Boolean?                            @map("was_correct")
+  session      PersonalVocabularySession           @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  reviewCard   PersonalVocabularyReviewCard        @relation(fields: [reviewCardId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, position])
+  @@index([sessionId, status])
+  @@map("personal_vocabulary_session_items")
 }

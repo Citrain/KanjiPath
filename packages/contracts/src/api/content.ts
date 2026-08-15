@@ -56,9 +56,12 @@ export interface SettingsDto {
 }
 
 export interface MiniTextTokenDto {
+  id: string;
   surface: string;
   reading: string | null;
   romaji: string | null;
+  startOffset: number;
+  endOffset: number;
 }
 
 export interface MiniTextSummaryDto {

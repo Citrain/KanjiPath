@@ -41,9 +41,10 @@ apps/
         study/         # sessions FSRS et mission quotidienne (snapshot/reprise),
                         # quiz clavier 1-4/Entrée, résultats
         settings/      # préférences (niveau, limites, saisie kana, furigana, romaji, thème)
-        conversation/  # choix de session, texte/micro, transcripts et corrections
-        ai-quiz/       # génération locale d'un quiz personnel, rendu et correction déterministe
-        sources/       # page sources et licences
+         conversation/  # choix de session, texte/micro, transcripts et corrections
+         ai-quiz/       # génération locale d'un quiz personnel, rendu et correction déterministe
+         personal-vocabulary/ # carnet privé, provenance figée et sessions FSRS isolées (ADR-007)
+         sources/       # page sources et licences
       lib/             # apiFetch (client HTTP, CSRF), theme (encre/washi),
                        # format (dates), progress (série), skills (libellés)
       styles/          # design system Tailwind 4 (tokens, animations, reduced-motion)
@@ -66,8 +67,9 @@ apps/
         study/         # sessions, missions quotidiennes, FSRS, reprise, révision ciblée
         progress/      # tableau de bord, niveaux, points faibles, historique, statistiques
         settings/      # préférences utilisateur
-        conversation/  # orchestrateur, providers STT/LLM/TTS et WebSocket local
-        ai-quiz/       # snapshot de quiz local, validation LLM, correction sans LLM
+         conversation/  # orchestrateur, providers STT/LLM/TTS et WebSocket local
+         ai-quiz/       # snapshot de quiz local, validation LLM, correction sans LLM
+         personal-vocabulary/ # entrées privées, cartes/logs/sessions FSRS séparés
     test/              # tests d'intégration (e2e)
 
 packages/
@@ -189,7 +191,13 @@ MariaDB : kanji, vocabulaire, phrases, mini-textes, exercices, cartes FSRS, prog
   les relations publiées du pipeline (`kanji_components`, notes éditoriales,
   `vocabulary_kanji`, `curriculum_kanji`), avec provenance et version du contenu. Le
   navigateur ne calcule que la disposition et les filtres ; une liste textuelle expose
-  les mêmes destinations.
+   les mêmes destinations.
+- Le carnet personnel (ADR-007) résout un mot publié exclusivement côté API puis fige
+  sa référence, la version du pack courant, la source, l'attribution et la licence. Un
+  mot de conversation est vérifié contre un tour appartenant à l'utilisateur et ne
+  stocke qu'un extrait court du propriétaire. Ses cartes, journaux et sessions FSRS ont
+  leurs propres tables et ne participent jamais aux requêtes `review_cards`,
+  `review_logs` ou `user_kanji_progress` du curriculum.
 
 ## Endpoints
 
@@ -277,6 +285,18 @@ GET    /ai-quizzes/:id                # sans réponses correctes
 POST   /ai-quizzes/:id/answers        # correction déterministe
 POST   /ai-quizzes/:id/finish
 GET    /ai-quizzes/:id/questions/:key/audio
+
+# Carnet de vocabulaire personnel
+GET    /personal-vocabulary?archived=false
+POST   /personal-vocabulary
+POST   /personal-vocabulary/:id/archive
+POST   /personal-vocabulary/:id/restore
+DELETE /personal-vocabulary/:id
+GET    /personal-vocabulary/resume
+POST   /personal-vocabulary/sessions
+POST   /personal-vocabulary/answers
+POST   /personal-vocabulary/sessions/:id/finish
+POST   /personal-vocabulary/sessions/:id/abandon
 ```
 
 ## Sécurité
@@ -303,7 +323,11 @@ Détail complet : `adr/9-security-perf/README.md`. Points clés :
   compétences, difficultés, étapes et identifiants. Elle planifie les types et appelle le modèle
   séparément pour chaque question; un rejet ne relance que cette question, dans la limite de quatre
   tentatives totales.
-  Les lectures utilisent directement le vocabulaire publié et ne dépendent pas du LLM.
+   Les lectures utilisent directement le vocabulaire publié et ne dépendent pas du LLM.
+- Le carnet personnel ne publie ni ne partage aucune donnée utilisateur. Toute mutation
+  est authentifiée et CSRF-protégée; la référence d'un tour conversationnel est chargée
+  avec son `userId`, jamais par identifiant seul. La suppression d'une entrée cascade
+  vers sa provenance, ses cartes, journaux et éléments de session personnels.
 
 ## Performance / index
 

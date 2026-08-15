@@ -140,6 +140,20 @@ déjà publiées et versionnées par `kanji_components`, `kanji_notes.confusions
 - Les binaires audio ne sont pas persistés par défaut. Une migration devra définir les
   contraintes et index avant toute implémentation.
 
+### Carnet de vocabulaire personnel (ADR-007)
+
+- `personal_vocabulary_entries` : utilisateur, surface, lecture/sens disponibles,
+  extrait court, clé de déduplication, état archivé et dates ;
+- `personal_vocabulary_sources` : une provenance figée par entrée, avec origine,
+  référence publiée ou tour privé, version de contenu, source, attribution et licence ;
+- `personal_vocabulary_review_cards` et `personal_vocabulary_review_logs` : état et
+  historique FSRS privés, séparés des cartes génériques du curriculum ;
+- `personal_vocabulary_sessions` et `personal_vocabulary_session_items` : file de
+  révision personnelle persistée ;
+- toutes les relations utilisateur et entrée utilisent `ON DELETE CASCADE`. La
+  suppression d'une entrée retire sa provenance, ses cartes, journaux et éléments de
+  session, sans toucher à `review_cards`, `review_logs` ou `user_kanji_progress`.
+
 ---
 
 ## 5. Exercices

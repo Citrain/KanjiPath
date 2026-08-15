@@ -91,9 +91,15 @@ Ce qui est implémenté :
   system « encre & washi » (voir `docs/architecture/overview.md#design-system-web`).
 - Qualité : Vitest (unitaires + intégration MariaDB), Biome.
 - **Carte visuelle des kanji** (`/kanji/:literal/carte`, ADR-006) : sous-graphe
-  authentifié et borné de relations publiées (composants partagés, confusions
-  visuelles, mots partagés, voisins du parcours). La disposition reste locale au
-  navigateur ; filtres, liens clavier et liste textuelle donnent le même accès aux fiches.
+   authentifié et borné de relations publiées (composants partagés, confusions
+   visuelles, mots partagés, voisins du parcours). La disposition reste locale au
+   navigateur ; filtres, liens clavier et liste textuelle donnent le même accès aux fiches.
+- **Carnet de vocabulaire personnel** (`/carnet`, ADR-007) : enregistrement d'un mot
+  depuis la lecture/lookup ou un tour de conversation propriétaire, contexte court et
+  provenance publiée figée (référence, versions, attribution, licence). Les cartes,
+  journaux et sessions FSRS du carnet sont stockés dans des tables distinctes : ils ne
+  modifient ni les cartes ni les scores du curriculum. Les entrées peuvent être
+  archivées ou supprimées explicitement avec leurs données de révision associées.
 
 La Phase 1 (N5) a fait l'objet d'une relecture éditoriale (mnémotechniques,
 étymologies, rôles de composants) et d'une complétion du vocabulaire curaté (mois,

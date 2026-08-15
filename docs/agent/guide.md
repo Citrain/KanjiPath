@@ -65,6 +65,7 @@ ajoute-le ici.
 | Extensions produit acceptees | ADR-005 a ADR-011 a la racine : mission, carte kanji, carnet, shadowing, immersion, timeline, mode zen |
 | Mission quotidienne | `StudyService#createDailyMission/dailyMission`, contrats `daily-mission.ts`, tables `daily_missions` / `daily_mission_steps`, page `/mission` |
 | Carte visuelle des kanji | `ContentService#kanjiMap`, contrat `KanjiMapResponse`, page `/kanji/:literal/carte` |
+| Carnet de vocabulaire personnel | `apps/api/src/modules/personal-vocabulary/`, contrats `personal-vocabulary.ts`, page `/carnet` |
 
 ## Pièges connus (IMPORTANT)
 
@@ -779,6 +780,13 @@ ajoute-le ici.
     `1`, passe le statut à `mastered` et suspend les cartes existantes. Ajouter aussi le
     kanji à l'ensemble `discoveredIds` de `buildQueue`, sinon il serait introduit à nouveau
     en tant que nouveau kanji. Les révisions ciblées restent volontairement disponibles.
+
+92. **Carnet personnel isolé.** Les cartes et logs de `/carnet` restent dans
+    `personal_vocabulary_*`. Ne pas les joindre aux requêtes de progression ni les faire
+    passer par `StudyService`, même si le scheduler FSRS est le même. La création d'un
+    mot publié ne doit recevoir que ses identifiants : `PersonalVocabularyService` résout
+    et fige la provenance. Pour une conversation, toujours filtrer le tour par
+    `session.userId`; ne retourner que l'extrait court déjà stocké par le carnet.
 
 ## Recettes
 

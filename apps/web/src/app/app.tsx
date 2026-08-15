@@ -48,6 +48,11 @@ const ConversationPage = lazy(() =>
 const AiQuizPage = lazy(() =>
   import('../features/ai-quiz/ai-quiz-page').then((m) => ({ default: m.AiQuizPage })),
 );
+const PersonalVocabularyPage = lazy(() =>
+  import('../features/personal-vocabulary/personal-vocabulary-page').then((m) => ({
+    default: m.PersonalVocabularyPage,
+  })),
+);
 
 function AuthSplash() {
   return (
@@ -176,6 +181,14 @@ export function App() {
             element={
               <Protected>
                 <ReadingTextPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/carnet"
+            element={
+              <Protected>
+                <PersonalVocabularyPage />
               </Protected>
             }
           />
