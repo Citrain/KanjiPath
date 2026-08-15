@@ -29,6 +29,14 @@
 
 Toutes les sections définies dans `5-kanji-card/`.
 
+### Carte visuelle des kanji (ADR-006)
+
+- accessible depuis une fiche, centrée sur le kanji choisi ;
+- filtres par composant partagé, confusion visuelle, mot partagé et voisin du parcours ;
+- nœuds cliquables et focusables au clavier, état de progression libellé en plus de la couleur ;
+- liste textuelle équivalente à la vue graphique, avec les mêmes liens vers les fiches ;
+- disposition calculée localement, aucun réglage de carte persisté en V1.
+
 ### Session d'apprentissage
 
 1. découverte guidée
@@ -46,6 +54,15 @@ Toutes les sections définies dans `5-kanji-card/`.
 - affichage progressif des aides
 - correction détaillée
 - bouton « Signaler un problème »
+
+### Mission quotidienne (ADR-005)
+
+- point d'entree depuis le tableau de bord, preparation explicite puis reprise de la
+  meme mission pendant la journee locale ;
+- etapes courtes : sous-session de revision, mot en contexte et lecture graduee ;
+- toute etape peut etre terminee ou passee, sans perdre la progression deja enregistree ;
+- la sous-session ouvre le renderer d'etude existant pour conserver raccourcis, feedback
+  et accessibilite.
 
 ### Conversation vocale locale (ADR-003)
 

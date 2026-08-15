@@ -94,6 +94,12 @@ L'API n'extrait aucun fragment, ne renomme aucun champ et n'échappe aucune synt
 syntaxe ou les invariants Zod échouent, elle relance uniquement cette question, avec au plus quatre
 tentatives au total, toutes strictement validées. Un échec final ne crée aucune session; les questions déjà valides
 ne sont jamais redemandées.
+Pour éviter deux snapshots identiques lorsque la mission ne change pas, l'API relit les trois
+sessions les plus récentes ayant exactement la même mission et interdit leurs énoncés japonais.
+Chaque création choisit aussi un angle pédagogique, décale l'ordre du référentiel et utilise une
+température Ollama modérée de `0.35`. La diversité reste contrôlée : une répétition exacte est un
+échec de validation et reçoit le même traitement borné que toute autre sortie invalide. Les QCM de
+lecture appliquent la même exclusion côté application et changent également la position de réponse.
 
 ## VOICEVOX (TTS japonais)
 

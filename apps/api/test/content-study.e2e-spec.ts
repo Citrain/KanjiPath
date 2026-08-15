@@ -60,6 +60,15 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     });
     expect(response.statusCode).toBe(201);
     sessionCookie = `kp_session=${findCookie(response, 'kp_session')?.value}`;
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      throw new Error('Utilisateur de test introuvable');
+    }
+    await prisma.userKanjiProgress.upsert({
+      where: { userId_kanjiId: { userId: user.id, kanjiId: 'k-04e8c' } },
+      create: { userId: user.id, kanjiId: 'k-04e8c', status: 'learning', overallScore: 0.5 },
+      update: { status: 'learning', overallScore: 0.5 },
+    });
   });
 
   it('liste les kanji du niveau N5', async () => {
@@ -91,6 +100,35 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(body.readings.length).toBeGreaterThan(0);
     const onReading = body.readings.find((r: { reading: string }) => r.reading === 'イチ');
     expect(onReading?.romaji).toBe('ichi');
+  });
+
+  it('retourne une carte bornée de relations publiées avec provenance et progression', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/api/v1/kanji/一/map',
+      headers: { cookie: sessionCookie },
+    });
+    expect(response.statusCode).toBe(200);
+    const body = response.json();
+    expect(body.nodes.length).toBeLessThanOrEqual(body.limit);
+    expect(body.nodes.find((node: { literal: string }) => node.literal === '一')).toBeTruthy();
+    expect(body.nodes.find((node: { literal: string }) => node.literal === '仮')).toBeUndefined();
+    const two = body.nodes.find((node: { literal: string }) => node.literal === '二');
+    expect(two).toMatchObject({ status: 'learning', overallScore: 0.5 });
+    expect(body.links.map((link: { type: string }) => link.type)).toEqual(
+      expect.arrayContaining([
+        'shared_component',
+        'visual_confusion',
+        'shared_word',
+        'curriculum_neighbor',
+      ]),
+    );
+    for (const link of body.links) {
+      expect(link.sourceId).toBe(body.centerId);
+      expect(link.targetId).not.toBe(body.centerId);
+      expect(link.provenance.sourceId).toBeTruthy();
+      expect(link.provenance.contentVersion).toBe('test-1');
+    }
   });
 
   it('retourne les phrases audio en priorité avec leurs tokens annotés', async () => {
@@ -397,6 +435,40 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(typeof body.estimatedRetention).toBe('number');
   });
 
+  it('marque un kanji comme connu et suspend ses cartes de révision', async () => {
+    await fetchCsrf();
+    const response = await app.inject({
+      method: 'POST',
+      url: `/api/v1/kanji/${encodeURIComponent(reviewedLiteral)}/known`,
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+    });
+    expect(response.statusCode).toBe(201);
+    const body = response.json();
+    expect(body.status).toBe('mastered');
+    expect(body.overallScore).toBe(1);
+    expect(body.scores).toEqual({
+      meaning: 1,
+      reading: 1,
+      vocabulary: 1,
+      context: 1,
+      stroke: 1,
+      listening: 1,
+    });
+    expect(body.cards.every((card: { state: string }) => card.state === 'Suspended')).toBe(true);
+
+    const list = await app.inject({
+      method: 'GET',
+      url: '/api/v1/kanji?level=N5',
+      headers: { cookie: sessionCookie },
+    });
+    const known = list
+      .json()
+      .kanji.find((item: { literal: string }) => item.literal === reviewedLiteral);
+    expect(known.status).toBe('mastered');
+    expect(known.nextDueAt).toBeNull();
+  });
+
   it('refuse une session ciblée sans filtre', async () => {
     const response = await app.inject({
       method: 'POST',
@@ -584,6 +656,18 @@ async function seedContent(prisma: PrismaService): Promise<void> {
       ],
     });
   }
+  await prisma.kanji.upsert({
+    where: { id: 'k-unpublished' },
+    create: {
+      id: 'k-unpublished',
+      literal: '仮',
+      unicodeCodepoint: 'U+4EEE',
+      strokeCount: 6,
+      status: 'draft',
+      contentVersionId: version.id,
+    },
+    update: { status: 'draft' },
+  });
 
   await prisma.sentence.upsert({
     where: { id: 's-before-audio' },
@@ -782,6 +866,69 @@ async function seedContent(prisma: PrismaService): Promise<void> {
         order: 2,
         confidence: 'high',
       },
+    ],
+  });
+  await prisma.component.upsert({
+    where: { id: 'comp-test-shared' },
+    create: { id: 'comp-test-shared', literal: '丶', componentType: 'shape' },
+    update: {},
+  });
+  await prisma.kanjiComponent.upsert({
+    where: { kanjiId_componentId: { kanjiId: 'k-04e00', componentId: 'comp-test-shared' } },
+    create: {
+      kanjiId: 'k-04e00',
+      componentId: 'comp-test-shared',
+      position: 0,
+      sourceId: source.id,
+    },
+    update: { sourceId: source.id },
+  });
+  await prisma.kanjiComponent.upsert({
+    where: { kanjiId_componentId: { kanjiId: 'k-unpublished', componentId: 'comp-test-shared' } },
+    create: {
+      kanjiId: 'k-unpublished',
+      componentId: 'comp-test-shared',
+      position: 0,
+      sourceId: source.id,
+    },
+    update: { sourceId: source.id },
+  });
+  await prisma.kanjiComponent.upsert({
+    where: { kanjiId_componentId: { kanjiId: 'k-04e8c', componentId: 'comp-test-shared' } },
+    create: {
+      kanjiId: 'k-04e8c',
+      componentId: 'comp-test-shared',
+      position: 0,
+      sourceId: source.id,
+    },
+    update: { sourceId: source.id },
+  });
+  await prisma.kanjiNotes.upsert({
+    where: { kanjiId: 'k-04e00' },
+    create: {
+      kanjiId: 'k-04e00',
+      confusions: ['二'],
+      editorialStatus: 'published',
+    },
+    update: { confusions: ['二'], editorialStatus: 'published' },
+  });
+  await prisma.vocabulary.upsert({
+    where: { id: 'v-test-shared' },
+    create: {
+      id: 'v-test-shared',
+      writtenForm: '一二',
+      reading: 'いちに',
+      meaningFr: 'un, deux',
+      sourceId: source.id,
+      editorialStatus: 'published',
+    },
+    update: { editorialStatus: 'published' },
+  });
+  await prisma.vocabularyKanji.deleteMany({ where: { vocabularyId: 'v-test-shared' } });
+  await prisma.vocabularyKanji.createMany({
+    data: [
+      { vocabularyId: 'v-test-shared', kanjiId: 'k-04e00', position: 0, readingInWord: 'いち' },
+      { vocabularyId: 'v-test-shared', kanjiId: 'k-04e8c', position: 1, readingInWord: 'に' },
     ],
   });
 

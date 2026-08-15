@@ -9,14 +9,17 @@ import {
   SectionHeader,
   Skeleton,
   Tooltip,
+  useToast,
 } from '@kanjipath/ui';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
+  CircleCheck,
   Flag,
   Lightbulb,
+  Network,
   PenLine,
   ScrollText,
 } from 'lucide-react';
@@ -32,6 +35,7 @@ import {
   fetchKanjiProgress,
   fetchKanjiSentences,
   fetchKanjiVocabulary,
+  markKanjiKnown,
 } from '../content/api';
 import { AudioButton } from '../content/audio-button';
 import { SentenceView, useDisplaySettings } from '../content/japanese';
@@ -52,6 +56,8 @@ const VOCABULARY_PAGE_SIZE = 8;
 
 export function KanjiCardPage() {
   const { literal = '' } = useParams();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   const { romajiEnabled, furiganaMode } = useDisplaySettings();
   const [issueOpen, setIssueOpen] = useState(false);
   const [vocabularyPagination, setVocabularyPagination] = useState({ literal, page: 0 });
@@ -75,6 +81,18 @@ export function KanjiCardPage() {
     queryKey: ['kanji', literal, 'progress'],
     queryFn: () => fetchKanjiProgress(literal),
     enabled: literal.length > 0,
+  });
+  const markKnown = useMutation({
+    mutationFn: () => markKanjiKnown(literal),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['kanji'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['progress'] });
+      toast(`${literal} est maintenant marqué comme connu.`, 'success');
+    },
+    onError: () => {
+      toast('Impossible de mettre à jour ce kanji. Réessayez.', 'error');
+    },
   });
 
   const detailData = detail.data;
@@ -292,6 +310,23 @@ export function KanjiCardPage() {
                   Réviser ce kanji
                 </Link>
               </Button>
+              <Button asChild variant="secondary" size="sm">
+                <Link to={`/kanji/${encodeURIComponent(kanji.literal)}/carte`}>
+                  <Network aria-hidden className="size-4" />
+                  Voir la carte
+                </Link>
+              </Button>
+              {status === 'mastered' ? null : (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  loading={markKnown.isPending}
+                  onClick={() => markKnown.mutate()}
+                >
+                  <CircleCheck aria-hidden className="size-4" />
+                  Marquer comme connu
+                </Button>
+              )}
             </div>
           </div>
         </div>

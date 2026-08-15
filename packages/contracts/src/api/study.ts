@@ -45,6 +45,7 @@ export interface CreateSessionResponse {
 }
 
 export interface AnswerRequest {
+  sessionId?: string;
   exerciseItemId: string;
   answer: string;
   responseTimeMs?: number;

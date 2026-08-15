@@ -33,12 +33,13 @@ apps/
         auth/          # pages login/register (écran scindé), champs mot de passe, hooks, api
         content/       # accès API contenu (kanji, sources, progression, signalements)
         dashboard/     # tableau de bord (CTA continuer, stats, série, à réviser, parcours)
-        kanji/         # liste + recherche + fiche kanji (SVG animé KanjiVG, signalement)
+        kanji/         # liste + recherche + fiche + carte relationnelle accessible (ADR-006),
+                        # SVG animé KanjiVG, signalement
                        # + entraînement à l'écriture (tracé au pointeur validé, stroke-match)
         progression/   # page progression (onglets : niveaux, activité, points faibles,
                        # statistiques détaillées)
-        study/         # session d'étude (choix de mode — jour/points faibles/libre/ciblée,
-                       # quiz clavier 1-4/Entrée, résultats)
+        study/         # sessions FSRS et mission quotidienne (snapshot/reprise),
+                        # quiz clavier 1-4/Entrée, résultats
         settings/      # préférences (niveau, limites, saisie kana, furigana, romaji, thème)
         conversation/  # choix de session, texte/micro, transcripts et corrections
         ai-quiz/       # génération locale d'un quiz personnel, rendu et correction déterministe
@@ -60,9 +61,9 @@ apps/
       modules/
         auth/          # controller, service, session, guards, décorateurs
         users/         # UsersService
-        content/       # kanji (liste/fiche/SVG/vocab/phrases), sources, signalements
+        content/       # kanji (liste/fiche/carte/SVG/vocab/phrases), sources, signalements
         curricula/     # curricula et niveaux
-        study/         # sessions, file d'étude, réponses (FSRS), reprise, révision ciblée
+        study/         # sessions, missions quotidiennes, FSRS, reprise, révision ciblée
         progress/      # tableau de bord, niveaux, points faibles, historique, statistiques
         settings/      # préférences utilisateur
         conversation/  # orchestrateur, providers STT/LLM/TTS et WebSocket local
@@ -166,7 +167,8 @@ Navigateur
   Pipeline (build)                     API (runtime)
   download → import → normalize      GET /kanji, /kanji/:literal, /kanji/:literal/svg
   → generate → validate → publish    GET /curricula, /sources, /texts, /texts/:id
-  → load (Prisma upsert)             POST /study/sessions, /study/answers (FSRS)
+  → load (Prisma upsert)             POST /study/sessions, /study/answers (FSRS),
+                                     POST /kanji/:literal/known
         ▼                            GET /progress/dashboard, /progress/levels/:level
 MariaDB : kanji, vocabulaire, phrases, mini-textes, exercices, cartes FSRS, progression
 ```
@@ -180,7 +182,14 @@ MariaDB : kanji, vocabulaire, phrases, mini-textes, exercices, cartes FSRS, prog
 - Le Quiz IA local (ADR-004) produit un snapshot personnel via un contrat fermé, puis
   corrige les choix sans LLM. Ses sessions ne sont ni du contenu publié ni des événements FSRS.
   Le LLM fournit cinq champs pédagogiques par QCM; l'API matérialise toute la présentation, les
-  métadonnées et les identifiants afin de ne jamais dépendre d'une structure UI générée.
+   métadonnées et les identifiants afin de ne jamais dépendre d'une structure UI générée.
+- La mission quotidienne (ADR-005) est un snapshot par jour local : elle reemploie une
+  sous-session FSRS et des references de contenu publie, sans LLM ni nouvelle carte.
+- La carte visuelle (ADR-006) ne persiste aucun graphe : l'API compose les liens depuis
+  les relations publiées du pipeline (`kanji_components`, notes éditoriales,
+  `vocabulary_kanji`, `curriculum_kanji`), avec provenance et version du contenu. Le
+  navigateur ne calcule que la disposition et les filtres ; une liste textuelle expose
+  les mêmes destinations.
 
 ## Endpoints
 
@@ -205,12 +214,14 @@ GET    /curricula/:code/levels/:level/progress
 
 # Kanji
 GET    /kanji?level=N5
-GET    /kanji/:literal
+ GET    /kanji/:literal
+ GET    /kanji/:literal/map          # sous-graphe publié, authentifié et borné (ADR-006)
 GET    /kanji/:literal/svg          # SVG KanjiVG assaini
 GET    /kanji/:literal/related
 GET    /kanji/:literal/vocabulary
 GET    /kanji/:literal/sentences
 GET    /kanji/:literal/progress
+POST   /kanji/:literal/known        # maîtrise manuelle, cartes suspendues
 
 # Lecture (mini-textes)
 GET    /texts                          # liste (filtre ?level=)
@@ -221,9 +232,13 @@ GET    /words/:surface                 # lookup vocabulaire + kanji d'un token (
 POST   /study/sessions              # mode daily/weak_points/free/targeted (+ cible level/skill/kanjiIds)
 GET    /study/queue
 GET    /study/resume
+GET    /study/sessions/:id
 POST   /study/answers
 POST   /study/sessions/:id/finish
 POST   /study/sessions/:id/abandon   # items restants → skipped, session clôturée
+GET    /study/missions/today
+POST   /study/missions/today
+POST   /study/missions/:missionId/steps/:stepId
 
 # Progression
 GET    /progress/dashboard

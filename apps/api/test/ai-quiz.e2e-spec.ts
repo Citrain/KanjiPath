@@ -80,19 +80,61 @@ const quiz = {
   ],
 };
 
+const alternateQuiz = {
+  questions: [
+    {
+      ...quiz.questions[0]!,
+      japanese: 'たのみます → ＿＿＿',
+      kana: 'たのみます → ＿＿＿',
+      options: ['たのみました', 'たのみます', 'たのみません', 'たのみましょう'],
+      explanationFr: 'たのみます devient たのみました.',
+    },
+    {
+      ...quiz.questions[1]!,
+      japanese: 'ごはんをください。',
+      kana: 'ごはんをください。',
+      explanationFr: 'ごはん signifie repas ou riz.',
+    },
+    {
+      ...quiz.questions[2]!,
+      japanese: 'レストラン',
+      kana: 'れすとらん',
+      options: ['restaurant', 'gare', 'école', 'hôpital'],
+      explanationFr: 'レストラン signifie restaurant.',
+    },
+    {
+      ...quiz.questions[3]!,
+      japanese: 'かいます → ＿＿＿',
+      kana: 'かいます → ＿＿＿',
+      options: ['かいました', 'かいます', 'かいません', 'かいましょう'],
+      explanationFr: 'かいます devient かいました.',
+    },
+    {
+      ...quiz.questions[4]!,
+      japanese: 'メニューをください。',
+      kana: 'めにゅーをください。',
+      explanationFr: 'メニュー signifie menu.',
+    },
+  ],
+};
+
 describeWithDb('quiz IA local (integration MariaDB)', () => {
   let app: NestFastifyApplication;
   let csrfToken = '';
   let sessionCookie = '';
   let quizId = '';
+  const generatedPrompts: string[] = [];
 
   beforeAll(async () => {
     process.env.DATABASE_URL = DATABASE_URL_TEST;
     let questionIndex = 0;
     const llm: LlmProvider = {
       health: async () => ({ available: true, detail: null }),
-      generate: async () => {
-        const { type: _type, ...question } = quiz.questions[questionIndex++]!;
+      generate: async (systemPrompt) => {
+        generatedPrompts.push(systemPrompt);
+        const source = questionIndex < quiz.questions.length ? quiz : alternateQuiz;
+        const { type: _type, ...question } = source.questions[questionIndex % 5]!;
+        questionIndex += 1;
         return JSON.stringify(question);
       },
     };
@@ -163,6 +205,34 @@ describeWithDb('quiz IA local (integration MariaDB)', () => {
     quizId = payload.id;
     expect(payload.quiz.questions[0]).not.toHaveProperty('correct');
     expect(payload.quiz.questions[1].prompt).not.toHaveProperty('audioText');
+  });
+
+  it('exclut les questions persistées quand la même mission est redemandée', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/ai-quizzes',
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+      payload: {
+        prompt: 'Réviser le restaurant',
+        level: 'N5',
+        questionCount: 5,
+        types: ['conjugation_qcm', 'listening_qcm', 'meaning_qcm'],
+        skills: ['grammar', 'listening', 'vocabulary'],
+      },
+    });
+
+    expect(response.statusCode).toBe(201);
+    expect(generatedPrompts[5]).toContain('たべます → ＿＿＿');
+    const first = new Set(quiz.questions.map((question) => question.japanese));
+    expect(
+      response
+        .json()
+        .quiz.questions.every(
+          (question: { prompt: { japanese?: string } }) =>
+            !question.prompt.japanese || !first.has(question.prompt.japanese),
+        ),
+    ).toBe(true);
   });
 
   it('corrige une seule fois, synthétise l’écoute et clôture le quiz', async () => {

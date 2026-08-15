@@ -1,6 +1,7 @@
 import type {
   AnswerResult,
   CreateSessionResponse,
+  DailyMissionResponse,
   ResumeResponse,
   StudySessionMode,
   StudyTarget,
@@ -21,7 +22,31 @@ export function resumeSession(): Promise<ResumeResponse> {
   return apiFetch<ResumeResponse>('/study/resume');
 }
 
+export function getSession(sessionId: string): Promise<ResumeResponse> {
+  return apiFetch<ResumeResponse>(`/study/sessions/${sessionId}`);
+}
+
+export function getDailyMission(): Promise<DailyMissionResponse> {
+  return apiFetch<DailyMissionResponse>('/study/missions/today');
+}
+
+export function createDailyMission(): Promise<DailyMissionResponse> {
+  return apiFetch<DailyMissionResponse>('/study/missions/today', { method: 'POST' });
+}
+
+export function updateDailyMissionStep(
+  missionId: string,
+  stepId: string,
+  status: 'completed' | 'skipped',
+): Promise<DailyMissionResponse> {
+  return apiFetch<DailyMissionResponse>(`/study/missions/${missionId}/steps/${stepId}`, {
+    method: 'POST',
+    body: JSON.stringify({ status }),
+  });
+}
+
 export interface AnswerPayload {
+  sessionId?: string;
   exerciseItemId: string;
   answer: string;
   responseTimeMs?: number;

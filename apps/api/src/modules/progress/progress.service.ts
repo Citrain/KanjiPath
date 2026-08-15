@@ -66,7 +66,7 @@ export class ProgressService {
     const progressRows = await this.prisma.userKanjiProgress.findMany({ where: { userId } });
     const progressByKanji = new Map(progressRows.map((row) => [row.kanjiId, row]));
     const cards = await this.prisma.reviewCard.findMany({
-      where: { userId, subjectType: 'kanji' },
+      where: { userId, subjectType: 'kanji', state: { not: 'Suspended' } },
       select: { subjectId: true, dueAt: true },
     });
     const nextDue = new Map<string, Date>();

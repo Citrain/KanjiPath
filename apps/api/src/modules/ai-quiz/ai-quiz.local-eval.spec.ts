@@ -7,7 +7,7 @@ import { AiQuizOrchestrator } from './ai-quiz.orchestrator';
 const describeLocal = process.env.RUN_LOCAL_AI_EVAL === 'true' ? describe : describe.skip;
 
 describeLocal('quiz IA local avec Ollama', () => {
-  it('génère le quiz restaurant guidé de cinq questions validables', async () => {
+  it('génère deux quiz restaurant valides sans répéter leurs questions', async () => {
     const config = new ConversationConfig();
     const provider = new OllamaProvider(config);
     const input = {
@@ -30,24 +30,30 @@ describeLocal('quiz IA local avec Ollama', () => {
             vocabulary: { word: string; reading: string; meaningFr: string }[];
             sentences: { japanese: string; translationFr: string }[];
           },
+          diversity?: { seed: number; excludedJapanese: string[] },
         ): Promise<unknown>;
       }
     ).generate.bind(orchestrator);
-    const quiz = aiQuizDraftSchema.parse(
-      await generate(input, {
-        vocabulary: [
-          { word: '食べる', reading: 'たべる', meaningFr: 'manger' },
-          { word: '飲む', reading: 'のむ', meaningFr: 'boire' },
-          { word: '読む', reading: 'よむ', meaningFr: 'lire' },
-          { word: '行く', reading: 'いく', meaningFr: 'aller' },
-        ],
-        sentences: [
-          {
-            japanese: '昨日レストランでご飯を食べました。',
-            translationFr: 'Hier, j’ai mangé au restaurant.',
-          },
-        ],
-      }),
+    const constraints = {
+      vocabulary: [
+        { word: '食べる', reading: 'たべる', meaningFr: 'manger' },
+        { word: '飲む', reading: 'のむ', meaningFr: 'boire' },
+        { word: '読む', reading: 'よむ', meaningFr: 'lire' },
+        { word: '行く', reading: 'いく', meaningFr: 'aller' },
+      ],
+      sentences: [
+        {
+          japanese: '昨日レストランでご飯を食べました。',
+          translationFr: 'Hier, j’ai mangé au restaurant.',
+        },
+      ],
+    };
+    const quiz = aiQuizDraftSchema.parse(await generate(input, constraints));
+    const firstJapanese = quiz.questions.flatMap((question) =>
+      question.prompt.japanese ? [question.prompt.japanese] : [],
+    );
+    const secondQuiz = aiQuizDraftSchema.parse(
+      await generate(input, constraints, { seed: 5, excludedJapanese: firstJapanese }),
     );
     expect(quiz.level).toBe('N5');
     expect(quiz.questions).toHaveLength(5);
@@ -64,5 +70,12 @@ describeLocal('quiz IA local avec Ollama', () => {
     ).toBe(true);
     expect(quiz.questions.every((question) => question.type !== 'listening_qcm')).toBe(true);
     expect(JSON.stringify(quiz)).toMatch(/restaurant|食|たべ|passé/i);
+    expect(secondQuiz.questions).toHaveLength(5);
+    expect(
+      secondQuiz.questions.some(
+        (question) =>
+          Boolean(question.prompt.japanese) && firstJapanese.includes(question.prompt.japanese!),
+      ),
+    ).toBe(false);
   }, 900_000);
 });

@@ -116,8 +116,8 @@ export function DashboardPage() {
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Button asChild size="xl" className="group">
-                  <Link to="/etude">
-                    Étudier maintenant
+                  <Link to="/mission">
+                    Mission du jour
                     <ArrowRight
                       aria-hidden
                       className="size-4.5 transition-transform duration-200 group-hover:translate-x-1"
@@ -125,6 +125,15 @@ export function DashboardPage() {
                   </Link>
                 </Button>
                 <Button asChild variant="secondary" size="xl" className="group">
+                  <Link to="/etude">
+                    <NotebookPen
+                      aria-hidden
+                      className="size-4.5 text-muted transition-colors duration-200 group-hover:text-accent"
+                    />
+                    Choisir une session
+                  </Link>
+                </Button>
+                <Button asChild variant="ghost" size="xl" className="group">
                   <Link to="/kanji">
                     <Shapes
                       aria-hidden

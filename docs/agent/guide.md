@@ -62,6 +62,9 @@ ajoute-le ici.
 | Squelette curaté N1 (généré) | `tools/content/n1-scaffold.mjs` (reconstruit `content/curated/n1/kanji.json` ; mnémotechniques dans `content/curated/n1/mnemonics/*.json`) |
 | Conversation vocale locale | `apps/api/src/modules/conversation/`, `apps/web/src/features/conversation/`, contrats `conversation.ts` ; ADR-003 ensuite |
 | Quiz IA local | `apps/api/src/modules/ai-quiz/`, `apps/web/src/features/ai-quiz/`, contrats `ai-quiz.ts` ; ADR-004 ensuite |
+| Extensions produit acceptees | ADR-005 a ADR-011 a la racine : mission, carte kanji, carnet, shadowing, immersion, timeline, mode zen |
+| Mission quotidienne | `StudyService#createDailyMission/dailyMission`, contrats `daily-mission.ts`, tables `daily_missions` / `daily_mission_steps`, page `/mission` |
+| Carte visuelle des kanji | `ContentService#kanjiMap`, contrat `KanjiMapResponse`, page `/kanji/:literal/carte` |
 
 ## Pièges connus (IMPORTANT)
 
@@ -752,6 +755,14 @@ ajoute-le ici.
     la mission dans le système et le message utilisateur. Ne réinjecter aucune longue liste de
     fréquence non filtrée : elle détourne `gemma4` vers un quiz générique.
 
+88c. **Diversité entre Quiz IA.** `create()` charge les trois snapshots les plus récents dont le
+    `prompt` est identique. Leurs énoncés japonais sont injectés comme exclusions et revalidés par
+    `parseGeneratedQuestion`; une répétition exacte consomme une tentative. Un `seed` aléatoire
+    choisit l'angle pédagogique, tourne les références et décale les lectures déterministes. Garder
+    `temperature: 0.35` : revenir à `0` reproduit le même quiz, mais augmenter fortement cette
+    valeur dégrade le contrat JSON. Le test local opt-in génère deux fois la même mission et exige
+    deux ensembles d'énoncés disjoints.
+
 89. **Contrats compilés et API en développement.** `@kanjipath/contracts` est chargé depuis
     `dist/` et Node le met en cache. Après sa reconstruction, `nest start --watch` ne redémarre pas
     nécessairement l'API car aucun fichier sous `apps/api/src` n'a changé. Redémarrer le processus
@@ -763,6 +774,11 @@ ajoute-le ici.
     exclure `reading_input_kana` et `audio_dictation_kana` dans tous les modes, mais conserver les
     QCM dont les options sont en kana : ils ne nécessitent pas de clavier japonais. Une session déjà
     créée garde sa file persistée; la préférence s'applique aux nouvelles sessions.
+
+91. **Kanji connu manuellement.** `POST /kanji/:literal/known` fixe tous les scores à
+    `1`, passe le statut à `mastered` et suspend les cartes existantes. Ajouter aussi le
+    kanji à l'ensemble `discoveredIds` de `buildQueue`, sinon il serait introduit à nouveau
+    en tant que nouveau kanji. Les révisions ciblées restent volontairement disponibles.
 
 ## Recettes
 

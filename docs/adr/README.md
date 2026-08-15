@@ -6,6 +6,14 @@ kanji**, conservée à la racine du dépôt pour rester la source de vérité un
 - **ADR complète** : [`../../ADR-001-plateforme-apprentissage-kanji.md`](../../ADR-001-plateforme-apprentissage-kanji.md)
 - **ADR-002, instance personnelle et audio CC BY-NC** : [`../../ADR-002-usage-personnel-et-audio-non-commercial.md`](../../ADR-002-usage-personnel-et-audio-non-commercial.md)
 - **ADR-003, conversation vocale japonaise locale** : [`../../ADR-003-conversation-vocale-japonais-locale.md`](../../ADR-003-conversation-vocale-japonais-locale.md)
+- **ADR-004, Quiz IA local a correction deterministe** : [`../../ADR-004-quiz-ia-local.md`](../../ADR-004-quiz-ia-local.md)
+- **ADR-005, mission quotidienne** : [`../../ADR-005-mission-quotidienne.md`](../../ADR-005-mission-quotidienne.md)
+- **ADR-006, carte visuelle des kanji** : [`../../ADR-006-carte-visuelle-kanji.md`](../../ADR-006-carte-visuelle-kanji.md)
+- **ADR-007, carnet de vocabulaire personnel** : [`../../ADR-007-carnet-vocabulaire-personnel.md`](../../ADR-007-carnet-vocabulaire-personnel.md)
+- **ADR-008, shadowing local** : [`../../ADR-008-shadowing-local.md`](../../ADR-008-shadowing-local.md)
+- **ADR-009, mode immersion** : [`../../ADR-009-mode-immersion.md`](../../ADR-009-mode-immersion.md)
+- **ADR-010, timeline des erreurs** : [`../../ADR-010-timeline-erreurs.md`](../../ADR-010-timeline-erreurs.md)
+- **ADR-011, mode zen** : [`../../ADR-011-mode-zen.md`](../../ADR-011-mode-zen.md)
 - **Découpage opérationnel par tâche** : [`../../adr/`](../../adr/)
 
 ## Découpage (`adr/`)
@@ -41,6 +49,11 @@ kanji**, conservée à la racine du dépôt pour rester la source de vérité un
 ADR-003 complète ADR-001 avec une exception strictement bornee : le LLM local peut
 conduire une conversation orale, mais les exercices publies restent fixes, versionnes et
 valides hors runtime.
+
+ADR-005 a ADR-011 definissent les extensions produit acceptees : elles restent locales,
+accessibles et compatibles avec les regles de contenu, de progression et de vie privee
+existantes. Leur implementation doit appliquer migrations, contrats API et tests avant
+exposition dans l'interface.
 
 ## Règle
 

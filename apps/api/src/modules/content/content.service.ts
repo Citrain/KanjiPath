@@ -5,6 +5,8 @@ import type {
   JlptLevel,
   KanjiDetail,
   KanjiListResponse,
+  KanjiMapLinkDto,
+  KanjiMapResponse,
   KanjiProgressDto,
   KanjiSentenceDto,
   KanjiSummary,
@@ -22,6 +24,7 @@ export function contentRoot(): string {
 }
 
 const PROGRESS_STATUS_ORDER = ['new', 'learning', 'reviewing', 'mastered'] as const;
+const KANJI_MAP_NODE_LIMIT = 24;
 
 @Injectable()
 export class ContentService {
@@ -40,7 +43,7 @@ export class ContentService {
     const progressRows = await this.prisma.userKanjiProgress.findMany({ where: { userId } });
     const progressByKanji = new Map(progressRows.map((row) => [row.kanjiId, row]));
     const cards = await this.prisma.reviewCard.findMany({
-      where: { userId, subjectType: 'kanji' },
+      where: { userId, subjectType: 'kanji', state: { not: 'Suspended' } },
       select: { subjectId: true, dueAt: true },
     });
     const nextDueByKanji = new Map<string, Date>();
@@ -123,7 +126,7 @@ export class ContentService {
       where: { userId_kanjiId: { userId, kanjiId: kanji.id } },
     });
     const nextDue = await this.prisma.reviewCard.findFirst({
-      where: { userId, subjectType: 'kanji', subjectId: kanji.id },
+      where: { userId, subjectType: 'kanji', subjectId: kanji.id, state: { not: 'Suspended' } },
       orderBy: { dueAt: 'asc' },
     });
     const audio = await this.prisma.audioResource.findFirst({
@@ -200,6 +203,209 @@ export class ContentService {
           }
         : null,
       kanjivgUrl: kanji.kanjivgPath ? `/kanji/${encodeURIComponent(literal)}/svg` : null,
+    };
+  }
+
+  async kanjiMap(userId: string, literal: string): Promise<KanjiMapResponse> {
+    const curriculum = await this.prisma.curriculum.findFirst({ where: { status: 'published' } });
+    if (!curriculum) {
+      throw new NotFoundException('Aucun curriculum publié');
+    }
+    const center = await this.prisma.kanji.findFirst({
+      where: {
+        literal,
+        status: 'published',
+        curriculumLinks: { some: { curriculumId: curriculum.id } },
+      },
+      include: {
+        contentVersion: true,
+        meanings: { where: { isPrimary: true }, take: 1 },
+        notes: true,
+        componentLinks: { include: { component: true } },
+        curriculumLinks: { where: { curriculumId: curriculum.id }, take: 1 },
+      },
+    });
+    if (!center) {
+      throw new NotFoundException('Kanji introuvable');
+    }
+    const centerCurriculum = center.curriculumLinks[0];
+    if (!centerCurriculum) {
+      throw new NotFoundException('Kanji absent du curriculum publié');
+    }
+
+    const candidates: KanjiMapLinkDto[] = [];
+    const componentIds = center.componentLinks.map((link) => link.componentId);
+    if (componentIds.length > 0) {
+      const shared = await this.prisma.kanjiComponent.findMany({
+        where: {
+          componentId: { in: componentIds },
+          kanjiId: { not: center.id },
+          kanji: {
+            status: 'published',
+            curriculumLinks: { some: { curriculumId: curriculum.id } },
+          },
+        },
+        include: { component: true },
+        orderBy: { kanjiId: 'asc' },
+        take: KANJI_MAP_NODE_LIMIT * 4,
+      });
+      const labelsByKanji = new Map<string, { labels: string[]; sourceId: string | null }>();
+      for (const link of shared) {
+        const current = labelsByKanji.get(link.kanjiId) ?? { labels: [], sourceId: link.sourceId };
+        current.labels.push(link.component.literal);
+        labelsByKanji.set(link.kanjiId, current);
+      }
+      for (const [targetId, relation] of labelsByKanji) {
+        candidates.push({
+          sourceId: center.id,
+          targetId,
+          type: 'shared_component',
+          label: `Composant partagé : ${relation.labels.join(', ')}`,
+          provenance: { sourceId: relation.sourceId, contentVersion: center.contentVersion?.version ?? null },
+        });
+      }
+    }
+
+    const confusionLiterals =
+      center.notes?.editorialStatus === 'published' && Array.isArray(center.notes.confusions)
+      ? (center.notes.confusions as string[])
+      : [];
+    if (confusionLiterals.length > 0) {
+      const confusions = await this.prisma.kanji.findMany({
+        where: {
+          literal: { in: confusionLiterals },
+          status: 'published',
+          curriculumLinks: { some: { curriculumId: curriculum.id } },
+        },
+        select: { id: true },
+      });
+      for (const confusion of confusions) {
+        candidates.push({
+          sourceId: center.id,
+          targetId: confusion.id,
+          type: 'visual_confusion',
+          label: 'Confusion visuelle signalée',
+          provenance: { sourceId: 'kanjipath_editorial', contentVersion: center.contentVersion?.version ?? null },
+        });
+      }
+    }
+
+    const sharedWords = await this.prisma.vocabularyKanji.findMany({
+      where: { kanjiId: center.id, vocabulary: { editorialStatus: 'published' } },
+      include: {
+        vocabulary: {
+          select: {
+            writtenForm: true,
+            sourceId: true,
+            kanjiLinks: {
+              where: {
+                kanjiId: { not: center.id },
+                kanji: {
+                  status: 'published',
+                  curriculumLinks: { some: { curriculumId: curriculum.id } },
+                },
+              },
+              select: { kanjiId: true },
+            },
+          },
+        },
+      },
+      orderBy: { vocabularyId: 'asc' },
+      take: KANJI_MAP_NODE_LIMIT * 2,
+    });
+    const wordsByKanji = new Map<string, { labels: string[]; sourceId: string | null }>();
+    for (const link of sharedWords) {
+      for (const target of link.vocabulary.kanjiLinks) {
+        const current = wordsByKanji.get(target.kanjiId) ?? { labels: [], sourceId: link.vocabulary.sourceId };
+        current.labels.push(link.vocabulary.writtenForm);
+        wordsByKanji.set(target.kanjiId, current);
+      }
+    }
+    for (const [targetId, relation] of wordsByKanji) {
+      candidates.push({
+        sourceId: center.id,
+        targetId,
+        type: 'shared_word',
+        label: `Mot partagé : ${relation.labels.slice(0, 3).join(', ')}`,
+        provenance: { sourceId: relation.sourceId, contentVersion: center.contentVersion?.version ?? null },
+      });
+    }
+
+    const neighbors = await this.prisma.curriculumKanji.findMany({
+      where: {
+        curriculumId: curriculum.id,
+        level: centerCurriculum.level,
+        order: { gte: Math.max(1, centerCurriculum.order - 2), lte: centerCurriculum.order + 2 },
+        kanjiId: { not: center.id },
+        kanji: { status: 'published' },
+      },
+      orderBy: { order: 'asc' },
+    });
+    for (const neighbor of neighbors) {
+      candidates.push({
+        sourceId: center.id,
+        targetId: neighbor.kanjiId,
+        type: 'curriculum_neighbor',
+        label: 'Voisin dans le parcours',
+        provenance: {
+          sourceId: neighbor.sourceId ?? 'kanjipath_editorial',
+          contentVersion: center.contentVersion?.version ?? null,
+        },
+      });
+    }
+
+    const links: KanjiMapLinkDto[] = [];
+    const nodeIds = new Set<string>([center.id]);
+    const seenLinks = new Set<string>();
+    for (const candidate of candidates) {
+      const key = `${candidate.targetId}:${candidate.type}`;
+      if (seenLinks.has(key) || candidate.targetId === center.id) {
+        continue;
+      }
+      if (!nodeIds.has(candidate.targetId) && nodeIds.size >= KANJI_MAP_NODE_LIMIT) {
+        continue;
+      }
+      seenLinks.add(key);
+      nodeIds.add(candidate.targetId);
+      links.push(candidate);
+    }
+
+    const rows = await this.prisma.kanji.findMany({
+      where: { id: { in: [...nodeIds] } },
+      include: {
+        meanings: { where: { isPrimary: true }, take: 1 },
+        curriculumLinks: { where: { curriculumId: curriculum.id }, take: 1 },
+      },
+    });
+    const progressRows = await this.prisma.userKanjiProgress.findMany({
+      where: { userId, kanjiId: { in: [...nodeIds] } },
+    });
+    const progressByKanji = new Map(progressRows.map((progress) => [progress.kanjiId, progress]));
+    const nodeById = new Map(
+      rows.map((row) => {
+        const progress = progressByKanji.get(row.id);
+        return [
+          row.id,
+          {
+            id: row.id,
+            literal: row.literal,
+            primaryMeaning: row.meanings[0]?.meaning ?? null,
+            level: (row.curriculumLinks[0]?.level ?? 'N5') as KanjiMapResponse['nodes'][number]['level'],
+            status: progress?.status ?? 'new',
+            overallScore: progress?.overallScore ?? 0,
+          },
+        ];
+      }),
+    );
+
+    return {
+      centerId: center.id,
+      limit: KANJI_MAP_NODE_LIMIT,
+      nodes: [...nodeIds].flatMap((id) => {
+        const node = nodeById.get(id);
+        return node ? [node] : [];
+      }),
+      links: links.filter((link) => nodeById.has(link.targetId)),
     };
   }
 
@@ -487,6 +693,49 @@ export class ContentService {
         dueAt: card.dueAt.toISOString(),
       })),
     };
+  }
+
+  async markKanjiKnown(userId: string, literal: string): Promise<KanjiProgressDto> {
+    const kanji = await this.prisma.kanji.findUnique({ where: { literal }, select: { id: true } });
+    if (!kanji) {
+      throw new NotFoundException('Kanji introuvable');
+    }
+    const now = new Date();
+    await this.prisma.$transaction([
+      this.prisma.userKanjiProgress.upsert({
+        where: { userId_kanjiId: { userId, kanjiId: kanji.id } },
+        create: {
+          userId,
+          kanjiId: kanji.id,
+          meaningScore: 1,
+          readingScore: 1,
+          vocabularyScore: 1,
+          contextScore: 1,
+          strokeScore: 1,
+          listeningScore: 1,
+          overallScore: 1,
+          status: 'mastered',
+          firstSeenAt: now,
+          masteredAt: now,
+        },
+        update: {
+          meaningScore: 1,
+          readingScore: 1,
+          vocabularyScore: 1,
+          contextScore: 1,
+          strokeScore: 1,
+          listeningScore: 1,
+          overallScore: 1,
+          status: 'mastered',
+          masteredAt: now,
+        },
+      }),
+      this.prisma.reviewCard.updateMany({
+        where: { userId, subjectType: 'kanji', subjectId: kanji.id },
+        data: { state: 'Suspended' },
+      }),
+    ]);
+    return this.kanjiProgress(userId, literal);
   }
 
   async sources(): Promise<SourcesResponse> {

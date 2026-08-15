@@ -1,3 +1,4 @@
+import { randomInt } from 'node:crypto';
 import type {
   AiQuizAnswerResult,
   AiQuizDraft,
@@ -39,6 +40,11 @@ export interface QuizConstraints {
   readingVocabulary?: { word: string; reading: string; meaningFr: string }[];
 }
 
+interface QuizDiversity {
+  seed: number;
+  excludedJapanese: string[];
+}
+
 type QuestionGenerationResult =
   | { success: true; question: AiQuizModelOutput['questions'][number] }
   | { success: false; error: string };
@@ -55,8 +61,14 @@ export class AiQuizOrchestrator {
 
   async create(userId: string, input: CreateAiQuizInput): Promise<AiQuizSessionDto> {
     const normalizedInput = normalizeQuizInput(input);
-    const constraints = await this.constraints(normalizedInput.level, normalizedInput.prompt);
-    const draft = await this.generate(normalizedInput, constraints);
+    const [constraints, excludedJapanese] = await Promise.all([
+      this.constraints(normalizedInput.level, normalizedInput.prompt),
+      this.recentJapanese(userId, normalizedInput.prompt),
+    ]);
+    const draft = await this.generate(normalizedInput, constraints, {
+      seed: randomInt(0, 2_147_483_647),
+      excludedJapanese,
+    });
     const session = await this.prisma.aiQuizSession.create({
       data: {
         userId,
@@ -198,9 +210,31 @@ export class AiQuizOrchestrator {
     };
   }
 
+  private async recentJapanese(userId: string, mission: string): Promise<string[]> {
+    const sessions = await this.prisma.aiQuizSession.findMany({
+      where: { userId, prompt: mission },
+      orderBy: { startedAt: 'desc' },
+      take: 3,
+      select: { quizJson: true },
+    });
+    const subjects: string[] = [];
+    for (const session of sessions) {
+      try {
+        for (const question of parseQuiz(session.quizJson).questions) {
+          const japanese = question.prompt.japanese ?? question.prompt.audioText;
+          if (japanese) subjects.push(japanese);
+        }
+      } catch {
+        // An unreadable historical snapshot must not block a new quiz.
+      }
+    }
+    return uniqueNormalizedJapanese(subjects).slice(0, 30);
+  }
+
   private async generate(
     input: CreateAiQuizInput,
     constraints: QuizConstraints,
+    diversity: QuizDiversity = { seed: 0, excludedJapanese: [] },
   ): Promise<AiQuizDraft> {
     if (!this.config.values.enabled) {
       throw new ServiceUnavailableException({
@@ -209,12 +243,17 @@ export class AiQuizOrchestrator {
           'L’IA locale est désactivée. Ajoutez LOCAL_AI_ENABLED=true dans .env puis redémarrez l’API.',
       });
     }
-    const basePrompt = buildQuizPrompt(input, constraints);
+    const basePrompt = buildQuizPrompt(input, constraints, diversity);
     const questions: AiQuizModelOutput['questions'] = [];
     const types = plannedQuestionTypes(input);
     for (const [index, type] of types.entries()) {
       if (type === 'reading_qcm') {
-        const question = buildDeterministicReadingQuestion(constraints, questions, index);
+        const question = buildDeterministicReadingQuestion(
+          constraints,
+          questions,
+          index,
+          diversity,
+        );
         if (!question) {
           throw new ServiceUnavailableException({
             code: 'AI_QUIZ_READING_POOL_TOO_SMALL',
@@ -243,6 +282,7 @@ export class AiQuizOrchestrator {
           type,
           questions,
           index,
+          diversity.excludedJapanese,
         );
         if (!generated.success) {
           this.logger.warn(
@@ -273,6 +313,7 @@ export class AiQuizOrchestrator {
     type: AiQuizQcmType,
     previous: AiQuizModelOutput['questions'],
     index: number,
+    excludedJapanese: string[],
   ): Promise<QuestionGenerationResult> {
     let raw: string;
     try {
@@ -289,7 +330,7 @@ export class AiQuizOrchestrator {
         details: messageOf(error),
       });
     }
-    const parsed = parseGeneratedQuestion(raw, type, previous);
+    const parsed = parseGeneratedQuestion(raw, type, previous, excludedJapanese);
     if (parsed.success) return parsed;
     return {
       success: false,
@@ -301,7 +342,7 @@ export class AiQuizOrchestrator {
     return {
       maxTokens: 1_024,
       jsonSchema: createAiQuizModelQuestionJsonSchema(),
-      temperature: 0,
+      temperature: 0.35,
     };
   }
 
@@ -343,7 +384,13 @@ export class AiQuizOrchestrator {
   }
 }
 
-export function buildQuizPrompt(input: CreateAiQuizInput, constraints: QuizConstraints): string {
+export function buildQuizPrompt(
+  input: CreateAiQuizInput,
+  constraints: QuizConstraints,
+  diversity: QuizDiversity = { seed: 0, excludedJapanese: [] },
+): string {
+  const vocabulary = rotate(constraints.vocabulary, diversity.seed);
+  const sentences = rotate(constraints.sentences, diversity.seed + 1);
   return [
     'Crée un QCM de japonais pour un apprenant francophone.',
     '# MISSION OBLIGATOIRE',
@@ -352,6 +399,12 @@ export function buildQuizPrompt(input: CreateAiQuizInput, constraints: QuizConst
     'Ne produis jamais un quiz générique ni un quiz centré sur un autre thème. Si le sujet décrit une scène, conserve cette scène dans les phrases et les choix.',
     `Niveau maximal : ${input.level}.`,
     `Le quiz final comporte ${input.questionCount} questions et l’application planifie les types ${JSON.stringify(input.types)}.`,
+    '# DIVERSITÉ OBLIGATOIRE',
+    `Angle pédagogique imposé pour cette version : ${variationAngle(diversity.seed)}.`,
+    diversity.excludedJapanese.length > 0
+      ? `Questions de quiz récents à ne reprendre sous aucune forme identique : ${JSON.stringify(diversity.excludedJapanese)}.`
+      : 'Aucun quiz antérieur à exclure, invente néanmoins des situations concrètes et variées.',
+    'Renouvelle les verbes, noms, situations et formulations. Ne te contente pas de déplacer la bonne réponse ou de reformuler superficiellement une ancienne question.',
     'Tu produis un seul objet atomique par appel. Ne retourne jamais un tableau.',
     'japanese contient le mot ou la phrase japonaise. Pour listening_qcm, il contient le texte à prononcer.',
     'kana contient la lecture complète sans kanji. Ne mets jamais la lecture entre parenthèses dans japanese.',
@@ -361,8 +414,8 @@ export function buildQuizPrompt(input: CreateAiQuizInput, constraints: QuizConst
     'explanationFr explique brièvement pourquoi cette réponse est correcte.',
     'Aucun autre champ. Aucun identifiant. Aucun markdown. Aucun commentaire avant ou après le JSON.',
     'Le référentiel suivant est un support facultatif filtré pour la mission, pas un sujet de remplacement.',
-    `Vocabulaire pertinent : ${JSON.stringify(constraints.vocabulary)}.`,
-    `Phrases pertinentes : ${JSON.stringify(constraints.sentences)}.`,
+    `Vocabulaire pertinent : ${JSON.stringify(vocabulary)}.`,
+    `Phrases pertinentes : ${JSON.stringify(sentences)}.`,
     'Respecte exactement les champs demandés par l’appel et arrête immédiatement la réponse après }.',
   ].join('\n');
 }
@@ -413,13 +466,19 @@ export function buildDeterministicReadingQuestion(
   constraints: QuizConstraints,
   previous: AiQuizModelOutput['questions'],
   index: number,
+  diversity: QuizDiversity = { seed: 0, excludedJapanese: [] },
 ): AiQuizModelOutput['questions'][number] | null {
-  const vocabulary = uniqueVocabulary([
-    ...constraints.vocabulary,
-    ...(constraints.readingVocabulary ?? []),
-  ]).filter((item) => hasKanjiText(item.word) && isKanaReading(item.reading));
-  const usedWords = new Set(previous.map((question) => question.japanese));
-  const target = vocabulary.find((item) => !usedWords.has(item.word));
+  const vocabulary = rotate(
+    uniqueVocabulary([...constraints.vocabulary, ...(constraints.readingVocabulary ?? [])]).filter(
+      (item) => hasKanjiText(item.word) && isKanaReading(item.reading),
+    ),
+    diversity.seed,
+  );
+  const usedWords = new Set([
+    ...previous.map((question) => normalizedJapanese(question.japanese)),
+    ...diversity.excludedJapanese.map(normalizedJapanese),
+  ]);
+  const target = vocabulary.find((item) => !usedWords.has(normalizedJapanese(item.word)));
   if (!target) return null;
   const distractors = vocabulary
     .filter((item) => item.reading !== target.reading)
@@ -427,7 +486,7 @@ export function buildDeterministicReadingQuestion(
     .filter((reading, readingIndex, readings) => readings.indexOf(reading) === readingIndex)
     .slice(0, 3);
   if (distractors.length < 3) return null;
-  const answerIndex = index % 4;
+  const answerIndex = (index + diversity.seed) % 4;
   const options = [...distractors];
   options.splice(answerIndex, 0, target.reading);
   return aiQuizModelQuestionSchema.parse({
@@ -450,6 +509,24 @@ function uniqueVocabulary(
     seen.add(key);
     return true;
   });
+}
+
+function rotate<T>(items: T[], seed: number): T[] {
+  if (items.length < 2) return [...items];
+  const offset = Math.abs(seed) % items.length;
+  return [...items.slice(offset), ...items.slice(0, offset)];
+}
+
+function variationAngle(seed: number): string {
+  const angles = [
+    'une scène concrète avec des objets et actions différents',
+    'un mini-dialogue naturel plutôt que des phrases isolées',
+    'des contrastes de sens ou de grammaire utiles au quotidien',
+    'une progression du plus évident vers un détail plus subtil',
+    'des formulations courtes mais différentes des exemples du référentiel',
+    'une situation réaliste avec un lieu, un besoin et une conséquence',
+  ];
+  return angles[Math.abs(seed) % angles.length]!;
 }
 
 function hasKanjiText(value: string): boolean {
@@ -642,6 +719,7 @@ function parseGeneratedQuestion(
   value: string,
   type: AiQuizQcmType,
   previous: AiQuizModelOutput['questions'],
+  excludedJapanese: string[] = [],
 ): QuestionGenerationResult {
   try {
     const output = parseAiQuizModelJson(value);
@@ -659,6 +737,10 @@ function parseGeneratedQuestion(
     if (previous.some((question) => normalizedQuestionSignature(question) === signature)) {
       return { success: false, error: 'Question japonaise dupliquée dans ce quiz' };
     }
+    const japanese = normalizedJapanese(generated.data.japanese);
+    if (excludedJapanese.some((excluded) => normalizedJapanese(excluded) === japanese)) {
+      return { success: false, error: 'Question japonaise déjà utilisée dans un quiz récent' };
+    }
     return { success: true, question: generated.data };
   } catch (error) {
     return { success: false, error: `JSON invalide: ${messageOf(error)}` };
@@ -666,10 +748,21 @@ function parseGeneratedQuestion(
 }
 
 function normalizedQuestionSignature(question: { type: string; japanese: string }): string {
-  return `${question.type}\u0000${question.japanese
-    .normalize('NFKC')
-    .replace(/\s+/g, '')
-    .toLocaleLowerCase('ja')}`;
+  return `${question.type}\u0000${normalizedJapanese(question.japanese)}`;
+}
+
+function normalizedJapanese(value: string): string {
+  return value.normalize('NFKC').replace(/\s+/g, '').toLocaleLowerCase('ja');
+}
+
+function uniqueNormalizedJapanese(values: string[]): string[] {
+  const seen = new Set<string>();
+  return values.filter((value) => {
+    const normalized = normalizedJapanese(value);
+    if (seen.has(normalized)) return false;
+    seen.add(normalized);
+    return true;
+  });
 }
 
 export function parseAiQuizModelJson(value: string): unknown {

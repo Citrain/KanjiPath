@@ -29,7 +29,14 @@ import { SKILL_LABELS, SKILLS } from '../../lib/skills';
 import { fetchDashboard } from '../content/api';
 import { AudioButton } from '../content/audio-button';
 import { Furigana, SentenceView, useDisplaySettings } from '../content/japanese';
-import { abandonSession, createSession, finishSession, resumeSession, sendAnswer } from './api';
+import {
+  abandonSession,
+  createSession,
+  finishSession,
+  getSession,
+  resumeSession,
+  sendAnswer,
+} from './api';
 
 const CJK_RE = /[\u3400-\u9fff\uf900-\ufaff\u3040-\u30ff]/;
 
@@ -161,10 +168,12 @@ export function SessionPage() {
   const [targetKanji, setTargetKanji] = useState<TargetKanji[]>([]);
   const [quitModalOpen, setQuitModalOpen] = useState(false);
   const shownAtRef = useRef<number>(Date.now());
+  const sessionId = searchParams.get('session');
+  const missionId = searchParams.get('mission');
 
   const resume = useQuery({
-    queryKey: ['study', 'session'],
-    queryFn: resumeSession,
+    queryKey: ['study', 'session', sessionId ?? 'active'],
+    queryFn: () => (sessionId ? getSession(sessionId) : resumeSession()),
   });
   const dashboard = useQuery({
     queryKey: ['progress', 'dashboard'],
@@ -282,6 +291,7 @@ export function SessionPage() {
       return;
     }
     answer.mutate({
+      sessionId: session?.id,
       exerciseItemId: current.exerciseItemId,
       answer: value,
       responseTimeMs: Date.now() - shownAtRef.current,
@@ -422,7 +432,9 @@ export function SessionPage() {
               Nouvelle session
             </Button>
             <Button asChild variant="secondary" size="lg">
-              <Link to="/">Tableau de bord</Link>
+              <Link to={missionId ? '/mission' : '/'}>
+                {missionId ? 'Retour à la mission' : 'Tableau de bord'}
+              </Link>
             </Button>
           </div>
         </Card>

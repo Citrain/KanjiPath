@@ -26,6 +26,7 @@ model User {
   contentIssues  ContentIssue[]
   conversations  ConversationSession[]
   aiQuizSessions AiQuizSession[]
+  dailyMissions  DailyMission[]
 
   @@map("users")
 }
@@ -166,6 +167,23 @@ enum StudySessionMode {
 enum StudySessionItemStatus {
   pending
   answered
+  skipped
+}
+
+enum DailyMissionStatus {
+  active
+  completed
+}
+
+enum DailyMissionStepType {
+  study
+  vocabulary
+  text
+}
+
+enum DailyMissionStepStatus {
+  pending
+  completed
   skipped
 }
 
@@ -634,9 +652,42 @@ model StudySession {
   durationSeconds Int                @default(0) @map("duration_seconds")
   user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   items           StudySessionItem[]
+  dailyMission    DailyMission?
 
   @@index([userId, endedAt])
   @@map("study_sessions")
+}
+
+model DailyMission {
+  id               String             @id @default(uuid())
+  userId           String             @map("user_id")
+  localDate        String             @map("local_date")
+  status           DailyMissionStatus @default(active)
+  contentVersion   String?            @map("content_version")
+  studySessionId   String?            @unique @map("study_session_id")
+  startedAt        DateTime           @default(now()) @map("started_at")
+  completedAt      DateTime?          @map("completed_at")
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  studySession     StudySession?      @relation(fields: [studySessionId], references: [id], onDelete: SetNull)
+  steps            DailyMissionStep[]
+
+  @@unique([userId, localDate])
+  @@index([userId, status])
+  @@map("daily_missions")
+}
+
+model DailyMissionStep {
+  id          String                 @id @default(uuid())
+  missionId   String                 @map("mission_id")
+  position    Int
+  type        DailyMissionStepType
+  status      DailyMissionStepStatus @default(pending)
+  referenceId String?                @map("reference_id")
+  mission     DailyMission           @relation(fields: [missionId], references: [id], onDelete: Cascade)
+
+  @@unique([missionId, position])
+  @@index([missionId, status])
+  @@map("daily_mission_steps")
 }
 
 model StudySessionItem {

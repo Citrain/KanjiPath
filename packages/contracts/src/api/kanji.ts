@@ -108,3 +108,36 @@ export interface KanjiProgressDto {
   masteredAt: string | null;
   cards: Array<{ skill: ReviewCardSkill; state: string; dueAt: string }>;
 }
+
+export type KanjiMapLinkType =
+  | 'shared_component'
+  | 'visual_confusion'
+  | 'shared_word'
+  | 'curriculum_neighbor';
+
+export interface KanjiMapNodeDto {
+  id: string;
+  literal: string;
+  primaryMeaning: string | null;
+  level: JlptLevel;
+  status: KanjiStatus;
+  overallScore: number;
+}
+
+export interface KanjiMapLinkDto {
+  sourceId: string;
+  targetId: string;
+  type: KanjiMapLinkType;
+  label: string;
+  provenance: {
+    sourceId: string | null;
+    contentVersion: string | null;
+  };
+}
+
+export interface KanjiMapResponse {
+  centerId: string;
+  limit: number;
+  nodes: KanjiMapNodeDto[];
+  links: KanjiMapLinkDto[];
+}

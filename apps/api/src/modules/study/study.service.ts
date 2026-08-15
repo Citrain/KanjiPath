@@ -2,10 +2,15 @@ import type {
   AnswerResult,
   CreateSessionInput,
   CreateSessionResponse,
+  DailyMissionDto,
+  DailyMissionResponse,
+  DailyMissionStep,
   ResumeResponse,
   ReviewCardSkill,
   StudyQueueItem,
+  StudySessionDto,
   StudyTarget,
+  UpdateDailyMissionStepInput,
 } from '@kanjipath/contracts';
 import {
   computeOverallScore,
@@ -26,6 +31,7 @@ import {
 const scheduler = new FsrsReviewScheduler();
 
 const TARGETED_QUEUE_SIZE = 20;
+const DAILY_MISSION_REVIEW_LIMIT = 6;
 
 interface ExerciseRow {
   id: string;
@@ -135,6 +141,151 @@ export class StudyService {
     };
   }
 
+  async getSession(userId: string, sessionId: string): Promise<ResumeResponse> {
+    const session = await this.prisma.studySession.findFirst({ where: { id: sessionId, userId } });
+    if (!session) {
+      throw new NotFoundException('Session introuvable');
+    }
+    const items = await this.queueItems(session.id);
+    return { session: this.sessionDto(session, items.length), items };
+  }
+
+  async dailyMission(userId: string): Promise<DailyMissionResponse> {
+    const settings = await this.prisma.userSettings.findUnique({
+      where: { userId },
+      select: { timezone: true },
+    });
+    const localDate = localDateKey(new Date(), settings?.timezone ?? 'Europe/Paris');
+    const mission = await this.prisma.dailyMission.findUnique({
+      where: { userId_localDate: { userId, localDate } },
+    });
+    return { mission: mission ? await this.dailyMissionDto(mission.id) : null };
+  }
+
+  async createDailyMission(userId: string): Promise<DailyMissionResponse> {
+    const settings = await this.prisma.userSettings.findUnique({ where: { userId } });
+    const localDate = localDateKey(new Date(), settings?.timezone ?? 'Europe/Paris');
+    const existing = await this.prisma.dailyMission.findUnique({
+      where: { userId_localDate: { userId, localDate } },
+    });
+    if (existing) {
+      return { mission: await this.dailyMissionDto(existing.id) };
+    }
+
+    const queue = await this.buildDailyMissionQueue(userId, {
+      activeLevel: settings?.activeLevel ?? 'N5',
+      autoBalance: settings?.autoBalance ?? true,
+      dailyNewLimit: settings?.dailyNewLimit ?? 10,
+      kanaInputEnabled: settings?.kanaInputEnabled ?? true,
+      reviewLimit: settings?.reviewLimit ?? 40,
+    });
+    const [vocabulary, text, contentVersion] = await Promise.all([
+      this.prisma.vocabulary.findFirst({
+        where: {
+          editorialStatus: 'published',
+          estimatedLevel: (settings?.activeLevel ?? 'N5') as never,
+        },
+        orderBy: { id: 'asc' },
+      }),
+      this.prisma.miniText.findFirst({
+        where: {
+          editorialStatus: 'published',
+          level: (settings?.activeLevel ?? 'N5') as never,
+        },
+        orderBy: { id: 'asc' },
+      }),
+      this.prisma.contentVersion.findFirst({ orderBy: { publishedAt: 'desc' } }),
+    ]);
+
+    if (queue.length === 0 && !vocabulary && !text) {
+      throw new BadRequestException('Aucun contenu disponible pour la mission du jour');
+    }
+
+    try {
+      const mission = await this.prisma.$transaction(async (tx) => {
+        const studySession =
+          queue.length > 0
+            ? await tx.studySession.create({ data: { userId, mode: 'daily' } })
+            : null;
+        if (studySession) {
+          await tx.studySessionItem.createMany({
+            data: queue.map((exercise, position) => ({
+              sessionId: studySession.id,
+              position,
+              exerciseItemId: exercise.id,
+            })),
+          });
+        }
+
+        const steps = [
+          studySession ? { type: 'study' as const, referenceId: studySession.id } : null,
+          vocabulary ? { type: 'vocabulary' as const, referenceId: vocabulary.id } : null,
+          text ? { type: 'text' as const, referenceId: text.id } : null,
+        ].filter(
+          (step): step is { type: 'study' | 'vocabulary' | 'text'; referenceId: string } =>
+            step !== null,
+        );
+        return tx.dailyMission.create({
+          data: {
+            userId,
+            localDate,
+            contentVersion: contentVersion?.version,
+            studySessionId: studySession?.id,
+            steps: {
+              create: steps.map((step, position) => ({ ...step, position })),
+            },
+          },
+        });
+      });
+      return { mission: await this.dailyMissionDto(mission.id) };
+    } catch (error) {
+      if (!isUniqueConstraint(error)) {
+        throw error;
+      }
+      const mission = await this.prisma.dailyMission.findUnique({
+        where: { userId_localDate: { userId, localDate } },
+      });
+      if (!mission) {
+        throw error;
+      }
+      return { mission: await this.dailyMissionDto(mission.id) };
+    }
+  }
+
+  async updateDailyMissionStep(
+    userId: string,
+    missionId: string,
+    stepId: string,
+    input: UpdateDailyMissionStepInput,
+  ): Promise<DailyMissionResponse> {
+    const step = await this.prisma.dailyMissionStep.findFirst({
+      where: { id: stepId, missionId, mission: { userId } },
+      include: { mission: true },
+    });
+    if (!step) {
+      throw new NotFoundException('Etape de mission introuvable');
+    }
+    if (step.mission.status === 'completed') {
+      throw new BadRequestException('Cette mission est deja terminee');
+    }
+    if (step.type === 'study') {
+      if (input.status !== 'skipped') {
+        throw new BadRequestException("L'etape d'etude se termine avec sa session");
+      }
+      if (step.mission.studySessionId) {
+        await this.abandon(userId, step.mission.studySessionId);
+      }
+      await this.prisma.dailyMissionStep.update({
+        where: { id: step.id },
+        data: { status: 'skipped' },
+      });
+    } else {
+      await this.prisma.dailyMissionStep.update({ where: { id: step.id }, data: input });
+    }
+    await this.completeDailyMissionIfReady(missionId);
+    return { mission: await this.dailyMissionDto(missionId) };
+  }
+
   async resume(userId: string): Promise<ResumeResponse> {
     const session = await this.prisma.studySession.findFirst({
       where: { userId, endedAt: null },
@@ -144,18 +295,7 @@ export class StudyService {
       return { session: null, items: [] };
     }
     const items = await this.queueItems(session.id);
-    return {
-      session: {
-        id: session.id,
-        mode: session.mode,
-        target: extractTarget(session.targetJson),
-        startedAt: session.startedAt.toISOString(),
-        answeredCount: session.answeredCount,
-        correctCount: session.correctCount,
-        totalItems: items.length,
-      },
-      items,
-    };
+    return { session: this.sessionDto(session, items.length), items };
   }
 
   async answer(
@@ -168,6 +308,7 @@ export class StudyService {
       rating?: string;
     },
   ): Promise<AnswerResult> {
+    const sessionId = body.sessionId;
     const exerciseItemId = body.exerciseItemId;
     const answer = body.answer;
     if (!exerciseItemId || typeof answer !== 'string') {
@@ -175,14 +316,19 @@ export class StudyService {
     }
 
     const session = await this.prisma.studySession.findFirst({
-      where: { userId, endedAt: null, items: { some: { exerciseItemId } } },
+      where: {
+        userId,
+        ...(sessionId ? { id: sessionId } : {}),
+        endedAt: null,
+        items: { some: { exerciseItemId, status: 'pending' } },
+      },
       orderBy: { startedAt: 'desc' },
     });
     if (!session) {
       throw new NotFoundException('Aucune session active pour cet exercice');
     }
     const sessionItem = await this.prisma.studySessionItem.findFirst({
-      where: { sessionId: session.id, exerciseItemId },
+      where: { sessionId: session.id, exerciseItemId, status: 'pending' },
     });
     const exercise = await this.prisma.exerciseItem.findUnique({
       where: { id: exerciseItemId },
@@ -275,6 +421,7 @@ export class StudyService {
       where: { id: sessionId },
       data: { endedAt: new Date(), durationSeconds },
     });
+    await this.completeMissionForStudySession(session.id, 'completed');
   }
 
   async abandon(userId: string, sessionId: string): Promise<void> {
@@ -296,6 +443,141 @@ export class StudyService {
     await this.prisma.studySession.update({
       where: { id: sessionId },
       data: { endedAt: new Date(), durationSeconds },
+    });
+    await this.completeMissionForStudySession(session.id, 'skipped');
+  }
+
+  private sessionDto(
+    session: {
+      id: string;
+      mode: string;
+      targetJson: Prisma.JsonValue | null;
+      startedAt: Date;
+      answeredCount: number;
+      correctCount: number;
+    },
+    totalItems: number,
+  ): StudySessionDto {
+    return {
+      id: session.id,
+      mode: session.mode as StudySessionDto['mode'],
+      target: extractTarget(session.targetJson),
+      startedAt: session.startedAt.toISOString(),
+      answeredCount: session.answeredCount,
+      correctCount: session.correctCount,
+      totalItems,
+    };
+  }
+
+  private async dailyMissionDto(missionId: string): Promise<DailyMissionDto> {
+    const mission = await this.prisma.dailyMission.findUnique({
+      where: { id: missionId },
+      include: {
+        steps: { orderBy: { position: 'asc' } },
+        studySession: true,
+      },
+    });
+    if (!mission) {
+      throw new NotFoundException('Mission introuvable');
+    }
+    const vocabularyIds = mission.steps.flatMap((step) =>
+      step.type === 'vocabulary' && step.referenceId ? [step.referenceId] : [],
+    );
+    const textIds = mission.steps.flatMap((step) =>
+      step.type === 'text' && step.referenceId ? [step.referenceId] : [],
+    );
+    const [vocabulary, texts, studyItems] = await Promise.all([
+      this.prisma.vocabulary.findMany({ where: { id: { in: vocabularyIds } } }),
+      this.prisma.miniText.findMany({ where: { id: { in: textIds } } }),
+      mission.studySession ? this.queueItems(mission.studySession.id, false) : [],
+    ]);
+    const vocabularyById = new Map(vocabulary.map((entry) => [entry.id, entry]));
+    const textById = new Map(texts.map((entry) => [entry.id, entry]));
+    const steps: DailyMissionStep[] = [];
+    for (const step of mission.steps) {
+      if (step.type === 'study' && mission.studySession) {
+        steps.push({
+          id: step.id,
+          position: step.position,
+          status: step.status,
+          type: 'study',
+          session: this.sessionDto(mission.studySession, studyItems.length),
+          items: studyItems,
+        });
+        continue;
+      }
+      if (step.type === 'vocabulary' && step.referenceId) {
+        const entry = vocabularyById.get(step.referenceId);
+        if (entry) {
+          steps.push({
+            id: step.id,
+            position: step.position,
+            status: step.status,
+            type: 'vocabulary',
+            vocabulary: {
+              id: entry.id,
+              writtenForm: entry.writtenForm,
+              reading: entry.reading,
+              romaji: entry.romaji,
+              meaningFr: entry.meaningFr,
+            },
+          });
+        }
+        continue;
+      }
+      if (step.type === 'text' && step.referenceId) {
+        const entry = textById.get(step.referenceId);
+        if (entry) {
+          steps.push({
+            id: step.id,
+            position: step.position,
+            status: step.status,
+            type: 'text',
+            text: { id: entry.id, title: entry.title, level: entry.level },
+          });
+        }
+      }
+    }
+    return {
+      id: mission.id,
+      localDate: mission.localDate,
+      status: mission.status,
+      startedAt: mission.startedAt.toISOString(),
+      completedAt: mission.completedAt?.toISOString() ?? null,
+      steps,
+    };
+  }
+
+  private async completeMissionForStudySession(
+    studySessionId: string,
+    status: 'completed' | 'skipped',
+  ): Promise<void> {
+    const mission = await this.prisma.dailyMission.findUnique({ where: { studySessionId } });
+    if (!mission) {
+      return;
+    }
+    await this.prisma.dailyMissionStep.updateMany({
+      where: { missionId: mission.id, type: 'study', status: 'pending' },
+      data: { status },
+    });
+    await this.completeDailyMissionIfReady(mission.id);
+  }
+
+  private async completeDailyMissionIfReady(missionId: string): Promise<void> {
+    const mission = await this.prisma.dailyMission.findUnique({
+      where: { id: missionId },
+      include: { steps: true },
+    });
+    if (
+      !mission ||
+      mission.status === 'completed' ||
+      mission.steps.some((step) => step.status === 'pending')
+    ) {
+      return;
+    }
+    await this.prisma.dailyMission.update({
+      where: { id: mission.id },
+      data: { status: 'completed', completedAt: new Date() },
     });
   }
 
@@ -475,6 +757,7 @@ export class StudyService {
   private async loadExercises(kanaInputEnabled: boolean): Promise<Map<string, ExerciseRow[]>> {
     const items = await this.prisma.exerciseItem.findMany({
       where: { editorialStatus: 'published' },
+      orderBy: { id: 'asc' },
       include: { kanji: { select: { literal: true } }, template: true },
     });
     const byTemplateKanji = new Map<string, ExerciseRow[]>();
@@ -517,6 +800,133 @@ export class StudyService {
       }
     }
     return candidates.find((candidate) => !used.has(candidate.id)) ?? candidates[0] ?? null;
+  }
+
+  private async buildDailyMissionQueue(
+    userId: string,
+    settings: {
+      activeLevel: string;
+      autoBalance: boolean;
+      dailyNewLimit: number;
+      kanaInputEnabled: boolean;
+      reviewLimit: number;
+    },
+  ): Promise<ExerciseRow[]> {
+    const exercises = await this.loadExercises(settings.kanaInputEnabled);
+    const used = new Set<string>();
+    const queue: ExerciseRow[] = [];
+    const pushFromCard = (subjectId: string, skill: string): void => {
+      if (queue.length >= DAILY_MISSION_REVIEW_LIMIT) {
+        return;
+      }
+      for (const template of CARD_SKILL_TO_TEMPLATES[skill as ReviewCardSkill] ?? []) {
+        const exercise = this.pickExercise(exercises, template, subjectId, used);
+        if (exercise) {
+          used.add(exercise.id);
+          queue.push(exercise);
+          return;
+        }
+      }
+    };
+
+    const now = new Date();
+    const dueWhere: Prisma.ReviewCardWhereInput = {
+      userId,
+      subjectType: 'kanji',
+      dueAt: { lte: now },
+      state: { not: 'Suspended' },
+    };
+    const dueCount = await this.prisma.reviewCard.count({ where: dueWhere });
+    const dueCards = await this.prisma.reviewCard.findMany({
+      where: dueWhere,
+      orderBy: [{ dueAt: 'asc' }, { id: 'asc' }],
+      take: Math.min(settings.reviewLimit, DAILY_MISSION_REVIEW_LIMIT),
+    });
+    for (const card of dueCards) {
+      pushFromCard(card.subjectId, card.skill);
+    }
+
+    if (queue.length < DAILY_MISSION_REVIEW_LIMIT) {
+      const failures = await this.prisma.reviewLog.findMany({
+        where: {
+          wasCorrect: false,
+          reviewedAt: { gte: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000) },
+          reviewCard: { userId, state: { not: 'Suspended' } },
+        },
+        include: { reviewCard: true },
+        orderBy: [{ reviewedAt: 'desc' }, { id: 'asc' }],
+        take: 4,
+      });
+      const seen = new Set<string>();
+      for (const failure of failures) {
+        const key = `${failure.reviewCard.subjectId}:${failure.reviewCard.skill}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          pushFromCard(failure.reviewCard.subjectId, failure.reviewCard.skill);
+        }
+      }
+    }
+
+    const newCount = computeNewKanjiCount({
+      mode: 'daily',
+      dailyNewLimit: settings.dailyNewLimit,
+      reviewLimit: settings.reviewLimit,
+      autoBalance: settings.autoBalance,
+      dueCount,
+    });
+    if (queue.length < DAILY_MISSION_REVIEW_LIMIT && newCount > 0) {
+      const [discovered, knownKanji, curriculum] = await Promise.all([
+        this.prisma.reviewCard.findMany({
+          where: { userId, subjectType: 'kanji' },
+          select: { subjectId: true },
+          distinct: ['subjectId'],
+        }),
+        this.prisma.userKanjiProgress.findMany({ where: { userId }, select: { kanjiId: true } }),
+        this.prisma.curriculum.findFirst({ where: { status: 'published' } }),
+      ]);
+      if (curriculum) {
+        const discoveredIds = new Set([
+          ...discovered.map((card) => card.subjectId),
+          ...knownKanji.map((progress) => progress.kanjiId),
+        ]);
+        const entries = await this.prisma.curriculumKanji.findMany({
+          where: {
+            curriculumId: curriculum.id,
+            level: settings.activeLevel as never,
+            kanjiId: { notIn: [...discoveredIds] },
+          },
+          orderBy: [{ order: 'asc' }, { kanjiId: 'asc' }],
+          take: Math.min(newCount, 2),
+        });
+        for (const entry of entries) {
+          pushFromCard(entry.kanjiId, 'KANJI_MEANING_RECOGNITION');
+        }
+      }
+    }
+
+    if (queue.length < DAILY_MISSION_REVIEW_LIMIT) {
+      const learning = await this.prisma.userKanjiProgress.findMany({
+        where: { userId, status: { in: ['learning', 'reviewing'] } },
+        orderBy: [{ updatedAt: 'desc' }, { kanjiId: 'asc' }],
+        take: 2,
+      });
+      for (const progress of learning) {
+        if (queue.length >= DAILY_MISSION_REVIEW_LIMIT) {
+          break;
+        }
+        const exercise = this.pickExercise(
+          exercises,
+          'sentence_cloze_kanji',
+          progress.kanjiId,
+          used,
+        );
+        if (exercise) {
+          used.add(exercise.id);
+          queue.push(exercise);
+        }
+      }
+    }
+    return queue;
   }
 
   private async buildQueue(
@@ -593,7 +1003,14 @@ export class StudyService {
       select: { subjectId: true },
       distinct: ['subjectId'],
     });
-    const discoveredIds = new Set(discovered.map((card) => card.subjectId));
+    const knownKanji = await this.prisma.userKanjiProgress.findMany({
+      where: { userId },
+      select: { kanjiId: true },
+    });
+    const discoveredIds = new Set([
+      ...discovered.map((card) => card.subjectId),
+      ...knownKanji.map((progress) => progress.kanjiId),
+    ]);
     const curriculum = await this.prisma.curriculum.findFirst({ where: { status: 'published' } });
     if (curriculum) {
       const takeNew = computeNewKanjiCount({
@@ -784,7 +1201,7 @@ export class StudyService {
     return shuffle(queue);
   }
 
-  private async queueItems(sessionId: string): Promise<StudyQueueItem[]> {
+  private async queueItems(sessionId: string, shuffleOptions = true): Promise<StudyQueueItem[]> {
     const items = await this.prisma.studySessionItem.findMany({
       where: { sessionId },
       orderBy: { position: 'asc' },
@@ -806,7 +1223,11 @@ export class StudyService {
         cardSkill: TEMPLATE_TO_CARD_SKILL[exercise.template.type] ?? 'KANJI_MEANING_RECOGNITION',
         kanjiLiteral: exercise.kanji?.literal ?? '',
         prompt: (exercise.promptJson ?? {}) as StudyQueueItem['prompt'],
-        options: isInput ? [] : shuffle([...answers, ...distractors]),
+        options: isInput
+          ? []
+          : shuffleOptions
+            ? shuffle([...answers, ...distractors])
+            : [...answers, ...distractors].sort((a, b) => a.localeCompare(b, 'ja')),
         status: item.status,
         wasCorrect: item.wasCorrect,
       };
@@ -854,4 +1275,23 @@ function extractTarget(targetJson: Prisma.JsonValue | null): StudyTarget | null 
     return null;
   }
   return target;
+}
+
+export function localDateKey(now: Date, timezone: string): string {
+  try {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: timezone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).formatToParts(now);
+    const values = new Map(parts.map((part) => [part.type, part.value]));
+    return `${values.get('year')}-${values.get('month')}-${values.get('day')}`;
+  } catch {
+    return now.toISOString().slice(0, 10);
+  }
+}
+
+function isUniqueConstraint(error: unknown): boolean {
+  return typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2002';
 }

@@ -32,14 +32,20 @@ GET    /curricula/:code/levels/:level/progress
 ```
 GET    /kanji
 GET    /kanji/:literal
+GET    /kanji/:literal/map
 GET    /kanji/:literal/related
 GET    /kanji/:literal/vocabulary
 GET    /kanji/:literal/sentences
 GET    /kanji/:literal/progress
+POST   /kanji/:literal/known
 GET    /texts
 GET    /texts/:id
 GET    /audio/:id
 ```
+
+`GET /kanji/:literal/map` (ADR-006) exige une session et renvoie un sous-graphe borné
+autour du kanji publié. Chaque lien est typé (`shared_component`, `visual_confusion`,
+`shared_word`, `curriculum_neighbor`) et expose la provenance et la version de contenu.
 
 ---
 
@@ -52,7 +58,16 @@ POST   /study/answers
 POST   /study/sessions/:id/finish
 POST   /study/sessions/:id/abandon
 GET    /study/resume
+GET    /study/sessions/:id
+GET    /study/missions/today
+POST   /study/missions/today
+POST   /study/missions/:missionId/steps/:stepId
 ```
+
+La mission quotidienne est un snapshot personnel date : le `POST` la cree seulement si
+elle n'existe pas encore pour le jour local de l'utilisateur ; le `GET` la reprend. Les
+etapes non-etude sont marquees `completed` ou `skipped` par la derniere route. L'etape
+d'etude est terminee par la sous-session FSRS associee.
 
 ---
 

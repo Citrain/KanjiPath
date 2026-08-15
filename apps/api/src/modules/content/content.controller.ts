@@ -13,6 +13,11 @@ export class ContentController {
     return this.content.kanjiList(userId, level ?? 'N5');
   }
 
+  @Get('kanji/:literal/map')
+  kanjiMap(@CurrentUserId() userId: string, @Param('literal') literal: string) {
+    return this.content.kanjiMap(userId, literal);
+  }
+
   @Get('kanji/:literal')
   kanjiDetail(@CurrentUserId() userId: string, @Param('literal') literal: string) {
     return this.content.kanjiDetail(userId, literal);
@@ -57,6 +62,11 @@ export class ContentController {
   @Get('kanji/:literal/progress')
   kanjiProgress(@CurrentUserId() userId: string, @Param('literal') literal: string) {
     return this.content.kanjiProgress(userId, literal);
+  }
+
+  @Post('kanji/:literal/known')
+  markKanjiKnown(@CurrentUserId() userId: string, @Param('literal') literal: string) {
+    return this.content.markKanjiKnown(userId, literal);
   }
 
   @Get('sources')

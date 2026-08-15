@@ -1,13 +1,21 @@
 import type { JlptLevel, KanjiStatus } from '@kanjipath/contracts';
-import { Badge, EmptyState, ErrorState, Progress, Segmented, Skeleton } from '@kanjipath/ui';
-import { useQuery } from '@tanstack/react-query';
+import {
+  Badge,
+  EmptyState,
+  ErrorState,
+  Progress,
+  Segmented,
+  Skeleton,
+  useToast,
+} from '@kanjipath/ui';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useMemo, useState } from 'react';
 import { KanjiTile } from '../../components/kanji-tile';
 import { formatPercent } from '../../lib/format';
 import { JLPT_LEVELS } from '../../lib/levels';
-import { fetchCurricula, fetchKanjiList } from '../content/api';
+import { fetchCurricula, fetchKanjiList, markKanjiKnown } from '../content/api';
 
 const FILTERS: Array<{ value: KanjiStatus | 'all'; label: string }> = [
   { value: 'all', label: 'Tous' },
@@ -35,6 +43,8 @@ const AUDIO_FILTERS: Array<{ value: AudioFilter; label: string }> = [
 const SKELETON_COUNT = 12;
 
 export function KanjiListPage() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [level, setLevel] = useState<JlptLevel>('N5');
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<KanjiStatus | 'all'>('all');
@@ -46,6 +56,18 @@ export function KanjiListPage() {
   const kanjiList = useQuery({
     queryKey: ['kanji', level],
     queryFn: () => fetchKanjiList(level),
+  });
+  const markKnown = useMutation({
+    mutationFn: (literal: string) => markKanjiKnown(literal),
+    onSuccess: (_data, literal) => {
+      queryClient.invalidateQueries({ queryKey: ['kanji'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['progress'] });
+      toast(`${literal} est maintenant marqué comme connu.`, 'success');
+    },
+    onError: () => {
+      toast('Impossible de mettre à jour ce kanji. Réessayez.', 'error');
+    },
   });
 
   const availableLevels = useMemo(() => {
@@ -295,7 +317,11 @@ export function KanjiListPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: Math.min(index * 0.012, 0.3), duration: 0.25 }}
                 >
-                  <KanjiTile kanji={kanji} />
+                  <KanjiTile
+                    kanji={kanji}
+                    onMarkKnown={(item) => markKnown.mutate(item.literal)}
+                    markingKnown={markKnown.isPending && markKnown.variables === kanji.literal}
+                  />
                 </motion.li>
               ))}
             </motion.ul>

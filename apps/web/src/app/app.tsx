@@ -13,6 +13,9 @@ const KanjiListPage = lazy(() =>
 const KanjiCardPage = lazy(() =>
   import('../features/kanji/kanji-card-page').then((m) => ({ default: m.KanjiCardPage })),
 );
+const KanjiMapPage = lazy(() =>
+  import('../features/kanji/kanji-map-page').then((m) => ({ default: m.KanjiMapPage })),
+);
 const WritingPage = lazy(() =>
   import('../features/kanji/writing-page').then((m) => ({ default: m.WritingPage })),
 );
@@ -33,6 +36,9 @@ const SourcesPage = lazy(() =>
 );
 const SessionPage = lazy(() =>
   import('../features/study/session-page').then((m) => ({ default: m.SessionPage })),
+);
+const DailyMissionPage = lazy(() =>
+  import('../features/study/daily-mission-page').then((m) => ({ default: m.DailyMissionPage })),
 );
 const ConversationPage = lazy(() =>
   import('../features/conversation/conversation-page').then((m) => ({
@@ -110,6 +116,14 @@ export function App() {
             }
           />
           <Route
+            path="/kanji/:literal/carte"
+            element={
+              <Protected>
+                <KanjiMapPage />
+              </Protected>
+            }
+          />
+          <Route
             path="/kanji/:literal/ecriture"
             element={
               <Protected>
@@ -122,6 +136,14 @@ export function App() {
             element={
               <Protected>
                 <SessionPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/mission"
+            element={
+              <Protected>
+                <DailyMissionPage />
               </Protected>
             }
           />

@@ -65,6 +65,13 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
 - `kanji_id`, `mnemonic_fr`, `etymology_fr`, `etymology_source`
 - `confusions`, `editorial_status`
 
+### Carte visuelle (ADR-006)
+
+La carte ne possède pas de table dédiée : son sous-graphe est une vue bornée des relations
+déjà publiées et versionnées par `kanji_components`, `kanji_notes.confusions`,
+`vocabulary_kanji` et `curriculum_kanji`. La progression reste dans
+`user_kanji_progress`. La disposition et les filtres ne sont jamais persistés.
+
 ---
 
 ## 3. Curriculum
@@ -191,6 +198,17 @@ Schéma de données complet (concepts obligatoires, le schéma exact peut évolu
 
 > La file d'une session est persistée pour permettre la reprise exacte
 > (`GET /study/resume`).
+
+### `daily_missions` et `daily_mission_steps` (ADR-005)
+
+- `daily_missions` : utilisateur, cle de jour dans son fuseau, etat, version de contenu,
+  sous-session d'etude optionnelle, dates de debut et de fin ;
+- contrainte unique `(user_id, local_date)` : une seule mission active ou terminee est
+  materialisee par jour local ;
+- `daily_mission_steps` : position, type (`study`, `vocabulary`, `text`), etat et
+  reference publiee. Les identifiants sont conserves, sans copier les exercices ;
+- la sous-session reutilise `study_sessions` et `study_session_items`, donc les cartes
+  FSRS, logs et reprises restent les memes que dans une session classique.
 
 ### `content_issues` (signalements)
 

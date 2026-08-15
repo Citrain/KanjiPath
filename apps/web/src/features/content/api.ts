@@ -6,6 +6,7 @@ import type {
   HistoryResponse,
   KanjiDetail,
   KanjiListResponse,
+  KanjiMapResponse,
   KanjiProgressDto,
   KanjiSentenceDto,
   KanjiVocabularyDto,
@@ -28,6 +29,10 @@ export function fetchKanjiDetail(literal: string): Promise<KanjiDetail> {
   return apiFetch<KanjiDetail>(`/kanji/${encodeURIComponent(literal)}`);
 }
 
+export function fetchKanjiMap(literal: string): Promise<KanjiMapResponse> {
+  return apiFetch<KanjiMapResponse>(`/kanji/${encodeURIComponent(literal)}/map`);
+}
+
 export function fetchKanjiVocabulary(literal: string): Promise<{ vocabulary: KanjiVocabularyDto[] }> {
   return apiFetch<{ vocabulary: KanjiVocabularyDto[] }>(`/kanji/${encodeURIComponent(literal)}/vocabulary`);
 }
@@ -38,6 +43,12 @@ export function fetchKanjiSentences(literal: string): Promise<{ sentences: Kanji
 
 export function fetchKanjiProgress(literal: string): Promise<KanjiProgressDto> {
   return apiFetch<KanjiProgressDto>(`/kanji/${encodeURIComponent(literal)}/progress`);
+}
+
+export function markKanjiKnown(literal: string): Promise<KanjiProgressDto> {
+  return apiFetch<KanjiProgressDto>(`/kanji/${encodeURIComponent(literal)}/known`, {
+    method: 'POST',
+  });
 }
 
 export function kanjiSvgUrl(literal: string): string {

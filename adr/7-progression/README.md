@@ -77,6 +77,13 @@ Un kanji est maîtrisé lorsque :
 
 > Ces seuils sont **configurables**.
 
+### Marquage manuel
+
+Un utilisateur qui connaît déjà un kanji peut le marquer comme connu depuis sa fiche.
+Cette action fixe ses scores à 100 %, le place dans l'état produit `MASTERED` et suspend
+ses cartes FSRS existantes. Il n'est plus introduit dans les sessions automatiques, mais
+reste disponible en révision ciblée.
+
 ---
 
 ## 9.5 Progression d'un niveau
@@ -124,3 +131,11 @@ La session recommandée mélange :
 - 10 % variation ou défi
 
 > Si la file de révision est importante, les nouveaux contenus sont réduits automatiquement.
+
+### Mission quotidienne (ADR-005)
+
+La mission materialise une sous-session courte et deterministe : revisions dues, erreurs
+recentes, nouveaux kanji seulement si `autoBalance` le permet, puis consolidation de
+contexte. Elle reutilise les cartes et logs FSRS existants ; vocabulaire et lecture sont
+des etapes informatives sans carte. Une mission conserve sa file pour reprise et ne
+modifie pas les regles de maitrise.

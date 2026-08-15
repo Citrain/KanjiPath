@@ -10,6 +10,9 @@ Référence produit/architecture : `ADR-001-plateforme-apprentissage-kanji.md` (
 3. `docs/agent/guide.md` (conventions, pièges connus, recettes).
 4. Pour le mode conversation : `ADR-003-conversation-vocale-japonais-locale.md`,
    `adr/12-local-ai-conversation.md` et `docs/operations/local-ai.md`.
+5. Pour les extensions produit acceptees : lire l'ADR concerne parmi `ADR-005` a
+   `ADR-011` avant toute implementation (mission, carte kanji, carnet, shadowing,
+   immersion, timeline, mode zen).
 
 ## Obligations
 
@@ -123,6 +126,18 @@ pnpm dev:voice          # setup + web/API + services vocaux locaux
 - Quiz IA local : préserver la lisibilité de l'interface avec une zone de question large, des textes
   pédagogiques au moins en taille de base et des cibles tactiles d'au moins 48 px; garder les grands
   textes japonais responsifs et une seule colonne de choix sur petit écran.
+- Quiz IA local : une nouvelle session de même mission exclut les énoncés japonais des trois
+  sessions précédentes. Conserver la température modérée, l'angle variable et la rotation du
+  référentiel; une ancienne question répétée doit être régénérée, jamais acceptée ou reformulée
+  heuristiquement par l'application.
+- Extensions produit ADR-005 a ADR-011 : toute implementation applique d'abord la decision
+  concernee, avec migration Prisma, contrats API, tests et documentation. Elles ne peuvent ni
+  publier des donnees personnelles, ni contourner FSRS, les preferences d'etude, les licences ou
+  les contraintes locales de l'ADR-003.
+- Carte visuelle (ADR-006) : ne jamais persister ou inférer une relation au runtime. La vue API
+  reste bornée et s'appuie uniquement sur les relations publiées du pipeline ; le web calcule la
+  disposition mais conserve une liste textuelle, des filtres accessibles et un état de progression
+  non indiqué par la seule couleur.
 - Audio : importer uniquement des clips avec licence individuelle explicite. Pour cette
   instance personnelle privée, CC BY-NC est autorisée selon `ADR-002` ; toute
   distribution publique ou commerciale reste interdite tant que ces clips sont présents.
@@ -135,6 +150,8 @@ pnpm dev:voice          # setup + web/API + services vocaux locaux
 - Étude : `kanaInputEnabled=false` exclut `reading_input_kana` et
   `audio_dictation_kana` de toute nouvelle session, quel que soit son mode. Ne pas
   exclure les QCM qui affichent des choix en kana, car ils ne requièrent pas de clavier japonais.
+- Étude : marquer un kanji comme connu fixe ses scores à 100 %, suspend ses cartes FSRS
+  existantes et l'exclut des introductions automatiques. Il reste disponible en révision ciblée.
 - Ne jamais présenter les listes de kanji comme « officielles JLPT » :
   formulation obligatoire « Parcours aligné sur le JLPT ».
 - Authentification : Argon2id, cookie `HttpOnly` + `SameSite=Lax`, CSRF double-submit,

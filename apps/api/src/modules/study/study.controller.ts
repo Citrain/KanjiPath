@@ -1,4 +1,8 @@
-import { type CreateSessionInput, createSessionSchema } from '@kanjipath/contracts';
+import {
+  type CreateSessionInput,
+  createSessionSchema,
+  updateDailyMissionStepSchema,
+} from '@kanjipath/contracts';
 import {
   BadRequestException,
   Body,
@@ -29,6 +33,36 @@ export class StudyController {
     return this.study.resume(userId);
   }
 
+  @Get('sessions/:id')
+  session(@CurrentUserId() userId: string, @Param('id') id: string) {
+    return this.study.getSession(userId, id);
+  }
+
+  @Get('missions/today')
+  dailyMission(@CurrentUserId() userId: string) {
+    return this.study.dailyMission(userId);
+  }
+
+  @Post('missions/today')
+  createDailyMission(@CurrentUserId() userId: string) {
+    return this.study.createDailyMission(userId);
+  }
+
+  @Post('missions/:missionId/steps/:stepId')
+  updateDailyMissionStep(
+    @CurrentUserId() userId: string,
+    @Param('missionId') missionId: string,
+    @Param('stepId') stepId: string,
+    @Body() body: unknown,
+  ) {
+    return this.study.updateDailyMissionStep(
+      userId,
+      missionId,
+      stepId,
+      parse(body, updateDailyMissionStepSchema),
+    );
+  }
+
   @Get('queue')
   queue(@CurrentUserId() userId: string) {
     return this.study.resume(userId);
@@ -53,8 +87,12 @@ export class StudyController {
 }
 
 function parseCreateSession(body: unknown): CreateSessionInput {
+  return parse(body, createSessionSchema);
+}
+
+function parse<T>(body: unknown, schema: { parse(value: unknown): T }): T {
   try {
-    return createSessionSchema.parse(body ?? {});
+    return schema.parse(body ?? {});
   } catch (error) {
     if (error instanceof ZodError) {
       throw new BadRequestException({

@@ -43,5 +43,8 @@ n'est conserve. Les sessions et reponses sont des donnees utilisateur.
 - un QCM de lecture est construit deterministement depuis les mots et lectures publies; sa lecture
   reste masquee dans l'interface jusqu'a la correction;
 - un texte a trou ou une conjugaison contient obligatoirement `＿＿＿` dans le texte et sa lecture;
+- les questions des trois derniers quiz de la meme mission sont exclues de la generation suivante;
+  un angle pedagogique, l'ordre des references et les lectures varient a chaque creation, avec une
+  temperature moderee qui ne contourne jamais la validation stricte;
 - les associations sont resolues par glisser-deposer de cartes, avec l'alternative
   selection puis depot au toucher et au clavier.

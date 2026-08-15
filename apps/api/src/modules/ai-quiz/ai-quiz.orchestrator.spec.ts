@@ -218,6 +218,7 @@ describe('quiz IA local', () => {
         skills: ['grammar'],
       },
       { vocabulary: [{ word: '食べる', reading: 'たべる', meaningFr: 'manger' }], sentences: [] },
+      { seed: 2, excludedJapanese: ['昨日は寿司を食べました。'] },
     );
     expect(prompt).toContain('comporte 5 questions');
     expect(prompt).toContain('MISSION OBLIGATOIRE');
@@ -228,6 +229,9 @@ describe('quiz IA local', () => {
     expect(prompt).toContain('trou exact ＿＿＿');
     expect(prompt).toContain('lecture complète sans kanji');
     expect(prompt).toContain('Ne mets jamais la lecture entre parenthèses');
+    expect(prompt).toContain('DIVERSITÉ OBLIGATOIRE');
+    expect(prompt).toContain('昨日は寿司を食べました。');
+    expect(prompt).toContain('contrastes de sens ou de grammaire');
     expect(prompt).not.toContain('ASSEMBLAGE DE CONJUGAISON uniquement');
     expect(prompt).not.toContain('ORDRE DE PHRASE uniquement');
     expect(prompt).not.toContain('ASSOCIATION uniquement');
@@ -310,16 +314,21 @@ describe('quiz IA local', () => {
     expect(schema).not.toContain('"skill"');
   });
 
-  it('regénère seulement la question invalide puis matérialise le quiz', async () => {
+  it('regénère seulement une question reprise d’un quiz récent', async () => {
     let firstQuestion = true;
     const generate = vi.fn(async (systemPrompt: string) => {
       const match = /Question (\d+) sur/.exec(systemPrompt);
       const index = Number(match?.[1] ?? 1) - 1;
       if (firstQuestion) {
         firstQuestion = false;
-        const { answerIndex: _answerIndex, ...invalid } = modelQuestionContent(index);
-        return JSON.stringify(invalid);
+        return JSON.stringify(modelQuestionContent(index));
       }
+      if (index === 0)
+        return JSON.stringify({
+          ...modelQuestionContent(index),
+          japanese: '注文した料理を ＿＿＿',
+          kana: 'ちゅうもんしたりょうりを ＿＿＿',
+        });
       return JSON.stringify(modelQuestionContent(index));
     });
     const orchestrator = new AiQuizOrchestrator(
@@ -340,16 +349,22 @@ describe('quiz IA local', () => {
         generate(
           input: typeof input,
           constraints: { vocabulary: []; sentences: [] },
+          diversity?: { seed: number; excludedJapanese: string[] },
         ): Promise<AiQuizDraft>;
       }
     ).generate.bind(orchestrator);
 
-    const quiz = await run(input, { vocabulary: [], sentences: [] });
+    const quiz = await run(
+      input,
+      { vocabulary: [], sentences: [] },
+      { seed: 2, excludedJapanese: ['食べます 1 → ＿＿＿'] },
+    );
 
     expect(generate).toHaveBeenCalledTimes(6);
-    expect(generate.mock.calls[1]?.[0]).toContain('sortie précédente a été rejetée');
+    expect(generate.mock.calls[1]?.[0]).toContain('déjà utilisée dans un quiz récent');
     expect(generate.mock.calls[0]?.[0]).toContain('Question 1 sur 5');
     expect(generate.mock.calls[2]?.[0]).toContain('Question 2 sur 5');
+    expect(generate.mock.calls[0]?.[3]).toMatchObject({ temperature: 0.35, maxTokens: 1_024 });
     expect(quiz.questions[0]).toMatchObject({
       skill: 'grammar',
       difficulty: 1,
@@ -437,6 +452,7 @@ describe('quiz IA local', () => {
       },
       [],
       1,
+      { seed: 0, excludedJapanese: ['食べる'] },
     );
 
     expect(question).not.toBeNull();
@@ -444,7 +460,8 @@ describe('quiz IA local', () => {
     expect(question.type).toBe('reading_qcm');
     expect(question.options).toHaveLength(4);
     expect(new Set(question.options).size).toBe(4);
-    expect(question.options[question.answerIndex]).toBe('たべる');
+    expect(question.japanese).toBe('飲む');
+    expect(question.options[question.answerIndex]).toBe('のむ');
   });
 
   it('refuse une conjugaison qui affiche déjà la réponse au lieu du trou', () => {

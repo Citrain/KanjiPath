@@ -22,6 +22,9 @@ Plateforme web d'apprentissage progressif des kanji — parcours **aligné sur l
   d'architecture complète. Découpage opérationnel dans `../adr/`.
 - **ADR-003** : `../ADR-003-conversation-vocale-japonais-locale.md` — mode
   conversation vocal local, fournisseurs STT/LLM/TTS et contraintes pédagogiques.
+- **ADR-004 a ADR-011** : voir [`adr/README.md`](./adr/README.md) — Quiz IA local et
+  extensions produit acceptees : mission quotidienne, carte kanji, carnet personnel,
+  shadowing, immersion, timeline des erreurs et mode zen.
 - **Règles agent** : `../AGENTS.md`.
 - **Démarrage rapide** : `../README.md`.
 
@@ -62,14 +65,16 @@ Ce qui est implémenté :
    des kanji avec sélecteur de niveau, filtres de statut, **filtres de fréquence
     (Top 500 / Top 1000), avec audio, et tri par fréquence**, fiche kanji complète
    (tracé animé KanjiVG, lectures avec romaji, radical/composants, mnémotechnique,
-   progression par compétence, navigation précédent/suivant, signalement de contenu),
+   progression par compétence, **marquage manuel comme connu depuis la fiche ou la liste**,
+   navigation précédent/suivant, signalement de contenu),
    **entraînement à l'écriture** (`/kanji/:literal/ecriture` : grille de pratique,
    tracé au pointeur validé trait par trait contre KanjiVG — point de départ, sens,
    forme — aide fantôme réglable, trait passé/effacé, signalement de tracé),
    session d'étude (choix du mode — jour/points faibles/libre/**ciblée** par niveau/
    compétence/kanji, quiz avec raccourcis clavier 1-4 et Entrée, feedback animé avec
    lectures kana et romaji après réponse,
-  résultats + confettis), **lecture graduée** (`/lecture` : liste des mini-textes ;
+   résultats + confettis), **mission quotidienne** (`/mission` : snapshot reprenable
+   composé de révisions, vocabulaire et lecture), **lecture graduée** (`/lecture` : liste des mini-textes ;
   `/lecture/:id` : texte annoté furigana/romaji + traduction, **tokens cliquables :
   lecture en contexte** — traduction du mot s'il est au référentiel, sinon
   **décomposition en kanji** (sens + lectures on/kun de chaque kanji, liens fiches)),
@@ -85,6 +90,10 @@ Ce qui est implémenté :
   tokenisation kuromoji), affichées selon les préférences furigana/romaji. Design
   system « encre & washi » (voir `docs/architecture/overview.md#design-system-web`).
 - Qualité : Vitest (unitaires + intégration MariaDB), Biome.
+- **Carte visuelle des kanji** (`/kanji/:literal/carte`, ADR-006) : sous-graphe
+  authentifié et borné de relations publiées (composants partagés, confusions
+  visuelles, mots partagés, voisins du parcours). La disposition reste locale au
+  navigateur ; filtres, liens clavier et liste textuelle donnent le même accès aux fiches.
 
 La Phase 1 (N5) a fait l'objet d'une relecture éditoriale (mnémotechniques,
 étymologies, rôles de composants) et d'une complétion du vocabulaire curaté (mois,

@@ -61,6 +61,7 @@ Application web moderne pour apprendre les kanji du débutant au avancé, align�
 | `10-testing-deployment/` | Tests et déploiement |
 | `11-phases/` | Plan d'implémentation, phases, critères, principes |
 | `12-local-ai-conversation.md` | Découpage opérationnel de l'ADR-003 (conversation vocale locale) |
+| `../ADR-005-...md` à `../ADR-011-...md` | Extensions produit : mission, carte, carnet, shadowing, immersion, timeline et mode zen |
 
 ---
 
