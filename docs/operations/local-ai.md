@@ -47,6 +47,54 @@ Cette instance utilise `gemma4:26b` via `OLLAMA_MODEL` dans `.env`. Le test loca
 prompt valide le dialogue multi-tour et une scène de restaurant avec ce modèle. Le provider reste
 indépendant du modèle : toute substitution doit repasser cette évaluation avant utilisation.
 
+## Quiz IA local
+
+`/quiz-ia` réutilise le provider Ollama et, pour les questions d'écoute, VOICEVOX. Aucun
+navigateur ne contacte ces services directement. Ollama crée un snapshot personnel validé par
+JSON; les réponses sont ensuite corrigées par l'API sans appel LLM. Chaque texte
+japonais généré contient également sa lecture kana pour l'affichage débutant. Les snapshots et
+réponses sont des données utilisateur, tandis que l'audio est relayé sans stockage.
+La sortie LLM possède une structure QCM atomique de cinq champs : `japanese`, `kana`, `options`,
+`answerIndex` et `explanationFr`. L'API planifie et ajoute `type`. Un QCM comporte toujours
+exactement quatre options distinctes. L'écoute place dans `japanese` le texte réservé à VOICEVOX;
+l'API le masque ensuite du DTO public. Les anciens renderers d'ordre et d'association restent
+lisibles pour l'historique mais ne sont plus acceptés à la création. Toute sortie qui enfreint ces
+invariants est rejetée sans persistance, sans tentative de conversion.
+Les QCM de lecture sont construits sans LLM depuis quatre lectures distinctes du vocabulaire
+publié; leur ligne kana reste masquée jusqu'à la correction. Les textes à trou et conjugaisons
+exigent quatre options distinctes en kana ainsi que `＿＿＿` dans `japanese` et `kana`; une phrase qui
+affiche déjà sa réponse est rejetée. Les QCM de sens et d'écoute utilisent des choix français.
+Les choix QCM sont volontairement en français ou entièrement en kana : ils ne portent ni kanji,
+ni lecture parallèle. Cette règle réduit les sorties ambiguës du modèle tout en conservant les
+kanji et leurs lectures dans l'énoncé.
+Quand le nombre de questions est au moins égal au nombre de formats sélectionnés, le snapshot doit
+contenir chaque format sélectionné au moins une fois; sinon la génération est refusée.
+Le Quiz IA transmet à Ollama le même mini-schéma JSON pour chaque question. Le modèle ne produit ni
+type, titre de mission, consigne, aide, tag, identifiant, compétence, difficulté ou étape : l'API
+les déduit de la demande, du plan de types et de la position. Cette séparation réduit fortement la
+grammaire de décodage et empêche le modèle d'inventer des métadonnées applicatives.
+L'interface ne demande pas de compétences techniques : l'utilisateur choisit un seul mode
+(`Révision guidée`, `Mots et lecture`, `Grammaire et conjugaison` ou `Écoute`). Elle démarre sur
+cinq questions et propose au plus dix questions, ce qui borne un snapshot local lisible et fiable.
+Le backend déduit les formats et compétences correspondants, puis répartit les types sur les
+positions du quiz. Les renderers historiques restent définis dans le schéma de lecture des
+snapshots, pas dans le mini-contrat génératif.
+La description saisie par l'utilisateur est répétée comme mission obligatoire dans les messages
+système et utilisateur. Avant l'appel, l'API recherche ses mots-clés français ou japonais dans un
+ensemble élargi de mots et phrases du niveau. Dès qu'elle trouve des correspondances, elle transmet
+uniquement ces références pertinentes; les entrées fréquentes sans rapport ne peuvent donc plus
+détourner le thème du questionnaire. Sans correspondance lexicale, un petit échantillon de niveau
+reste disponible comme support, mais le prompt précise qu'il ne remplace jamais la mission.
+Le contrôle strict s'applique avant la persistance. Les snapshots créés avant cette règle restent
+lisibles dans l'historique avec le schéma de lecture compatible, afin qu'une amélioration du
+contrat ne bloque jamais un quiz personnel déjà enregistré.
+Chaque réponse Ollama doit être un objet JSON brut représentant une seule question. L'API planifie
+les types en amont; le mini-schéma transmis ne contient donc pas `type` ni tableau de questions.
+L'API n'extrait aucun fragment, ne renomme aucun champ et n'échappe aucune syntaxe invalide. Si la
+syntaxe ou les invariants Zod échouent, elle relance uniquement cette question, avec au plus quatre
+tentatives au total, toutes strictement validées. Un échec final ne crée aucune session; les questions déjà valides
+ne sont jamais redemandées.
+
 ## VOICEVOX (TTS japonais)
 
 Le moteur expose son API sur `127.0.0.1:50021`. Exemple GPU :
@@ -128,6 +176,10 @@ la réponse ou à une erreur afin d'éviter les tours concurrents.
 Une demande conversationnelle en français telle que « réviser la forme 〜ている » devient un
 objectif de dialogue : le partenaire doit employer la forme, corriger les essais et relancer
 la conversation. Une réponse imparfaite ne doit jamais entraîner une formule d'abandon.
+Le sélecteur web propose `Libre` par défaut ainsi que les scénarios spécialisés. Le champ
+« Situation ou objectif » peut préciser le décor, remplacer le cadre libre ou ajouter une cible
+pédagogique. Le scénario `free` reste neutre : seul le dialogue et l'objectif explicite orientent
+alors le partenaire.
 Un mot manquant, une forme incomplète ou une erreur qui empêche une phrase naturelle doit être
 classée `important`, pour rester visible même lorsque l'utilisateur choisit les corrections
 importantes seulement.
@@ -185,6 +237,12 @@ utilise, par exemple `{"status":"ok","provider":"faster-whisper","device":"cuda"
 
 ## TTS francais
 
+Pour valider le modèle configuré pour le Quiz IA, lancer depuis `apps/api` :
+
+```powershell
+$env:RUN_LOCAL_AI_EVAL='true'; $env:LOCAL_AI_ENABLED='true'; pnpm exec dotenv -e ../../.env -- vitest run src/modules/ai-quiz/ai-quiz.local-eval.spec.ts
+```
+
 `FRENCH_TTS_PROVIDER=browser` permet un prototypage sans service : sa disponibilite
 hors ligne depend des voix installees sur le systeme. Une implementation locale peut
 etre ajoutee sur `127.0.0.1:8766` derriere `FrenchTTSProvider`; aucun moteur concret ne
@@ -194,6 +252,16 @@ doit fuir dans le domaine metier.
 
 Les variables suivantes sont documentées dans `.env.example`. Laisser
 `LOCAL_AI_ENABLED=false` conserve le mode texte sans appeler un service local :
+
+Pour activer la conversation et le Quiz IA avec Ollama déjà installé, définir
+`LOCAL_AI_ENABLED=true` dans `.env`, puis redémarrer l'API. Le diagnostic authentifié
+`GET /api/v1/local-ai/health` indique le modèle réellement détecté.
+
+Le Quiz IA effectue un appel atomique par question, borné à 1024 tokens, et conserve le délai Ollama
+configuré. Ne pas utiliser `num_predict: -1` : `gemma4` peut alors continuer après un JSON complet,
+ajouter des commentaires interdits et consommer le contexte pendant plusieurs minutes. Garder
+`OLLAMA_MAX_TOKENS=512` pour les tours courts de conversation. Une question invalide reçoit au plus
+quatre tentatives au total; le backend ne répare jamais ses champs et ne régénère jamais les autres.
 
 ```dotenv
 LOCAL_AI_ENABLED=true

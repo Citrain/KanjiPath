@@ -17,12 +17,20 @@ export interface LlmConversationMessage {
   content: string;
 }
 
+export interface LlmGenerationOptions {
+  maxTokens?: number;
+  unlimited?: boolean;
+  jsonSchema?: Record<string, unknown>;
+  temperature?: number;
+}
+
 export interface LlmProvider {
   health(): Promise<ProviderHealth>;
   generate(
     systemPrompt: string,
     userMessage: string,
     history?: LlmConversationMessage[],
+    options?: LlmGenerationOptions,
   ): Promise<string>;
 }
 
@@ -52,8 +60,15 @@ export interface FrenchTtsProvider {
   health(): Promise<ProviderHealth>;
 }
 
-async function request(url: string, init?: RequestInit, timeoutMs = 8_000): Promise<Response> {
-  return fetch(url, { ...init, signal: AbortSignal.timeout(timeoutMs) });
+async function request(
+  url: string,
+  init?: RequestInit,
+  timeoutMs: number | null = 8_000,
+): Promise<Response> {
+  return fetch(url, {
+    ...init,
+    ...(timeoutMs === null ? {} : { signal: AbortSignal.timeout(timeoutMs) }),
+  });
 }
 
 @Injectable()
@@ -89,6 +104,7 @@ export class OllamaProvider implements LlmProvider {
     systemPrompt: string,
     userMessage: string,
     history: LlmConversationMessage[] = [],
+    options: LlmGenerationOptions = {},
   ): Promise<string> {
     if (!this.config.values.enabled) throw new Error('Mode IA locale désactivé');
     const response = await request(
@@ -104,18 +120,20 @@ export class OllamaProvider implements LlmProvider {
             { role: 'user', content: userMessage },
           ],
           stream: false,
-          format: 'json',
+          format: options.jsonSchema ?? 'json',
           think: false,
           keep_alive: '10m',
           options: {
             num_ctx: this.config.values.ollamaContextLength,
-            num_predict: this.config.values.ollamaMaxTokens,
-            temperature: 0.65,
+            num_predict: options.unlimited
+              ? -1
+              : (options.maxTokens ?? this.config.values.ollamaMaxTokens),
+            temperature: options.temperature ?? 0.65,
             top_p: 0.9,
           },
         }),
       },
-      this.config.values.ollamaTimeoutSeconds * 1_000,
+      options.unlimited ? null : this.config.values.ollamaTimeoutSeconds * 1_000,
     );
     if (!response.ok) throw new Error(`Ollama a répondu ${response.status}`);
     const payload: unknown = await response.json();

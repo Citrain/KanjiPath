@@ -8,6 +8,7 @@ import type { PrismaService } from '../../infrastructure/database/prisma.service
 import { ConversationConfig } from './conversation.config';
 import {
   applyConversationCorrectionPolicy,
+  buildConversationPrompt,
   ConversationOrchestrator,
 } from './conversation.orchestrator';
 import type {
@@ -97,6 +98,23 @@ function llmFrom(generate: LlmProvider['generate']): LlmProvider {
 }
 
 describe('conversation model policy', () => {
+  it('garde le scénario libre neutre par défaut', () => {
+    const prompt = buildConversationPrompt(
+      {
+        level: 'N5',
+        scenario: 'free',
+        difficulty: 'easy',
+        correctionMode: 'important',
+        goalsJson: ['Dans une gare, demander un billet.'],
+      },
+      constraints,
+    );
+
+    expect(prompt).toContain('Aucun rôle ni décor n’est imposé');
+    expect(prompt).toContain('Dans une gare, demander un billet.');
+    expect(prompt).toContain('Ne force pas une phase de présentation');
+  });
+
   it('valide un contrat JSON strict, japonais et lisible', () => {
     expect(conversationModelOutputSchema.safeParse(correctedOutput).success).toBe(true);
     expect(conversationModelOutputSchema.safeParse({ reply: validOutput.reply }).success).toBe(

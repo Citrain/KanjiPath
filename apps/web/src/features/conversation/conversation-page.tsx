@@ -120,7 +120,7 @@ interface Recorder {
 
 export function ConversationPage() {
   const [level, setLevel] = useState<JlptLevel>('N5');
-  const [scenario, setScenario] = useState<ConversationScenario>('introduction');
+  const [scenario, setScenario] = useState<ConversationScenario>('free');
   const [goal, setGoal] = useState('');
   const [difficulty, setDifficulty] = useState<ConversationDifficulty>('easy');
   const [correctionMode, setCorrectionMode] = useState<ConversationCorrectionMode>('important');
@@ -348,14 +348,11 @@ export function ConversationPage() {
                 onChange={(event) => setScenario(event.target.value as ConversationScenario)}
                 className={selectClass}
               >
-                {(topics.data?.topics ?? []).map((topic) => (
+                {(topics.data?.topics ?? [{ id: 'free', label: 'Libre' }]).map((topic) => (
                   <option key={topic.id} value={topic.id}>
                     {topic.label}
                   </option>
                 ))}
-                {topics.data?.topics.length ? null : (
-                  <option value="introduction">Conversation libre</option>
-                )}
               </select>
             </Field>
             <Field label="Corrections">
@@ -403,14 +400,14 @@ export function ConversationPage() {
               </select>
             </Field>
             <div className="sm:col-span-2">
-              <Field label="Objectif personnel (facultatif)">
+              <Field label="Situation ou objectif (facultatif)">
                 <input
-                  aria-label="Objectif personnel"
+                  aria-label="Situation ou objectif"
                   value={goal}
                   onChange={(event) => setGoal(event.target.value)}
                   maxLength={160}
                   className={selectClass}
-                  placeholder="Ex. pratiquer 〜ている dans une conversation naturelle"
+                  placeholder="Ex. au restaurant, pratiquer 〜ている naturellement"
                 />
               </Field>
             </div>
@@ -441,8 +438,9 @@ export function ConversationPage() {
           <Card className="flex flex-wrap items-center justify-between gap-3 p-4">
             <p className="font-semibold text-ink">
               {session.level} ·{' '}
-              {topics.data?.topics.find((topic) => topic.id === session.scenario)?.label ??
-                'Conversation'}
+              {session.goals[0] ??
+                topics.data?.topics.find((topic) => topic.id === session.scenario)?.label ??
+                'Conversation libre'}
             </p>
             <Button
               variant="secondary"

@@ -5,6 +5,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { PrismaModule } from './infrastructure/database/prisma.module';
 import { CsrfGuard } from './infrastructure/security/csrf.guard';
+import { AiQuizModule } from './modules/ai-quiz/ai-quiz.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ContentModule } from './modules/content/content.module';
 import { ConversationModule } from './modules/conversation/conversation.module';
@@ -19,6 +20,7 @@ import { StudyModule } from './modules/study/study.module';
     ThrottlerModule.forRoot([{ name: 'default', ttl: 15 * 60 * 1000, limit: 300 }]),
     PrismaModule,
     AuthModule,
+    AiQuizModule,
     ContentModule,
     ConversationModule,
     CurriculaModule,

@@ -39,6 +39,9 @@ const ConversationPage = lazy(() =>
     default: m.ConversationPage,
   })),
 );
+const AiQuizPage = lazy(() =>
+  import('../features/ai-quiz/ai-quiz-page').then((m) => ({ default: m.AiQuizPage })),
+);
 
 function AuthSplash() {
   return (
@@ -127,6 +130,14 @@ export function App() {
             element={
               <Protected>
                 <ConversationPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/quiz-ia"
+            element={
+              <Protected>
+                <AiQuizPage />
               </Protected>
             }
           />

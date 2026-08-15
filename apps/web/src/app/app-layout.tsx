@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import {
   BookMarked,
   BookOpen,
+  BrainCircuit,
   ChevronsUpDown,
   Flame,
   LayoutDashboard,
@@ -36,6 +37,7 @@ const NAV_ITEMS = [
   { to: '/', label: 'Tableau de bord', short: 'Accueil', icon: LayoutDashboard },
   { to: '/etude', label: 'Étudier', icon: NotebookPen },
   { to: '/conversation', label: 'Conversation', short: 'Parler', icon: MessageCircle },
+  { to: '/quiz-ia', label: 'Quiz IA', short: 'Quiz IA', icon: BrainCircuit },
   { to: '/lecture', label: 'Lecture', icon: BookOpen },
   { to: '/kanji', label: 'Kanji', icon: Shapes },
   { to: '/progression', label: 'Progression', icon: TrendingUp },
@@ -280,7 +282,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             aria-label="Navigation principale mobile"
             className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-lg lg:hidden"
           >
-            <div className="grid grid-cols-6">
+            <div className="grid grid-cols-7">
               {NAV_ITEMS.map((item) => {
                 const Icon = item.icon;
                 return (

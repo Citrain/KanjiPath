@@ -60,7 +60,7 @@ politique de correction.
 Les premiers choix exposes sont :
 
 - niveaux N5 et N4, extensibles de N3 a N1 ;
-- scenarios presentation, restaurant, magasin, voyage, travail, loisirs, jeux video et
+- scenario libre par defaut, puis presentation, restaurant, magasin, voyage, travail, loisirs, jeux video et
   famille ;
 - difficultes `easy`, `normal` et `hard` ;
 - corrections `none`, `important`, `all`, `end_of_turn` et `end_of_session` ;

@@ -43,6 +43,7 @@ export const FURIGANA_MODES = ['always', 'hover', 'never'] as const;
 export type FuriganaMode = (typeof FURIGANA_MODES)[number];
 
 export const CONVERSATION_SCENARIOS = [
+  'free',
   'introduction',
   'restaurant',
   'shop',

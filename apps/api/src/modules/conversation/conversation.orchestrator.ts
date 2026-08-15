@@ -32,6 +32,7 @@ import {
 } from './conversation.providers';
 
 const SCENARIO_LABELS: Record<string, string> = {
+  free: 'une conversation libre',
   introduction: 'une présentation',
   restaurant: 'un restaurant',
   shop: 'un magasin',
@@ -43,6 +44,7 @@ const SCENARIO_LABELS: Record<string, string> = {
 };
 
 const SCENARIO_GUIDES: Record<string, string> = {
+  free: 'Aucun rôle ni décor n’est imposé. Laisse le sujet émerger du dialogue ou suis la situation décrite dans les objectifs explicites. Ne force pas une phase de présentation.',
   introduction:
     'Tu incarnes une personne japonaise qui fait connaissance. Construis progressivement un échange personnel et détendu: présente aussi des goûts, habitudes ou anecdotes fictives cohérentes au lieu d’interroger sans cesse.',
   restaurant:
@@ -568,7 +570,7 @@ export function buildConversationPrompt(
     '',
     '# CADRE DE CETTE SESSION',
     `Niveau imposé: ${session.level}. Ne dépasse pas durablement ce niveau. Préfère le kana à un kanji probablement inconnu.`,
-    `Scénario: ${SCENARIO_LABELS[session.scenario] ?? session.scenario}. ${SCENARIO_GUIDES[session.scenario] ?? SCENARIO_GUIDES.introduction}`,
+    `Scénario: ${SCENARIO_LABELS[session.scenario] ?? session.scenario}. ${SCENARIO_GUIDES[session.scenario] ?? SCENARIO_GUIDES.free}`,
     `Difficulté: ${session.difficulty}. ${DIFFICULTY_GUIDES[session.difficulty] ?? DIFFICULTY_GUIDES.easy}`,
     `Objectifs explicites: ${goals.length > 0 ? JSON.stringify(goals) : 'aucun; laisse le sujet se construire naturellement'}.`,
     `Politique d’affichage des corrections: ${session.correctionMode}. Évalue néanmoins correctement le tour; l’application décide ensuite quoi afficher.`,

@@ -61,6 +61,7 @@ ajoute-le ici.
 | Données curatées par niveau | `content/curated/<niveau>/kanji.json`, `vocabulary.json`, `sentences.json`, `texts.json` (`n5/`→`n1/`) + `components-fr.json`, `radicals-fr.json`, `confusions-fr.json` |
 | Squelette curaté N1 (généré) | `tools/content/n1-scaffold.mjs` (reconstruit `content/curated/n1/kanji.json` ; mnémotechniques dans `content/curated/n1/mnemonics/*.json`) |
 | Conversation vocale locale | `apps/api/src/modules/conversation/`, `apps/web/src/features/conversation/`, contrats `conversation.ts` ; ADR-003 ensuite |
+| Quiz IA local | `apps/api/src/modules/ai-quiz/`, `apps/web/src/features/ai-quiz/`, contrats `ai-quiz.ts` ; ADR-004 ensuite |
 
 ## Pièges connus (IMPORTANT)
 
@@ -647,6 +648,115 @@ ajoute-le ici.
     `$env:RUN_LOCAL_AI_EVAL='true'; $env:LOCAL_AI_ENABLED='true'; pnpm exec dotenv -e ../../.env -- vitest run src/modules/conversation/conversation.local-eval.spec.ts`.
     Il lit `OLLAMA_MODEL` dans `.env`; avec `gemma4:26b`, les scénarios loisirs multi-tour et
     restaurant doivent passer avant toute modification majeure du prompt ou du modèle.
+
+80. **Situation conversationnelle libre.** L'UI propose les scénarios spécialisés mais sélectionne
+    `free` par défaut. Le champ « Situation ou objectif » est envoyé dans `goals` et peut préciser
+    ou remplacer ce cadre. Le guide de prompt `free` ne force ni présentation ni rôle; garder ce
+ scénario en première position dans `CONVERSATION_SCENARIOS` et dans le catalogue API.
+
+81. **Quiz IA local : snapshot et correction séparés.** Le LLM produit uniquement le contenu
+    conforme à `aiQuizModelOutputSchema`; l'API le matérialise puis valide `aiQuizDraftSchema`.
+    Ne jamais retourner le champ `correct` dans `AiQuizSessionDto`, ne jamais rappeler le LLM lors
+    d'une réponse et ne
+    jamais transformer une session IA en `ExerciseItem`, carte FSRS ou contenu du pipeline. Une
+    question invalide reçoit au plus quatre générations atomiques puis la création échoue sans
+    persistance. Les autres questions valides ne sont pas redemandées. Les questions d'écoute
+    passent par `AiQuizOrchestrator#audio` et VOICEVOX, sans
+    stockage audio.
+    Pour `pair_match`, le grader doit comparer l'ensemble exact des paires : une paire dupliquée
+    ne doit jamais faire passer une association incomplète.
+
+82. **Quiz IA local désactivé.** Ollama peut répondre sur `127.0.0.1:11434` tout en restant
+    inutilisable par l'API : `LOCAL_AI_ENABLED` doit explicitement valoir `true` dans `.env`,
+    puis l'API doit être redémarrée. Le générateur retourne alors le code
+    `LOCAL_AI_DISABLED` plutôt qu'un message générique.
+
+83. **Génération Quiz IA bornée.** Ne pas réutiliser la limite courte de conversation
+    `OLLAMA_MAX_TOKENS`, mais fixer `maxTokens` à 1024 tokens par question. Ne jamais remettre
+    `unlimited: true` / `num_predict: -1` : pendant l'évaluation réelle, `gemma4:26b` a continué
+    après un JSON complet avec des commentaires jusqu'à faire durer deux générations près de dix
+    minutes. Chaque question est un appel séparé borné à 1024 tokens; une sortie invalide autorise
+    jusqu'à quatre tentatives de cette question avec son diagnostic. Ne jamais réintroduire la
+    génération du quiz entier en un appel ni une boucle de tentatives.
+
+84. **Contrat compact Quiz IA.** Le LLM produit exactement cinq champs par question : `japanese`,
+    `kana`, `options`, `answerIndex` et `explanationFr`. Il ne produit jamais type, titre de mission,
+    consigne, aide, tag, identifiant, compétence, difficulté ou étape. `materializeQuiz` construit
+    ces données et la clé de correction. Ne pas revenir au contrat riche précédent :
+    `gemma4:26b` corrompt des clés et continue parfois après le JSON quand la structure est longue.
+    Le test opt-in `ai-quiz.local-eval.spec.ts` valide une génération réelle N5 de cinq questions.
+
+85. **Lectures Quiz IA.** Chaque `japanese` possède un `kana` sans kanji. Pour l'écoute,
+    `japanese` devient le texte audio interne et n'est pas exposé avant lecture. Les options sont en
+    français ou en kana sans tableau parallèle; les lectures restent une aide visuelle, jamais une
+    clé de correction. `reading_qcm`, `cloze_qcm` et `conjugation_qcm` exigent quatre options
+    distinctes entièrement en kana; refuser le romaji plutôt que de tenter de le convertir.
+    En génération active, `reading_qcm` ne vient pas du LLM :
+    `buildDeterministicReadingQuestion` choisit un mot pertinent et trois autres lectures publiées.
+    Le web masque `prompt.kana` avant le feedback. `cloze_qcm` et `conjugation_qcm` sont refusés si
+    `japanese` ou `kana` ne contient pas exactement `＿＿＿`.
+
+86. **Limite d'authentification locale.** `register` et `login` utilisent uniquement la limite
+    globale de `ThrottlerGuard` (300 requêtes / 15 min par client). Ne pas ajouter de limite
+    spécifique sans mécanisme clair de déblocage : elle entrave les essais manuels locaux.
+
+87. **Compétences applicatives Quiz IA.** `normalizeQuizInput` ajoute avant génération et
+    persistance la compétence imposée par chaque format. `materializeQuestion` l'assigne depuis
+    `AI_QUIZ_REQUIRED_SKILL_BY_TYPE`; le modèle ne reçoit et ne retourne jamais `skill`. Garder ce
+    mapping exhaustif synchronisé avec `AI_QUIZ_TYPES`.
+
+88. **Génération QCM uniquement.** `createAiQuizSchema` accepte uniquement les sept types QCM. Le
+    schéma de snapshot conserve ordre et association pour relire d'anciennes sessions, mais ces
+    branches ne doivent jamais revenir dans `aiQuizModelOutputSchema`. Tout QCM porte exactement
+    quatre `options` et `answerIndex`; tout `japanese` possède son `kana`. Ne pas convertir une
+    sortie invalide : la correction ne peut pas être déduite honnêtement.
+    Si la taille demandée permet de couvrir tous les formats sélectionnés, `parseGeneratedQuiz`
+    impose aussi cette couverture; ne pas accepter silencieusement un format sélectionné absent.
+    Le Quiz passe le schéma atomique produit par `createAiQuizModelQuestionJsonSchema()` au provider
+    Ollama et une température `0`. Le type est planifié par l'application et injecté seulement
+    après validation. Ne pas le remplacer par le simple `format: "json"`,
+    qui garantit une syntaxe JSON mais pas les
+    noms des propriétés. Cette contrainte structurée reste spécifique au snapshot de quiz, pas à
+    la conversation.
+    Le schéma transmis ne contient ni type ni tableau et décrit une seule question QCM. Le nombre
+    et les types sont planifiés par l'application, qui en déduit aussi les compétences. Ne
+    pas envoyer le schéma de snapshot global : avec `gemma4:26b`, quatre branches QCM concurrentes
+    ont provoqué une erreur Ollama après plus de cinq minutes.
+    Les options de QCM ne contiennent jamais de kanji : utiliser français ou kana. Les lectures
+    associées aux options faisaient échouer les petits modèles plus souvent qu'elles n'aidaient
+    l'apprenant; les kanji restent dans l'énoncé accompagné de sa lecture `kana`.
+    L'UI ne présente pas les formats ni compétences bruts : ses quatre modes sélectionnent un
+    sous-ensemble fiable. `Révision guidée` utilise seulement les quatre QCM usuels et cinq
+    questions par défaut (dix au maximum dans l'UI). Ne réexposer ni les 20 questions ni les
+    renderers avancés dans ce parcours sans refaire l'évaluation Ollama : les snapshots longs et
+    hétérogènes dégradent la conformité JSON de ce modèle local.
+    `parseAiQuizModelJson` accepte uniquement un objet JSON brut complet. Ne pas extraire un objet
+    depuis du markdown, corriger un antislash, renommer un champ, ignorer une propriété inconnue ou
+    contourner `aiQuizModelOutputSchema`. La seule récupération autorisée est une régénération
+    atomique avec le diagnostic de validation et le même schéma.
+    `aiQuizModelOutputSchema` est strict pour toute nouvelle génération, mais
+    `aiQuizDraftSchema` lit aussi les snapshots historiques, qui peuvent ne pas avoir toutes les
+    lectures kana ou compétences imposées aujourd'hui. Ne jamais durcir ce schéma de lecture sans
+    migration des sessions existantes : `history()` et `get()` doivent toujours pouvoir ouvrir un
+    quiz déjà persisté.
+
+88a. **Lisibilité du Quiz IA.** Conserver la zone de question à `max-w-4xl`, les choix principaux à
+    au moins 48 px de haut et les textes pédagogiques à `text-base` minimum. Les gros textes japonais
+    restent responsifs (`text-4xl sm:text-5xl`) et les cartes repassent en une colonne sur mobile.
+    Ne pas réduire localement ces tailles pour faire tenir davantage d'informations à l'écran.
+
+88b. **Mission prioritaire Quiz IA.** Le texte libre n'est pas un simple thème décoratif.
+    `selectRelevantConstraints` classe jusqu'à 300 mots et 120 phrases avec les termes français ou
+    japonais de la mission, puis n'envoie que les correspondances (24 mots et 10 phrases maximum).
+    S'il n'existe aucune correspondance, le repli reste petit (12 mots, 6 phrases). Le prompt répète
+    la mission dans le système et le message utilisateur. Ne réinjecter aucune longue liste de
+    fréquence non filtrée : elle détourne `gemma4` vers un quiz générique.
+
+89. **Contrats compilés et API en développement.** `@kanjipath/contracts` est chargé depuis
+    `dist/` et Node le met en cache. Après sa reconstruction, `nest start --watch` ne redémarre pas
+    nécessairement l'API car aucun fichier sous `apps/api/src` n'a changé. Redémarrer le processus
+    API pour charger le nouveau contrat; sinon il peut continuer à valider l'historique avec un
+    schéma obsolète malgré un `packages/contracts/dist` correct.
 
 ## Recettes
 

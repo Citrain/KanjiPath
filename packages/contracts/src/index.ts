@@ -1,3 +1,4 @@
+export * from './api/ai-quiz';
 export * from './api/auth';
 export * from './api/content';
 export * from './api/conversation';
@@ -5,6 +6,7 @@ export * from './api/kanji';
 export * from './api/progress';
 export * from './api/study';
 export * from './enums';
+export * from './schemas/ai-quiz';
 export * from './schemas/auth';
 export * from './schemas/conversation';
 export * from './schemas/study';

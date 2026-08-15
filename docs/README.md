@@ -12,7 +12,7 @@ Plateforme web d'apprentissage progressif des kanji — parcours **aligné sur l
 | [content/licensing.md](./content/licensing.md) | Sources de données, licences, provenance, règles d'attribution |
 | [operations/development.md](./operations/development.md) | Environnement local (sans Docker), MariaDB, scripts de lancement |
 | [operations/deployment.md](./operations/deployment.md) | Environnements, production, vérifications |
-| [operations/local-ai.md](./operations/local-ai.md) | Préparation Windows des services locaux du futur mode conversation vocal |
+| [operations/local-ai.md](./operations/local-ai.md) | Préparation Windows des services locaux de conversation et Quiz IA |
 | [adr/README.md](./adr/README.md) | Pointeur vers l'ADR-001 et son découpage par tâche |
 | [agent/guide.md](./agent/guide.md) | Guide pour agent de code : conventions, pièges connus, recettes |
 
@@ -165,5 +165,16 @@ Le mode de conversation vocale locale est disponible à `/conversation` pour N5/
 mode texte reste opérationnel sans IA locale. L'API est le seul relais vers les services
 loopback, conserve uniquement les transcriptions finales et les tours, et valide le JSON
 du LLM avec une unique réparation; une sortie toujours invalide ou générique rend le tour
-réessayable sans faux fallback persisté. Les exercices et le pipeline restent déterministes et
-sans LLM au runtime.
+  réessayable sans faux fallback persisté. Les exercices et le pipeline restent déterministes et
+  sans LLM au runtime.
+
+Le **Quiz IA local** est disponible à `/quiz-ia`. Une demande libre, un niveau et des formats
+fermés créent un snapshot personnel validé par Ollama; les réponses sont ensuite corrigées sans
+LLM. Il reste distinct du contenu publié et ne modifie pas les cartes FSRS. Les missions actives
+ou terminées restent accessibles depuis l'historique de la page. Tous les textes japonais du
+snapshot affichent leur lecture kana. Le protocole génératif QCM se limite à cinq champs par
+question, impose quatre choix et un nombre exact de questions; l'API construit toute la
+présentation et les métadonnées. Elle planifie les types puis génère chaque question séparément;
+une question rejetée est la seule à être régénérée, sans réparation heuristique du JSON. L'interface
+conserve le thème général avec une typographie renforcée, des choix tactiles d'au moins 48 px et une
+zone de question élargie sur ordinateur, tout en restant fluide sur mobile.

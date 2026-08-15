@@ -26,6 +26,11 @@ import {
 
 const TOPICS = [
   {
+    id: 'free',
+    label: 'Libre',
+    description: 'Laisser la situation se construire ou la préciser dans votre objectif.',
+  },
+  {
     id: 'introduction',
     label: 'Se présenter',
     description: 'Dire qui vous êtes et faire connaissance.',

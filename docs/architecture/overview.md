@@ -41,6 +41,7 @@ apps/
                        # quiz clavier 1-4/Entrée, résultats)
         settings/      # préférences (niveau actif, limites, furigana, romaji, thème)
         conversation/  # choix de session, texte/micro, transcripts et corrections
+        ai-quiz/       # génération locale d'un quiz personnel, rendu et correction déterministe
         sources/       # page sources et licences
       lib/             # apiFetch (client HTTP, CSRF), theme (encre/washi),
                        # format (dates), progress (série), skills (libellés)
@@ -65,6 +66,7 @@ apps/
         progress/      # tableau de bord, niveaux, points faibles, historique, statistiques
         settings/      # préférences utilisateur
         conversation/  # orchestrateur, providers STT/LLM/TTS et WebSocket local
+        ai-quiz/       # snapshot de quiz local, validation LLM, correction sans LLM
     test/              # tests d'intégration (e2e)
 
 packages/
@@ -175,6 +177,10 @@ MariaDB : kanji, vocabulaire, phrases, mini-textes, exercices, cartes FSRS, prog
 - Les SVG KanjiVG sont assainis au build puis servis par l'API (voir sécurité).
 - Le futur mode conversation (ADR-003) est séparé du pipeline : son LLM local ne peut
   ni publier du contenu ni déterminer seul le niveau ou les objectifs pédagogiques.
+- Le Quiz IA local (ADR-004) produit un snapshot personnel via un contrat fermé, puis
+  corrige les choix sans LLM. Ses sessions ne sont ni du contenu publié ni des événements FSRS.
+  Le LLM fournit cinq champs pédagogiques par QCM; l'API matérialise toute la présentation, les
+  métadonnées et les identifiants afin de ne jamais dépendre d'une structure UI générée.
 
 ## Endpoints
 
@@ -248,6 +254,14 @@ GET    /conversation-progress         # LearningEvent par type + activité réce
 GET    /voices/ja
 GET    /local-ai/health
 WS     /conversations/:id/live
+
+# Quiz IA local
+POST   /ai-quizzes
+GET    /ai-quizzes
+GET    /ai-quizzes/:id                # sans réponses correctes
+POST   /ai-quizzes/:id/answers        # correction déterministe
+POST   /ai-quizzes/:id/finish
+GET    /ai-quizzes/:id/questions/:key/audio
 ```
 
 ## Sécurité
@@ -256,7 +270,7 @@ Détail complet : `adr/9-security-perf/README.md`. Points clés :
 
 - Argon2id pour le hachage des mots de passe.
 - Rotation de session, expiration, révocation à la déconnexion.
-- Rate-limiting global + renforcé sur register/login (`@nestjs/throttler`).
+- Rate-limiting global : 300 requêtes / 15 min par client (`@nestjs/throttler`).
 - CSRF par double-submit (cookie + header), comparaison en temps constant.
 - Les SVG KanjiVG sont **assainis au build** (balises `svg/g/path` et attributs
   autorisés uniquement) puis servis avec `X-Content-Type-Options: nosniff` et un
@@ -266,6 +280,15 @@ Détail complet : `adr/9-security-perf/README.md`. Points clés :
   les transcripts `stt.final` et les tours sont persistés. Le relais API diffuse
   `stt.partial` sans l'envoyer au LLM. Les chunks sont bornés à 64 KiB, un tour à 2 MiB;
   aucun appel tiers ni tool calling LLM ne sont autorisés.
+- Les quiz IA sont des données utilisateur. Le DTO public retire les clés de correction;
+  VOICEVOX ne conserve jamais les questions d'écoute et chaque réponse est évaluée localement.
+  Chaque texte japonais persistant dans le snapshot porte aussi sa lecture kana, affichée par le
+  web sans influencer la correction. Ollama reçoit un schéma QCM uniforme à quatre choix dont le
+  nombre de questions est fixé par la requête. L'API ajoute les consignes, aides, tags,
+  compétences, difficultés, étapes et identifiants. Elle planifie les types et appelle le modèle
+  séparément pour chaque question; un rejet ne relance que cette question, dans la limite de quatre
+  tentatives totales.
+  Les lectures utilisent directement le vocabulaire publié et ne dépendent pas du LLM.
 
 ## Performance / index
 

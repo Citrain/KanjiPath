@@ -25,6 +25,7 @@ model User {
   studySessions  StudySession[]
   contentIssues  ContentIssue[]
   conversations  ConversationSession[]
+  aiQuizSessions AiQuizSession[]
 
   @@map("users")
 }
@@ -202,6 +203,11 @@ enum LearningEventType {
   grammar
   vocabulary
   new_item
+}
+
+enum AiQuizStatus {
+  active
+  finished
 }
 
 model ContentSource {
@@ -712,4 +718,40 @@ model LearningEvent {
   @@index([sessionId, createdAt])
   @@index([turnId])
   @@map("learning_events")
+}
+
+model AiQuizSession {
+  id            String       @id @default(uuid())
+  userId        String       @map("user_id")
+  prompt        String       @db.Text
+  level         JlptLevel
+  questionCount Int          @map("question_count")
+  typesJson     Json         @map("types_json")
+  skillsJson    Json         @map("skills_json")
+  quizJson      Json         @map("quiz_json")
+  status        AiQuizStatus @default(active)
+  startedAt     DateTime     @default(now()) @map("started_at")
+  endedAt       DateTime?    @map("ended_at")
+  answeredCount Int          @default(0) @map("answered_count")
+  correctCount  Int          @default(0) @map("correct_count")
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers       AiQuizAnswer[]
+
+  @@index([userId, startedAt])
+  @@map("ai_quiz_sessions")
+}
+
+model AiQuizAnswer {
+  id             String        @id @default(uuid())
+  sessionId      String        @map("session_id")
+  questionKey    String        @map("question_key")
+  answerJson     Json          @map("answer_json")
+  wasCorrect     Boolean       @map("was_correct")
+  responseTimeMs Int?          @map("response_time_ms")
+  answeredAt     DateTime      @default(now()) @map("answered_at")
+  session        AiQuizSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, questionKey])
+  @@index([sessionId, answeredAt])
+  @@map("ai_quiz_answers")
 }

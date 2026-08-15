@@ -100,6 +100,29 @@ pnpm dev:voice          # setup + web/API + services vocaux locaux
   une réponse sans question reste valide quand elle fait naturellement avancer l'échange.
 - Conversation locale : le LLM ne génère aucun identifiant de progression. Son contrat de sortie
   contient réplique, correction et intention; `learning` est complété et borné par l'application.
+- Conversation locale : `free` est le scénario web par défaut et ne force aucun rôle. Le champ
+  `goals` peut définir une situation ou un objectif; les scénarios spécialisés restent proposés.
+- Quiz IA local : ce mode (ADR-004) est une exception limitée aux exercices fixes. Le LLM local
+  génère un snapshot personnel validé une fois; toute correction ensuite est déterministe, sans
+  LLM. Ne jamais publier ce snapshot, l'ajouter au pipeline de contenu, exposer sa clé de
+  correction au frontend ou modifier les cartes FSRS automatiquement.
+- Quiz IA local : le contrat génératif QCM reste compact et uniforme avec exactement quatre
+  options. Le modèle ne choisit ni identifiant, ni compétence, ni difficulté, ni étape; l'API les
+  calcule. L'API planifie aussi les types et génère chaque question séparément avec un schéma
+  atomique sans `type`. Une question invalide reçoit au plus quatre générations strictement
+  validées, jamais une réparation heuristique de champs ni une régénération du lot complet.
+- Quiz IA local : les QCM de lecture sont construits déterministement depuis le vocabulaire publié;
+  leur kana est masqué avant correction. `cloze_qcm` et `conjugation_qcm` exigent le marqueur
+  `＿＿＿` dans `japanese` et `kana`, afin que la réponse ne soit jamais visible dans l'énoncé.
+- Quiz IA local : ne jamais utiliser `num_predict: -1`. Borner la sortie à 1024 tokens par
+  question; `gemma4` peut sinon continuer après un JSON complet et produire des commentaires
+  jusqu'à épuisement du contexte.
+- Quiz IA local : la description de mission est la contrainte pédagogique prioritaire. Filtrer le
+  référentiel injecté par ses mots-clés français ou japonais; lorsqu'une correspondance existe, ne
+  jamais noyer la mission sous du vocabulaire fréquent sans rapport.
+- Quiz IA local : préserver la lisibilité de l'interface avec une zone de question large, des textes
+  pédagogiques au moins en taille de base et des cibles tactiles d'au moins 48 px; garder les grands
+  textes japonais responsifs et une seule colonne de choix sur petit écran.
 - Audio : importer uniquement des clips avec licence individuelle explicite. Pour cette
   instance personnelle privée, CC BY-NC est autorisée selon `ADR-002` ; toute
   distribution publique ou commerciale reste interdite tant que ces clips sont présents.

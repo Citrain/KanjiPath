@@ -1,6 +1,5 @@
 import type { ApiAuthResponse } from '@kanjipath/contracts';
 import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { Throttle } from '@nestjs/throttler';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { AuthService } from './auth.service';
 import { CurrentUserId } from './current-user.decorator';
@@ -11,7 +10,6 @@ export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
   @Post('register')
-  @Throttle({ default: { limit: 10, ttl: 15 * 60 * 1000 } })
   async register(@Body() body: unknown, @Res({ passthrough: true }) reply: FastifyReply) {
     const result = await this.auth.register(body);
     setSessionCookie(reply, result.sessionToken);
@@ -20,7 +18,6 @@ export class AuthController {
   }
 
   @Post('login')
-  @Throttle({ default: { limit: 10, ttl: 15 * 60 * 1000 } })
   async login(@Body() body: unknown, @Res({ passthrough: true }) reply: FastifyReply) {
     const result = await this.auth.login(body);
     setSessionCookie(reply, result.sessionToken);
