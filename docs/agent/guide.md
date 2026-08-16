@@ -67,6 +67,7 @@ ajoute-le ici.
 | Carte visuelle des kanji | `ContentService#kanjiMap`, contrat `KanjiMapResponse`, page `/kanji/:literal/carte` |
 | Carnet de vocabulaire personnel | `apps/api/src/modules/personal-vocabulary/`, contrats `personal-vocabulary.ts`, page `/carnet` |
 | Shadowing local | `apps/api/src/modules/shadowing/` (comparaison pure dans `shadowing-compare.ts`), contrats `shadowing.ts`, table `shadowing_results`, page `/shadowing`, capture micro `apps/web/src/lib/audio.ts` |
+| Mode immersion (ADR-009) | recommandation pure `apps/api/src/modules/settings/immersion.ts` (testée), contrat `schemas/settings.ts` (zod strict), colonnes `immersion_enabled`/`immersion_help_level` ; web : modèle d'affichage `apps/web/src/lib/immersion.ts` (testé), `ImmersionProvider` (`features/content/immersion-context.tsx`, monté dans `AppLayout`), `ImmersionBar`, intégrations lecture/fiche/étude/conversation/préférences |
 
 ## Pièges connus (IMPORTANT)
 
@@ -823,6 +824,26 @@ ajoute-le ici.
     mot publié ne doit recevoir que ses identifiants : `PersonalVocabularyService` résout
     et fige la provenance. Pour une conversation, toujours filtrer le tour par
     `session.userId`; ne retourner que l'extrait court déjà stocké par le carnet.
+
+98. **Immersion : révéler ne ressuscite rien.** Le mode immersion (ADR-009) ne fait
+    qu'afficher ou masquer des données déjà présentes ; il ne change jamais le payload.
+    Dans la session d'étude, appliquer l'immersion aux aides du **prompt** (`promptRomajiVisible`
+    / `promptFuriganaMode`) mais laisser la **correction** (feedback après réponse) pilotée par
+    les seules préférences fines `romajiEnabled`/`furiganaMode`. Un token de prompt dont
+    `reading`/`romaji` est `null` (masquage par position `hideSpan`/`blankLiteral`, piège 23)
+    doit le rester : la révélation d'aide ne doit jamais révéler la clé de correction.
+    Le contexte `ImmersionProvider` est monté dans `AppLayout` ; l'override de niveau de séance
+    et les aides révélées sont de l'état local, jamais persistés.
+
+99. **Les e2e partagent la même base de test.** Les specs `apps/api/test/*.e2e-spec.ts`
+    tournent en parallèle sur la même `kanjipath_test` persistante. (a) Utiliser des
+    littéraux/ids de kanji uniques par spec — `kanji_literal_key` est une contrainte
+    d'unicité, deux specs qui créent le même littéral sous des ids différents se heurtent.
+    (b) Un `upsert` avec `update: {}` ne met pas à jour les champs existants : si une colonne
+    change de valeur (ex. `level`), la passer dans `update`. (c) La résolution de provenance
+    prend `contentVersion.findFirst({ orderBy: { publishedAt: 'desc' } })` : une spec qui crée
+    une version « maintenant » peut voler la vedette à une autre ; dater les versions de seed
+    dans le passé quand la spec n'en a pas besoin.
 
 ## Recettes
 

@@ -10,7 +10,7 @@ import type {
 } from '@kanjipath/contracts';
 import { Badge, Button, Card, ErrorState, Skeleton } from '@kanjipath/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Bot, Mic, MicOff, Send, UserRound, Volume2 } from 'lucide-react';
+import { Bot, Eye, Mic, MicOff, Send, UserRound, Volume2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import {
   downsampleToPcm16,
@@ -18,6 +18,8 @@ import {
   pcmToBase64,
   playBase64Audio,
 } from '../../lib/audio';
+import { ImmersionBar } from '../content/immersion-bar';
+import { useImmersion } from '../content/immersion-context';
 import { SaveVocabularyButton } from '../personal-vocabulary/save-vocabulary-button';
 import {
   createConversation,
@@ -126,6 +128,7 @@ interface Recorder {
 }
 
 export function ConversationPage() {
+  const immersion = useImmersion();
   const [level, setLevel] = useState<JlptLevel>('N5');
   const [scenario, setScenario] = useState<ConversationScenario>('free');
   const [goal, setGoal] = useState('');
@@ -458,6 +461,7 @@ export function ConversationPage() {
               Terminer
             </Button>
           </Card>
+          <ImmersionBar aids={['romaji']} />
           <Card className="min-h-72 p-3 sm:p-5" aria-live="polite">
             {session.turns.length === 0 && pendingTranscript === null ? (
               <div className="flex min-h-64 items-center justify-center p-5 text-center text-ink-soft">
@@ -487,7 +491,18 @@ export function ConversationPage() {
                     <div className="min-w-0 max-w-[85%] rounded-2xl rounded-tl-md border border-line bg-surface-2 px-4 py-3 shadow-1">
                       <p className="mb-1 text-xs font-bold tracking-wide text-muted">PARTENAIRE</p>
                       <p className="font-jp text-lg leading-relaxed text-ink">{item.reply.ja}</p>
-                      <p className="mt-1 text-sm text-muted">{item.reply.reading}</p>
+                      {immersion.isHidden('romaji') ? (
+                        <button
+                          type="button"
+                          onClick={() => immersion.reveal('romaji')}
+                          className="mt-1 inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-lg px-1 text-sm font-semibold text-muted transition-colors hover:text-ink"
+                        >
+                          <Eye aria-hidden className="size-4" />
+                          Afficher le romaji
+                        </button>
+                      ) : (
+                        <p className="mt-1 text-sm text-muted">{item.reply.reading}</p>
+                      )}
                     </div>
                   </div>
                   <CorrectionCard correction={item.correction} mode={session.correctionMode} />

@@ -42,6 +42,17 @@ export interface SourcesResponse {
   contentVersion: { version: string; publishedAt: string; notes: string | null } | null;
 }
 
+export const IMMERSION_HELP_LEVELS = [0, 1, 2, 3] as const;
+export type ImmersionHelpLevel = (typeof IMMERSION_HELP_LEVELS)[number];
+
+export const IMMERSION_AIDS = ['translation', 'romaji', 'furigana'] as const;
+export type ImmersionAid = (typeof IMMERSION_AIDS)[number];
+
+export interface ImmersionRecommendationDto {
+  level: ImmersionHelpLevel;
+  reasons: string[];
+}
+
 export interface SettingsDto {
   activeLevel: JlptLevel;
   dailyNewLimit: number;
@@ -53,6 +64,9 @@ export interface SettingsDto {
   romajiEnabled: boolean;
   timezone: string;
   theme: string;
+  immersionEnabled: boolean;
+  immersionHelpLevel: ImmersionHelpLevel | null;
+  immersionRecommendation: ImmersionRecommendationDto;
 }
 
 export interface MiniTextTokenDto {

@@ -17,6 +17,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleCheck,
+  Eye,
   Flag,
   Lightbulb,
   Network,
@@ -29,6 +30,7 @@ import { Link, useParams } from 'react-router-dom';
 import { LevelBadge } from '../../components/level-badge';
 import { StatusBadge } from '../../components/status-badge';
 import { formatDate } from '../../lib/format';
+import { displayWithImmersion } from '../../lib/immersion';
 import {
   fetchKanjiDetail,
   fetchKanjiList,
@@ -38,6 +40,8 @@ import {
   markKanjiKnown,
 } from '../content/api';
 import { AudioButton } from '../content/audio-button';
+import { ImmersionBar } from '../content/immersion-bar';
+import { useImmersion } from '../content/immersion-context';
 import { SentenceView, useDisplaySettings } from '../content/japanese';
 import { IssueModal } from './issue-modal';
 import { KanjiSvg } from './kanji-svg';
@@ -59,6 +63,13 @@ export function KanjiCardPage() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { romajiEnabled, furiganaMode } = useDisplaySettings();
+  const immersion = useImmersion();
+  const display = displayWithImmersion({
+    furiganaMode,
+    romajiEnabled,
+    hiddenAids: immersion.hiddenAids,
+  });
+  const translationHidden = immersion.isHidden('translation');
   const [issueOpen, setIssueOpen] = useState(false);
   const [vocabularyPagination, setVocabularyPagination] = useState({ literal, page: 0 });
 
@@ -232,6 +243,8 @@ export function KanjiCardPage() {
         </div>
       </div>
 
+      <ImmersionBar aids={['translation', 'romaji', 'furigana']} />
+
       <section className="relative overflow-hidden rounded-3xl border border-line bg-surface p-6 shadow-1 sm:p-10">
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-accent/8 blur-3xl" />
@@ -349,7 +362,7 @@ export function KanjiCardPage() {
                     <span className="font-jp text-2xl font-semibold leading-tight sm:text-3xl">
                       {r.reading}
                     </span>
-                    {romajiEnabled && r.romaji ? (
+                    {display.romajiVisible && r.romaji ? (
                       <span className="mt-0.5 text-xs font-semibold opacity-75">{r.romaji}</span>
                     ) : null}
                   </span>
@@ -375,7 +388,7 @@ export function KanjiCardPage() {
                         <span className="text-base opacity-60">.{r.okurigana}</span>
                       ) : null}
                     </span>
-                    {romajiEnabled && r.romaji ? (
+                    {display.romajiVisible && r.romaji ? (
                       <span className="mt-0.5 text-xs font-semibold opacity-75">{r.romaji}</span>
                     ) : null}
                   </span>
@@ -410,7 +423,7 @@ export function KanjiCardPage() {
                       className="rounded-lg border border-line px-2.5 py-1 text-sm text-muted"
                     >
                       {r.reading}
-                      {romajiEnabled && r.romaji ? ` (${r.romaji})` : ''}{' '}
+                      {display.romajiVisible && r.romaji ? ` (${r.romaji})` : ''}{' '}
                       <span className="opacity-60">
                         ({r.type === 'onyomi' ? 'on' : r.type === 'kunyomi' ? 'kun' : 'nanori'})
                       </span>
@@ -593,7 +606,7 @@ export function KanjiCardPage() {
                       <span className="text-xl font-bold text-accent sm:text-2xl">
                         {word.reading}
                       </span>
-                      {romajiEnabled && word.romaji ? (
+                      {display.romajiVisible && word.romaji ? (
                         <span className="text-base font-semibold text-muted">{word.romaji}</span>
                       ) : null}
                     </span>
@@ -663,13 +676,24 @@ export function KanjiCardPage() {
                   tokens={sentence.tokens}
                   japanese={sentence.japanese}
                   highlight={kanji.literal}
-                  romajiEnabled={romajiEnabled}
-                  furiganaMode={furiganaMode}
+                  romajiEnabled={display.romajiVisible}
+                  furiganaMode={display.furiganaMode}
                   className="text-4xl"
                 />
-                <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-soft">
-                  {sentence.translationFr}
-                </p>
+                {translationHidden ? (
+                  <button
+                    type="button"
+                    onClick={() => immersion.reveal('translation')}
+                    className="mt-3 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xl border border-line bg-surface-2 px-3 text-sm font-semibold text-muted transition-colors hover:border-accent/40 hover:text-ink"
+                  >
+                    <Eye aria-hidden className="size-4" />
+                    Afficher la traduction
+                  </button>
+                ) : (
+                  <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-soft">
+                    {sentence.translationFr}
+                  </p>
+                )}
                 {sentence.audio ? (
                   <div className="mt-3">
                     <AudioButton audio={sentence.audio} label="Écouter la phrase" />

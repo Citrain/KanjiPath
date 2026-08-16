@@ -1,10 +1,13 @@
-import { Card, ErrorState, Skeleton } from '@kanjipath/ui';
+import { Button, Card, ErrorState, Skeleton } from '@kanjipath/ui';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { LevelBadge } from '../../components/level-badge';
+import { displayWithImmersion } from '../../lib/immersion';
 import { fetchTextDetail, fetchWordLookup } from '../content/api';
+import { ImmersionBar } from '../content/immersion-bar';
+import { useImmersion } from '../content/immersion-context';
 import { SentenceView, useDisplaySettings } from '../content/japanese';
 import { SaveVocabularyButton } from '../personal-vocabulary/save-vocabulary-button';
 import { groupTextTokens } from './text-tokens';
@@ -14,6 +17,13 @@ const KANJI_RE = /[\u3400-\u9fff\uf900-\ufaff]/;
 export function ReadingTextPage() {
   const { id = '' } = useParams();
   const { romajiEnabled, furiganaMode } = useDisplaySettings();
+  const immersion = useImmersion();
+  const display = displayWithImmersion({
+    furiganaMode,
+    romajiEnabled,
+    hiddenAids: immersion.hiddenAids,
+  });
+  const translationHidden = immersion.isHidden('translation');
   const [selected, setSelected] = useState<string | null>(null);
   const text = useQuery({
     queryKey: ['texts', id],
@@ -71,6 +81,10 @@ export function ReadingTextPage() {
         Touchez un mot du texte pour afficher sa lecture, son sens et sa décomposition.
       </p>
 
+      <div className="mt-4">
+        <ImmersionBar aids={['translation', 'romaji', 'furigana']} />
+      </div>
+
       <div className="mt-6 flex flex-col gap-4 xl:grid xl:grid-cols-3 xl:items-start">
         <Card className="xl:col-span-2">
           <div className="flex flex-col gap-5">
@@ -80,8 +94,8 @@ export function ReadingTextPage() {
                 key={`${index}-${tokens[0]?.surface ?? ''}`}
                 tokens={tokens}
                 japanese={tokens.map((token) => token.surface).join('')}
-                romajiEnabled={romajiEnabled}
-                furiganaMode={furiganaMode}
+                romajiEnabled={display.romajiVisible}
+                furiganaMode={display.furiganaMode}
                 className="text-2xl"
                 onTokenClick={(token) => {
                   if (!KANJI_RE.test(token.surface)) {
@@ -110,7 +124,9 @@ export function ReadingTextPage() {
                     {selectedToken.reading && selectedToken.reading !== selectedToken.surface ? (
                       <span className="ml-2 text-lg font-medium text-muted">
                         {selectedToken.reading}
-                        {romajiEnabled && selectedToken.romaji ? ` · ${selectedToken.romaji}` : ''}
+                        {display.romajiVisible && selectedToken.romaji
+                          ? ` · ${selectedToken.romaji}`
+                          : ''}
                       </span>
                     ) : null}
                   </p>
@@ -139,7 +155,7 @@ export function ReadingTextPage() {
                             <span className="ml-2 text-base font-medium text-muted">
                               {word.reading}
                             </span>
-                            {romajiEnabled && word.romaji ? (
+                            {display.romajiVisible && word.romaji ? (
                               <span className="ml-2 text-sm text-muted">{word.romaji}</span>
                             ) : null}
                           </p>
@@ -202,7 +218,7 @@ export function ReadingTextPage() {
                                   {onReadings.length > 0 ? (
                                     <span>
                                       on&nbsp;: {onReadings.map((r) => r.reading).join('、')}
-                                      {romajiEnabled
+                                      {display.romajiVisible
                                         ? ` (${onReadings
                                             .map((r) => r.romaji ?? '')
                                             .filter(Boolean)
@@ -213,7 +229,7 @@ export function ReadingTextPage() {
                                   {kunReadings.length > 0 ? (
                                     <span>
                                       kun&nbsp;: {kunReadings.map((r) => r.reading).join('、')}
-                                      {romajiEnabled
+                                      {display.romajiVisible
                                         ? ` (${kunReadings
                                             .map((r) => r.romaji ?? '')
                                             .filter(Boolean)
@@ -236,7 +252,23 @@ export function ReadingTextPage() {
 
           <Card>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted">Traduction</p>
-            <p className="mt-2 leading-relaxed text-ink">{data.translationFr}</p>
+            {translationHidden ? (
+              <div className="mt-3 flex flex-col items-start gap-2">
+                <p className="text-sm text-muted">
+                  Masquée par le mode immersion, pour lire d'abord en japonais.
+                </p>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  onClick={() => immersion.reveal('translation')}
+                >
+                  <Eye aria-hidden className="size-4" />
+                  Afficher la traduction
+                </Button>
+              </div>
+            ) : (
+              <p className="mt-2 leading-relaxed text-ink">{data.translationFr}</p>
+            )}
             <p className="mt-4 text-xs text-muted">
               {data.author ?? 'KanjiPath'} — {data.license ?? ''}
             </p>

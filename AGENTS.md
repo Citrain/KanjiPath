@@ -149,6 +149,22 @@ pnpm dev:voice          # setup + web/API + services vocaux locaux
   `TTS_UNAVAILABLE`; les cibles avec clip publie restent ecoutables. Les cibles sont des phrases
   publiees affichant attribution et licence; aucun clip sans licence explicite. Le shadowing ne
   touche ni cartes FSRS, ni scores, ni progression kanji, ni curriculum.
+- Mode immersion (ADR-009) : preference d'affichage persistee (`user_settings.immersion_enabled`,
+  `immersion_help_level`), appliquee via le contexte `ImmersionProvider` (monte dans `AppLayout`)
+  et la barre `ImmersionBar` dans la lecture, les fiches, les exercices et la conversation.
+  Chaque aide cachee (traduction, romaji, furigana) doit rester revelable au toucher, au clavier
+  et par lecteur d'ecran (action explicite annoncee) ; aucun contenu indispensable a une action
+  ne peut etre masque sans controle de revelation evident. Le niveau d'aide recommande est calcule
+  par la fonction pure `apps/api/src/modules/settings/immersion.ts` (testee), expliquee par
+  `immersionRecommendation.reasons`, et toujours remplacable dans la seance (l'etat local de
+  revelation et l'override de niveau ne sont jamais persistes). Le mode ne remplace pas les
+  reglages fins (`furiganaMode`, `romajiEnabled`, `kanaInputEnabled`), ne force pas le romaji
+  cache, ne deduit aucune maitrise et ne modifie ni carte FSRS, ni score, ni progression.
+- Mode immersion : la revelation d'aide ne doit jamais reveler la cle de correction d'un exercice.
+  Conserver le masquage par position `hideSpan`/`blankLiteral` (piege 23) : un token de prompt dont
+  `reading`/`romaji` est `null` doit le rester ; la revelation ne fait qu'afficher des donnees deja
+  presentes. Dans la session d'etude, les aides du prompt suivent l'immersion mais la correction
+  (feedback apres reponse) reste affichee selon les seules preferences fines.
 - Carnet personnel (ADR-007) : ne jamais réutiliser `review_cards`, `review_logs`,
   `study_sessions` ou `user_kanji_progress` pour ses révisions. Les entrées, sources,
   cartes, journaux et sessions restent dans leurs tables dédiées ; une provenance

@@ -29,9 +29,10 @@ apps/
                        # garde d'authentification, transitions de page
       components/      # composants domaine web : KanjiTile, LevelBadge, StatusBadge, HistoryChart,
                        # ForecastChart
-      features/
-        auth/          # pages login/register (écran scindé), champs mot de passe, hooks, api
-        content/       # accès API contenu (kanji, sources, progression, signalements)
+        features/
+          auth/          # pages login/register (écran scindé), champs mot de passe, hooks, api
+          content/       # accès API contenu (kanji, sources, progression, signalements),
+                         # modèle d'affichage japonais partagé + contexte/barre du mode immersion (ADR-009)
         dashboard/     # tableau de bord (CTA continuer, stats, série, à réviser, parcours)
         kanji/         # liste + recherche + fiche + carte relationnelle accessible (ADR-006),
                         # SVG animé KanjiVG, signalement
@@ -40,16 +41,18 @@ apps/
                        # statistiques détaillées)
         study/         # sessions FSRS et mission quotidienne (snapshot/reprise),
                         # quiz clavier 1-4/Entrée, résultats
-        settings/      # préférences (niveau, limites, saisie kana, furigana, romaji, thème)
+         settings/      # préférences (niveau, limites, saisie kana, furigana, romaji, thème,
+                         # mode immersion + niveau d'aide recommandé, ADR-009)
          conversation/  # choix de session, texte/micro, transcripts et corrections
          ai-quiz/       # génération locale d'un quiz personnel, rendu et correction déterministe
          personal-vocabulary/ # carnet privé, provenance figée et sessions FSRS isolées (ADR-007)
          shadowing/     # laboratoire de shadowing : écoute, micro, comparaison de transcript,
                         # conservation opt-in (ADR-008)
          sources/       # page sources et licences
-      lib/             # apiFetch (client HTTP, CSRF), theme (encre/washi),
-                       # format (dates), progress (série), skills (libellés),
-                       # audio (capture micro PCM 16 kHz, base64, lecture)
+       lib/             # apiFetch (client HTTP, CSRF), theme (encre/washi),
+                        # format (dates), progress (série), skills (libellés),
+                        # audio (capture micro PCM 16 kHz, base64, lecture),
+                        # immersion (niveaux d'aide, révélation — ADR-009)
       styles/          # design system Tailwind 4 (tokens, animations, reduced-motion)
   api/                 # API NestJS + Fastify (port 3001 en dev)
     prisma/            # schema.prisma + migrations
@@ -203,6 +206,14 @@ MariaDB : kanji, vocabulaire, phrases, mini-textes, exercices, cartes FSRS, prog
   stocke qu'un extrait court du propriétaire. Ses cartes, journaux et sessions FSRS ont
   leurs propres tables et ne participent jamais aux requêtes `review_cards`,
   `review_logs` ou `user_kanji_progress` du curriculum.
+- Le mode immersion (ADR-009) est une préférence d'affichage persistée
+  (`user_settings.immersion_enabled`, `immersion_help_level`) : il masque par défaut les
+  aides configurées (traduction, romaji, furigana) dans la lecture, les fiches, les
+  exercices et la conversation, puis les révèle localement à la demande. Le niveau d'aide
+  recommandé est calculé côté API par une fonction pure (`settings/immersion.ts`) à partir
+  des préférences et de la progression, et reste remplaçable dans la séance. Le mode ne
+  déduit aucune maîtrise, ne modifie aucune carte FSRS, et la révélation d'aide ne révèle
+  jamais la clé de correction d'un exercice.
 
 ## Endpoints
 
@@ -261,9 +272,11 @@ GET    /progress/history
 GET    /progress/stats              # statistiques détaillées (précision, rétention, prévision)
 
 # Préférences
-GET    /settings
+GET    /settings                     # inclut immersionEnabled, immersionHelpLevel (null = recommandé)
+                                     # et immersionRecommendation { level, reasons }
 PATCH  /settings                     # activeLevel, dailyNewLimit, reviewLimit, autoBalance,
-                                     # desiredRetention, furiganaMode, romajiEnabled, theme
+                                     # desiredRetention, furiganaMode, romajiEnabled, theme,
+                                     # immersionEnabled, immersionHelpLevel (0-3 ou null)
 
 # Contenu
 GET    /sources

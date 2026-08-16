@@ -1,17 +1,28 @@
-import { FURIGANA_MODES, JLPT_LEVELS, type SettingsDto } from '@kanjipath/contracts';
+import {
+  type ImmersionHelpLevel,
+  type SettingsDto,
+  type UpdateSettingsInput,
+  updateSettingsSchema,
+} from '@kanjipath/contracts';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ZodError } from 'zod';
 import { PrismaService } from '../../infrastructure/database/prisma.service';
+import { recommendImmersionHelp } from './immersion';
 
 @Injectable()
 export class SettingsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async get(userId: string): Promise<SettingsDto> {
-    const settings = await this.prisma.userSettings.upsert({
-      where: { userId },
-      create: { userId },
-      update: {},
-    });
+    const [settings, discoveredKanji, masteredKanji] = await Promise.all([
+      this.prisma.userSettings.upsert({
+        where: { userId },
+        create: { userId },
+        update: {},
+      }),
+      this.prisma.userKanjiProgress.count({ where: { userId } }),
+      this.prisma.userKanjiProgress.count({ where: { userId, status: 'mastered' } }),
+    ]);
     return {
       activeLevel: settings.activeLevel as SettingsDto['activeLevel'],
       dailyNewLimit: settings.dailyNewLimit,
@@ -23,68 +34,69 @@ export class SettingsService {
       romajiEnabled: settings.romajiEnabled,
       timezone: settings.timezone,
       theme: settings.theme,
+      immersionEnabled: settings.immersionEnabled,
+      immersionHelpLevel: (settings.immersionHelpLevel as ImmersionHelpLevel | null) ?? null,
+      immersionRecommendation: recommendImmersionHelp({
+        romajiEnabled: settings.romajiEnabled,
+        furiganaMode: settings.furiganaMode as SettingsDto['furiganaMode'],
+        discoveredKanji,
+        masteredKanji,
+      }),
     };
   }
 
   async patch(userId: string, body: unknown): Promise<SettingsDto> {
-    const patch = body as Partial<SettingsDto>;
+    let patch: UpdateSettingsInput;
+    try {
+      patch = updateSettingsSchema.parse(body);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const message = error.issues
+          .map((issue) => `${issue.path.join('.') || 'body'} : ${issue.message}`)
+          .join(' ; ');
+        throw new BadRequestException(message);
+      }
+      throw error;
+    }
+
     const data: Record<string, unknown> = {};
     if (patch.activeLevel !== undefined) {
-      if (!JLPT_LEVELS.includes(patch.activeLevel)) {
-        throw new BadRequestException('Niveau invalide');
-      }
       data.activeLevel = patch.activeLevel;
     }
     if (patch.dailyNewLimit !== undefined) {
-      if (
-        !Number.isInteger(patch.dailyNewLimit) ||
-        patch.dailyNewLimit < 1 ||
-        patch.dailyNewLimit > 50
-      ) {
-        throw new BadRequestException('dailyNewLimit doit être entre 1 et 50');
-      }
       data.dailyNewLimit = patch.dailyNewLimit;
     }
     if (patch.reviewLimit !== undefined) {
-      if (
-        !Number.isInteger(patch.reviewLimit) ||
-        patch.reviewLimit < 5 ||
-        patch.reviewLimit > 200
-      ) {
-        throw new BadRequestException('reviewLimit doit être entre 5 et 200');
-      }
       data.reviewLimit = patch.reviewLimit;
     }
     if (patch.autoBalance !== undefined) {
-      data.autoBalance = Boolean(patch.autoBalance);
+      data.autoBalance = patch.autoBalance;
     }
     if (patch.kanaInputEnabled !== undefined) {
-      if (typeof patch.kanaInputEnabled !== 'boolean') {
-        throw new BadRequestException('kanaInputEnabled doit être un booléen');
-      }
       data.kanaInputEnabled = patch.kanaInputEnabled;
     }
     if (patch.desiredRetention !== undefined) {
-      if (patch.desiredRetention < 0.7 || patch.desiredRetention > 0.99) {
-        throw new BadRequestException('desiredRetention doit être entre 0.7 et 0.99');
-      }
       data.desiredRetention = patch.desiredRetention;
     }
     if (patch.furiganaMode !== undefined) {
-      if (!FURIGANA_MODES.includes(patch.furiganaMode)) {
-        throw new BadRequestException('furiganaMode invalide');
-      }
       data.furiganaMode = patch.furiganaMode;
     }
     if (patch.romajiEnabled !== undefined) {
-      data.romajiEnabled = Boolean(patch.romajiEnabled);
+      data.romajiEnabled = patch.romajiEnabled;
     }
-    if (patch.timezone !== undefined && typeof patch.timezone === 'string') {
+    if (patch.timezone !== undefined) {
       data.timezone = patch.timezone;
     }
-    if (patch.theme !== undefined && typeof patch.theme === 'string') {
+    if (patch.theme !== undefined) {
       data.theme = patch.theme;
     }
+    if (patch.immersionEnabled !== undefined) {
+      data.immersionEnabled = patch.immersionEnabled;
+    }
+    if (patch.immersionHelpLevel !== undefined) {
+      data.immersionHelpLevel = patch.immersionHelpLevel;
+    }
+
     await this.prisma.userSettings.upsert({
       where: { userId },
       create: { userId, ...data },

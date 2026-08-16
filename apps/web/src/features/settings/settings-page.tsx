@@ -1,4 +1,4 @@
-import type { FuriganaMode, JlptLevel } from '@kanjipath/contracts';
+import type { FuriganaMode, ImmersionHelpLevel, JlptLevel } from '@kanjipath/contracts';
 import {
   Button,
   Card,
@@ -13,6 +13,11 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import {
+  IMMERSION_HELP_LEVELS,
+  IMMERSION_LEVEL_DESCRIPTIONS,
+  IMMERSION_LEVEL_LABELS,
+} from '../../lib/immersion';
 import { applyTheme, getStoredTheme, type Theme } from '../../lib/theme';
 import { fetchSettings, updateSettings } from './api';
 
@@ -37,6 +42,10 @@ export function SettingsPage() {
   const [desiredRetention, setDesiredRetention] = useState(0.9);
   const [furiganaMode, setFuriganaMode] = useState<FuriganaMode>('always');
   const [romajiEnabled, setRomajiEnabled] = useState(true);
+  const [immersionEnabled, setImmersionEnabled] = useState(false);
+  const [immersionHelpLevel, setImmersionHelpLevel] = useState<ImmersionHelpLevel | 'recommended'>(
+    'recommended',
+  );
   const [theme, setTheme] = useState<Theme>(getStoredTheme());
 
   useEffect(() => {
@@ -49,6 +58,8 @@ export function SettingsPage() {
       setDesiredRetention(settings.data.desiredRetention);
       setFuriganaMode(settings.data.furiganaMode);
       setRomajiEnabled(settings.data.romajiEnabled);
+      setImmersionEnabled(settings.data.immersionEnabled);
+      setImmersionHelpLevel(settings.data.immersionHelpLevel ?? 'recommended');
     }
   }, [settings.data]);
 
@@ -63,6 +74,8 @@ export function SettingsPage() {
         desiredRetention,
         furiganaMode,
         romajiEnabled,
+        immersionEnabled,
+        immersionHelpLevel: immersionHelpLevel === 'recommended' ? null : immersionHelpLevel,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['settings'] });
@@ -160,6 +173,65 @@ export function SettingsPage() {
                 onChange={setFuriganaMode}
               />
             </div>
+          </div>
+        </Card>
+
+        <Card className="lg:col-span-2">
+          <SectionHeader title="Mode immersion" />
+          <div className="mt-5 flex flex-col gap-5">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="font-semibold text-ink">Activer le mode immersion</p>
+                <p className="text-sm text-muted">
+                  Masque par défaut traduction, romaji et furigana dans la lecture, les fiches, les
+                  exercices et la conversation. Chaque aide reste révélable à tout moment, sans
+                  changer vos réponses ni votre progression.
+                </p>
+              </div>
+              <Toggle
+                checked={immersionEnabled}
+                onChange={setImmersionEnabled}
+                label="Activer le mode immersion"
+              />
+            </div>
+            <div className="h-px bg-line" aria-hidden />
+            <div className="flex flex-col gap-3">
+              <p className="font-semibold text-ink">Niveau d'aide</p>
+              <Segmented
+                ariaLabel="Niveau d'aide du mode immersion"
+                value={String(immersionHelpLevel)}
+                options={[
+                  { value: 'recommended', label: 'Recommandé' },
+                  ...IMMERSION_HELP_LEVELS.map((level) => ({
+                    value: String(level),
+                    label: IMMERSION_LEVEL_LABELS[level],
+                  })),
+                ]}
+                onChange={(next) =>
+                  setImmersionHelpLevel(
+                    next === 'recommended' ? 'recommended' : (Number(next) as ImmersionHelpLevel),
+                  )
+                }
+              />
+              <p className="text-sm text-muted">
+                {immersionHelpLevel === 'recommended'
+                  ? "Le niveau recommandé évolue avec votre progression : vous pouvez toujours le remplacer dans la séance, ou revenir immédiatement à l'affichage complet."
+                  : IMMERSION_LEVEL_DESCRIPTIONS[immersionHelpLevel]}
+              </p>
+            </div>
+            {settings.data ? (
+              <div className="rounded-xl border border-line bg-surface-2 p-4">
+                <p className="text-sm font-bold text-ink">
+                  Niveau recommandé actuellement :{' '}
+                  {IMMERSION_LEVEL_LABELS[settings.data.immersionRecommendation.level]}
+                </p>
+                <ul className="mt-2 flex list-disc flex-col gap-1 pl-5 text-sm text-muted">
+                  {settings.data.immersionRecommendation.reasons.map((reason) => (
+                    <li key={reason}>{reason}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </div>
         </Card>
 

@@ -14,5 +14,6 @@ export * from './schemas/auth';
 export * from './schemas/conversation';
 export * from './schemas/daily-mission';
 export * from './schemas/personal-vocabulary';
+export * from './schemas/settings';
 export * from './schemas/shadowing';
 export * from './schemas/study';

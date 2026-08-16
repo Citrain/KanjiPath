@@ -57,9 +57,10 @@ Ce qui est implémenté :
   **mini-textes** (`GET /texts`, `GET /texts/:id`), **lookup vocabulaire**
   (`GET /words/:surface` pour la lecture en contexte), étude (sessions, réponses
   FSRS, reprise, abandon, **révision ciblée** par niveau/compétence/kanji),
-  progression (tableau de bord, niveaux, points faibles, **statistiques
-  détaillées**), sources, préférences (**limite de révisions + équilibrage
-  automatique de la charge**), signalements.
+   progression (tableau de bord, niveaux, points faibles, **statistiques
+   détaillées**), sources, préférences (**limite de révisions + équilibrage
+   automatique de la charge**, **mode immersion + niveau d'aide recommandé**),
+   signalements.
 - Web : tableau de bord (CTA « Continuer l'apprentissage », stats du jour, série,
   kanji à réviser, activité 30 j, points faibles, parcours N5→N1), liste + recherche
    des kanji avec sélecteur de niveau, filtres de statut, **filtres de fréquence
@@ -79,12 +80,12 @@ Ce qui est implémenté :
   lecture en contexte** — traduction du mot s'il est au référentiel, sinon
   **décomposition en kanji** (sens + lectures on/kun de chaque kanji, liens fiches)),
   **page progression**
-  (onglets vue d'ensemble/activité/points faibles/**statistiques détaillées** :
-  précision 7/30/90 j, par compétence et niveau, rétention estimée FSRS, charge de
-  révision à 7 jours), page sources, page préférences
-  (niveau actif, limite quotidienne, **révisions par session**, **équilibrage
-  automatique**, **exclusion globale de la saisie en kana**, rétention, furigana,
-  romaji, thème encre/washi).
+   (onglets vue d'ensemble/activité/points faibles/**statistiques détaillées** :
+   précision 7/30/90 j, par compétence et niveau, rétention estimée FSRS, charge de
+   révision à 7 jours), page sources, page préférences
+   (niveau actif, limite quotidienne, **révisions par session**, **équilibrage
+   automatique**, **exclusion globale de la saisie en kana**, rétention, furigana,
+   romaji, thème encre/washi, **mode immersion avec niveau d'aide recommandé**).
   Navigation : sidebar desktop + barre inférieure mobile, menu utilisateur, toasts.
   Toutes les phrases d'exemple sont annotées au build (furigana par token + romaji,
   tokenisation kuromoji), affichées selon les préférences furigana/romaji. Design
@@ -188,6 +189,18 @@ expressément conservés par l'utilisateur sont persistés (`shadowing_results`,
 unitaire ou globale) ; audio brut, buffers et transcriptions intermédiaires restent en
 mémoire. Un STT indisponible laisse l'écoute possible et affiche un diagnostic, sans
 résultat fictif.
+
+Le **mode immersion** (ADR-009) est une préférence d'affichage activable dans les
+préférences. Quand il est actif, il masque par défaut les aides configurées — traduction,
+romaji, furigana — dans la lecture graduée, les fiches kanji, les exercices et la
+conversation, puis chacune se révèle localement à la demande (bouton explicite, utilisable
+au toucher, au clavier et annoncé aux lecteurs d'écran). Le niveau d'aide recommandé est
+calculé par l'API de façon explicable, à partir des préférences et de la progression
+existantes ; l'utilisateur peut toujours le remplacer dans la séance, et un débutant peut
+revenir immédiatement à l'affichage complet. Le mode ne remplace pas les réglages fins
+(`furiganaMode`, `romajiEnabled`, `kanaInputEnabled`), ne déduit aucune maîtrise de kanji,
+ne modifie aucune carte FSRS, score ou progression, et la révélation d'une aide ne révèle
+jamais la clé de correction d'un exercice.
 
 Le mode de conversation vocale locale est disponible à `/conversation` pour N5/N4. Son
 mode texte reste opérationnel sans IA locale. L'API est le seul relais vers les services

@@ -133,6 +133,17 @@ Réglages disponibles :
 - thème
 - son (futur)
 
+### Mode immersion (ADR-009)
+
+- préférence d'affichage activable ; masque par défaut traduction, romaji et furigana
+  dans la lecture graduée, les fiches, les exercices et la conversation ;
+- chaque aide masquée est révélable à la demande (bouton explicite, tactile, clavier et
+  lecteur d'écran) ; le niveau d'aide de la séance reste remplaçable à tout moment ;
+- niveau d'aide recommandé calculé de façon explicable depuis les préférences et la
+  progression ; un débutant revient immédiatement à l'affichage complet ;
+- ne remplace pas les réglages fins, ne déduit aucune maîtrise, ne modifie aucune carte
+  FSRS ni progression ; la révélation d'aide ne révèle jamais la clé de correction.
+
 ---
 
 ## 10.3 Mobile

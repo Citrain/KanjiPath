@@ -24,10 +24,13 @@ import {
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { displayWithImmersion } from '../../lib/immersion';
 import { JLPT_LEVELS } from '../../lib/levels';
 import { SKILL_LABELS, SKILLS } from '../../lib/skills';
 import { fetchDashboard } from '../content/api';
 import { AudioButton } from '../content/audio-button';
+import { ImmersionBar } from '../content/immersion-bar';
+import { useImmersion } from '../content/immersion-context';
 import { Furigana, SentenceView, useDisplaySettings } from '../content/japanese';
 import {
   abandonSession,
@@ -154,6 +157,12 @@ export function SessionPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { romajiEnabled, furiganaMode } = useDisplaySettings();
+  const immersion = useImmersion();
+  const display = displayWithImmersion({
+    furiganaMode,
+    romajiEnabled,
+    hiddenAids: immersion.hiddenAids,
+  });
   const [currentPosition, setCurrentPosition] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [typed, setTyped] = useState('');
@@ -672,6 +681,8 @@ export function SessionPage() {
         finishPending={finish.isPending}
         romajiEnabled={romajiEnabled}
         furiganaMode={furiganaMode}
+        promptRomajiVisible={display.romajiVisible}
+        promptFuriganaMode={display.furiganaMode}
         onTyped={setTyped}
         onSelect={(option) => {
           setSelected(option);
@@ -729,6 +740,8 @@ interface ExerciseViewProps {
   finishPending: boolean;
   romajiEnabled: boolean;
   furiganaMode: 'always' | 'hover' | 'never';
+  promptRomajiVisible: boolean;
+  promptFuriganaMode: 'always' | 'hover' | 'never';
   onTyped: (value: string) => void;
   onSelect: (option: string) => void;
   onSubmit: (value: string) => void;
@@ -750,6 +763,8 @@ function ExerciseView({
   finishPending,
   romajiEnabled,
   furiganaMode,
+  promptRomajiVisible,
+  promptFuriganaMode,
   onTyped,
   onSelect,
   onSubmit,
@@ -773,6 +788,9 @@ function ExerciseView({
 
   return (
     <div className="mx-auto max-w-5xl">
+      <div className="mb-4">
+        <ImmersionBar aids={['romaji', 'furigana']} />
+      </div>
       <div className="flex items-center gap-4">
         <div aria-hidden className="flex flex-1 gap-1">
           {items.map((item) => {
@@ -835,7 +853,7 @@ function ExerciseView({
               {typeof prompt.word === 'string' ? (
                 <span
                   className={`font-jp text-center text-5xl leading-relaxed text-ink ${
-                    furiganaMode === 'hover' ? 'furigana-hover' : ''
+                    promptFuriganaMode === 'hover' ? 'furigana-hover' : ''
                   }`}
                 >
                   <Furigana
@@ -846,9 +864,9 @@ function ExerciseView({
                         ? prompt.wordReading
                         : null
                     }
-                    mode={furiganaMode}
+                    mode={promptFuriganaMode}
                   />
-                  {romajiEnabled && typeof prompt.wordRomaji === 'string' ? (
+                  {promptRomajiVisible && typeof prompt.wordRomaji === 'string' ? (
                     <span className="mt-1 block font-sans text-base font-medium tracking-wide text-muted">
                       {prompt.wordRomaji}
                     </span>
@@ -860,8 +878,8 @@ function ExerciseView({
                   <SentenceView
                     tokens={prompt.tokens as SentenceTokenDto[]}
                     japanese={prompt.sentence}
-                    romajiEnabled={romajiEnabled}
-                    furiganaMode={furiganaMode}
+                    romajiEnabled={promptRomajiVisible}
+                    furiganaMode={promptFuriganaMode}
                     className="font-jp text-center text-3xl"
                   />
                 ) : (
@@ -873,7 +891,7 @@ function ExerciseView({
               {typeof prompt.reading === 'string' ? (
                 <span className="flex flex-col items-center gap-1 rounded-xl border border-sky/20 bg-sky-soft px-5 py-2.5 text-sky">
                   <span className="font-jp text-3xl">{prompt.reading}</span>
-                  {romajiEnabled && typeof prompt.readingRomaji === 'string' ? (
+                  {promptRomajiVisible && typeof prompt.readingRomaji === 'string' ? (
                     <span className="text-sm font-semibold opacity-80">{prompt.readingRomaji}</span>
                   ) : null}
                 </span>
