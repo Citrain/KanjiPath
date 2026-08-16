@@ -469,6 +469,46 @@ describeWithDb('contenu + étude + progression (integration MariaDB)', () => {
     expect(known.nextDueAt).toBeNull();
   });
 
+  it('restaure l’état FSRS suspendu pendant une révision ciblée', async () => {
+    const exercise = await prisma.exerciseItem.findUnique({
+      where: { id: exerciseItemId },
+      include: { kanji: true },
+    });
+    if (!exercise?.kanji) {
+      throw new Error('Exercice de test introuvable');
+    }
+    const user = await prisma.user.findUniqueOrThrow({ where: { email } });
+    const card = await prisma.reviewCard.findFirst({
+      where: { userId: user.id, subjectId: exercise.kanji.id },
+    });
+    if (!card) {
+      throw new Error('Carte de révision suspendue introuvable');
+    }
+    expect(card.state).toBe('Suspended');
+    expect(card.stateBeforeSuspension).not.toBeNull();
+
+    const session = await prisma.studySession.create({
+      data: {
+        userId: card.userId,
+        mode: 'targeted',
+        items: { create: { position: 0, exerciseItemId } },
+      },
+    });
+    const accepted =
+      (exercise.answerJson as { acceptedAnswers?: string[] }).acceptedAnswers?.[0] ?? '';
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/study/answers',
+      cookies: { kp_csrf: csrfToken },
+      headers: { cookie: sessionCookie, 'x-csrf-token': csrfToken },
+      payload: { sessionId: session.id, exerciseItemId, answer: accepted },
+    });
+    expect(response.statusCode).toBe(201);
+    const resumed = await prisma.reviewCard.findUniqueOrThrow({ where: { id: card.id } });
+    expect(resumed.state).not.toBe('Suspended');
+    expect(resumed.stateBeforeSuspension).toBeNull();
+  });
+
   it('refuse une session ciblée sans filtre', async () => {
     const response = await app.inject({
       method: 'POST',

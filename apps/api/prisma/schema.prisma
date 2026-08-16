@@ -607,6 +607,7 @@ model ReviewCard {
   subjectId      String          @map("subject_id")
   skill          ReviewCardSkill
   state          CardState       @default(New)
+  stateBeforeSuspension CardState? @map("state_before_suspension")
   dueAt          DateTime        @default(now()) @map("due_at")
   stability      Float           @default(0)
   difficulty     Float           @default(0)

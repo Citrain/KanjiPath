@@ -950,3 +950,10 @@ pnpm content:validate
 
 Ne pas déclarer une tâche terminée si l'une de ces commandes échoue ou si la doc n'est
 pas à jour (voir « Définition de terminé » dans `AGENTS.md`).
+
+## Révision FSRS
+
+`Suspended` est un état produit et n'est pas accepté par `ts-fsrs`.
+`review_cards.state_before_suspension` conserve donc l'état interne au marquage manuel
+« connu » : ignorer les items pendants des sessions ouvertes et ne réactiver cette carte
+que dans une session `targeted`. Ne jamais transmettre `Suspended` au scheduler.

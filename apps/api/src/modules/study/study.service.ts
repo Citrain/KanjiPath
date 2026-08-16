@@ -18,7 +18,12 @@ import {
   isMastered,
   type ReviewCard,
 } from '@kanjipath/domain';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import type { Prisma } from '../../generated/prisma/client';
 import { PrismaService } from '../../infrastructure/database/prisma.service';
 import {
@@ -362,6 +367,7 @@ export class StudyService {
       cardSkill,
       rating,
       now,
+      session.mode,
     );
 
     await this.prisma.reviewLog.create({
@@ -604,6 +610,7 @@ export class StudyService {
     skill: string,
     rating: string,
     now: Date,
+    sessionMode: string,
   ) {
     const uniqueWhere = {
       userId_subjectType_subjectId_skill: {
@@ -614,9 +621,21 @@ export class StudyService {
       },
     };
     const existing = await this.prisma.reviewCard.findUnique({ where: uniqueWhere });
+    if (existing?.state === 'Suspended' && sessionMode !== 'targeted') {
+      throw new ConflictException(
+        'Cette carte a été suspendue car le kanji est marqué comme connu',
+      );
+    }
     const before: ReviewCard = existing
       ? {
-          state: existing.state as ReviewCard['state'],
+          state:
+            existing.state === 'Suspended'
+              ? existing.stateBeforeSuspension && existing.stateBeforeSuspension !== 'Suspended'
+                ? existing.stateBeforeSuspension
+                : existing.reps > 0
+                  ? 'Review'
+                  : 'New'
+              : (existing.state as ReviewCard['state']),
           due: existing.dueAt,
           stability: existing.stability,
           difficulty: existing.difficulty,
@@ -639,6 +658,7 @@ export class StudyService {
         subjectId: kanjiId,
         skill: skill as never,
         state: result.card.state as never,
+        stateBeforeSuspension: null,
         dueAt: result.card.due,
         stability: result.card.stability,
         difficulty: result.card.difficulty,
@@ -651,6 +671,7 @@ export class StudyService {
       },
       update: {
         state: result.card.state as never,
+        stateBeforeSuspension: null,
         dueAt: result.card.due,
         stability: result.card.stability,
         difficulty: result.card.difficulty,

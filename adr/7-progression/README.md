@@ -84,6 +84,10 @@ Cette action fixe ses scores à 100 %, le place dans l'état produit `MASTERED` 
 ses cartes FSRS existantes. Il n'est plus introduit dans les sessions automatiques, mais
 reste disponible en révision ciblée.
 
+La suspension conserve l'état FSRS précédent. Les items encore en attente dans une session
+ouverte sont ignorés ; seule une révision ciblée explicite réactive la carte avec son état
+FSRS conservé.
+
 ---
 
 ## 9.5 Progression d'un niveau

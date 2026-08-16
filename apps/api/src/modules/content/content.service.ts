@@ -701,8 +701,8 @@ export class ContentService {
       throw new NotFoundException('Kanji introuvable');
     }
     const now = new Date();
-    await this.prisma.$transaction([
-      this.prisma.userKanjiProgress.upsert({
+    await this.prisma.$transaction(async (tx) => {
+      await tx.userKanjiProgress.upsert({
         where: { userId_kanjiId: { userId, kanjiId: kanji.id } },
         create: {
           userId,
@@ -729,12 +729,24 @@ export class ContentService {
           status: 'mastered',
           masteredAt: now,
         },
-      }),
-      this.prisma.reviewCard.updateMany({
-        where: { userId, subjectType: 'kanji', subjectId: kanji.id },
-        data: { state: 'Suspended' },
-      }),
-    ]);
+      });
+      await tx.$executeRaw`
+        UPDATE \`review_cards\`
+        SET \`state_before_suspension\` = \`state\`, \`state\` = 'Suspended'
+        WHERE \`user_id\` = ${userId}
+          AND \`subject_type\` = 'kanji'
+          AND \`subject_id\` = ${kanji.id}
+          AND \`state\` <> 'Suspended'
+      `;
+      await tx.studySessionItem.updateMany({
+        where: {
+          status: 'pending',
+          session: { userId, endedAt: null },
+          exerciseItem: { kanjiId: kanji.id },
+        },
+        data: { status: 'skipped' },
+      });
+    });
     return this.kanjiProgress(userId, literal);
   }
 
