@@ -13,6 +13,7 @@ import { CurriculaModule } from './modules/curricula/curricula.module';
 import { PersonalVocabularyModule } from './modules/personal-vocabulary/personal-vocabulary.module';
 import { ProgressModule } from './modules/progress/progress.module';
 import { SettingsModule } from './modules/settings/settings.module';
+import { ShadowingModule } from './modules/shadowing/shadowing.module';
 import { StudyModule } from './modules/study/study.module';
 
 @Module({
@@ -29,6 +30,7 @@ import { StudyModule } from './modules/study/study.module';
     ProgressModule,
     PersonalVocabularyModule,
     SettingsModule,
+    ShadowingModule,
   ],
   controllers: [AppController],
   providers: [

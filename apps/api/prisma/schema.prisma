@@ -29,6 +29,7 @@ model User {
   dailyMissions  DailyMission[]
   personalVocabularyEntries  PersonalVocabularyEntry[]
   personalVocabularySessions PersonalVocabularySession[]
+  shadowingResults ShadowingResult[]
 
   @@map("users")
 }
@@ -247,6 +248,11 @@ enum PersonalVocabularySessionItemStatus {
   pending
   answered
   skipped
+}
+
+enum ShadowingSource {
+  audio
+  tts
 }
 
 model ContentSource {
@@ -471,6 +477,7 @@ model Sentence {
   tokens           SentenceToken[]
   exercises        ExerciseItem[]
   audioResources   AudioResource[]
+  shadowingResults ShadowingResult[]
 
   @@index([japanese])
   @@map("sentences")
@@ -681,7 +688,7 @@ model StudySession {
 model DailyMission {
   id               String             @id @default(uuid())
   userId           String             @map("user_id")
-  localDate        String             @map("local_date")
+  localDate        String             @map("local_date") @db.VarChar(10)
   status           DailyMissionStatus @default(active)
   contentVersion   String?            @map("content_version")
   studySessionId   String?            @unique @map("study_session_id")
@@ -936,4 +943,26 @@ model PersonalVocabularySessionItem {
   @@unique([sessionId, position])
   @@index([sessionId, status])
   @@map("personal_vocabulary_session_items")
+}
+
+model ShadowingResult {
+  id              String          @id @default(uuid())
+  userId          String          @map("user_id")
+  sentenceId      String?         @map("sentence_id")
+  source          ShadowingSource
+  japanese        String
+  reading         String          @db.Text
+  translationFr   String?         @map("translation_fr") @db.Text
+  transcript      String          @db.Text
+  matched         Boolean
+  matchedSegments Int             @map("matched_segments")
+  totalSegments   Int             @map("total_segments")
+  attribution     String?         @db.Text
+  license         String?
+  createdAt       DateTime        @default(now()) @map("created_at")
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sentence        Sentence?       @relation(fields: [sentenceId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@map("shadowing_results")
 }

@@ -44,9 +44,12 @@ apps/
          conversation/  # choix de session, texte/micro, transcripts et corrections
          ai-quiz/       # génération locale d'un quiz personnel, rendu et correction déterministe
          personal-vocabulary/ # carnet privé, provenance figée et sessions FSRS isolées (ADR-007)
+         shadowing/     # laboratoire de shadowing : écoute, micro, comparaison de transcript,
+                        # conservation opt-in (ADR-008)
          sources/       # page sources et licences
       lib/             # apiFetch (client HTTP, CSRF), theme (encre/washi),
-                       # format (dates), progress (série), skills (libellés)
+                       # format (dates), progress (série), skills (libellés),
+                       # audio (capture micro PCM 16 kHz, base64, lecture)
       styles/          # design system Tailwind 4 (tokens, animations, reduced-motion)
   api/                 # API NestJS + Fastify (port 3001 en dev)
     prisma/            # schema.prisma + migrations
@@ -70,6 +73,8 @@ apps/
          conversation/  # orchestrateur, providers STT/LLM/TTS et WebSocket local
          ai-quiz/       # snapshot de quiz local, validation LLM, correction sans LLM
          personal-vocabulary/ # entrées privées, cartes/logs/sessions FSRS séparés
+         shadowing/     # cibles publiées, transcription finale, comparaison déterministe,
+                        # conservation opt-in (ADR-008)
     test/              # tests d'intégration (e2e)
 
 packages/
@@ -286,6 +291,16 @@ POST   /ai-quizzes/:id/answers        # correction déterministe
 POST   /ai-quizzes/:id/finish
 GET    /ai-quizzes/:id/questions/:key/audio
 
+# Shadowing local (ADR-008)
+GET    /shadowing/targets              # level + source=audio|tts ; phrases publiées, attribution/licence
+GET    /shadowing/targets/:id/tts      # synthèse VOICEVOX relayée (base64), vitesse slow|normal|natural
+POST   /shadowing/transcribe           # PCM 16 kHz → transcription finale locale (mémoire uniquement)
+POST   /shadowing/compare              # comparaison déterministe transcript/lecture cible
+POST   /shadowing/results              # conservation opt-in d'un résultat final
+GET    /shadowing/results
+DELETE /shadowing/results/:id
+DELETE /shadowing/results
+
 # Carnet de vocabulaire personnel
 GET    /personal-vocabulary?archived=false
 POST   /personal-vocabulary
@@ -328,6 +343,13 @@ Détail complet : `adr/9-security-perf/README.md`. Points clés :
   est authentifiée et CSRF-protégée; la référence d'un tour conversationnel est chargée
   avec son `userId`, jamais par identifiant seul. La suppression d'une entrée cascade
   vers sa provenance, ses cartes, journaux et éléments de session personnels.
+- Le shadowing (`/shadowing`) garde l'audio brut, les buffers et toute analyse intermédiaire
+  en mémoire ; seul un transcript final et sa comparaison peuvent être conservés, sur action
+  explicite de l'utilisateur (`POST /shadowing/results`), dans `shadowing_results` borné à
+  50 lignes par utilisateur et supprimable à tout moment. Un STT indisponible renvoie un
+  diagnostic `STT_UNAVAILABLE` sans résultat fictif ; la comparaison est déterministe
+  (aucun LLM) et n'affiche aucune note ni verdict de prononciation. Les clips publiés
+  conservent attribution et licence affichées.
 
 ## Performance / index
 

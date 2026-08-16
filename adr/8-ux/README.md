@@ -85,6 +85,20 @@ Toutes les sections définies dans `5-kanji-card/`.
   et journaux ;
 - toutes les actions restent utilisables au tactile comme au clavier.
 
+### Laboratoire de shadowing (ADR-008)
+
+- choix d'une phrase publiée : clip audio sous licence autorisée (attribution et licence
+  affichées) ou lecture par la voix locale (TTS), niveau N5 à N1 ;
+- écoute, enregistrement micro (20 s max), transcription finale locale et comparaison
+  présentée comme une aide de correspondance — jamais une note ni un verdict de
+  prononciation, d'accent, de rythme ou d'intonation ;
+- segments à réécouter libellés en texte, pas seulement en couleur, avec bouton de
+  réécoute ; répétition libre sans effet sur les cartes, scores ou progression ;
+- diagnostic explicite si le STT local est indisponible : l'écoute reste possible ;
+- conservation d'un résultat uniquement sur action explicite, avec suppression
+  unitaire ou globale ;
+- contrôles utilisables au clavier et au tactile (cibles d'au moins 48 px).
+
 ### Statistiques
 
 - précision et rétention

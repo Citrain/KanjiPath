@@ -53,6 +53,9 @@ const PersonalVocabularyPage = lazy(() =>
     default: m.PersonalVocabularyPage,
   })),
 );
+const ShadowingPage = lazy(() =>
+  import('../features/shadowing/shadowing-page').then((m) => ({ default: m.ShadowingPage })),
+);
 
 function AuthSplash() {
   return (
@@ -165,6 +168,14 @@ export function App() {
             element={
               <Protected>
                 <AiQuizPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/shadowing"
+            element={
+              <Protected>
+                <ShadowingPage />
               </Protected>
             }
           />

@@ -134,6 +134,21 @@ pnpm dev:voice          # setup + web/API + services vocaux locaux
   concernee, avec migration Prisma, contrats API, tests et documentation. Elles ne peuvent ni
   publier des donnees personnelles, ni contourner FSRS, les preferences d'etude, les licences ou
   les contraintes locales de l'ADR-003.
+- Shadowing local (ADR-008) : `apps/api/src/modules/shadowing/` relaie les providers STT/TTS du
+  module `conversation` (unique passerelle); le web ne contacte jamais les services locaux.
+  Audio brut, buffers et analyse intermediaire restent en memoire; sans action explicite de
+  conservation, aucun transcript n'est persiste. La conservation opt-in est bornee a 50 resultats
+  par utilisateur dans `shadowing_results`, supprimable unitairement ou globalement.
+- Shadowing local : la comparaison transcript/cible est deterministe et sans LLM (espaces,
+  ponctuation, equivalence kana, marques longues, kanji resolus par les lectures des tokens
+  publies). Elle ne produit ni note ni verdict de prononciation, d'accent, de rythme ou
+  d'intonation : uniquement une aide de correspondance et des segments a reecouter. Ne jamais
+  presenter un ecart comme une erreur de prononciation certaine.
+- Shadowing local : un STT indisponible renvoie `STT_UNAVAILABLE` avec diagnostic et laisse
+  l'ecoute possible; ne jamais produire de resultat fictif. Un TTS indisponible renvoie
+  `TTS_UNAVAILABLE`; les cibles avec clip publie restent ecoutables. Les cibles sont des phrases
+  publiees affichant attribution et licence; aucun clip sans licence explicite. Le shadowing ne
+  touche ni cartes FSRS, ni scores, ni progression kanji, ni curriculum.
 - Carnet personnel (ADR-007) : ne jamais réutiliser `review_cards`, `review_logs`,
   `study_sessions` ou `user_kanji_progress` pour ses révisions. Les entrées, sources,
   cartes, journaux et sessions restent dans leurs tables dédiées ; une provenance

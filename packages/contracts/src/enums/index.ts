@@ -70,6 +70,9 @@ export type ConversationCorrectionMode = (typeof CONVERSATION_CORRECTION_MODES)[
 export const JAPANESE_SPEECH_SPEEDS = ['slow', 'normal', 'natural'] as const;
 export type JapaneseSpeechSpeed = (typeof JAPANESE_SPEECH_SPEEDS)[number];
 
+export const SHADOWING_SOURCES = ['audio', 'tts'] as const;
+export type ShadowingSource = (typeof SHADOWING_SOURCES)[number];
+
 export const PERSONAL_VOCABULARY_ORIGINS = [
   'published_vocabulary',
   'published_text',

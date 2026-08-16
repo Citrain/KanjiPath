@@ -66,6 +66,7 @@ ajoute-le ici.
 | Mission quotidienne | `StudyService#createDailyMission/dailyMission`, contrats `daily-mission.ts`, tables `daily_missions` / `daily_mission_steps`, page `/mission` |
 | Carte visuelle des kanji | `ContentService#kanjiMap`, contrat `KanjiMapResponse`, page `/kanji/:literal/carte` |
 | Carnet de vocabulaire personnel | `apps/api/src/modules/personal-vocabulary/`, contrats `personal-vocabulary.ts`, page `/carnet` |
+| Shadowing local | `apps/api/src/modules/shadowing/` (comparaison pure dans `shadowing-compare.ts`), contrats `shadowing.ts`, table `shadowing_results`, page `/shadowing`, capture micro `apps/web/src/lib/audio.ts` |
 
 ## Pièges connus (IMPORTANT)
 
@@ -734,10 +735,45 @@ ajoute-le ici.
     questions par défaut (dix au maximum dans l'UI). Ne réexposer ni les 20 questions ni les
     renderers avancés dans ce parcours sans refaire l'évaluation Ollama : les snapshots longs et
     hétérogènes dégradent la conformité JSON de ce modèle local.
-    `parseAiQuizModelJson` accepte uniquement un objet JSON brut complet. Ne pas extraire un objet
-    depuis du markdown, corriger un antislash, renommer un champ, ignorer une propriété inconnue ou
-    contourner `aiQuizModelOutputSchema`. La seule récupération autorisée est une régénération
-    atomique avec le diagnostic de validation et le même schéma.
+     `parseAiQuizModelJson` accepte uniquement un objet JSON brut complet. Ne pas extraire un objet
+     depuis du markdown, corriger un antislash, renommer un champ, ignorer une propriété inconnue ou
+     contourner `aiQuizModelOutputSchema`. La seule récupération autorisée est une régénération
+     atomique avec le diagnostic de validation et le même schéma.
+
+93. **Shadowing : passerelle et limites.** Le module `shadowing` n'implémente aucun accès direct à
+    faster-whisper ou VOICEVOX : il injecte `STT_PROVIDER`/`JAPANESE_TTS_PROVIDER` exportés par
+    `ConversationModule` (l'export de `STT_PROVIDER` a été ajouté pour ADR-008, ne pas le retirer).
+    Fastify limite le corps JSON à 1 MiB : l'enregistrement est donc borné à 20 s / 640 Kio de PCM
+    (`SHADOWING_MAX_AUDIO_BYTES` dans les contrats) et le base64 est plafonné par zod avant le
+    contrôle 413 du service. Ne pas augmenter ces bornes sans relever `bodyLimit`.
+
+94. **Shadowing : confidentialité mémoire et opt-in.** `transcribe` et `compare` ne doivent jamais
+    écrire en base : seul `POST /shadowing/results` persiste, et il recalcule la comparaison côté
+    serveur (ne jamais faire confiance à un calcul client). Un STT indisponible ou en échec renvoie
+    `503 { code: 'STT_UNAVAILABLE' }`, jamais un transcript vide ou fictif. La table
+    `shadowing_results` est bornée à 50 lignes par utilisateur ; la phrase est figée en snapshot
+    (japanese/reading/attribution/license) avec FK `SET NULL` vers `sentences`.
+
+95. **Shadowing : comparaison déterministe.** Toute la logique vit dans `shadowing-compare.ts`
+    (pur, testé) : normalisation NFKC, caractères invisibles, ponctuation, marques longues
+    (ー 〜 ~), katakana→hiragana, casse latine; les kanji du transcript sont remplacés par les
+    lectures des tokens de la cible (plus longue surface d'abord); l'alignement des segments est
+    glouton et ordonné. Ne pas introduire de score, de pourcentage ni de verdict de prononciation
+    dans le DTO ou les libellés web (`shadowing-labels.ts` est testé sur ce point).
+
+96. **Capture micro web.** `apps/web/src/lib/audio.ts` fournit `microphoneInputLevel`,
+    `downsampleToPcm16`, `pcmToBase64`, `playBase64Audio` et `startMemoryRecorder` (accumulation
+    en mémoire, arrêt automatique à la durée maximale). La page conversation conserve son propre
+    enregistreur streaming WebSocket mais importe ces primitives; `conversation-page` ré-exporte
+    `microphoneInputLevel` pour son spec. Le niveau micro affiché atteste seulement la capture
+    locale, jamais la réception STT.
+
+97. **Dérive schema/migration MariaDB.** `prisma migrate diff --from-config-datasource` compare la
+    base réelle au schéma : une colonne créée en `VARCHAR(10)` par une migration mais déclarée
+    `String` simple dans `schema.prisma` (→ `VARCHAR(191)`) produit un `ALTER TABLE` parasite dans
+    la migration suivante. Vérifier la sortie du diff et aligner le schéma avec la migration déjà
+    déployée (ex. `@db.VarChar(10)` sur `daily_missions.local_date`) avant d'écrire une migration
+    additive.
     `aiQuizModelOutputSchema` est strict pour toute nouvelle génération, mais
     `aiQuizDraftSchema` lit aussi les snapshots historiques, qui peuvent ne pas avoir toutes les
     lectures kana ou compétences imposées aujourd'hui. Ne jamais durcir ce schéma de lecture sans

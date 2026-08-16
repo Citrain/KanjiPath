@@ -101,6 +101,35 @@ température Ollama modérée de `0.35`. La diversité reste contrôlée : une r
 échec de validation et reçoit le même traitement borné que toute autre sortie invalide. Les QCM de
 lecture appliquent la même exclusion côté application et changent également la position de réponse.
 
+## Laboratoire de shadowing local
+
+`/shadowing` (ADR-008) réutilise les mêmes services locaux que la conversation :
+faster-whisper pour la transcription finale et VOICEVOX pour la lecture des cibles
+sans clip publié. Le navigateur ne contacte jamais ces services : l'API relaie tout
+depuis `apps/api/src/modules/shadowing/`, qui injecte les providers du module
+`conversation` (unique passerelle STT/TTS).
+
+- Les cibles sont des phrases publiées : clips audio sous licence explicite
+  (attribution et licence affichées) ou lecture TTS de la phrase, à trois vitesses.
+- L'enregistrement micro (PCM mono 16 kHz, 20 s et 640 Kio maximum) est envoyé à
+  `POST /shadowing/transcribe` ; audio brut, buffers et analyse intermédiaire restent
+  en mémoire et ne sont jamais persistés. Il n'y a pas de transcription partielle.
+- `POST /shadowing/compare` produit une comparaison déterministe entre le transcript
+  final et la lecture cible (tokens publiés) : tolérance aux espaces, ponctuation,
+  équivalence katakana/hiragana, marques longues et résolution des kanji du
+  transcript par les lectures des tokens. Aucun LLM, aucune note, aucun verdict de
+  prononciation/accent/rythme/intonation : seulement une aide de correspondance et
+  des segments à réécouter.
+- La conservation d'un résultat est un opt-in explicite (`POST /shadowing/results`) :
+  table `shadowing_results`, 50 lignes maximum par utilisateur, suppression unitaire
+  ou globale, cascade à la suppression du compte.
+- STT indisponible : l'écoute reste possible (clips publiés, TTS si VOICEVOX est
+  actif), l'API renvoie `503 STT_UNAVAILABLE` avec diagnostic, aucun résultat fictif.
+  VOICEVOX indisponible : `503 TTS_UNAVAILABLE`, les cibles avec clip publié restent
+  écoutables.
+- Le shadowing ne modifie ni cartes FSRS, ni scores, ni progression kanji, ni
+  curriculum : c'est une répétition libre.
+
 ## VOICEVOX (TTS japonais)
 
 Le moteur expose son API sur `127.0.0.1:50021`. Exemple GPU :

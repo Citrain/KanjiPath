@@ -12,6 +12,12 @@ import { Badge, Button, Card, ErrorState, Skeleton } from '@kanjipath/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Bot, Mic, MicOff, Send, UserRound, Volume2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import {
+  downsampleToPcm16,
+  microphoneInputLevel,
+  pcmToBase64,
+  playBase64Audio,
+} from '../../lib/audio';
 import { SaveVocabularyButton } from '../personal-vocabulary/save-vocabulary-button';
 import {
   createConversation,
@@ -636,9 +642,9 @@ async function startRecorder(
     const samples = event.inputBuffer.getChannelData(0);
     onLevel(microphoneInputLevel(samples));
     if (socket.readyState !== WebSocket.OPEN) return;
-    const pcm = downsample(samples, context.sampleRate, 16_000);
+    const pcm = downsampleToPcm16(samples, context.sampleRate, 16_000);
     socket.send(
-      JSON.stringify({ type: 'audio.chunk', encoding: 'pcm_s16le', data: toBase64(pcm) }),
+      JSON.stringify({ type: 'audio.chunk', encoding: 'pcm_s16le', data: pcmToBase64(pcm) }),
     );
   };
   source.connect(processor);
@@ -655,34 +661,11 @@ async function startRecorder(
   };
 }
 
-export function microphoneInputLevel(samples: Float32Array): number {
-  if (samples.length === 0) return 0;
-  let total = 0;
-  for (const sample of samples) total += sample * sample;
-  return Math.min(1, Math.sqrt(total / samples.length) * 8);
-}
-
-function downsample(input: Float32Array, sourceRate: number, targetRate: number): Int16Array {
-  const ratio = sourceRate / targetRate;
-  const output = new Int16Array(Math.round(input.length / ratio));
-  for (let index = 0; index < output.length; index += 1) {
-    const sample = input[Math.floor(index * ratio)] ?? 0;
-    output[index] = Math.max(-1, Math.min(1, sample)) * 0x7fff;
-  }
-  return output;
-}
-
-function toBase64(samples: Int16Array): string {
-  const bytes = new Uint8Array(samples.buffer);
-  let binary = '';
-  for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary);
-}
-
 function playAudio(mimeType: string, base64: string): void {
-  const audio = new Audio(`data:${mimeType};base64,${base64}`);
-  void audio.play().catch(() => undefined);
+  playBase64Audio(mimeType, base64);
 }
+
+export { microphoneInputLevel };
 
 export function voiceDisplayName(name: string, styleId: number): string {
   return VOICE_NAMES[name] ?? `Voix ${styleId}`;

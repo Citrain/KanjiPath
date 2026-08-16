@@ -13,6 +13,7 @@ import {
   BookOpen,
   BrainCircuit,
   ChevronsUpDown,
+  Ear,
   Flame,
   LayoutDashboard,
   LogOut,
@@ -37,6 +38,7 @@ const NAV_ITEMS = [
   { to: '/', label: 'Tableau de bord', short: 'Accueil', icon: LayoutDashboard },
   { to: '/etude', label: 'Étudier', icon: NotebookPen },
   { to: '/conversation', label: 'Conversation', short: 'Parler', icon: MessageCircle },
+  { to: '/shadowing', label: 'Shadowing', short: 'Écho', icon: Ear },
   { to: '/quiz-ia', label: 'Quiz IA', short: 'Quiz IA', icon: BrainCircuit },
   { to: '/lecture', label: 'Lecture', icon: BookOpen },
   { to: '/carnet', label: 'Carnet', icon: BookMarked },
@@ -283,7 +285,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             aria-label="Navigation principale mobile"
             className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-lg lg:hidden"
           >
-            <div className="grid grid-cols-8">
+            <div className="grid grid-cols-9">
               {NAV_ITEMS.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -310,7 +312,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
                             </span>
                           ) : null}
                         </span>
-                        {'short' in item ? item.short : item.label}
+                        <span className="max-w-full truncate px-0.5">
+                          {'short' in item ? item.short : item.label}
+                        </span>
                         <span
                           aria-hidden
                           className={`h-1 w-1 rounded-full transition-opacity ${

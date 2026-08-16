@@ -177,6 +177,18 @@ L'instance est réservée à un usage personnel privé : `ADR-002-usage-personne
 autorise les clips CC BY-NC avec attribution, mais interdit toute distribution publique
 ou commerciale tant qu'ils sont présents.
 
+Le **laboratoire de shadowing** est disponible à `/shadowing` (ADR-008) : écoute d'une
+phrase publiée avec clip audio sous licence autorisée (attribution affichée) ou lue par le
+TTS japonais local, enregistrement micro (20 s max), transcription finale locale via l'API,
+comparaison déterministe avec la lecture cible et segments à réécouter. Le résultat est
+présenté comme une aide de correspondance, jamais comme une note ou un verdict de
+prononciation, d'accent, de rythme ou d'intonation. La répétition est libre : aucun effet
+sur les cartes FSRS, les scores, la progression kanji ou le curriculum. Seuls les résultats
+expressément conservés par l'utilisateur sont persistés (`shadowing_results`, suppression
+unitaire ou globale) ; audio brut, buffers et transcriptions intermédiaires restent en
+mémoire. Un STT indisponible laisse l'écoute possible et affiche un diagnostic, sans
+résultat fictif.
+
 Le mode de conversation vocale locale est disponible à `/conversation` pour N5/N4. Son
 mode texte reste opérationnel sans IA locale. L'API est le seul relais vers les services
 loopback, conserve uniquement les transcriptions finales et les tours, et valide le JSON

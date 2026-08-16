@@ -31,6 +31,12 @@ import {
     { provide: JAPANESE_TTS_PROVIDER, useExisting: VoicevoxProvider },
     { provide: FRENCH_TTS_PROVIDER, useExisting: BrowserFrenchTtsProvider },
   ],
-  exports: [ConversationConfig, ConversationOrchestrator, LLM_PROVIDER, JAPANESE_TTS_PROVIDER],
+  exports: [
+    ConversationConfig,
+    ConversationOrchestrator,
+    LLM_PROVIDER,
+    STT_PROVIDER,
+    JAPANESE_TTS_PROVIDER,
+  ],
 })
 export class ConversationModule {}
